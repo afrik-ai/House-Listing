@@ -8,7 +8,7 @@ nice ruins it. A "tie" counts as a loss.
 ## Tools
 - `node scripts/shot.mjs --pos "x,y,z" --yaw Y --pitch P --tod day|golden_hour|night --out reviews/critic/<piece>-r<N>/<name>.png [--w 1600 --h 900] [--quality ultra] [--ui]`
 - `node scripts/tour.mjs --out reviews/critic/<piece>-r<N>/tour/` (every room + exteriors, contact sheet, stats.json)
-- Your own Playwright scripts (GPU args `['--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist']`) for anything
+- Your own Playwright scripts (use `openGame()` / `GPU_ARGS` from scripts/shot.mjs; they pick the right GPU flags per platform) for anything
   interactive: pressing keys, holding W, pointer-lock-free look via `__game.teleport`, `__game.move`, `__game.interact`,
   recording frame times, capturing a sequence of frames, reading console errors. See SPEC.md for the `__game` API
   and `window.__game.views()` / `state()` / `benchmark(n)`.
@@ -21,6 +21,14 @@ nice ruins it. A "tie" counts as a loss.
    (`node -e "console.log(Math.random()<.5)"`). Crop/resize both to the same size first with sharp so resolution isn't a tell.
 3. Then view them only as A and B. Score each on the HF2_REFERENCE rubric criteria that apply to this piece (0-10), declare
    which is better, and only then reveal which one was ours. Record this honestly even when ours loses.
+
+### No reference images (restricted network)
+If `reviews/hf2/` is empty because the image hosts are unreachable (see docs/CLOUD_SESSION.md), run each pair against
+the WRITTEN reference instead: pick a reference file named in HF2_REFERENCE.md, quote its description there (every
+concrete property it lists: light patches, bounce colour, AO feet, bloom, material detail, density), take our matching
+view, and score ours and the described HF2 frame side by side on the same criteria. Treat every property the
+description lists as present in HF2 at full quality; any that ours lacks is a loss on that criterion. Label each pair
+"description-based" in the verdict. This is stricter, not looser: when in doubt, HF2 wins.
 
 ## Verdict
 Write `reviews/critic/<piece>-r<N>/VERDICT.md` with: scores table, blind results, what is genuinely good, and a ranked list

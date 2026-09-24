@@ -156,9 +156,9 @@ export class Landscape {
       const leafMin = Math.min(...M.parts.filter((p) => /leaf|leaves/i.test(p.material.name)).map((p) => { p.geometry.computeBoundingBox(); return p.geometry.boundingBox.min.y; }), 99);
       let scale = t.scale;
       if (leafMin < 99 && leafMin * scale < 2.2) scale = Math.min(3.4, 2.2 / Math.max(leafMin, 0.3));
-      const crown = (Math.max(M.size.x, M.size.z) / 2) * scale * 0.85;
+      const crown = (Math.max(M.size.x, M.size.z) / 2) * scale;   // full half-extent: procedural crowns are lopsided
       const avoid = [
-        ...views3.map((p) => [p[0], p[2], Math.max(3, crown + 1.0)]),
+        ...views3.map((p) => [p[0], p[2], Math.max(3, crown + 2.0)]),
         ...(ctx.stones || []).map((s) => [s.x, s.z, 3.0]),
         ...(site.bollards || []).map((b) => [b[0], b[1], 3.0]),
       ];
@@ -179,7 +179,12 @@ export class Landscape {
     const sr = site.tree_ring;
     if (sr && loadedNames.length) {
       for (const p of scatterRing(site, sr, sr.avoid)) {
-        trees.addDynamic({ model: loadedNames[Math.floor(p.r * loadedNames.length)], x: p.x, y: hgt(p.x, p.z) - 0.05, z: p.z, scale: sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]), rot: p.r2 * 6.28 });
+        const model = loadedNames[Math.floor(p.r * loadedNames.length)];
+        const M = trees.models.get(model);
+        const sc = sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]);
+        const crown = (Math.max(M.size.x, M.size.z) / 2) * sc;
+        if (views3.some((v) => Math.hypot(v[0] - p.x, v[2] - p.z) < crown + 2.0)) continue;   // keep viewpoints clear
+        trees.addDynamic({ model, x: p.x, y: hgt(p.x, p.z) - 0.05, z: p.z, scale: sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]), rot: p.r2 * 6.28 });
       }
     }
     const sf = site.far_trees;

@@ -40,7 +40,9 @@ for (const name of process.argv.slice(2)) {
     m.setAlphaMode(a);
     if (a === 'MASK') m.setAlphaCutoff(0.5);
   }
-  const res = meta.texres || 1024;
+  // GPU memory budget (SwiftShader holds ~1 GB): texture size follows the prop's size, not just meta.texres.
+  const st = Object.values(meta.stats || {}); const maxDim = Math.max(0, ...st.flatMap((q) => q.dims || []));
+  const res = Math.min(meta.texres || 1024, maxDim < 0.45 ? 256 : maxDim < 1.3 ? 512 : 1024);
   const cap = meta.maxTris || MAXTRIS[name];
   if (cap) {
     let t0 = 0;

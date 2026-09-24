@@ -7,5 +7,5 @@ rock, moss = G.rock_mats('rock_moss', seed=11)
 S = [(1.0, 0.8, 0.55), (1.3, 0.9, 0.7), (0.7, 0.6, 0.6), (1.6, 1.1, 0.6), (0.9, 1.0, 0.8), (2.0, 1.2, 0.9)]
 V = {}
 for i, s in enumerate(S):
-    V[f'rock_moss_set_01_rock0{i + 1}'] = [G.rock(f'r{i}', s, 20 + i, rock, moss, sub=5, moss_amt=0.4)]
+    V[f'rock_moss_set_01_rock0{i + 1}'] = [G.rock(f'r{i}', s, 20 + i, rock, moss, sub=3, moss_amt=0.4)]
 H.finish('rock_moss_set', variants=V)

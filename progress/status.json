@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T03:35:25.089Z",
+ "updated": "2026-09-24T04:30:36.028Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T04:30:36.028Z",
+   "m": "P04: in-game verified (reviews/p04/r2,r3): trees raised-canopy (leaf min >= 2.2 m after site scale), viewpoints clear (crown+2 m, ring trees too), ornamental grass tris halved; exterior frame ~3.4M tris incl. shadows, dominated by FURNISH shadow casters (650k x cascades); landscape 590k main + 90k shadow-casting"
+  },
   {
    "t": "2026-09-24T03:35:25.089Z",
    "m": "Textures: gen_textures.mjs generates all 34 sets procedurally offline (~35s, 32MB); living-room shot reviewed"

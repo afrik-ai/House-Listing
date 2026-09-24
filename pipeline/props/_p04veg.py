@@ -235,7 +235,7 @@ def atlas(name, sp, grid=2, S=512, kind='cluster', seed=1):
     return H.save_img(img, name), grid
 
 def leaf_mat(name, img, rough=0.62, spec=0.35):
-    m = H.pbr(name, '#ffffff', rough, base_tex=img, alpha_tex=True, cull=False, spec=spec)
+    m = H.pbr(name, '#e2e2dc', rough, base_tex=img, alpha_tex=True, cull=False, spec=spec)   # factor keeps painted greens out of neon
     return m
 
 # ------------------------------------------------------------------------------------------ bark
@@ -243,7 +243,7 @@ def bark_mat(name, kind='rough', seed=3, N=512):
     y, x = np.mgrid[0:N, 0:N].astype(np.float32) / N
     if kind == 'birch':
         base = H.fnoise(N, 60, 6, seed) * 0.5 + H.fnoise(N, 12, 3, seed + 1) * 0.3
-        col = H.ramp(0.55 + base * 0.12, [(0, '#b9b4a8'), (0.5, '#e2ded4'), (1, '#f1eee6')])
+        col = H.ramp(0.55 + base * 0.12, [(0, '#a8a397'), (0.5, '#cdc9be'), (1, '#dcd8ce')])
         marks = H.fnoise(N, 5, 70, seed + 2)          # horizontal lenticels / black patches
         blot = np.clip((H.fnoise(N, 40, 22, seed + 3) - 1.1) * 2.5, 0, 1)
         dark = np.clip((marks - 1.5) * 2.0, 0, 1) * 0.8 + blot * 0.9

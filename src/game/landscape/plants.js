@@ -117,7 +117,7 @@ function foliageShading(m) {
           vec3 lsL = directionalLights[0].direction;
           float lsBack = pow(clamp(dot(normalize(-vViewPosition), lsL), 0.0, 1.0), 3.0);
           float lsWrap = clamp(0.5 - 0.5 * dot(normal, lsL), 0.0, 1.0);
-          reflectedLight.directDiffuse += diffuseColor.rgb * directionalLights[0].color * (lsBack * 0.4 + lsWrap * 0.1);
+          reflectedLight.directDiffuse += diffuseColor.rgb * directionalLights[0].color * (lsBack * 0.28 + lsWrap * 0.08);
         }
         #endif`);
   };
@@ -158,8 +158,8 @@ function ornamentalGeometry(type, seed) {
     const dx = Math.cos(az), dz = Math.sin(az);
     const r0 = R() * 0.06;
     const pts = [];
-    for (let s = 0; s <= 6; s++) {
-      const t = s / 6;
+    for (let s = 0; s <= 4; s++) {
+      const t = s / 4;
       const horiz = Math.sin(tilt) * len * t + leaf.arch * len * t * t * (0.4 + tilt);
       const up = Math.cos(tilt) * len * t - leaf.arch * 0.5 * len * t * t * t * (0.3 + tilt);
       pts.push([dx * (r0 + horiz), Math.max(0, up), dz * (r0 + horiz)]);
@@ -188,15 +188,15 @@ function ornamentalGeometry(type, seed) {
       const a = head[0];
       const top = [dx * (Math.sin(tilt) * len + 0.02), Math.cos(tilt) * len, dz * (Math.sin(tilt) * len + 0.02)];
       const axis = [top[0] - a[0], top[1] - a[1], top[2] - a[2]];
-      const nStr = type === 'feather' ? 9 : 22;
+      const nStr = type === 'feather' ? 5 : 12;   // triangle budget: ~half the strands, same silhouette
       for (let k = 0; k < nStr; k++) {
         const fa = R() * Math.PI * 2, fan = (type === 'feather' ? 0.05 : 0.22) * (0.4 + R() * 0.6);
         const off = [Math.cos(fa) * fan, 0, Math.sin(fa) * fan];
         const startT = R() * 0.45, sl = 0.55 + R() * 0.45;
         const pts = [];
-        for (let s = 0; s <= 4; s++) {
-          const t = startT + (1 - startT) * sl * (s / 4);
-          const spread = (s / 4);
+        for (let s = 0; s <= 3; s++) {
+          const t = startT + (1 - startT) * sl * (s / 3);
+          const spread = (s / 3);
           pts.push([a[0] + axis[0] * t + off[0] * spread * plume.head, a[1] + axis[1] * t - (type === 'pampas' ? 0.04 * spread * spread : 0), a[2] + axis[2] * t + off[2] * spread * plume.head]);
         }
         const c = hc.map((v) => v * (0.8 + R() * 0.35));

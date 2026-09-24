@@ -12,7 +12,7 @@ P = dict(leaf_min_z=1.55, card=0.55, bark_tile=0.4, flare=0.3, fold=0.12, droop=
              dict(seg=0.2, wiggle=0.12, up=0.02, taper=0.55, sides=9),
              dict(n=(3, 4), t0=0.62, t1=1.0, angle=45, angle_var=12, ratio=0.8, shrink=0.25, rratio=0.7, sides=6, up=0.04, wiggle=0.16, taper=0.4, seg=0.22),
              dict(n=(5, 6), t0=0.2, t1=1.0, angle=52, ratio=0.6, shrink=0.4, rratio=0.6, sides=4, droop=0.04, wiggle=0.16, taper=0.35, cards=4, card_t0=0.4, seg=0.2),
-             dict(n=(3, 5), t0=0.2, t1=1.0, angle=50, ratio=0.5, shrink=0.3, rratio=0.6, rmin=0.004, sides=3, droop=0.06, wiggle=0.18, taper=0.4, cards=4, card_t0=0.1, seg=0.15),
+             dict(n=(5, 7), t0=0.15, t1=1.0, angle=50, ratio=0.5, shrink=0.3, rratio=0.6, rmin=0.004, sides=3, droop=0.06, wiggle=0.18, taper=0.4, cards=5, card_t0=0.05, seg=0.15),
          ])
 G.build_tree('olive', P, 7, bark, leaves, grid, stems=[((0, 0, 0), (0.22, 0.05, 1), 2.0, 0.09), ((0.08, 0.05, 0), (-0.18, 0.2, 1), 1.85, 0.075), ((0.02, -0.08, 0), (-0.05, -0.22, 1), 1.9, 0.07)])
 H.finish('tree_small')

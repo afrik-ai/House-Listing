@@ -57,7 +57,7 @@ export class Furnisher {
     this._buildColliders();
     this._validate();          // against the house-only BVH (before our boxes join it)
     this._registerColliders();
-    this._merge();
+    if (!/[?&]nomerge\b/.test(globalThis.location?.search || '')) this._merge();
     this.root.traverse((o) => { if (o.isMesh) this.report.meshes++; });
     this.game.scene.add(this.root);
     this.game.renderer.applyAnisotropy?.(this.root);

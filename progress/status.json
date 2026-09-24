@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T02:55:32.385Z",
+ "updated": "2026-09-24T03:35:25.089Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -117,6 +117,18 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T03:35:25.089Z",
+   "m": "Textures: gen_textures.mjs generates all 34 sets procedurally offline (~35s, 32MB); living-room shot reviewed"
+  },
+  {
+   "t": "2026-09-24T03:23:09.723Z",
+   "m": "P04: 60+ procedural landscape/garden/garage/plant props built (trees w/ painted leaf atlases + crown-normal cards); landscape degrades gracefully on missing models"
+  },
+  {
+   "t": "2026-09-24T03:09:09.242Z",
+   "m": "P07: Furnisher degrades gracefully on missing models; 35 indoor procedural props built (living/decor/kitchen/office)"
+  },
   {
    "t": "2026-09-24T02:55:32.385Z",
    "m": "Cloud session: pipeline ported to Linux (bpy shim), house + 19 props rebuilt, real CC0 HDRIs from GitHub mirrors. Poly Haven/ambientCG/Steam blocked: TEX, P07 and P04 builders regenerating assets procedurally."

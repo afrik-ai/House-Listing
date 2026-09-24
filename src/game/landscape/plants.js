@@ -129,7 +129,7 @@ function foliageShading(m) {
 function ornamentalGeometry(type, seed) {
   const R = rng(seed);
   const P = [], N = [], C = [], idx = [];
-  const leaf = type === 'feather' ? { n: 70, len: [0.5, 0.9], arch: 0.3, spread: 0.4, w: 0.016 } : { n: 90, len: [0.45, 0.85], arch: 0.6, spread: 0.75, w: 0.014 };
+  const leaf = type === 'feather' ? { n: 44, len: [0.5, 0.9], arch: 0.3, spread: 0.4, w: 0.02 } : { n: 56, len: [0.45, 0.85], arch: 0.6, spread: 0.75, w: 0.018 };
   const plume = type === 'feather' ? { n: 22, len: [1.1, 1.5], head: 0.3, w: 0.02, spread: 0.12 } : { n: 11, len: [0.9, 1.2], head: 0.3, w: 0.05, spread: 0.5 };
   const green = type === 'feather' ? [0.07, 0.13, 0.03] : [0.09, 0.14, 0.05];
   const tip = type === 'feather' ? [0.2, 0.22, 0.08] : [0.24, 0.26, 0.14];

@@ -54,8 +54,9 @@ function patchGeometry(seed, BLADES) {
 // (14 blades / cell) continuing that density and fading to nothing (blades also shrink into the
 // textured lawn), so there is no visible boundary. ~260k triangles in total.
 const TIERS = [
-  { name: 'near', blades: 48, r0: -1, r1: 6.5, dens: [4.0, 6.5, 0.3] },
-  { name: 'far', blades: 14, r0: 6.5, r1: 13.5, dens: [6.5, 13.0, 0.0] },
+  // P04 r3 budget: ~110k triangles (was ~250k); the textured lawn carries the distance
+  { name: 'near', blades: 30, r0: -1, r1: 6.0, dens: [3.5, 6.0, 0.3] },
+  { name: 'far', blades: 7, r0: 6.0, r1: 11.5, dens: [6.0, 11.0, 0.0] },
 ];
 
 export function buildGrass(ctx, { radius = 13.5 } = {}) {

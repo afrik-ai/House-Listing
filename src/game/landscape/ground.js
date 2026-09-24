@@ -139,7 +139,8 @@ export async function buildGround(ctx) {
   ctx.terrainHeight = terrain.userData.height;
 
   // ---- meshes -----------------------------------------------------------------------------
-  const cast = { deck: true, coping: true, concrete: true, stone: true, edge: false };
+  // flat paving casts nothing visible; keeping it out of the sun cascades saves ~100k shadow-pass triangles
+  const cast = { deck: false, coping: false, concrete: false, stone: false, edge: false };
   for (const [k, b] of Object.entries(builders)) {
     if (b.empty) continue;
     const m = new THREE.Mesh(b.build(), mats[k]);

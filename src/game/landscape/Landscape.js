@@ -33,7 +33,7 @@ export class Landscape {
     const lap = (k) => { const n = performance.now(); this.timings[k] = Math.round(n - tl); tl = n; };
     await buildGround(ctx); lap('ground');
     this.pool = await buildPool(ctx); lap('pool');
-    this.grass = buildGrass(ctx, { radius: 13.5 }); lap('grass');
+    this.grass = buildGrass(ctx, { radius: 11.5 }); lap('grass');
     this.bollards = buildBollards(ctx);
     await buildFences(ctx); lap('fences');
     await buildGabions(ctx); lap('gabions');

@@ -103,7 +103,7 @@ export function buildHedges(ctx, shapes) {
       const [cx, cz, r] = s.ball;
       const sq = s.squash ?? 1;
       const cy = G + r * 0.85 * sq;
-      const sg = new THREE.SphereGeometry(r, 18, 12);
+      const sg = new THREE.SphereGeometry(r, 12, 8);
       sg.scale(1, sq, 1);
       sg.translate(cx, cy, cz);
       const pa = sg.attributes.position, na = sg.attributes.normal, ua = sg.attributes.uv;
@@ -241,7 +241,7 @@ export async function buildGabions(ctx) {
   for (const gb of site.gabions) {
     const [x, z, w, d] = gb.rect;
     const y0 = G - 0.02, y1 = G + gb.height;
-    const sp = 0.125;
+    const sp = 0.155;
     // stones on the five visible faces (inset so the cage sits just outside)
     const facePts = [];
     for (let a = x + sp / 2; a < x + w; a += sp) for (let yy = y0 + sp / 2; yy < y1; yy += sp * 0.8) { facePts.push([a, yy, z + 0.07, 0, 0, -1]); facePts.push([a, yy, z + d - 0.07, 0, 0, 1]); }

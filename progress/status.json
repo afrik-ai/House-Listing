@@ -1,8 +1,8 @@
 {
- "updated": "2026-09-24T02:30:16.515Z",
+ "updated": "2026-09-24T02:55:32.385Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
- "headline": "Paused: all agents stopped at a usage limit. Work committed and pushed to GitHub; resume in a new or cloud session.",
+ "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
  "pieces": [
   {
    "id": "P01",
@@ -38,7 +38,7 @@
    "round": 1,
    "verdict": "",
    "gap": "",
-   "updated": "2026-09-23T06:27:59.797Z"
+   "updated": "2026-09-24T02:55:25.865Z"
   },
   {
    "id": "P05",
@@ -62,10 +62,10 @@
    "id": "P07",
    "name": "Furniture & props",
    "status": "building",
-   "round": 1,
+   "round": 2,
    "verdict": "",
    "gap": "",
-   "updated": "2026-09-23T06:27:01.567Z"
+   "updated": "2026-09-24T02:55:16.877Z"
   },
   {
    "id": "P08",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T02:55:32.385Z",
+   "m": "Cloud session: pipeline ported to Linux (bpy shim), house + 19 props rebuilt, real CC0 HDRIs from GitHub mirrors. Poly Haven/ambientCG/Steam blocked: TEX, P07 and P04 builders regenerating assets procedurally."
+  },
   {
    "t": "2026-09-24T02:30:16.515Z",
    "m": "Paused for usage limit: all agents stopped mid-round (P01 r3, P03 r2, P04, P05, P07 building; P02 r2 and P06 r1 critics unfinished). State committed and pushed."

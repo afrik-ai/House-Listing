@@ -63,8 +63,8 @@ const PRESETS = {
     },
   },
   night: {
-    hdri: 'night_clear', azimuth: 140, el: 32,
-    sunColor: 0x9fb8ff, sunScale: 0, sunIntensity: 0.32, sunMax: 0.32,
+    hdri: 'night_clear', azimuth: 35, el: 30,
+    sunColor: 0x9fb8ff, sunScale: 0, sunIntensity: 0.6, sunMax: 0.6,
     hemiSky: 0x2a3c66, hemiGround: 0x0e1016, hemiIntensity: 0.12,
     inSky: 0x3c3a44, inGround: 0x6a5240, hemiInterior: 0.06,
     envIntensity: 0.14, bgIntensity: 0.3, exposure: 1.0, iblSaturation: 0.7,
@@ -73,7 +73,7 @@ const PRESETS = {
     grade: { saturation: 0.1, contrast: 0.1, bloom: 0.95, bloomThreshold: 0.8, vignette: 0.45 },
     sky: { turbidity: 2, rayleigh: 0.4, mie: 0.002, mieG: 0.7 },
     skyGrade: {
-      tint: { horizon: [0.9, 0.95, 1.1], zenith: [0.85, 0.88, 1.0] },
+      tint: { horizon: [0.72, 0.88, 1.3], zenith: [0.66, 0.78, 1.2] },
       add: { horizon: [0.03, 0.05, 0.11], zenith: [0.002, 0.003, 0.008] },
       disc: { radiusDeg: 1.1, radiance: [60, 64, 72], glow: [0.25, 0.3, 0.42], glowDeg: 3, glow2: [0.02, 0.03, 0.055], glow2Deg: 14 },
     },

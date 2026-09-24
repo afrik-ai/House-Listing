@@ -239,6 +239,7 @@ export class Clutter {
 
   _host(p, kind, R) {
     const rec = RECIPES[kind];
+    this._tight = kind === 'vanity' || kind === 'nightstand' || kind === 'sidetable';
     const S = probe(this.F, p);
     const toWorld = (u, w, y) => V(S.o.x + S.ax.x * u + S.az.x * w, y, S.o.z + S.ax.z * u + S.az.z * w);
     const hostYaw = Math.atan2(S.ax.z, S.ax.x) * -1;   // rotation of host about Y
@@ -250,7 +251,7 @@ export class Clutter {
     const pal = (k) => { const P = this.D[k].palette; return P ? new THREE.Color(P[Math.floor(R() * P.length)]) : null; };
     const place = (k, zone, levelFilter = null) => {
       const d = this.D[k === 'booklie' ? 'book' : k === 'bookrow' ? 'book' : k];
-      const r = k === 'booklie' ? 0.13 : k === 'bookrow' ? 0.16 : d.fp, h = k === 'booklie' ? 0.12 : k === 'bookrow' ? 0.26 : d.h;
+      const r = (k === 'booklie' ? 0.13 : k === 'bookrow' ? 0.16 : d.fp) * (this._tight ? 0.7 : 1), h = k === 'booklie' ? 0.12 : k === 'bookrow' ? 0.26 : d.h;
       const levels = S.levels.filter((L) => (levelFilter ? levelFilter(L) : true));
       for (let tries = 0; tries < 60; tries++) {
         const L = levels[Math.floor(R() * levels.length)]; if (!L) return false;

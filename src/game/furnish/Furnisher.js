@@ -116,7 +116,7 @@ export class Furnisher {
 
   // Runtime material corrections for shipped GLBs (mirrors read as black discs, blown-out car paint).
   _fixMaterial(m) {
-    if (/^mirror/i.test(m.name)) { m.color.set('#b9c3c8'); m.metalness = 0.55; m.roughness = 0.06; m.envMapIntensity = 1.6; }
+    if (/^mirror/i.test(m.name)) { m.color.set('#cfd8dc'); m.metalness = 0.15; m.roughness = 0.1; m.envMapIntensity = 2.0; }
     if (/paint_graphite/i.test(m.name)) { m.color.set('#2d3237'); m.metalness = 0.35; m.roughness = 0.42; m.envMapIntensity = 0.7; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
   }
 
@@ -186,13 +186,14 @@ export class Furnisher {
     let object, box, key;
     const defaults = this.data.models?.[it.model] || {};
     // Keep big plants out of the room spawn views (a view must not open inside a plant's leaves).
-    if (it.proc === 'planter' && it.params?.plant) {
-      for (const r of this.game.house.rooms()) {
-        const e = r.eye || r.center; if (!e) continue;
-        const dx = it.pos[0] - e[0], dz = it.pos[2] - e[2], d = Math.hypot(dx, dz);
-        if (d < 1.0 && Math.abs((e[1] ?? 0) - it.floorY) < 2.5) {
-          const k = d > 1e-3 ? 1.0 / d : 0; it = { ...it, pos: [e[0] + (d > 1e-3 ? dx * k : 1.0), it.pos[1], e[2] + dz * k] };
-          this._warn(`${it.room}/planter moved out of the ${r.id} view`);
+    if (it.proc === 'planter' && it.params?.plant && !it.drop && !(it.pos[1] > 0.05)) {
+      this._views ||= this.game.house.rooms().filter((r) => r.main || r.rect).map((r) => { try { return this.game._roomView(r); } catch { return null; } }).filter(Boolean);
+      for (const v of this._views) {
+        const dx = it.pos[0] - v.pos[0], dz = it.pos[2] - v.pos[2], d = Math.hypot(dx, dz);
+        const yaw = THREE.MathUtils.degToRad(v.yaw || 0), fwd = [-Math.sin(yaw), -Math.cos(yaw)];
+        const ahead = d > 1e-3 ? (dx * fwd[0] + dz * fwd[1]) / d : 1;
+        if (d < 1.7 && ahead > 0.2 && Math.abs(v.pos[1] - 1.6 - it.floorY) < 0.5) {
+          this._warn(`${it.room}/planter skipped: inside the ${v.id} view`); return;
         }
       }
     }
@@ -280,10 +281,12 @@ export class Furnisher {
     const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
     const back = V(-Math.sin(yaw), 0, -Math.cos(yaw));
     const o = V(it.pos[0], it.floorY + h, it.pos[2]).addScaledVector(back, -0.3);
-    const hit = this.game.physics.raycast(o, back, 1.2);
+    this._ray.set(o, back); this._ray.far = 1.2;
+    const targets = this.game.scene.children.filter((c) => c !== this.root && !c.isLight);
+    const hit = this._ray.intersectObjects(targets, true).find((q) => q.object.isMesh && q.object.visible);
     if (!hit) return false;
-    const m = [].concat(hit.object?.material || [])[0];
-    return !(m && (m.transparent || /glass|window/i.test(m.name || '') || /glass|window|W_/i.test(hit.object?.name || '')));
+    const m = [].concat(hit.object.material)[0];
+    return !(m && (m.transparent || (m.transmission ?? 0) > 0 || /glass|window|frame/i.test(`${m.name} ${hit.object.name}`)));
   }
 
   // Remove (hide) the sub-meshes / primitives of a model that use a material matching re (e.g. a mirror over a window).
@@ -308,7 +311,7 @@ export class Furnisher {
           const hit = this.game.physics.raycast(V(cx, h, cz), dir, len);
           if (hit && len - hit.distance > 0.02) {
             const n = hit.face?.normal && hit.object ? hit.face.normal.clone().transformDirection(hit.object.matrixWorld) : (hit.normal ? hit.normal.clone() : dir.clone().negate());
-            n.y = 0; if (n.lengthSq() < 1e-6) continue; n.normalize();
+            n.y = 0; if (n.lengthSq() < 1e-6) continue; n.normalize(); if (n.dot(dir) > 0) n.negate();
             const d = (len - hit.distance) * Math.abs(dir.dot(n)) + 0.004;
             if (Math.abs(n.x) > Math.abs(n.z)) push.x = Math.abs(push.x) > d ? push.x : Math.sign(n.x) * d; else push.z = Math.abs(push.z) > d ? push.z : Math.sign(n.z) * d;
           }
@@ -368,7 +371,10 @@ export class Furnisher {
     const r = this.game.house.roomAt?.(V(pos.x, pos.y - 1.5, pos.z)) || this.game.house.roomAt?.(pos);
     const inside = !!r;
     const fy = inside ? this._levelFloor(r.level) : null;
-    const state = inside ? `in:${fy}` : 'out';
+    // outside: interior furniture only when the camera is close to the house (looking in through the glass)
+    const hb = this.game.house.bounds;
+    this._nearHouse = !inside && !!hb && hb.distanceToPoint(pos) < 5;
+    const state = inside ? `in:${fy}` : `out:${this._nearHouse}`;
     if (state === this._visState) return;
     this._visState = state;
     for (const o of this.nodes || []) {
@@ -376,7 +382,7 @@ export class Furnisher {
       let vis = true, shadow = true;
       if (t.zone === 'out') { vis = !t.clutter || !inside; shadow = !inside; }
       else if (inside) { const same = Math.abs(t.floorY - fy) < 0.05; vis = same; shadow = same; }
-      else { vis = !t.clutter; shadow = false; }
+      else { vis = !t.clutter && this._nearHouse; shadow = false; }
       o.visible = vis;
       o.traverse((m) => { if (m.isMesh) m.castShadow = shadow && m.userData._cast; });
     }

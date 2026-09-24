@@ -77,7 +77,7 @@ export function gradeSky(img, f, t, spec) {
     const { az, el, radiusDeg = 0.6, radiance, glow = [0, 0, 0], glowDeg = 6, glow2 = null, glow2Deg = 25 } = spec.disc;
     const s = dirToTexel(az, el);
     const rr = THREE.MathUtils.degToRad(radiusDeg);
-    const span = Math.max(glowDeg * 4, glow2 ? glow2Deg * 3 : 0, radiusDeg * 2);
+    const span = Math.max(glowDeg * 5, glow2 ? glow2Deg * 4 : 0, radiusDeg * 2);
     const y0 = Math.max(0, rowOf(el + span)), y1 = Math.min(H - 1, rowOf(el - span));
     for (let y = y0; y <= y1; y++) for (let x = 0; x < W; x++) {
       const c = pixDir(x, y, d).dot(s);
@@ -87,8 +87,9 @@ export function gradeSky(img, f, t, spec) {
       const aDeg = THREE.MathUtils.radToDeg(ang);
       const disc = THREE.MathUtils.clamp((rr - ang) / (rr * 0.18) + 0.5, 0, 1);   // AA edge
       const limb = 1 - 0.35 * Math.pow(Math.min(1, ang / rr), 2);
-      const g1 = Math.exp(-aDeg / glowDeg);
-      const g2 = glow2 ? Math.exp(-aDeg / glow2Deg) : 0;
+      // glows fade to exactly 0 at the span edge (a hard cut there was the golden-hour sky seam)
+      const g1 = Math.max(0, Math.exp(-aDeg / glowDeg) - Math.exp(-span / glowDeg));
+      const g2 = glow2 ? Math.max(0, Math.exp(-aDeg / glow2Deg) - Math.exp(-span / glow2Deg)) : 0;
       for (let c = 0; c < 3; c++) {
         let v = f(data[i + c]) + glow[c] * g1 + (glow2 ? glow2[c] * g2 : 0);
         v = v * (1 - disc) + radiance[c] * limb * disc;

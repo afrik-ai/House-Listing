@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T07:05:12.853Z",
+ "updated": "2026-09-24T07:09:05.472Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -61,11 +61,11 @@
   {
    "id": "P07",
    "name": "Furniture & props",
-   "status": "building",
+   "status": "lost",
    "round": 2,
-   "verdict": "",
-   "gap": "",
-   "updated": "2026-09-24T02:55:16.877Z"
+   "verdict": "HF2 wins 3/3 description-based pairs; every room furnished but sparse, repetitive, box-silhouetted, several placement errors",
+   "gap": "Rooms are furnished but not lived-in: handful of hero pieces with almost no small clutter (kitchen ~12 props vs HF2 100+), and pieces repeated, box-silhouetted and unseamed.",
+   "updated": "2026-09-24T07:09:05.430Z"
   },
   {
    "id": "P08",
@@ -352,6 +352,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-24T07:09:05.472Z",
+   "src": "/reviews/critic/P07-r2/room_master.png",
+   "caption": "P07 r2 critic view"
+  },
+  {
    "t": "2026-09-24T06:56:26.074Z",
    "src": "/reviews/critic/TEX-r1/living.png",
    "caption": "TEX r1 critic view"
@@ -465,11 +470,6 @@
    "t": "2026-09-23T01:48:04.572Z",
    "src": "/reviews/p01-check/ui_title.png",
    "caption": "P01 title screen (placeholder house)"
-  },
-  {
-   "t": "2026-09-23T01:47:16.578Z",
-   "src": "/reviews/p01-check/23_ext_garden_sw.png",
-   "caption": "P01 first render"
   }
  ]
 }

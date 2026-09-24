@@ -1,0 +1,16 @@
+{
+ "fps": 0,
+ "drawCalls": 375,
+ "triangles": 1054968,
+ "textures": 327,
+ "geometries": 600,
+ "programs": 190,
+ "memoryMB": 118,
+ "gpuTexMB": 990,
+ "quality": "high",
+ "pixelRatio": 1,
+ "resolution": [
+  1280,
+  720
+ ]
+}

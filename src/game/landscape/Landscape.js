@@ -130,6 +130,7 @@ export class Landscape {
     // features (fire pit ...)
     for (const f of site.features || []) {
       const key = await inst.kind(f.model);
+      if (!key) continue;
       const m = new THREE.Matrix4().compose(new THREE.Vector3(f.pos[0], f.y ?? G, f.pos[1]), new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(f.rot || 0)), new THREE.Vector3(1, 1, 1));
       inst.add(key, m);
       const sz = inst.size(key);
@@ -148,8 +149,10 @@ export class Landscape {
     // canopy clear of the viewpoints (+1 m); lowest foliage >= 2.2 m (walkable lawn) -> scale up if not.
     this.treeInfo = [];
     const views3 = (this.game.views?.().exteriors || []).map((v) => v.pos);
+    const loadedNames = names.filter((n) => trees.models.has(n));
     for (const t of site.trees || []) {
       const M = trees.models.get(t.model);
+      if (!M) continue;   // model missing (warned by InstancedModels.kind)
       const leafMin = Math.min(...M.parts.filter((p) => /leaf|leaves/i.test(p.material.name)).map((p) => { p.geometry.computeBoundingBox(); return p.geometry.boundingBox.min.y; }), 99);
       let scale = t.scale;
       if (leafMin < 99 && leafMin * scale < 2.2) scale = Math.min(3.4, 2.2 / Math.max(leafMin, 0.3));
@@ -174,17 +177,17 @@ export class Landscape {
     }
     const hgt = ctx.terrainHeight || (() => G);
     const sr = site.tree_ring;
-    if (sr) {
+    if (sr && loadedNames.length) {
       for (const p of scatterRing(site, sr, sr.avoid)) {
-        trees.addDynamic({ model: names[Math.floor(p.r * names.length)], x: p.x, y: hgt(p.x, p.z) - 0.05, z: p.z, scale: sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]), rot: p.r2 * 6.28 });
+        trees.addDynamic({ model: loadedNames[Math.floor(p.r * loadedNames.length)], x: p.x, y: hgt(p.x, p.z) - 0.05, z: p.z, scale: sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]), rot: p.r2 * 6.28 });
       }
     }
     const sf = site.far_trees;
-    if (sf) {
+    if (sf && loadedNames.length) {
       const st = site.street;
       for (const p of scatterFar(site, sf, hgt, st ? [st.curbs[0] - 2, st.curbs[1] + 2] : null)) {
         // far trees are scaled so their height (not the model's) lands in [scale0, scale1] metres
-        const model = names[Math.floor(p.r * names.length)];
+        const model = loadedNames[Math.floor(p.r * loadedNames.length)];
         const h = trees.models.get(model).size.y;
         trees.addFar({ model, x: p.x, y: p.y, z: p.z, scale: (sf.scale[0] + p.r2 * (sf.scale[1] - sf.scale[0])) / h, rot: p.r2 * 6.28 });
       }

@@ -97,6 +97,10 @@ for name in names:
     area('fill', c + V((1.8, -0.8, 0.7)) * s * 3, c, s * 4, 280 * s * s)
     area('rim', c + V((0.6, 2.0, 1.4)) * s * 3, c, s * 2.5, 500 * s * s)
     sc.render.engine = 'BLENDER_EEVEE'
+    if os.environ.get('HL_CYCLES'):   # headless containers without EGL: Cycles CPU
+        sc.render.engine = 'CYCLES'; sc.cycles.device = 'CPU'; sc.cycles.samples = int(os.environ.get('HL_CYCLES'))
+        try: sc.cycles.use_denoising = True
+        except Exception: pass
     ee = sc.eevee
     for k, v in (('taa_render_samples', 64), ('use_raytracing', True), ('use_shadows', True), ('use_gtao', True)):
         try: setattr(ee, k, v)
@@ -107,8 +111,9 @@ for name in names:
         except Exception: pass
     sc.render.resolution_x = int(opts['w']); sc.render.resolution_y = int(opts['h']); sc.render.resolution_percentage = 100
     sc.render.film_transparent = False
-    os.makedirs(f'{ROOT}/reviews/props', exist_ok=True)
-    sc.render.filepath = f"{ROOT}/reviews/props/{name}{opts['suffix']}.png"
+    odir = os.environ.get('HL_RENDER_DIR') or f'{ROOT}/reviews/props'
+    os.makedirs(odir, exist_ok=True)
+    sc.render.filepath = f"{odir}/{name}{opts['suffix']}.png"
     sc.render.image_settings.file_format = 'PNG'
     bpy.ops.render.render(write_still=True)
     print('RENDERED', sc.render.filepath, 'size', [round(x, 3) for x in size])

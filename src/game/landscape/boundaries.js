@@ -221,9 +221,13 @@ export async function buildGabions(ctx) {
   const { site, group, game } = ctx;
   const G = site.grade_y;
   if (!site.gabions?.length) return;
-  const boulder = await game.loader.loadGLTF('/assets/models/boulder.glb', 'garden: stones');
+  // boulder.glb only lends its surface relief; without it the stones still build (flat-shaded, untextured)
+  const boulder = await game.loader.loadGLTF('/assets/models/boulder.glb', 'garden: stones').catch((e) => {
+    console.warn(`[landscape] model "boulder" unavailable: ${e?.message || e} (gabion stones without relief maps)`);
+    return null;
+  });
   let bmat = null;
-  boulder.scene.traverse((o) => { if (o.isMesh && !bmat) bmat = o.material; });
+  boulder?.scene.traverse((o) => { if (o.isMesh && !bmat) bmat = o.material; });
   // colour from instance colours (pale limestone greys); only the boulder's surface relief is reused
   const stoneMat = new THREE.MeshStandardMaterial({
     normalMap: bmat?.normalMap || null, roughnessMap: bmat?.roughnessMap || null, normalScale: new THREE.Vector2(1.4, 1.4),

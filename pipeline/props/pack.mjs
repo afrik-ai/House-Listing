@@ -6,7 +6,24 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
-import { dedup, prune, textureCompress, quantize, getBounds } from '@gltf-transform/functions';
+import { dedup, prune, textureCompress, quantize, getBounds, weld, simplify } from '@gltf-transform/functions';
+import { MeshoptSimplifier } from 'meshoptimizer';
+
+// Triangle caps (P07 furniture budget: whole placed set <= 600k tris). Props over their cap are simplified
+// with meshoptimizer (attribute seams kept; error bound 0.25-0.6% of the mesh extent). meta.maxTris overrides.
+const MAXTRIS = {
+  rug_rect_200x300: 6000, rug_round_160: 4000, bed_double_modern: 10000, toilet_wall_hung: 4000, armchair_modern: 7000,
+  sun_lounger: 6000, bathroom_vanity: 5000, bathtub_freestanding: 6000, office_chair: 7000, towel_stack: 3000,
+  towel_folded: 1500, washing_machine: 6000, lounge_chair_midcentury: 8000, hanging_egg_chair: 9000,
+  sofa_fabric_3seat: 14000, sofa_leather_2seat: 12000, throw_pillows: 3000, vase_ceramic_tall: 1000,
+  basket_wicker: 1500, laundry_basket_wicker: 2500, rubber_duck: 1200, candlesticks_brass: 5000, laptop: 2500,
+  desk_lamp: 2200, gaming_console: 1800, fruit_bowl_wood: 1800, alarm_clock: 1500, cleaner_bottle: 1000,
+  bookshelf_worn: 9000,
+  pendant_lamp_modern: 1800,
+  chess_set: 4000,
+  bed_double_gothic: 8000,
+};
+await MeshoptSimplifier.ready;
 import sharp from 'sharp';
 
 const R = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '');
@@ -24,6 +41,29 @@ for (const name of process.argv.slice(2)) {
     if (a === 'MASK') m.setAlphaCutoff(0.5);
   }
   const res = meta.texres || 1024;
+  const cap = meta.maxTris || MAXTRIS[name];
+  if (cap) {
+    let t0 = 0;
+    for (const me of root.listMeshes()) for (const p of me.listPrimitives()) { const i = p.getIndices(); t0 += (i ? i.getCount() : p.getAttribute('POSITION').getCount()) / 3; }
+    if (t0 > cap) {
+      // Blender writes per-corner normals that differ in the last bits: snap them (and positions / UVs) to a grid
+      // so weld() can share vertices, otherwise the simplifier sees a triangle soup and cannot collapse anything.
+      const snap = { POSITION: 1e-5, NORMAL: 1 / 48, TEXCOORD_0: 1 / 4096, TEXCOORD_1: 1 / 4096 };
+      for (const me of root.listMeshes()) for (const p of me.listPrimitives()) {
+        const m = p.getMaterial();
+        const textured = m && (m.getBaseColorTexture() || m.getNormalTexture() || m.getMetallicRoughnessTexture() || m.getEmissiveTexture() || m.getOcclusionTexture());
+        if (!textured) for (const sem of p.listSemantics()) if (sem.startsWith('TEXCOORD')) p.setAttribute(sem, null);   // unused, and they split every vertex
+      }
+      for (const me of root.listMeshes()) for (const p of me.listPrimitives()) for (const sem of p.listSemantics()) {
+        const a = p.getAttribute(sem), g = snap[sem]; if (!g) continue;
+        const arr = a.getArray().slice(); for (let i = 0; i < arr.length; i++) arr[i] = Math.round(arr[i] / g) * g;
+        if (sem === 'NORMAL') for (let i = 0; i < arr.length; i += 3) { const l = Math.hypot(arr[i], arr[i + 1], arr[i + 2]) || 1; arr[i] /= l; arr[i + 1] /= l; arr[i + 2] /= l; }
+        a.setArray(arr);
+      }
+      await doc.transform(weld(), simplify({ simplifier: MeshoptSimplifier, ratio: cap / t0, error: t0 > cap * 2.5 ? 0.02 : 0.01 }));
+      console.log('WARN simplified', name, Math.round(t0), '->', 'cap', cap);
+    }
+  }
   await doc.transform(dedup(), prune(),
     textureCompress({ encoder: sharp, targetFormat: 'webp', resize: [res, res], quality: meta.webpq || 86 }),
     quantize({ quantizePosition: 16, quantizeNormal: 10, quantizeTexcoord: 16 }));

@@ -26,7 +26,7 @@ function garments(B, ctx, x0, x1, y, zc, long = false) {
   let x = x0 + 0.04;
   while (x < x1 - 0.05) {
     const t = 0.025 + R() * 0.035, h = (long ? 0.95 : 0.62) + R() * (long ? 0.25 : 0.2), w = 0.42 + R() * 0.06;
-    const g = rbox([-t / 2, -h, -w / 2], [t / 2, -0.06, w / 2], Math.min(0.012, t / 2 - 0.001), 2);
+    const g = rbox([-t / 2, -h, -w / 2], [t / 2, -0.06, w / 2], Math.min(0.012, t / 2 - 0.001), 1);
     g.applyMatrix4(new THREE.Matrix4().makeRotationZ((R() - 0.5) * 0.06));
     g.translate(x + t / 2, y, zc);
     B.add(cm, colorize(g, CLOTH[Math.floor(R() * CLOTH.length)], 0.1, R));
@@ -44,7 +44,7 @@ function folded(B, ctx, x, y, z, n, w = 0.3, d = 0.25) {
   let yy = y;
   for (let i = 0; i < n; i++) {
     const h = 0.03 + R() * 0.03;
-    const g = rbox([-w / 2, 0, -d / 2], [w / 2, h, d / 2], 0.012, 2);
+    const g = rbox([-w / 2, 0, -d / 2], [w / 2, h, d / 2], 0.012, 1);
     g.applyMatrix4(new THREE.Matrix4().makeRotationY((R() - 0.5) * 0.08));
     g.translate(x + (R() - 0.5) * 0.015, yy, z);
     B.add(cm, colorize(g, CLOTH[Math.floor(R() * CLOTH.length)], 0.1, R));
@@ -130,7 +130,7 @@ export const closet = {
           for (let k = 0; k < Math.floor((x1 - x0) / 0.22); k++) {
             const col = ['#1f1f1f', '#6a4e3c', '#e9e4da', '#8a3b2b', '#2f3a45'][Math.floor(R() * 5)];
             for (const off of [-0.045, 0.045]) {
-              const sh = rbox([-0.04, 0, -0.13], [0.04, 0.09, 0.13], 0.03, 2);
+              const sh = rbox([-0.04, 0, -0.13], [0.04, 0.09, 0.13], 0.03, 1);
               sh.applyMatrix4(new THREE.Matrix4().makeRotationX(0.25));
               sh.translate(x0 + 0.11 + k * 0.22 + off, y + 0.03, 0.02);
               B.add('cloth_vc', colorize(sh, col, 0.05, R));

@@ -192,3 +192,49 @@
 - (P03, open) `LARCH_surrounds`: box UVs run the larch grain vertically on the head and sill pieces. P03 currently hides the node and
   draws grain-correct copies with identical extents (face_out - 4 mm .. +180 mm, 100 mm wide). If you change the surround dimensions,
   tell P03, or give each piece grain-aligned UVs (v along the piece) and P03 will drop the replacement.
+
+## Procedural textures (scripts/assets/gen_textures.mjs)
+- Offline replacement for dl_textures.mjs: `node scripts/assets/gen_textures.mjs [name...] [--jobs N]` writes all 34 sets of
+  textures.json to public/assets/textures/<name>/{color,normal,roughness,ao}.jpg + meta.json (same fields; source =
+  `procedural (scripts/assets/gen_textures.mjs)`, license CC0). ~35 s total on 3 cores, ~32 MB.
+- Recipes: scripts/assets/texgen/recipes.mjs (wood.mjs planks, tiles.mjs grids/hex, scatter.mjs stones/blades, fabric.mjs weave/leather).
+  All maps tile seamlessly; normals OpenGL +Y from a height field in mm; albedo clamped 0.012..0.85 linear.
+- Layout guarantees the runtime relies on: oak_plank = 11 board columns, first groove at 99/186.18 of a column, grain along v;
+  limestone_tile_light = 6x6 cells. Mean linear luminance pinned to the runtime texMean for oak (0.19), limestone (0.36),
+  concrete_screed (0.31), concrete_smooth_light (0.48).
+- Contact sheet: `node scripts/assets/texgen/sheet.mjs out.jpg 512 color [names]`.
+
+## P07 round 2: furniture fallbacks, procedural indoor props, budget
+- **Missing models never throw.** `Furnisher` logs one warning per missing model or variant (`__furnish.report.warnings`,
+  `report.skipped` counts skipped items). Generators calling `ctx.model()` get an empty Group and `ctx.modelBox()` an empty box.
+- **Indoor props** use the names in `scripts/assets/models.json` and are built by `pipeline/props/<name>.py`
+  (shared kit `_kit.py` / `_photo.py`; `make.mjs` skips `_*.py`). All are registered in `manifest_add.mjs` PROPS.
+  Conventions: origin at base centre, front +Z, wall pieces have their back at -Z. Variants are top-level nodes:
+  `candlesticks_brass#brass_candleholder_01|02|03`, `wine_bottles#wine_bottles_01_bordeaux|_burgundy`. Some props are
+  built oversize to match existing `scale` values in furniture.json (see the manifest `use` text).
+- **Triangle caps**: `pack.mjs` MAXTRIS table (meshoptimizer; UVs are dropped on untextured primitives, normals are snapped so
+  vertices weld). **Draw calls**: after instancing, `Furnisher._merge()` bakes the remaining opaque, non-emissive meshes per
+  room into one mesh per material. Untextured GLB materials become a shared vertex-colour material per roughness/metalness
+  bucket (`P07_plain_*`). Meshes with transparent, emissive or night-glow materials, or with `userData.noMerge`, stay separate.
+  Stats: `report.merged`.
+
+## P04 landscape: procedural garden / outdoor / garage / plant models (cloud session, no Poly Haven)
+- **Same names, variants and origins as `scripts/assets/models.json`** (categories garden, outdoor, garage and every `plant_*`),
+  built by `pipeline/props/<name>.py` (shared kits `_p04veg.py` vegetation, `_p04kit.py` hard-surface materials,
+  `_p04shelf.py`) and registered in the P04 block of `pipeline/props/manifest_add.mjs`. Origin at base centre, min Y = 0,
+  front +Z; wall-mounted pieces (security_light, aircon_unit, garden_hose) have their back at -Z.
+- **Split models** (models.json `split`) are separate GLBs written by one script: `shrub_02_a..d`, `plant_calathea_a..e`,
+  `plant_anthurium_a..f`, `plant_pachira_a..d`, `plant_fern_a..d` (potted-plant splits are the plant only, base = soil level,
+  for the furnish `planter` proc). A script declares its GLBs in `_build/<script>.outputs.json` (`_p04veg.outputs()`);
+  `make.mjs` packs/renders those names.
+- **Variant node names** (top-level): `rock_moss_set_01_rock01..06`, `grass_medium_02_a..d` (grass_clump_medium_02),
+  `grass_clump_medium_a..c`, `grass_clump_bermuda_a..c`, `shrub_03_a..c`, `shrub_sorrel_a..c`, `flower_gazania_a..c`,
+  `plant_periwinkle_a..c`, `plant_succulent_cheiridopsis_a|b`.
+- **Foliage materials** are alpha MASK (cutoff 0.5) with painted RGBA atlases and names containing `leaves` / `grass` so
+  `Landscape` finds the lowest foliage (`leaves_maple`, `leaves_birch`, `leaves_olive`, ...). Leaf-card normals are authored
+  as the crown's ellipsoid normal: `plants.js foliageShading()` stops three's DoubleSide back-face normal flip for these
+  materials and adds a small sun-transmission + wrap term. Other consumers (furnish) get correct but flatter leaves.
+- Trees as authored: tree_island_01 ~3.6 m, tree_island_02 (birch) ~4.2 m, tree_small (olive) ~3.9 m; site.json scales apply.
+- **Missing models never throw** in landscape code: `InstancedModels.model()` resolves null (one console warning),
+  `kind()` returns null, `add()/size()` ignore it; trees whose model is missing are skipped (ring / far trees use only the
+  loaded species); gabion stones build without the boulder relief maps.

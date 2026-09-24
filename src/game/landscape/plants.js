@@ -8,18 +8,26 @@ import { rng, fbm, GLSL_NOISE } from './util.js';
 export class InstancedModels {
   constructor(ctx) { this.ctx = ctx; this.gltf = new Map(); this.kinds = new Map(); this.meshes = []; }
 
+  // Missing / broken models never abort the landscape: model() resolves null (warned once), kind()
+  // returns null, and add()/build() ignore null kinds, so the rest of the garden still builds.
   async model(name) {
-    if (!this.gltf.has(name)) this.gltf.set(name, this.ctx.game.loader.loadGLTF(`/assets/models/${name}.glb`, `garden: ${name}`));
+    if (!this.gltf.has(name)) {
+      this.gltf.set(name, this.ctx.game.loader.loadGLTF(`/assets/models/${name}.glb`, `garden: ${name}`).catch((e) => {
+        console.warn(`[landscape] model "${name}" unavailable: ${e?.message || e} (skipped)`);
+        return null;
+      }));
+    }
     return this.gltf.get(name);
   }
 
-  // Returns a kind key. `variant` = top-level child name (manifest "variants").
+  // Returns a kind key (or null if the model / variant is missing). `variant` = top-level child name (manifest "variants").
   async kind(name, variant = null, { alphaTest = 0.5, tint = null } = {}) {
     const key = `${name}:${variant || ''}`;
     if (this.kinds.has(key)) return key;
     const g = await this.model(name);
+    if (!g) return null;
     const root = variant ? g.scene.getObjectByName(variant) : g.scene;
-    if (!root) throw new Error(`model ${name} has no variant ${variant}`);
+    if (!root) { console.warn(`[landscape] model ${name} has no variant ${variant} (skipped)`); return null; }
     root.updateWorldMatrix(true, true);
     const inv = root.matrixWorld.clone().invert();
     // variants are authored side by side: re-centre on the variant's own base
@@ -57,8 +65,8 @@ export class InstancedModels {
     return key;
   }
 
-  size(key) { return this.kinds.get(key).size; }
-  add(key, matrix) { this.kinds.get(key).instances.push(matrix.clone()); }
+  size(key) { return this.kinds.get(key)?.size ?? new THREE.Vector3(); }
+  add(key, matrix) { this.kinds.get(key)?.instances.push(matrix.clone()); }
 
   build(group, { castShadow = true, receiveShadow = true, prefix = 'LS_plant' } = {}) {
     for (const [key, k] of this.kinds) {
@@ -88,8 +96,31 @@ function fixFoliage(mat, alphaTest, tint) {
     m.alphaToCoverage = false;
   }
   if (tint) m.color.multiply(new THREE.Color().setRGB(...tint));
+  if (m.alphaTest > 0 && m.map && /leaf|leaves|grass|flower/i.test(mat.name)) foliageShading(m);
   fixed.set(key, m);
   return m;
+}
+
+// Procedural foliage (pipeline/props, P04) authors leaf-card normals as the crown's ellipsoid normal, so a
+// back-facing card must NOT flip its normal (three's DoubleSide default), or half the cards go dark.
+// Plus a cheap translucency term: light leaking through thin leaves when looking towards the sun
+// (view . -L), tinted by the leaf albedo, and a small wrap on the shadow side.
+function foliageShading(m) {
+  m.userData.lsFoliage = true;
+  m.customProgramCacheKey = () => 'ls-foliage-1';
+  m.onBeforeCompile = (sh) => {
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <normal_fragment_begin>', '#include <normal_fragment_begin>\n#ifdef DOUBLE_SIDED\n normal *= faceDirection;\n#endif')
+      .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
+        #if NUM_DIR_LIGHTS > 0
+        {
+          vec3 lsL = directionalLights[0].direction;
+          float lsBack = pow(clamp(dot(normalize(-vViewPosition), lsL), 0.0, 1.0), 3.0);
+          float lsWrap = clamp(0.5 - 0.5 * dot(normal, lsL), 0.0, 1.0);
+          reflectedLight.directDiffuse += diffuseColor.rgb * directionalLights[0].color * (lsBack * 0.4 + lsWrap * 0.1);
+        }
+        #endif`);
+  };
 }
 
 // ---- procedural ornamental grasses ---------------------------------------------------------------
@@ -248,6 +279,7 @@ export class Trees {
   async load(names, instanced) {
     for (const n of names) {
       const key = await instanced.kind(n, null, { alphaTest: 0.45 });
+      if (!key) continue;   // missing tree model: warned in kind(), trees using it are skipped
       const k = instanced.kinds.get(key);
       this.models.set(n, { parts: k.parts, size: k.size, impostor: this._bake(k) });
     }
@@ -280,9 +312,9 @@ export class Trees {
     return { tex: rt.texture, w, h, rt };
   }
 
-  addFixed(t) { this.fixed.push(t); }
-  addDynamic(t) { this.dynamic.push(t); }
-  addFar(t) { this.far.push(t); }
+  addFixed(t) { if (this.models.has(t.model)) this.fixed.push(t); }
+  addDynamic(t) { if (this.models.has(t.model)) this.dynamic.push(t); }
+  addFar(t) { if (this.models.has(t.model)) this.far.push(t); }
 
   // All trees share one LOD: the `maxFull` nearest within `fullDist` use the real mesh (casts
   // shadows); every other tree is a camera-facing impostor whose shadow pass faces the sun instead,

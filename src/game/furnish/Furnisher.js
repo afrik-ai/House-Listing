@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Materials, rng } from './materials.js';
 import { GENERATORS } from './proc/index.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Data-driven furnishing (P07). Reads houses/<id>/furniture.json:
 //   { rooms: { <roomId>: { level?: 'ground'|'first', floorY?: m, items: [ Item, ... ] } }, models?: { <name>: ModelDefaults } }
@@ -40,7 +41,12 @@ export class Furnisher {
       if (it.model) need.add(it.model);
       if (it.proc && GENERATORS[it.proc]?.deps) for (const d of GENERATORS[it.proc].deps(it.params || {})) need.add(d);
     }
-    await Promise.all([...need].map((n) => this._loadModel(n).catch((e) => this._warn(`model ${n}: ${e.message}`))));
+    // A missing/failed model never aborts furnishing: one warning per model, its items are skipped and
+    // generators get an empty placeholder (partial asset sets still furnish).
+    this.missing = new Set();
+    await Promise.all([...need].map((n) => this._loadModel(n).catch((e) => {
+      this.missing.add(n); this._warn(`model ${n}: ${e.message} (skipped)`); console.warn(`[furnish] model "${n}" unavailable: ${e.message} — skipped`);
+    })));
     // Build + place in list order (so `drop` lands on things placed earlier).
     this.work = new THREE.Group(); this.work.name = 'FURNISH_work';
     this.root.add(this.work);
@@ -51,6 +57,7 @@ export class Furnisher {
     this._buildColliders();
     this._validate();          // against the house-only BVH (before our boxes join it)
     this._registerColliders();
+    this._merge();
     this.root.traverse((o) => { if (o.isMesh) this.report.meshes++; });
     this.game.scene.add(this.root);
     this.game.renderer.applyAnisotropy?.(this.root);
@@ -115,11 +122,11 @@ export class Furnisher {
     let t = this.templates.get(key);
     if (t?.object) return t;
     const base = this.templates.get(model);
-    if (!base) throw new Error(`model "${model}" not loaded`);
+    if (!base) return this._placeholder(key, model, `model "${model}" not loaded`);
     let src = base.scene;
     if (variant) {
       src = base.scene.getObjectByName(variant);
-      if (!src) throw new Error(`variant "${variant}" not found in ${model}`);
+      if (!src) return this._placeholder(key, model, `variant "${variant}" not found in ${model}`);
     }
     let object;
     if (variant) {
@@ -134,6 +141,17 @@ export class Furnisher {
     object.updateMatrixWorld(true);
     const box = new THREE.Box3().setFromObject(object);
     t = { object, box, info: base.info };
+    this.templates.set(key, t);
+    return t;
+  }
+
+  // Empty stand-in for a missing model/variant (warned once per key); `missing` lets _place skip items.
+  _placeholder(key, model, why) {
+    if (!this.missing?.has(model) && !this._phWarned?.has(key)) {
+      (this._phWarned ||= new Set()).add(key); this._warn(`${why} (skipped)`); console.warn(`[furnish] ${why} — skipped`);
+    }
+    const object = new THREE.Group(); object.name = `missing_${key}`;
+    const t = { object, box: new THREE.Box3(V(), V()), info: null, missing: true };
     this.templates.set(key, t);
     return t;
   }
@@ -156,6 +174,7 @@ export class Furnisher {
       key = it.instanceKey ? `proc:${it.proc}:${it.instanceKey}` : null;   // procedural pieces are unique unless keyed
     } else {
       const t = this._template(it.model, it.variant || defaults.variant);
+      if (t.missing) { this.report.skipped = (this.report.skipped || 0) + 1; return; }
       object = t.object.clone(true);
       box = t.box.clone();
       key = `${it.model}#${it.variant || ''}#${JSON.stringify(it.tint || '')}`;
@@ -273,6 +292,81 @@ export class Furnisher {
       for (const p of list) { p.wrap.removeFromParent(); p.instanced = true; }
       this.report.instanced += list.length;
     }
+  }
+
+  // Draw-call budget: bake every remaining (non-instanced) opaque mesh into one mesh per (room, material,
+  // shadow flags, attribute layout). Shared palette/GLB materials merge by identity; plain untextured GLB
+  // materials (colour-only) additionally collapse into one vertex-coloured material per (roughness,
+  // metalness, side) bucket. Emissive / night-glow / transparent / skinned meshes stay as they are.
+  _merge() {
+    const groups = new Map();
+    const shared = new Map();
+    const q = (v) => Math.round((v ?? 0) * 20) / 20;
+    const plain = (m) => m.isMeshStandardMaterial && !m.map && !m.normalMap && !m.roughnessMap && !m.metalnessMap && !m.aoMap &&
+      !m.emissiveMap && !m.alphaMap && !(m.transmission > 0) && !(m.clearcoat > 0) && !(m.sheen > 0) && m.emissive.getHex() === 0 && !m.userData?.night;
+    this.work.updateMatrixWorld(true);
+    const byRoom = new Map(this.placed.filter((p) => !p.instanced).map((p) => [p.wrap, p.room]));
+    for (const wrap of [...this.work.children]) {
+      const room = byRoom.get(wrap) ?? '_';
+      wrap.traverse((o) => {
+        if (!o.isMesh || o.isInstancedMesh || o.isSkinnedMesh || Array.isArray(o.material) || !o.visible) return;
+        const m = o.material;
+        if (!m || m.transparent || m.userData?.night !== undefined || o.userData.noMerge || (m.emissive && m.emissive.getHex() !== 0)) return;
+        const attrs = Object.keys(o.geometry.attributes).filter((a) => ['position', 'normal', 'uv', 'uv1', 'color'].includes(a)).sort();
+        if (!attrs.includes('normal')) return;
+        let mat = m, colour = null;
+        if (plain(m)) {
+          const k = `${q(m.roughness)}|${q(m.metalness)}|${m.side}|${m.flatShading}`;
+          mat = shared.get(k);
+          if (!mat) {
+            mat = new THREE.MeshStandardMaterial({ roughness: m.roughness, metalness: m.metalness, side: m.side, vertexColors: true, envMapIntensity: m.envMapIntensity ?? 1 });
+            mat.name = `P07_plain_${k}`; shared.set(k, mat);
+          }
+          colour = m.color;
+        }
+        const layout = attrs.filter((a) => a !== 'color' && (a !== 'uv' || !colour) && (a !== 'uv1' || !colour)).join(',') + (colour ? ',color' : '');
+        const key = `${room}|${mat.uuid}|${o.castShadow}|${o.receiveShadow}|${layout}`;
+        if (!groups.has(key)) groups.set(key, { mat, cast: o.castShadow, recv: o.receiveShadow, list: [] });
+        groups.get(key).list.push({ o, colour, layout: layout.split(',') });
+      });
+    }
+    let merged = 0, saved = 0;
+    for (const [key, g] of groups) {
+      if (g.list.length < 2 && !g.list[0].colour) continue;
+      const geos = g.list.map(({ o, colour, layout }) => {
+        const src = o.geometry;
+        const geo = new THREE.BufferGeometry();
+        for (const a of layout) {
+          if (a === 'color') continue;
+          const at = src.attributes[a];
+          const arr = new Float32Array(at.count * at.itemSize);
+          const get = [at.getX, at.getY, at.getZ, at.getW];   // these denormalise quantized (KHR_mesh_quantization) data
+          for (let i = 0; i < at.count; i++) for (let c = 0; c < at.itemSize; c++) arr[i * at.itemSize + c] = get[c].call(at, i);
+          geo.setAttribute(a, new THREE.BufferAttribute(arr, at.itemSize));
+        }
+        const n = geo.attributes.position.count;
+        if (colour) {
+          const col = new Float32Array(n * 3);
+          for (let i = 0; i < n; i++) { col[i * 3] = colour.r; col[i * 3 + 1] = colour.g; col[i * 3 + 2] = colour.b; }
+          geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+        }
+        if (src.index) geo.setIndex(Array.from(src.index.array));
+        else { const idx = new Uint32Array(n); for (let i = 0; i < n; i++) idx[i] = i; geo.setIndex(new THREE.BufferAttribute(idx, 1)); }
+        geo.applyMatrix4(o.matrixWorld);
+        return geo;
+      });
+      const geo = mergeGeometries(geos, false);
+      if (!geo) { this._warn(`merge failed for ${key}`); continue; }
+      geo.computeBoundingSphere(); geo.computeBoundingBox();
+      const mesh = new THREE.Mesh(geo, g.mat);
+      mesh.name = `FM_${key.split('|')[0]}_${g.mat.name || 'mat'}`;
+      mesh.castShadow = g.cast; mesh.receiveShadow = g.recv;
+      this.root.add(mesh);
+      for (const { o } of g.list) { o.removeFromParent(); }
+      for (const gg of geos) gg.dispose();
+      merged++; saved += g.list.length - 1;
+    }
+    this.report.merged = { meshes: merged, drawCallsSaved: saved };
   }
 
   // Oriented collision boxes for floor-standing furniture, merged into ONE invisible mesh, registered

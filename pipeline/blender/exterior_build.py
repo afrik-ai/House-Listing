@@ -51,6 +51,14 @@ OPTS = {
     'beam_w': 0.07, 'beam_d': 0.16, 'beam_spacing': 0.55,
     'lamp': (0.10, 0.20, 0.10),          # width along wall, height, depth
     'garage_lights': True,
+    'fascia_geometry': False,   # r2: fascia grooves/joints are drawn by the wall_ext_white shader (no z-fight dashes)
+    'slab_edge_trim': False,
+    # extra up/down wall lamps: (id, face point [x,y,z] on/near the wall, outward dir)
+    'extra_lights': [
+        {'id': 'south_pier', 'pos': [7.85, 2.25, 10.47], 'dir': [0, 0, 1]},
+        {'id': 'south_west', 'pos': [0.30, 2.25, 10.47], 'dir': [0, 0, 1]},
+        {'id': 'kitchen_east', 'pos': [12.15, 2.25, 10.2], 'dir': [1, 0, 0]},
+    ],
     # vertical larch screens in front of openings: (opening id, extra u each side, extra y below/above, offset from wall)
     'screens': [{'opening': 'W_kitchen_s', 'pad_u': (0.30, 0.20), 'pad_y': (0.20, 0.20), 'offset': 0.14}],
 }
@@ -430,6 +438,8 @@ for P in PARAPETS:
         G['trim'].prism(plate, ytop, ytop + O_['coping_t'], 'EXT_coping')
         lip = Cells([expand(b, ov) for b in P['boxes']], [expand(b, ov - 0.012) for b in P['boxes']] + sub_int)
         G['trim'].prism(lip, ytop - O_['coping_lip'], ytop, 'EXT_coping', top=False)
+    if not O_['fascia_geometry']:
+        continue
     # fascia ring 12 mm proud, minus anything solid next to it and hip roofs abutting it
     ft = O_['fascia_t']
     sub = list(P['boxes']) + footprints(band0, ytop) + hip_plans(band0, ytop) + sub_int
@@ -479,9 +489,10 @@ for bx in H.get('structure', {}).get('boxes', []):
             slots.append((f0, p - jw, f1, p + jw) if run == 'z' else (p - jw, f0, p + jw, f1))
             joints.append((run, c, n, p))
     ring = Cells([expand(r, ft)], [r] + sub + slots)
-    G['trim'].prism(ring, y0, y1, 'EXT_fascia', top=False)
+    if O_['fascia_geometry']:
+        G['trim'].prism(ring, y0, y1, 'EXT_fascia', top=False)
     ring_rects = Cells([expand(r, ft)], [r] + sub).rects()
-    for (run, c, n, p) in joints:
+    for (run, c, n, p) in (joints if O_['fascia_geometry'] else []):
         probe = (c + n * ft / 2, p) if run == 'z' else (p, c + n * ft / 2)
         if not any(q[0] < probe[0] < q[2] and q[1] < probe[1] < q[3] for q in ring_rects):
             continue
@@ -489,10 +500,11 @@ for bx in H.get('structure', {}).get('boxes', []):
         G['trim'].wbox(run, p - jw, p + jw, y0 + 0.001, y1 - 0.001, w0, w1, 'EXT_joint', skip=('-w' if n > 0 else '+w',))
     # aluminium edge trim on the top outer edge
     e_out = 0.02
-    top = Cells([expand(r, e_out)], [expand(r, -0.03)] + sub)
-    G['trim'].prism(top, y1, y1 + 0.006, 'EXT_coping')
-    lip = Cells([expand(r, e_out)], [expand(r, e_out - 0.008)] + sub)
-    G['trim'].prism(lip, y1 - 0.035, y1, 'EXT_coping', top=False)
+    if O_['slab_edge_trim']:
+        top = Cells([expand(r, e_out)], [expand(r, -0.03)] + sub)
+        G['trim'].prism(top, y1, y1 + 0.006, 'EXT_coping')
+        lip = Cells([expand(r, e_out)], [expand(r, e_out - 0.008)] + sub)
+        G['trim'].prism(lip, y1 - 0.035, y1, 'EXT_coping', top=False)
     # larch beams under the soffit, spanning the short direction, bays centred on the downlights
     if 'pergola' in bx['id']:
         span_x = (r[2] - r[0]) <= (r[3] - r[1])       # beams run along x when the slab is long in z
@@ -519,11 +531,11 @@ for bx in H.get('structure', {}).get('boxes', []):
                 for f in fp:          # stop at walls
                     if f[1] < s < f[3] and f[0] < a1 and f[2] > a0 and f[0] > a0 + 0.5:
                         a1 = min(a1, f[0])
-                G['wood'].box(a0, a1, y0 - bd, y0, s - bw / 2, s + bw / 2, 'wood_slats', skip=('+y',), grain=0,
+                G['wood'].box(a0, a1, y0 - bd, y0, s - bw / 2, s + bw / 2, 'EXT_larch_member', skip=('+y',), grain=0,
                               off=(RNG.random() * 3, RNG.random() * 3))
             else:
                 a0, a1 = r[1] + 0.05, r[3]
-                G['wood'].box(s - bw / 2, s + bw / 2, y0 - bd, y0, a0, a1, 'wood_slats', skip=('+y',), grain=2,
+                G['wood'].box(s - bw / 2, s + bw / 2, y0 - bd, y0, a0, a1, 'EXT_larch_member', skip=('+y',), grain=2,
                               off=(RNG.random() * 3, RNG.random() * 3))
             s += sp
             nb += 1
@@ -667,10 +679,10 @@ for o in OPENINGS:
         s0, s1 = sorted((face_out - out * 0.004, face_out + out * 0.18))
         back = '-w' if out > 0 else '+w'
         rnd = lambda: (RNG.random() * 4, RNG.random() * 4)
-        G['wood'].wbox(run, u0 - 0.10, u0, y0 - 0.10, y1 + 0.10, s0, s1, 'wood_slats', skip=(back,), grain='y', off=rnd())
-        G['wood'].wbox(run, u1, u1 + 0.10, y0 - 0.10, y1 + 0.10, s0, s1, 'wood_slats', skip=(back,), grain='y', off=rnd())
-        G['wood'].wbox(run, u0, u1, y1, y1 + 0.10, s0, s1, 'wood_slats', skip=(back, '-u', '+u'), grain='u', off=rnd())
-        G['wood'].wbox(run, u0, u1, y0 - 0.10, y0, s0, s1, 'wood_slats', skip=(back, '-u', '+u'), grain='u', off=rnd())
+        G['wood'].wbox(run, u0 - 0.10, u0, y0 - 0.10, y1 + 0.10, s0, s1, 'EXT_larch_member', skip=(back,), grain='y', off=rnd())
+        G['wood'].wbox(run, u1, u1 + 0.10, y0 - 0.10, y1 + 0.10, s0, s1, 'EXT_larch_member', skip=(back,), grain='y', off=rnd())
+        G['wood'].wbox(run, u0, u1, y1, y1 + 0.10, s0, s1, 'EXT_larch_member', skip=(back, '-u', '+u'), grain='u', off=rnd())
+        G['wood'].wbox(run, u0, u1, y0 - 0.10, y0, s0, s1, 'EXT_larch_member', skip=(back, '-u', '+u'), grain='u', off=rnd())
     if o['type'] == 'garage':
         dp = face_out - out * 0.10
         ua, ub = u0 + 0.05, u1 - 0.05
@@ -679,17 +691,15 @@ for o in OPENINGS:
         bk0, bk1 = sorted((dp + out * 0.005, dp + out * 0.006))
         G['garage'].wbox(run, ua, ub, y0 + 0.004, yt, bk0, bk1, 'EXT_groove', skip=('-w' if out > 0 else '+w', '-u', '+u'))
         s0, s1 = sorted((dp + out * 0.006, dp + out * 0.013))
-        ns, nf = 5, 4
+        ns, nf = 5, 1        # flush sections, 3 mm joints (r2: no intermediate ribs)
         sh = (yt - y0) / ns
         edges = []
         for k in range(ns):
             for q in range(nf):
                 ya = y0 + k * sh + q * sh / nf
                 yb = ya + sh / nf
-                g_lo = (0.004 if k > 0 else 0.004) if q == 0 else 0.002
-                g_hi = 0.004 if q == nf - 1 else 0.002
-                if q == 0 and k == 0:
-                    g_lo = 0.004
+                g_lo = 0.0015 if k > 0 else 0.0
+                g_hi = 0.0015 if k < ns - 1 else 0.0
                 edges.append((ya + g_lo, yb - g_hi))
         for (ya, yb) in edges:
             G['garage'].wbox(run, ua, ub, ya, yb, s0, s1, 'EXT_garage_door', skip=('-w' if out > 0 else '+w', '+y', '-y'))  # groove faces = dark backing
@@ -751,6 +761,10 @@ for bl in H.get('balustrades', []):
 
 # ---- wall lights ---------------------------------------------------------------------------
 room_ids = {rid for lid in LEVEL_ORDER for rid, _ in ROOMS[lid]}
+for L in OPTS.get('extra_lights', []):
+    d = L['dir']
+    p0 = L['pos']
+    LIGHTS.append(dict(id=L['id'], pos=[p0[0] + d[0] * 0.03, p0[1], p0[2] + d[2] * 0.03], dir=list(d), wash=None))
 for f in H.get('lighting', {}).get('fixtures', []):
     if f['type'] == 'sconce' and f['room'] not in room_ids and f.get('dir'):
         LIGHTS.append(dict(id=f['id'], pos=list(f['pos']), dir=list(f['dir']), wash=None))

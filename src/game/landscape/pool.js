@@ -168,9 +168,9 @@ export async function buildPool(ctx) {
             float d2 = dot(dl, dl);
             float dist = sqrt(d2);
             Elamp += uLampCol * max(dot(n, dl / max(dist, 1e-3)), 0.0) / (0.15 + d2) * exp(-uAbsorb * dist);
-            lampDisc += 1.0 - smoothstep(0.075, 0.1, dist);
+            lampDisc += 1.0 - smoothstep(0.05, 0.075, dist);
           }
-          vec3 floorCol = alb * RECIPROCAL_PI * (Esun + Eamb + Elamp) + uLampCol * lampDisc * 0.35;
+          vec3 floorCol = alb * RECIPROCAL_PI * (Esun + Eamb + Elamp) + uLampCol * lampDisc * 0.06;
 
           // ---- view path through the water: absorption + in-scattering
           vec3 T = exp(-uAbsorb * t);
@@ -221,7 +221,7 @@ export async function buildPool(ctx) {
       }
     },
     setNight(k) {
-      uniforms.uLampCol.value.setRGB(0.55, 0.9, 1.0).multiplyScalar(2.2 * k);
+      uniforms.uLampCol.value.setRGB(0.5, 0.88, 1.0).multiplyScalar(3.4 * k);
       glow.intensity = 3.2 * k;
     },
   };

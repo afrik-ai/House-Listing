@@ -1,8 +1,8 @@
 {
- "updated": "2026-09-24T02:21:57.262Z",
+ "updated": "2026-09-24T02:30:16.515Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
- "headline": "The villa now reads as a finished home from the garden: facade, pool, lawn, planting and furniture all in. Critics reviewing exterior, interior surfaces and house shell; lighting and engine builders working.",
+ "headline": "Paused: all agents stopped at a usage limit. Work committed and pushed to GitHub; resume in a new or cloud session.",
  "pieces": [
   {
    "id": "P01",
@@ -117,6 +117,14 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T02:30:16.515Z",
+   "m": "Paused for usage limit: all agents stopped mid-round (P01 r3, P03 r2, P04, P05, P07 building; P02 r2 and P06 r1 critics unfinished). State committed and pushed."
+  },
+  {
+   "t": "2026-09-24T02:29:46.161Z",
+   "m": "P04 cut landscape to ~1.37M tris (from ~4M incl. shadows). Furniture is now the bottleneck (2.25M tris + 1.7M shadow, ~1650 draw calls; 32 fps vs 105+ without it). P07 given a 600k-tri / 350-draw-call budget."
+  },
   {
    "t": "2026-09-24T02:21:57.262Z",
    "m": "P03 critic r1: HF2 won 5/5. Gap: white render and anthracite panels are flat untextured colour, reading as clean CG. Builder sent back for round 2 (textured render, glass reflecting the garden, RAL 7016 panels)."

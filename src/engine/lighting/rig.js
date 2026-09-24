@@ -132,7 +132,8 @@ export class LightRig {
     for (const f of this.ext) { f.I = f.base * k; f.color.copy(FIXTURE_COLOR); }
     for (const r of this.rooms) {
       // whole-room aggregate point (flux / 4 pi), for rooms seen from elsewhere
-      r.agg.I = (r.flux / (4 * Math.PI)) * 0.85 * k;
+      r.aggFull = (r.flux / (4 * Math.PI)) * 0.85 * k;
+      r.agg.I = r.aggFull;
       r.agg.color.copy(FIXTURE_COLOR);
       // bounce: max(sun-patch bounce, lamp-lit floor bounce). Up-cone below the floor: I0 = flux*albedo/pi.
       const lum = (r.albedo[0] + r.albedo[1] + r.albedo[2]) / 3;
@@ -173,6 +174,7 @@ export class LightRig {
     const keySet = new Set(keyPick.map((c) => c.v));
     for (const c of keyC) if (!keySet.has(c.v)) spotC.push({ v: c.v, s: c.s * 0.5 });
     for (const r of this.rooms) {
+      r.agg.I = r.aggFull ?? 0;
       if (r.bounce.I > 1e-3) spotC.push({ v: r.bounce, s: (r === cur ? 5e5 : 0) + r.bounce.I * facing(r.bounce.pos) / (1 + r.bounce.pos.distanceToSquared(cam) / 16) });
       if (r !== cur && r.agg.I > 1e-3) pointC.push({ v: r.agg, s: r.agg.I * facing(r.agg.pos) / (1 + r.agg.pos.distanceToSquared(cam) / 25) });
     }

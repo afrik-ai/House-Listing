@@ -1,73 +1,92 @@
 import * as THREE from 'three';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { Physics } from './Physics.js';
+import { installShadowChunk, contactHardening, fitSunShadow, SUN_DEPTH } from './lighting/shadows.js';
+import { gradeSky } from './lighting/sky.js';
+import { LightRig, FIXTURE_COLOR } from './lighting/rig.js';
 
 const { DataUtils } = THREE;
 
-// Time of day = HDRI (background + PMREM image-based lighting) + a shadow-casting sun/moon aligned
-// with the HDRI's own sun + exposure/grade, plus the pieces a rasteriser needs to fake GI:
+// Lighting & atmosphere (P01 engine, owned by P05 since wave 2).
 //
-//  * The HDRI is prepared once per load: the sun disc is clamped out of the IBL copy and re-emitted
-//    as the shadow-casting DirectionalLight with the MEASURED irradiance (no double sun), and the
-//    lower hemisphere (a mirrored sky in these "puresky" captures) is replaced by a ground radiance
-//    (albedo x sky+sun irradiance) in the IBL and by the horizon colour in the background.
-//  * A large ground disc at grade fades into the horizon with fog, so nothing ever shows the
-//    mirrored clouds through windows or under the house (P04's landscape covers it later).
-//  * Per-room light (one PointLight per room, constant light count -> no recompiles):
-//      - day/golden: a BOUNCE light sitting just below the sunlit floor patch (the floor itself is
-//        not lit by it, walls + ceiling are), power = sun irradiance x lit area x floor albedo, with
-//        the lit area found by casting rays from the floor toward the sun through the real geometry;
-//      - night: the room's ceiling fixtures (LIGHT_* nodes) as one warm light below the ceiling.
+// Time of day = HDRI (background + PMREM image-based lighting) + a shadow-casting sun/moon + grade:
+//  * The HDRI is prepared once per load: its own sun is flattened out of the sky and re-emitted as the
+//    shadow-casting DirectionalLight with the MEASURED irradiance (no double sun); the lower hemisphere
+//    is replaced by ground radiance (IBL) / horizon colour (background). The sky is graded per preset
+//    (lighting/sky.js): warm golden-hour gradient, lifted night horizon, and a sun / moon DISC painted
+//    exactly where the light is (preset azimuth + elevation), so disc, shadows and highlights agree.
+//  * Sun shadows (lighting/shadows.js): contact-hardening PCF (sharp at contact, soft with distance),
+//    frustum fitted to the player's context — the current LEVEL of the house when inside (4096 over
+//    ~25 m = 6 mm texels on high), the whole site outside — texel-snapped. Inside, the sun shadow map
+//    is CACHED (re-rendered only when the fit, sun, tier or scene changes: doors move, interact events,
+//    invalidateShadows()); outside it updates every frame (trees sway).
+//  * Fixtures + bounce (lighting/rig.js): every LIGHT_* fixture, per-room aggregates, per-room bounce
+//    emitters (sunlit floor patch by day, lamp-lit floor at night) and exterior fixtures are VIRTUAL
+//    lights mapped onto a fixed rig of 3 shadow-casting key spots + 8 spots + 5 points (constant light
+//    count -> no shader recompiles). Night = pools of warm light with lamp shadows and dark corners.
 //  * Emissive bulbs at every LIGHT_* node (downlights, ceiling, pendant, sconces) that bloom at night.
 //  * Eye adaptation inside rooms (IBL down, interior hemisphere fill + exposure up, warmer white
 //    balance), easing ~0.45 s; snaps on teleport.
 //
 // Azimuth convention: 0 = north (-Z), 90 = east (+X), 180 = south (+Z), 270 = west (-X).
+// `el` = fixed light elevation (deg). Day comes from the south-south-east so the east (street) facade
+// is raked and the south glazing throws deep patches across the living room; golden hour is a low
+// western sun (long shadows across the lawn, deep patches through the west glazing); night = moon.
 const PRESETS = {
   day: {
-    hdri: 'day_partly_cloudy', azimuth: 215, minEl: 35, maxEl: 62, fallbackEl: 50,
-    sunColor: 0xfff3e4, sunScale: 1.35, sunIntensity: 5.6, sunMax: 7.5,
-    hemiSky: 0xc4d4ec, hemiGround: 0x8f8574, hemiIntensity: 0.1,
-    inSky: 0xf2eee8, inGround: 0xece2d4, hemiInterior: 0.34,
-    envIntensity: 1.0, bgIntensity: 1.0, exposure: 0.95, iblSaturation: 0.4,
-    interiorEnv: 0.34, interiorExposure: 1.95, wbOut: [1.0, 1.0, 1.0], wbIn: [1.03, 1.0, 0.95],
-    bounce: 1.0, fixtures: 0, bulbs: 0, groundAlbedo: [0.17, 0.16, 0.13], grass: [0.06, 0.1, 0.03],
-    grade: { saturation: 0.1, contrast: 0.1, bloom: 0.75, bloomThreshold: 1.0, vignette: 0.34 },
+    hdri: 'day_partly_cloudy', azimuth: 168, el: 36,
+    sunColor: 0xfff0dc, sunScale: 1.3, sunIntensity: 5.4, sunMax: 6.2,
+    hemiSky: 0xc4d4ec, hemiGround: 0x8f8574, hemiIntensity: 0.08,
+    inSky: 0xf2ece4, inGround: 0xeadcc8, hemiInterior: 0.2,
+    envIntensity: 1.0, bgIntensity: 1.0, exposure: 0.95, iblSaturation: 0.45,
+    interiorEnv: 0.3, interiorExposure: 1.9, wbOut: [1.0, 1.0, 1.0], wbIn: [1.03, 1.0, 0.95],
+    bounce: 1.25, fixtures: 0, bulbs: 0, groundAlbedo: [0.17, 0.16, 0.13], grass: [0.06, 0.1, 0.03],
+    grade: { saturation: 0.1, contrast: 0.12, bloom: 0.7, bloomThreshold: 1.0, vignette: 0.34 },
     sky: { turbidity: 3, rayleigh: 1.2, mie: 0.004, mieG: 0.8 },
+    skyGrade: { disc: { radiusDeg: 0.55, radiance: [60, 57, 52], glow: [1.2, 1.1, 0.95], glowDeg: 2.5 } },
   },
   golden_hour: {
-    hdri: 'golden_hour', azimuth: 245, minEl: 6, maxEl: 14, fallbackEl: 9,
-    sunColor: 0xffae62, sunScale: 1.25, sunIntensity: 3.4, sunMax: 5,
-    hemiSky: 0xd9b08a, hemiGround: 0x7a5e46, hemiIntensity: 0.06,
-    inSky: 0xf0dcc4, inGround: 0xe0c09c, hemiInterior: 0.24,
-    envIntensity: 0.4, bgIntensity: 0.62, exposure: 1.0, iblSaturation: 0.7,
-    interiorEnv: 0.45, interiorExposure: 1.8, wbOut: [1.0, 0.99, 0.97], wbIn: [1.03, 0.99, 0.93],
-    bounce: 1.1, fixtures: 0.35, bulbs: 0.4, groundAlbedo: [0.17, 0.15, 0.11], grass: [0.06, 0.08, 0.025],
-    grade: { saturation: 0.14, contrast: 0.1, bloom: 0.8, bloomThreshold: 0.95, vignette: 0.4 },
+    hdri: 'golden_hour', azimuth: 262, el: 10,
+    sunColor: 0xffa45a, sunScale: 1.25, sunIntensity: 3.8, sunMax: 4.6,
+    hemiSky: 0xd9b08a, hemiGround: 0x7a5e46, hemiIntensity: 0.05,
+    inSky: 0xf0d6b8, inGround: 0xe0b890, hemiInterior: 0.14,
+    envIntensity: 0.5, bgIntensity: 0.72, exposure: 1.05, iblSaturation: 0.8,
+    interiorEnv: 0.42, interiorExposure: 1.75, wbOut: [1.0, 0.99, 0.97], wbIn: [1.03, 0.99, 0.93],
+    bounce: 1.3, fixtures: 0.3, bulbs: 0.4, groundAlbedo: [0.17, 0.15, 0.11], grass: [0.06, 0.08, 0.025],
+    grade: { saturation: 0.16, contrast: 0.12, bloom: 0.85, bloomThreshold: 0.95, vignette: 0.4 },
     sky: { turbidity: 6, rayleigh: 2.4, mie: 0.012, mieG: 0.9 },
+    skyGrade: {
+      tint: { horizon: [1.3, 1.0, 0.72], zenith: [1.02, 0.95, 0.95] }, sunSide: 1.6,
+      disc: { radiusDeg: 0.75, radiance: [70, 38, 14], glow: [3.2, 1.6, 0.55], glowDeg: 3.5, glow2: [0.9, 0.42, 0.14], glow2Deg: 22 },
+    },
   },
   night: {
-    hdri: 'night_clear', azimuth: 140, minEl: 25, maxEl: 60, fallbackEl: 40,
-    sunColor: 0xa9bde8, sunScale: 0.06, sunIntensity: 0.1, sunMax: 0.2,
-    hemiSky: 0x1c2640, hemiGround: 0x0b0c10, hemiIntensity: 0.05,
-    inSky: 0x6a5846, inGround: 0xa07a52, hemiInterior: 0.22,
-    envIntensity: 0.07, bgIntensity: 0.14, exposure: 1.0, iblSaturation: 0.6,
-    interiorEnv: 1.0, interiorExposure: 1.05, wbOut: [1.0, 1.0, 1.0], wbIn: [1.0, 1.0, 1.0],
+    hdri: 'night_clear', azimuth: 140, el: 32,
+    sunColor: 0x9fb8ff, sunScale: 0, sunIntensity: 0.32, sunMax: 0.32,
+    hemiSky: 0x2a3c66, hemiGround: 0x0e1016, hemiIntensity: 0.12,
+    inSky: 0x3c3a44, inGround: 0x6a5240, hemiInterior: 0.06,
+    envIntensity: 0.14, bgIntensity: 0.3, exposure: 1.0, iblSaturation: 0.7,
+    interiorEnv: 0.5, interiorExposure: 1.1, wbOut: [0.98, 1.0, 1.04], wbIn: [1.0, 1.0, 1.0],
     bounce: 0, fixtures: 1.0, bulbs: 1.0, groundAlbedo: [0.1, 0.1, 0.08], grass: [0.05, 0.07, 0.03],
-    grade: { saturation: 0.08, contrast: 0.08, bloom: 0.9, bloomThreshold: 0.8, vignette: 0.45 },
+    grade: { saturation: 0.1, contrast: 0.1, bloom: 0.95, bloomThreshold: 0.8, vignette: 0.45 },
     sky: { turbidity: 2, rayleigh: 0.4, mie: 0.002, mieG: 0.7 },
+    skyGrade: {
+      tint: { horizon: [0.9, 0.95, 1.1], zenith: [0.85, 0.88, 1.0] },
+      add: { horizon: [0.03, 0.05, 0.11], zenith: [0.002, 0.003, 0.008] },
+      disc: { radiusDeg: 0.7, radiance: [22, 24, 27], glow: [0.1, 0.13, 0.2], glowDeg: 2.2, glow2: [0.02, 0.03, 0.055], glow2Deg: 14 },
+    },
   },
 };
 export const TIMES_OF_DAY = Object.keys(PRESETS);
 
-const FIXTURE_COLOR = new THREE.Color().setRGB(1.0, 0.72, 0.45);  // ~2700 K, linear
-const FIXTURE_CD_PER_M2 = 0.34;  // night room light: candela per m² of room (clamped)
 const BULB_EMISSIVE = 60;        // emissive intensity of a bulb at night (blooms)
-const POOL_SIZE = 10;            // real PointLights (see _assignPool)
 const FLOOR_ALBEDO = {
   oak_plank: [0.42, 0.28, 0.16], large_format_tile_grey: [0.36, 0.35, 0.33], large_format_tile_light: [0.6, 0.57, 0.5],
   small_tile_white: [0.72, 0.72, 0.7], concrete_screed: [0.34, 0.33, 0.31], stair_tread: [0.42, 0.28, 0.16],
 };
+const KEY_SHADOW = { low: 512, medium: 512, high: 1024, ultra: 1024 };
+
+installShadowChunk();   // before any program compiles
 
 export class Lighting {
   constructor(game) {
@@ -76,22 +95,25 @@ export class Lighting {
     this.renderer = game.renderer;
     this.loader = game.loader;
     this.mode = game.initialTod || 'day';
-    this.bounds = new THREE.Box3(new THREE.Vector3(-15, -1, -10), new THREE.Vector3(25, 8, 15));
+    this.bounds = new THREE.Box3(new THREE.Vector3(-15, -1, -10), new THREE.Vector3(25, 8, 15));   // outdoor shadow box
     this.hdri = new Map();        // "<name>_<res>" -> Promise<prepared HDRI | null>
     this.env = new Map();         // key -> PMREM render target
     this.envKey = null;
     this.sunDir = new THREE.Vector3(0, 1, 0);
-    this.roomLights = [];         // [{room, light, bounce:{pos,I,color}, fixture:{pos,I}}]
+    this.roomLights = [];         // [{room, area, floorY, ceilY, albedo, bounce}]
     this.extLights = [];
     this.occluder = null;         // BVH of shadow casters, for sun-patch sampling
+    this._fitKey = null;
+    this._shadowDirtyT = 0;       // seconds of forced shadow updates left (interact animations)
 
     this.sun = new THREE.DirectionalLight(0xffffff, 3);
     this.sun.name = 'SUN';
     this.sun.castShadow = true;
-    this.sun.shadow.bias = -0.0002;
-    this.sun.shadow.normalBias = 0.025;
+    this.sun.shadow.bias = -0.00005;
+    this.sun.shadow.normalBias = 0.01;
     this.sun.target = new THREE.Object3D();
     this.scene.add(this.sun, this.sun.target);
+    this.moon = this.sun;         // at night the same light is the moon (cool, dim)
 
     this.hemi = new THREE.HemisphereLight(0xbcd6ff, 0x7a6f60, 0.2);
     this.scene.add(this.hemi);
@@ -113,6 +135,7 @@ export class Lighting {
     this.fixtureGroup.name = 'FIXTURES';
     this.scene.add(this.fixtureGroup);
     this.bulbMat = new THREE.MeshStandardMaterial({ color: 0xf4f1ea, roughness: 0.4, emissive: FIXTURE_COLOR.clone(), emissiveIntensity: 0 });
+    this.rig = new LightRig(this);   // real lights exist from the first compile (constant light count)
 
     this.pmrem = new THREE.PMREMGenerator(this.renderer.gl);
     this.pmrem.compileEquirectangularShader();
@@ -121,6 +144,7 @@ export class Lighting {
   }
 
   get presets() { return PRESETS; }
+  get pool() { return this.rig.slots; }
 
   setGroundLevel(y) { this.ground.position.y = y - 0.012; }
 
@@ -153,40 +177,54 @@ export class Lighting {
       this.sun.shadow.mapSize.set(size, size);
       if (this.sun.shadow.map) { this.sun.shadow.map.dispose(); this.sun.shadow.map = null; }
     }
-    this.sun.shadow.radius = settings.shadowRadius ?? 2;
-    this.sun.shadow.blurSamples = 12;
-    this.sun.shadow.normalBias = 0.02 * Math.max(1, 2048 / size);
-    this.sun.shadow.needsUpdate = true;
+    this.rig.setShadowSize(KEY_SHADOW[settings.tier] || 1024);
+    this._placeSun();
     if (this._ready) this.setTimeOfDay(this.mode);   // HDRI resolution may differ per tier
   }
 
+  // Outdoor shadow box (P04 passes the site). Inside, the current level is used instead.
   fitShadowTo(box) {
     if (box && !box.isEmpty()) this.bounds.copy(box).expandByScalar(1.0);
+    this._fitKey = null;
     this._placeSun();
   }
 
-  _placeSun() {
-    const dir = this.sunDir;
-    const center = this.bounds.getCenter(new THREE.Vector3());
-    const sphere = this.bounds.getBoundingSphere(new THREE.Sphere());
-    this.sun.position.copy(center).addScaledVector(dir, sphere.radius * 2.5);
-    this.sun.target.position.copy(center);
-    this.sun.target.updateMatrixWorld();
-    this.sun.updateMatrixWorld();
-    const view = new THREE.Matrix4().lookAt(this.sun.position, center, new THREE.Vector3(0, 1, 0));
-    const inv = view.clone().invert();
-    const min = new THREE.Vector3(Infinity, Infinity, Infinity), max = min.clone().negate();
-    const c = new THREE.Vector3();
-    for (let i = 0; i < 8; i++) {
-      c.set(i & 1 ? this.bounds.max.x : this.bounds.min.x, i & 2 ? this.bounds.max.y : this.bounds.min.y, i & 4 ? this.bounds.max.z : this.bounds.min.z);
-      c.sub(this.sun.position).applyMatrix4(inv);
-      min.min(c); max.max(c);
-    }
-    const cam = this.sun.shadow.camera;
-    cam.left = min.x; cam.right = max.x; cam.bottom = min.y; cam.top = max.y;
-    cam.near = Math.max(0.1, -max.z - 1); cam.far = -min.z + 1;
-    cam.updateProjectionMatrix();
+  invalidateShadows(seconds = 0) {
+    this._shadowDirtyT = Math.max(this._shadowDirtyT, seconds, 1e-6);
     this.sun.shadow.needsUpdate = true;
+    this.rig.invalidate();
+  }
+
+  _fitContext() {
+    const inside = (this._adaptTarget ?? 0) > 0.5 && !!this.house;
+    const level = inside ? (this.game.currentRoom?.level || 'ground') : null;
+    return { inside, level, key: inside ? `in:${level}` : 'out' };
+  }
+
+  _levelBox(level) {
+    const h = this.house;
+    const rooms = h.rooms().filter((r) => r.level === level);
+    const floor = rooms.length ? Math.min(...rooms.map((r) => r.center[1])) : h.bounds.min.y;
+    const height = h.levelHeight?.(level) ?? (h.spec?.levels?.find((l) => l.id === level)?.clear_height ?? 2.85);
+    const b = h.bounds.clone();
+    b.min.y = floor - 0.35; b.max.y = floor + height + 0.35;
+    b.min.x -= 4; b.max.x += 4; b.min.z -= 4; b.max.z += 4;   // terrace / garden seen through the glazing
+    return b;
+  }
+
+  _placeSun() {
+    const ctx = this._fitContext();
+    this._fitKey = ctx.key;
+    const box = ctx.inside ? this._levelBox(ctx.level) : this.bounds;
+    const fit = fitSunShadow(this.sun, box, this.sunDir, ctx.inside ? 30 : 45);
+    const sh = this.sun.shadow;
+    const ch = contactHardening() && fit.far <= SUN_DEPTH + 0.6;
+    sh.radius = ch ? -(sh.mapSize.x / fit.size) : (this.renderer.settings.shadowRadius ?? 2);
+    sh.normalBias = fit.texel * 1.6;
+    sh.bias = -(fit.texel * 0.6) / fit.far;
+    sh.autoUpdate = !ctx.inside;
+    sh.needsUpdate = true;
+    this.shadowFit = { ...fit, key: ctx.key, contactHardening: ch };
   }
 
   async setTimeOfDay(mode) {
@@ -196,17 +234,18 @@ export class Lighting {
     const token = (this._todToken = (this._todToken || 0) + 1);
     const h = await this._getHDRI(mode);
     if (token !== this._todToken) return;
-    const el = THREE.MathUtils.clamp(h?.sun ? h.sun.el : p.fallbackEl, p.minEl, p.maxEl);
+    const el = p.el ?? THREE.MathUtils.clamp(h?.sun ? h.sun.el : p.fallbackEl, p.minEl, p.maxEl);
     this.sunDir.copy(dirFromAzEl(p.azimuth, el));
     this.sunEl = el;
     this.sun.color.set(p.sunColor);
-    this.sun.intensity = h?.sun?.irradiance ? Math.min(p.sunMax, h.sun.irradiance * p.sunScale) : p.sunIntensity;
+    this.sun.intensity = h?.sun?.irradiance && p.sunScale ? Math.min(p.sunMax, h.sun.irradiance * p.sunScale) : p.sunIntensity;
     this._placeSun();
     this._applyEnvironment(p, h);
     this.game.postfx?.setGrade(p.grade);
     this._updateRoomLights();
     this._applyAdaptation();
     this._ready = true;
+    this.invalidateShadows();
     this.game.emit('tod', mode);
   }
 
@@ -261,23 +300,11 @@ export class Lighting {
     this.game.postfx?.setWhiteBalance(lerp(p.wbOut[0], p.wbIn[0], a), lerp(p.wbOut[1], p.wbIn[1], a), lerp(p.wbOut[2], p.wbIn[2], a));
   }
 
-  // ---- per-room bounce/fixture lights, exterior fixtures, bulbs ----------------------------
+  // ---- fixtures, bounce, exterior lights, bulbs ---------------------------------------------
   // Called once the house is loaded. Constant light count across times of day.
   buildFixtures(house) {
     this.house = house;
-    this.fixtureGroup.clear();
-    this.roomLights = []; this.extLights = [];
-    // Light POOL: a fixed number of real PointLights shared by all room/exterior "virtual" lights,
-    // re-assigned to the ones that matter most for the camera (current room first, then by
-    // intensity / distance). Every forward-shaded program loops over every light and ANGLE
-    // compiles that loop per program: 29 real lights cost ~3.4 s of first-frame compile vs ~1 s.
-    this.pool = [];
-    for (let i = 0; i < POOL_SIZE; i++) {
-      const l = new THREE.PointLight(FIXTURE_COLOR, 0, 7, 2);
-      l.name = `POOL_${i}`; l.castShadow = false;
-      this.fixtureGroup.add(l);
-      this.pool.push({ light: l, owner: null, target: 0 });
-    }
+    for (const o of [...this.fixtureGroup.children]) if (o.isInstancedMesh) { this.fixtureGroup.remove(o); o.geometry.dispose(); }
     // Occluder = everything that casts sun shadows (glass/COL excluded by House's load hook).
     const casters = [];
     house.root.traverse((o) => { if (o.isMesh && o.castShadow && o.visible && !o.isInstancedMesh) casters.push(o); });
@@ -289,43 +316,29 @@ export class Lighting {
       id: l.id, type: l.type, room: l.room || l.node.userData?.room,
       pos: new THREE.Vector3().setFromMatrixPosition(l.node.matrixWorld),
     }));
-    const levelOf = (r) => ({ floor: r.center[1], ceil: r.center[1] + (house.levelHeight?.(r.level) ?? 2.8) });
-
+    this.roomLights = [];
     for (const r of rooms) {
       const area = r.area || (r.rects || [r.rect]).reduce((a, q) => a + q[2] * q[3], 0);
       if (area < 1.5) continue;
-      const lv = levelOf(r);
-      const own = nodeLights.filter((l) => l.room === r.id);
-      const main = r.main || r.rect;
-      const fixPos = own.length
-        ? own.reduce((a, l) => a.add(l.pos), new THREE.Vector3()).multiplyScalar(1 / own.length)
-        : new THREE.Vector3(main[0] + main[2] / 2, lv.ceil, main[1] + main[3] / 2);
-      fixPos.y = lv.floor + (lv.ceil - lv.floor) * 0.48;   // mid-height: even walls+ceiling, no ceiling hotspot
-      const light = vlight(`ROOMLIGHT_${r.id}`, Math.max(6, Math.sqrt(area) * 2.4));
-      light.position.copy(fixPos);
-      this.roomLights.push({ room: r, light, area, floorY: lv.floor, fixture: { pos: fixPos, I: FIXTURE_CD_PER_M2 * THREE.MathUtils.clamp(area, 4, 30) }, bounce: null });
+      const floorY = r.center[1];
+      const ceilY = floorY + (house.levelHeight?.(r.level) ?? (house.spec?.levels?.find((l) => l.id === r.level)?.clear_height ?? 2.8));
+      this.roomLights.push({ room: r, area, floorY, ceilY, albedo: FLOOR_ALBEDO[r.floor] || [0.45, 0.42, 0.38], bounce: null });
     }
-
     // Exterior fixtures (terrace/entrance/balcony): LIGHT_* nodes outside rooms, else house.json.
-    const roomIds = new Set(rooms.map((r) => r.id));
-    let ext = nodeLights.filter((l) => !roomIds.has(l.room)).map((l) => ({ id: l.id, type: l.type, pos: l.pos }));
+    const roomIds = new Set(this.roomLights.map((r) => r.room.id));
+    let ext = nodeLights.filter((l) => !roomIds.has(l.room) && !rooms.some((r) => r.id === l.room)).map((l) => ({ id: l.id, type: l.type, pos: l.pos }));
     if (!nodeLights.length) {
       ext = (house.spec?.lighting?.fixtures || []).filter((f) => !roomIds.has(f.room)).map((f) => {
         const pos = new THREE.Vector3(...f.pos); if (f.level_offset) pos.y += f.level_offset;
         return { id: f.id, type: f.type, pos, dir: f.dir };
       });
     }
-    for (const f of ext.slice(0, 10)) {
-      const light = vlight(`EXTLIGHT_${f.id}`, 7);
-      light.position.copy(f.pos);
-      if (f.type === 'downlight') light.position.y -= 0.3;
-      if (f.dir) light.position.add(new THREE.Vector3(...f.dir).multiplyScalar(0.2));
-      this.extLights.push({ light, I: f.type === 'sconce' ? 1.4 : 2.2 });
-    }
+    this.extLights = ext;
+    this.rig.build(house, this.roomLights, ext);
 
     // Emissive bulbs: small discs at every downlight/ceiling point, spheres for pendants/sconces.
     const discs = nodeLights.filter((l) => /downlight|ceiling|strip|cove/.test(l.type || 'downlight'));
-    const bulbs = discs.length ? discs : this.roomLights.map((rl) => ({ type: 'ceiling', pos: new THREE.Vector3(rl.fixture.pos.x, rl.floorY + 2.84, rl.fixture.pos.z) }));
+    const bulbs = discs.length ? discs : this.rig.fixtures.map((f) => ({ type: 'ceiling', pos: f.pos }));
     if (bulbs.length) {
       const g = new THREE.CylinderGeometry(0.05, 0.05, 0.012, 20);
       const im = new THREE.InstancedMesh(g, this.bulbMat, bulbs.length);
@@ -343,10 +356,12 @@ export class Lighting {
       im.name = 'GLOBES'; im.castShadow = false; im.frustumCulled = false;
       this.fixtureGroup.add(im);
     }
+    this._fitKey = null;
+    this._placeSun();
     this._updateRoomLights();
   }
 
-  // Sun-patch sampling -> bounce light per room; then blend with night fixtures for this TOD.
+  // Sun-patch sampling -> coloured bounce emitter per room; then fixture levels for this TOD.
   _updateRoomLights() {
     if (!this.roomLights.length) return;
     const p = PRESETS[this.mode];
@@ -354,6 +369,7 @@ export class Lighting {
     const o = new THREE.Vector3();
     const sinEl = Math.max(0.05, this.sunDir.y);
     const t0 = performance.now();
+    const sunBounce = new Map();
     for (const rl of this.roomLights) {
       rl.bounce = null;
       if (!sunOn) continue;
@@ -369,74 +385,35 @@ export class Lighting {
       }
       if (!lit) continue;
       const A = lit * step * step;
-      c.multiplyScalar(1 / lit); c.y = rl.floorY - 0.03;    // just BELOW the floor: lights walls + ceiling, not the floor
-      const alb = FLOOR_ALBEDO[rl.room.floor] || [0.45, 0.42, 0.38];
+      c.multiplyScalar(1 / lit); c.y = rl.floorY - 0.04;    // just BELOW the floor: an up-cone lights walls + ceiling
+      const alb = rl.albedo;
       const lum = (alb[0] + alb[1] + alb[2]) / 3;
-      // Flux leaving the patch into the hemisphere above it: E_sun,h * A * albedo; I = flux / 2π.
-      // x2.2: stands in for the second+ bounces (walls/ceiling re-reflecting it).
-      const I = this.sun.intensity * sinEl * A * lum / (2 * Math.PI) * 2.2 * p.bounce;
-      const col = new THREE.Color(this.sun.color).multiply(_c.setRGB(alb[0] / lum, alb[1] / lum, alb[2] / lum)).lerp(new THREE.Color(1, 1, 1), 0.45);
+      // Lambertian patch: flux = E_sun,h * A * albedo, I0 = flux / pi; x1.7 stands in for further bounces.
+      const I = this.sun.intensity * sinEl * A * lum / Math.PI * 1.7 * p.bounce;
+      const col = new THREE.Color(this.sun.color).multiply(_c.setRGB(alb[0] / lum, alb[1] / lum, alb[2] / lum)).lerp(new THREE.Color(1, 1, 1), 0.12);
       rl.bounce = { pos: c, I, color: col, area: A };
+      sunBounce.set(rl.room.id, rl.bounce);
     }
     this.bounceMs = performance.now() - t0;
-    for (const rl of this.roomLights) {
-      const fI = rl.fixture.I * p.fixtures;
-      const bI = rl.bounce?.I ?? 0;
-      if (bI >= fI) {
-        rl.light.position.copy(rl.bounce ? rl.bounce.pos : rl.fixture.pos);
-        rl.light.color.copy(rl.bounce ? rl.bounce.color : FIXTURE_COLOR);
-      } else {
-        rl.light.position.copy(rl.fixture.pos);
-        rl.light.color.copy(FIXTURE_COLOR);
-      }
-      rl.light.intensity = bI + fI;
-    }
-    for (const e of this.extLights) { e.light.intensity = e.I * p.fixtures; e.light.color.copy(FIXTURE_COLOR); }
+    this.rig.setLevels(p, sunBounce);
     this._assignPool(true);
     this.bulbMat.emissiveIntensity = BULB_EMISSIVE * p.bulbs;
     this.bulbMat.color.set(p.bulbs > 0.5 ? 0xffffff : 0xe8e6e0);
   }
 
-  // Debug/inspection: {room: {litArea, bounceCd, fixtureCd}}.
+  // Debug/inspection: {room: {litArea, bounceCd, fixtures}} + the current rig assignment.
   roomLightInfo() {
-    return Object.fromEntries(this.roomLights.map((rl) => [rl.room.id, { litArea: +(rl.bounce?.area ?? 0).toFixed(2), bounceCd: +(rl.bounce?.I ?? 0).toFixed(3), cd: +rl.light.intensity.toFixed(3) }]));
+    const rooms = Object.fromEntries(this.rig.rooms.map((r) => [r.id, { litArea: +(r.sunBounce?.area ?? 0).toFixed(2), bounceCd: +r.bounce.I.toFixed(3), aggCd: +(r.aggFull ?? 0).toFixed(3), fixtures: r.fixtures.length }]));
+    return { rooms, rig: this.rig.info(), shadow: this.shadowFit };
   }
 
-  // Pick the POOL_SIZE most relevant virtual lights for the camera and map them onto the pool.
-  // snap = apply intensities immediately (teleports, TOD changes, harness shots); otherwise newly
-  // assigned lights fade in over ~0.3 s so reassignment never pops.
+  // Map the virtual lights onto the real rig for the camera (Game.teleport calls this with snap).
   _assignPool(snap = false) {
-    if (!this.pool?.length) return;
-    const cam = this.game.camera.position;
-    const inRoom = this.game.currentRoom?.id;
-    const cands = [...this.roomLights.map((rl) => ({ v: rl.light, room: rl.room.id })), ...this.extLights.map((e) => ({ v: e.light, room: null }))]
-      .filter((c) => c.v.intensity > 1e-3)
-      .map((c) => ({ ...c, score: c.room && c.room === inRoom ? Infinity : c.v.intensity / (1 + c.v.position.distanceToSquared(cam) / 16) }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, this.pool.length);
-    const chosen = new Set(cands.map((c) => c.v));
-    for (const slot of this.pool) if (slot.owner && !chosen.has(slot.owner)) { slot.owner = null; slot.target = 0; if (snap) slot.light.intensity = 0; }
-    const owned = new Set(this.pool.map((s) => s.owner).filter(Boolean));
-    for (const c of cands) {
-      let slot = this.pool.find((s) => s.owner === c.v);
-      if (!slot) { slot = this.pool.find((s) => !s.owner && s.light.intensity < 1e-3) || this.pool.find((s) => !s.owner); if (!slot) continue; slot.owner = c.v; slot.light.intensity = 0; }
-      owned.add(c.v);
-      slot.light.position.copy(c.v.position);
-      slot.light.color.copy(c.v.color);
-      slot.light.distance = c.v.distance;
-      slot.target = c.v.intensity;
-      if (snap) slot.light.intensity = slot.target;
-    }
+    if (snap) { const ctx = this._fitContext(); if (ctx.key !== this._fitKey) this._placeSun(); }
+    this.rig.assign(this.game.camera, this.game.currentRoom?.id, snap);
   }
 
   update(dt) {
-    this._poolT = (this._poolT || 0) - dt;
-    if (this._poolT <= 0) { this._poolT = 0.2; this._assignPool(false); }
-    if (this.pool) for (const s of this.pool) {
-      const d = s.target - s.light.intensity;
-      if (Math.abs(d) > 1e-4) s.light.intensity += d * Math.min(1, dt / 0.3 * 3);
-      else s.light.intensity = s.target;
-    }
     const target = this._adaptTarget ?? 0;
     const cur = this._adapt ?? 0;
     if (cur !== target) {
@@ -444,6 +421,28 @@ export class Lighting {
       this._adapt = Math.abs(target - cur) < 0.002 ? target : cur + (target - cur) * k;
       this._applyAdaptation();
     }
+    const ctx = this._fitContext();
+    if (ctx.key !== this._fitKey) this._placeSun();
+    this._poolT = (this._poolT || 0) - dt;
+    if (this._poolT <= 0) { this._poolT = 0.2; this._assignPool(false); }
+    this.rig.tick(dt);
+    // Cached shadows: re-render while something moves (doors / interact animations).
+    if (this._doorsMoved()) this.invalidateShadows(0.3);
+    if (this._shadowDirtyT > 0) {
+      this._shadowDirtyT -= dt;
+      this.sun.shadow.needsUpdate = true;
+      this.rig.invalidate();
+    }
+  }
+
+  _doorsMoved() {
+    const doors = this.house?.doors;
+    if (!doors?.length) return false;
+    let h = 0;
+    for (const d of doors) { const q = d.node.quaternion, p = d.node.position; h += q.x * 1.3 + q.y * 1.7 + q.z * 2.1 + q.w + p.x * 0.7 + p.z * 0.3; }
+    const moved = this._doorHash !== undefined && Math.abs(h - this._doorHash) > 1e-6;
+    this._doorHash = h;
+    return moved;
   }
 
   dispose() {
@@ -453,7 +452,6 @@ export class Lighting {
 }
 
 const _c = new THREE.Color();
-const vlight = (name, distance) => ({ name, distance, position: new THREE.Vector3(), color: FIXTURE_COLOR.clone(), intensity: 0 });
 
 export function dirFromAzEl(azDeg, elDeg) {
   const az = THREE.MathUtils.degToRad(azDeg), el = THREE.MathUtils.degToRad(elDeg);
@@ -472,6 +470,15 @@ function prepareHDRI(key, tex, preset) {
   const t = half ? DataUtils.toHalfFloat : (v) => v;
   const sun = findSun(data, W, H, ch, f);
   const clamp = sun ? sun.clamp : Infinity;
+
+  // Sky grade phase 1 (before the IBL copy): flatten the HDRI's own sun, gradients.
+  const sg = preset.skyGrade || {};
+  const texAz = sun ? sun.az : preset.azimuth;             // the preset azimuth in texture frame
+  const lightEl = preset.el ?? THREE.MathUtils.clamp(sun ? sun.el : preset.fallbackEl, preset.minEl, preset.maxEl);
+  gradeSky(img, f, t, {
+    removeSun: sun ? { az: sun.az, el: sun.el, radiusDeg: 5 } : null,
+    tint: sg.tint, add: sg.add, sunSide: sg.sunSide, sunAz: texAz,
+  });
 
   // Sky statistics (sun clamped): cosine-weighted upper-hemisphere radiance (-> sky irradiance on the
   // ground) and the mean horizon colour (0..4 deg), both linear RGB.
@@ -492,7 +499,7 @@ function prepareHDRI(key, tex, preset) {
   }
   const skyL = up.map((v) => v / upW);                          // mean cos-weighted radiance
   const horizon = hz.map((v) => v / Math.max(1, hzN));
-  const sunEh = sun ? sun.irradiance * Math.max(0, Math.sin(THREE.MathUtils.degToRad(sun.el))) : 0;
+  const sunEh = sun ? sun.irradiance * Math.max(0, Math.sin(THREE.MathUtils.degToRad(lightEl))) : 0;
   const ga = preset.groundAlbedo;
   const groundL = [0, 1, 2].map((c) => ga[c] * (skyL[c] * 2 + sunEh * 0.95) / Math.PI * 0.9);
 
@@ -540,6 +547,8 @@ function prepareHDRI(key, tex, preset) {
       for (let c = 0; c < 3; c++) data[i + c] = t(f(data[i + c]) * (1 - gk) + hzBelow[c] * gk);
     }
   }
+  // Sky grade phase 2 (background only): the sun / moon disc where the light is.
+  if (sg.disc) gradeSky(img, f, t, { disc: { ...sg.disc, az: texAz, el: lightEl } });
   tex.needsUpdate = true;
   return { key, tex, iblTex, sun, horizon, skyL, groundL };
 }

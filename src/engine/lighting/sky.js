@@ -51,7 +51,7 @@ export function gradeSky(img, f, t, spec) {
 
   // 2) gradients (upper hemisphere + a little below the horizon).
   if (spec.tint || spec.add) {
-    const sd = spec.disc ? dirToTexel(spec.disc.az, 0).setY(0).normalize() : null;
+    const sd = spec.sunAz !== undefined ? dirToTexel(spec.sunAz, 0).setY(0).normalize() : null;
     const tz = spec.tint?.zenith || [1, 1, 1], th = spec.tint?.horizon || [1, 1, 1];
     const az = spec.add?.zenith || [0, 0, 0], ah = spec.add?.horizon || [0, 0, 0];
     const side = spec.sunSide || 0;

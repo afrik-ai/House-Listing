@@ -354,7 +354,13 @@ export class Trees {
   }
 
   update(camera, force = false, sun = null) {
-    if (sun) this.sunFace.value.copy(sun.position).sub(sun.target.position);
+    if (sun) {
+      this.sunFace.value.copy(sun.position).sub(sun.target.position);
+      // low sun (golden hour): impostor trees 20-300 m away would shade the whole garden; only the
+      // real near trees keep their (long) shadows so the lawn still catches the evening light
+      const high = this.sunFace.value.y / (this.sunFace.value.length() || 1) > 0.3;
+      for (const im of this.imp.values()) im.castShadow = high;
+    }
     const cam = camera.position;
     if (!force && cam.distanceToSquared(this._lastCam) < 1.0) return;
     this._lastCam.copy(cam);

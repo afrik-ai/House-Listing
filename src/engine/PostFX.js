@@ -23,6 +23,15 @@ export const TONE_MAPPERS = {
   neutral: ToneMappingMode.NEUTRAL,
 };
 
+// N8AO per tier (P05). aoRadius in metres; distanceFalloff relative to it. aoSamples/denoise are
+// also set by setQualityMode, so they are re-applied after it.
+const AO_TIERS = {
+  low: { aoRadius: 0.5, distanceFalloff: 0.4, intensity: 3.5, aoSamples: 8, denoiseSamples: 4, denoiseRadius: 8 },
+  medium: { aoRadius: 0.55, distanceFalloff: 0.4, intensity: 4.0, aoSamples: 12, denoiseSamples: 6, denoiseRadius: 8 },
+  high: { aoRadius: 0.6, distanceFalloff: 0.35, intensity: 4.6, aoSamples: 16, denoiseSamples: 8, denoiseRadius: 8 },
+  ultra: { aoRadius: 0.6, distanceFalloff: 0.35, intensity: 4.6, aoSamples: 24, denoiseSamples: 8, denoiseRadius: 8 },
+};
+
 // Linear-light colour balance (white balance / tint), applied before tone mapping.
 class WhiteBalanceEffect extends Effect {
   constructor() {
@@ -50,9 +59,9 @@ export class PostFX {
     this.renderPass = new RenderPass(scene, camera);
 
     this.ao = new N8AOPostPass(scene, camera, renderer.width, renderer.height);
+    // P05: tight contact term (furniture feet, skirting, corners) rather than a broad room-scale dirt.
     Object.assign(this.ao.configuration, {
-      aoRadius: 1.1, distanceFalloff: 0.8, intensity: 3.2, aoSamples: 16, denoiseSamples: 8, denoiseRadius: 10,
-      screenSpaceRadius: false, halfRes: false, color: new THREE.Color(0x000000),
+      ...AO_TIERS.high, screenSpaceRadius: false, halfRes: false, color: new THREE.Color(0x000000),
       gammaCorrection: false,
     });
 
@@ -102,6 +111,9 @@ export class PostFX {
     this.renderer.gl.toneMapping = { agx: THREE.AgXToneMapping, aces: THREE.ACESFilmicToneMapping, neutral: THREE.NeutralToneMapping }[name];
   }
 
+  // Runtime AO override (debug / photo mode): postfx.setAO({ aoRadius, intensity, distanceFalloff }).
+  setAO(cfg) { Object.assign(this.ao.configuration, cfg); }
+
   setWhiteBalance(r, g, b) { this.whiteBalance.tint.set(r, g, b); }
 
   // Grade knobs used by Lighting per time of day.
@@ -116,6 +128,7 @@ export class PostFX {
   applyQuality(settings) {
     this.ao.configuration.halfRes = !!settings.aoHalfRes;
     this.ao.setQualityMode(settings.aoQuality || 'Medium');
+    Object.assign(this.ao.configuration, AO_TIERS[settings.tier] || AO_TIERS.high);
     this.ao.configuration.gammaCorrection = false;
     this._build(settings);
     this.setSize(this.renderer.width, this.renderer.height);

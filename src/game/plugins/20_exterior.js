@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { EXT_STATE } from '../materials/exterior.js';
+import { EXT_STATE, FIXTURE_RGB } from '../materials/exterior.js';
 
 // P03 — exterior finish.
 //  * loads /assets/houses/<id>/exterior_detail.glb (pipeline/blender/exterior_build.py): fascia joints, copings
@@ -12,10 +12,13 @@ import { EXT_STATE } from '../materials/exterior.js';
 // Disable with ?p03=0 (debug).
 // Glass from outside reads as dark, sky-reflecting low-iron glass (effective F0 0.2 = specularColor 5 x 0.04,
 // plus a base opacity for the darker interior); from inside it is near-physical and clear.
-const GLASS = {           // [base opacity, F0 scale (x0.04)] outside
-  day: [0.26, 5.0], golden_hour: [0.22, 4.5], night: [0.08, 2.5],
+const GLASS = {           // [base opacity, F0 scale (x0.04), body tint scale] outside
+  day: [0.2, 4.0, 1.0], golden_hour: [0.18, 4.0, 0.6], night: [0.06, 2.5, 0.08],
 };
-const GLASS_INSIDE = [0.02, 1.0];
+const GLASS_INSIDE = [0.02, 1.0, 0.2];
+const PROBE_OFFSET = 6;          // probe distance in front of each facade (m)
+const PROBE_BOX = 18;            // reflection box half-extent beyond the house (m)
+const LAMP_CD = 1.6;             // real point light per P03 wall lamp at night (candela), range 4 m
 const LENS_EMISSIVE = 45;
 const WASH_GAIN = 1.25;
 
@@ -58,7 +61,69 @@ export class Plugin {
       this._applyReplaces(this._extras(this.root));
     }
     this._slatVariation();
+    this._lamps(this._extras(this.root || new THREE.Group()).lights);
     this.onTimeOfDay(g.lighting?.mode || 'day');
+  }
+
+  // One short-range warm PointLight per P03 wall lamp that the engine does not already light (house.json sconces
+  // get P01/P05 exterior lights). Constant light count: intensity 0 by day, so no shader recompiles.
+  _lamps(lights) {
+    const own = new Set((this.game.house?.spec?.lighting?.fixtures || []).map((f) => f.id));
+    this.lampLights = [];
+    for (const L of lights || []) {
+      if (own.has(L.id) || !L.face) continue;
+      const pl = new THREE.PointLight(new THREE.Color().setRGB(...FIXTURE_RGB), 0, 4, 2);
+      pl.name = `P03_LAMP_${L.id}`;
+      pl.position.set(L.face[0] + L.dir[0] * 0.25, L.face[1], L.face[2] + L.dir[2] * 0.25);
+      pl.castShadow = false;
+      this.game.scene.add(pl);
+      this.lampLights.push(pl);
+    }
+  }
+
+  // Box-projected reflection probes, one per facade direction (E, S, W, N), rendered once per time of day in the
+  // exterior lighting state, glass hidden, shadow maps frozen.
+  captureProbes() {
+    const g = this.game;
+    const rts = EXT_STATE.probeRT;
+    if (!rts || !g.house?.bounds) return;
+    const t0 = performance.now();
+    const b = g.house.bounds;
+    const c = b.getCenter(new THREE.Vector3());
+    const y = (g.house.gradeY ?? -0.3) + 1.9;
+    const pos = [
+      new THREE.Vector3(b.max.x + PROBE_OFFSET, y, c.z), new THREE.Vector3(c.x, y, b.max.z + PROBE_OFFSET),
+      new THREE.Vector3(b.min.x - PROBE_OFFSET, y, c.z), new THREE.Vector3(c.x, y, b.min.z - PROBE_OFFSET),
+    ];
+    const bmin = new THREE.Vector3(b.min.x - PROBE_BOX, (g.house.gradeY ?? -0.3) - 0.05, b.min.z - PROBE_BOX);
+    const bmax = new THREE.Vector3(b.max.x + PROBE_BOX, 40, b.max.z + PROBE_BOX);
+    const gl = g.renderer.gl;
+    const hidden = [];
+    g.scene.traverse((o) => {
+      if (!o.isMesh || !o.visible) return;
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      if (mats.some((m) => m?.userData?.p03glass || m?.name === 'EXT_light_wash')) { o.visible = false; hidden.push(o); }
+    });
+    const prevAuto = gl.shadowMap.autoUpdate;
+    gl.shadowMap.autoUpdate = false;
+    const wasInside = !!g.lighting?._adaptTarget;
+    if (wasInside) g.lighting.setInterior(false, true);
+    const prevRT = gl.getRenderTarget();
+    for (let i = 0; i < 4; i++) {
+      const cam = new THREE.CubeCamera(0.15, 600, rts[i]);
+      cam.position.copy(pos[i]);
+      cam.updateMatrixWorld(true);
+      cam.update(gl, g.scene);
+      EXT_STATE.probe.uProbePos.value[i].copy(pos[i]);
+      EXT_STATE.probe.uBoxMin.value[i].copy(bmin);
+      EXT_STATE.probe.uBoxMax.value[i].copy(bmax);
+    }
+    gl.setRenderTarget(prevRT);
+    if (wasInside) g.lighting.setInterior(true, true);
+    gl.shadowMap.autoUpdate = prevAuto;
+    for (const o of hidden) o.visible = true;
+    EXT_STATE.probe.uProbeK.value = 1;
+    this.probeMs = Math.round(performance.now() - t0);
   }
 
   _extras(root) {
@@ -132,7 +197,9 @@ export class Plugin {
       m.visible = f > 0.01;
       m.color.copy(m.userData.baseColor).multiplyScalar(WASH_GAIN * f);
     }
+    for (const l of this.lampLights || []) l.intensity = LAMP_CD * f;
     this._applyGlass();
+    try { this.captureProbes(); } catch (err) { console.warn('[exterior] probe capture failed', err); }
   }
 
   _applyGlass() {
@@ -142,6 +209,11 @@ export class Plugin {
     EXT_STATE.glass.uBase.value = THREE.MathUtils.lerp(o[0], GLASS_INSIDE[0], k);
     EXT_STATE.glass.uF0.value = 0.04 * s;
     for (const m of EXT_STATE.glassMats) m.specularColor.setScalar(s);
+    if (EXT_STATE.probe) {
+      const bk = THREE.MathUtils.lerp(o[2], GLASS_INSIDE[2], k);
+      EXT_STATE.probe.uBody.value.setRGB(0.05 * bk, 0.065 * bk, 0.06 * bk);
+      EXT_STATE.probe.uDistK.value = 0.28 * (1 - k);
+    }
   }
 
   update(dt) {
@@ -170,6 +242,6 @@ export class Plugin {
   stats() {
     let tris = 0, meshes = 0;
     this.root?.traverse((o) => { if (o.isMesh) { meshes++; tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; } });
-    return { meshes, tris, hidden: this.hidden, slatGroups: this.slatGroups, glass: { base: EXT_STATE.glass.uBase.value, f0: EXT_STATE.glass.uF0.value } };
+    return { meshes, tris, hidden: this.hidden, slatGroups: this.slatGroups, glass: { base: EXT_STATE.glass.uBase.value, f0: EXT_STATE.glass.uF0.value }, probeMs: this.probeMs, lampLights: this.lampLights?.length };
   }
 }

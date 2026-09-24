@@ -1,0 +1,306 @@
+{
+ "rooms": [
+  {
+   "id": "living",
+   "name": "Living room + Dining",
+   "level": "ground",
+   "pos": [
+    7.6,
+    1.6,
+    9.87
+   ],
+   "yaw": 57.2,
+   "pitch": -8
+  },
+  {
+   "id": "kitchen",
+   "name": "Kitchen",
+   "level": "ground",
+   "pos": [
+    11.55,
+    1.6,
+    9.87
+   ],
+   "yaw": 45.9,
+   "pitch": -8
+  },
+  {
+   "id": "cloak",
+   "name": "Cloakroom",
+   "level": "ground",
+   "pos": [
+    8.775,
+    1.6,
+    4.74
+   ],
+   "yaw": -180,
+   "pitch": -16
+  },
+  {
+   "id": "hall",
+   "name": "Hall",
+   "level": "ground",
+   "pos": [
+    1.72,
+    1.6,
+    3.71
+   ],
+   "yaw": -90,
+   "pitch": -16
+  },
+  {
+   "id": "vestibule",
+   "name": "Vestibule",
+   "level": "ground",
+   "pos": [
+    10.78,
+    1.6,
+    3.56
+   ],
+   "yaw": 90,
+   "pitch": -16
+  },
+  {
+   "id": "storage_e",
+   "name": "Storage",
+   "level": "ground",
+   "pos": [
+    10.25,
+    1.6,
+    4.74
+   ],
+   "yaw": -180,
+   "pitch": -16
+  },
+  {
+   "id": "storage_n",
+   "name": "Storage",
+   "level": "ground",
+   "pos": [
+    4.25,
+    1.6,
+    2.38
+   ],
+   "yaw": 0,
+   "pitch": -16
+  },
+  {
+   "id": "office",
+   "name": "Office",
+   "level": "ground",
+   "pos": [
+    0.45,
+    1.6,
+    0.45
+   ],
+   "yaw": -123.2,
+   "pitch": -8
+  },
+  {
+   "id": "wc",
+   "name": "WC",
+   "level": "ground",
+   "pos": [
+    0.75,
+    1.6,
+    4.6
+   ],
+   "yaw": 0,
+   "pitch": -16
+  },
+  {
+   "id": "boiler",
+   "name": "Boiler room",
+   "level": "ground",
+   "pos": [
+    7.15,
+    1.6,
+    0.45
+   ],
+   "yaw": 135,
+   "pitch": -8
+  },
+  {
+   "id": "garage",
+   "name": "Garage",
+   "level": "ground",
+   "pos": [
+    12.95,
+    1.6,
+    -2.78
+   ],
+   "yaw": 135.2,
+   "pitch": -8
+  },
+  {
+   "id": "master",
+   "name": "Master bedroom",
+   "level": "first",
+   "pos": [
+    0.45,
+    4.75,
+    9.87
+   ],
+   "yaw": -28.2,
+   "pitch": -8
+  },
+  {
+   "id": "wardrobe_a",
+   "name": "Wardrobe",
+   "level": "first",
+   "pos": [
+    1.38,
+    4.75,
+    3.71
+   ],
+   "yaw": 90,
+   "pitch": -16
+  },
+  {
+   "id": "wardrobe_b",
+   "name": "Wardrobe",
+   "level": "first",
+   "pos": [
+    3.82,
+    4.75,
+    2.15
+   ],
+   "yaw": -45.5,
+   "pitch": -8
+  },
+  {
+   "id": "bath_master",
+   "name": "Master bathroom",
+   "level": "first",
+   "pos": [
+    0.45,
+    4.75,
+    0.45
+   ],
+   "yaw": -124.5,
+   "pitch": -8
+  },
+  {
+   "id": "hall1",
+   "name": "Landing",
+   "level": "first",
+   "pos": [
+    3.82,
+    4.75,
+    6.01
+   ],
+   "yaw": -59,
+   "pitch": -8
+  },
+  {
+   "id": "bed2",
+   "name": "Bedroom",
+   "level": "first",
+   "pos": [
+    6.56,
+    4.75,
+    9.87
+   ],
+   "yaw": 42.8,
+   "pitch": -8
+  },
+  {
+   "id": "bed3",
+   "name": "Bedroom",
+   "level": "first",
+   "pos": [
+    7.46,
+    4.75,
+    6.91
+   ],
+   "yaw": -133.8,
+   "pitch": -8
+  },
+  {
+   "id": "bath2",
+   "name": "Bathroom",
+   "level": "first",
+   "pos": [
+    10.55,
+    4.75,
+    2.15
+   ],
+   "yaw": 67.5,
+   "pitch": -8
+  },
+  {
+   "id": "bath3",
+   "name": "Bathroom",
+   "level": "first",
+   "pos": [
+    10.42,
+    4.75,
+    3.71
+   ],
+   "yaw": -90,
+   "pitch": -16
+  },
+  {
+   "id": "laundry",
+   "name": "Laundry",
+   "level": "first",
+   "pos": [
+    9.42,
+    4.75,
+    5.64
+   ],
+   "yaw": -90,
+   "pitch": -16
+  }
+ ],
+ "exteriors": [
+  {
+   "id": "ext_front_east",
+   "name": "Front (street, east)",
+   "level": "exterior",
+   "pos": [
+    23.25,
+    1.6,
+    9.795
+   ],
+   "yaw": 69,
+   "pitch": 2.7
+  },
+  {
+   "id": "ext_garden_sw",
+   "name": "Garden & pool (south-west)",
+   "level": "exterior",
+   "pos": [
+    -13.95,
+    1.6,
+    18.82
+   ],
+   "yaw": -51.1,
+   "pitch": 2.4
+  },
+  {
+   "id": "ext_south",
+   "name": "South facade",
+   "level": "exterior",
+   "pos": [
+    6.65,
+    1.6,
+    23.82
+   ],
+   "yaw": 2.9,
+   "pitch": 3.4
+  },
+  {
+   "id": "ext_north_west",
+   "name": "North-west corner",
+   "level": "exterior",
+   "pos": [
+    -10.95,
+    1.6,
+    -12.23
+   ],
+   "yaw": -134,
+   "pitch": 2.5
+  }
+ ]
+}

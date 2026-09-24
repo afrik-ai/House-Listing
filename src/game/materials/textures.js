@@ -348,7 +348,7 @@ SfOut sfEval() {
     // bevelled tile edges: tilt the normal toward the nearest joint
     vec2 toE = vec2(f.x < 0.5 * sfTile.x ? -1.0 : 1.0, f.y < 0.5 * sfTile.y ? -1.0 : 1.0);
     float bf = (1.0 - smoothstep(sfBevel * 0.6, sfBevel * 2.5, ps)) * step(1e-5, hg);
-    vec2 tilt = vec2(toE.x * (1.0 - smoothstep(hg, hg + sfBevel, e.x)), toE.y * (1.0 - smoothstep(hg, hg + sfBevel, e.y))) * 0.7 * bf;
+    vec2 tilt = vec2(toE.x * (1.0 - smoothstep(hg, hg + sfBevel, e.x)), toE.y * (1.0 - smoothstep(hg, hg + sfBevel, e.y))) * 0.35 * bf;
     vec3 nT = normalize(Tu * (n.x + tilt.x) + Tv * (n.y + tilt.y) + N * max(n.z, 0.2));
     o.nW = normalize(mix(nT, N, grout));
     o.albedo = mix(o.albedo, sfGroutColor * (1.0 + macro * sfMacro.x), grout);

@@ -8,7 +8,7 @@
     [-2.95, 10.47, 15.10, 0.35], [-2.95, 1.60, 0.35, 8.87], [-2.95, -0.50, 2.95, 0.35], [-2.95, -0.15, 0.35, 1.75], [13.55, 2.45, 0.70, 4.16]
   ],
   "materials": {
-    "lawn":      { "tex": "grass_lawn_02", "tex2": "grass_lawn_01", "scale": 1.6, "tint": [0.8, 0.84, 0.7], "desat": 0.18, "stripes": 0.07 },
+    "lawn":      { "tex": "grass_lawn_02", "tex2": "grass_lawn_01", "scale": 1.6, "tint": [0.8, 0.84, 0.7], "desat": 0.18, "stripes": 0.07, "macro": 0.38 },
     "meadow":    { "tex": "grass_lawn_01", "scale": 3.2, "tint": [0.66, 0.7, 0.56], "desat": 0.25 },
     "gravel":    { "tex": "gravel", "scale": 1.3, "tint": [3.0, 2.95, 2.9], "desat": 0.75, "roughness": 1.0 },
     "deck":      { "tex": "limestone_tile_light", "scale": 3.0, "tint": [1.12, 1.1, 1.06], "desat": 0.35, "antitile": false, "macro": 0.12 },

@@ -28,8 +28,8 @@ async function wallTiles(tex, name, { tile, stagger = 0, origin, floorY, zones, 
     mode: 'grid', sample: 'flat', glazeNormal: true,
     maps: { plaster: await plaster(tex) },
     tile, stagger, origin, floorY, zones,
-    grout: 0.0045, groutColor: [0.56, 0.55, 0.53], groutRough: 0.92, bevel: 0.004, ao: 0.5,
-    tint, tintVar: 0.09, normalK: 0.22, roughRange: gloss ? [0.16, 0.16] : [0.3, 0.3], roughVar: 0.14,
+    grout: 0.003, groutColor: [0.62, 0.61, 0.58], groutRough: 0.92, bevel: 0.0025, ao: 0.2,
+    tint, tintVar: 0.14, normalK: 0.22, roughRange: gloss ? [0.16, 0.16] : [0.3, 0.3], roughVar: 0.14,
     coat: 1,
     ...WALL_PAINT,
   });
@@ -62,8 +62,8 @@ export const definitions = {
   large_format_tile_grey: async (tex) => applySurface(new THREE.MeshStandardMaterial({ name: 'large_format_tile_grey', metalness: 0 }), {
     mode: 'grid', sample: 'offset', maps: await set(tex, 'concrete_smooth_light', ['color', 'normal']),
     tile: [1.2, 0.6], stagger: 1 / 3, grout: 0.002, origin: [1.56, 2.66], texLen: 3.0,
-    sat: 1, contrast: 1.3, texMean: 0.48, tint: [0.70, 0.685, 0.655], tintVar: 0.07, normalK: 0.07,
-    roughRange: [0.44, 0.44], roughVar: 0.06, groutColor: [0.19, 0.185, 0.175], groutRough: 0.92, bevel: 0.0015, ao: 0.5,
+    sat: 1, contrast: 1.3, texMean: 0.48, tint: [0.70, 0.685, 0.655], tintVar: 0.1, normalK: 0.3,
+    roughRange: [0.4, 0.4], roughVar: 0.12, groutColor: [0.40, 0.39, 0.37], groutRough: 0.92, bevel: 0.002, ao: 0.25,
     macro: [0.03, 4.0, 0.03],
   }),
 
@@ -130,8 +130,8 @@ function smallTile(tex, name, origin) {
     return applySurface(m, {
       mode: 'grid', sample: 'flat', glazeNormal: true, maps: { plaster: await plaster(tex) },
       tile: [0.1, 0.1], grout: 0.0035, origin,
-      tint: [0.79, 0.79, 0.775], tintVar: 0.04, normalK: 0.15, roughRange: [0.26, 0.26], roughVar: 0.14,
-      groutColor: [0.34, 0.335, 0.32], groutRough: 0.92, bevel: 0.003, coat: 1, ao: 0.65, macro: [0.012, 2.0, 0.02],
+      tint: [0.79, 0.79, 0.775], tintVar: 0.12, normalK: 0.15, roughRange: [0.26, 0.26], roughVar: 0.14,
+      groutColor: [0.55, 0.54, 0.52], groutRough: 0.92, bevel: 0.0025, coat: 1, ao: 0.2, macro: [0.012, 2.0, 0.02],
     });
   })();
 }

@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T06:10:55.982Z",
+ "updated": "2026-09-24T06:56:26.074Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T06:56:25.688Z",
+   "m": "TEX critic r1: HF2 - walls/render are flat colour with no plaster/stucco texture; tiles have hairline grout; gravel pure white"
+  },
   {
    "t": "2026-09-24T04:45:45.203Z",
    "m": "P07: budget pass (pack caps, small props untextured, runtime per-level material merge, small props no shadows); 90 indoor props built"
@@ -344,6 +348,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-24T06:56:26.074Z",
+   "src": "/reviews/critic/TEX-r1/living.png",
+   "caption": "TEX r1 critic view"
+  },
+  {
    "t": "2026-09-24T06:10:18.019Z",
    "src": "/reviews/critic/P04-r2/ext_Front_street_east_golden_hour.png",
    "caption": "P04 r2 critic view"
@@ -457,11 +466,6 @@
    "t": "2026-09-23T01:47:16.578Z",
    "src": "/reviews/p01-check/23_ext_garden_sw.png",
    "caption": "P01 first render"
-  },
-  {
-   "t": "2026-09-23T01:17:16.079Z",
-   "src": "/reviews/hf2/hf2-living-room-fireplace-evening-modio.png",
-   "caption": "HF2 reference: living room, evening"
   }
  ]
 }

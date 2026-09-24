@@ -11,6 +11,19 @@ function colorize(g, hex, jitter = 0.08, R = Math.random) {
   g.setAttribute('color', new THREE.BufferAttribute(a, 3));
   return g;
 }
+// Hanging garment silhouette (shoulders, sleeves, tapering body) in the XY plane: width w along X, hanging from
+// y=0 down to -h, thickness t along Z (centred). Extruded with a soft bevel so it reads as fabric, not a slab.
+function garment(w, h, t, R = Math.random) {
+  const s = new THREE.Shape();
+  const sw = w / 2, sl = Math.min(h * 0.75, 0.55 + R() * 0.15), cuff = sw + 0.02;
+  s.moveTo(-0.05, -0.01); s.lineTo(-sw + 0.02, -0.05); s.lineTo(-cuff, -0.1); s.lineTo(-cuff - 0.01, -sl);
+  s.lineTo(-sw + 0.03, -sl + 0.01); s.lineTo(-sw + 0.07, -0.2); s.lineTo(-sw + 0.05, -h); s.lineTo(sw - 0.05, -h);
+  s.lineTo(sw - 0.07, -0.2); s.lineTo(sw - 0.03, -sl + 0.01); s.lineTo(cuff + 0.01, -sl); s.lineTo(cuff, -0.1);
+  s.lineTo(sw - 0.02, -0.05); s.lineTo(0.05, -0.01); s.quadraticCurveTo(0, -0.05, -0.05, -0.01);
+  const g = new THREE.ExtrudeGeometry(s, { depth: Math.max(0.004, t - 0.02), bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.008, bevelSegments: 1, curveSegments: 3 });
+  g.translate(0, 0, -(t - 0.02) / 2);
+  return boxUV(g);
+}
 function clothMat(ctx) {
   if (!ctx.mats.m.cloth_vc) {
     const base = ctx.mats.get('fabric_natural');
@@ -26,7 +39,8 @@ function garments(B, ctx, x0, x1, y, zc, long = false) {
   let x = x0 + 0.04;
   while (x < x1 - 0.05) {
     const t = 0.025 + R() * 0.035, h = (long ? 0.95 : 0.62) + R() * (long ? 0.25 : 0.2), w = 0.42 + R() * 0.06;
-    const g = rbox([-t / 2, -h, -w / 2], [t / 2, -0.06, w / 2], Math.min(0.012, t / 2 - 0.001), 1);
+    const g = garment(w, h - 0.06, t, R);
+    g.rotateY(Math.PI / 2); g.translate(0, -0.06, 0);
     g.applyMatrix4(new THREE.Matrix4().makeRotationZ((R() - 0.5) * 0.06));
     g.translate(x + t / 2, y, zc);
     B.add(cm, colorize(g, CLOTH[Math.floor(R() * CLOTH.length)], 0.1, R));
@@ -161,7 +175,7 @@ export const coat_rail = {
       B.add('black_metal', cyl(0.007, 0.06, [x, y, 0], 10, null, 'z'));
       if (R() < (p.fill ?? 0.7)) {
         const h = 0.7 + R() * 0.35, w = 0.4 + R() * 0.08, t = 0.08 + R() * 0.05;
-        const g = rbox([-w / 2, -h, 0], [w / 2, 0, t], 0.03, 2);
+        const g = garment(w, h, t, R); g.translate(0, 0, t / 2);
         g.applyMatrix4(new THREE.Matrix4().makeRotationX(0.06));
         g.translate(x, y + 0.02, 0.01);
         B.add(cm, colorize(g, ['#2f3a45', '#6a4e3c', '#1f1f1f', '#c9b99a', '#56684f', '#8a3b2b'][Math.floor(R() * 6)], 0.1, R));
@@ -283,6 +297,11 @@ export const boiler = {
     B.add('plastic_white', cyl(0.3, 1.75, [0.75, 0, -0.02], 40));
     B.add('plastic_white', lathe([[0.3, 0], [0.29, 0.06], [0.2, 0.11], [0.001, 0.13]], [0.75, 1.75, -0.02], 40));
     B.add('terracotta', cyl(0.13, 0.36, [-0.62, 1.3, -0.12], 24));
+    // expansion-vessel wall bracket: back plate on the wall, arm, and a steel strap round the vessel
+    B.add('steel', box([-0.68, 1.38, -0.33], [-0.56, 1.56, -0.315]));
+    B.add('steel', box([-0.64, 1.45, -0.315], [-0.6, 1.49, -0.24]));
+    B.add('steel', cyl(0.134, 0.035, [-0.62, 1.45, -0.12], 24));
+    B.add('steel', cyl(0.012, 0.25, [-0.62, 1.66, -0.12], 8));
     for (const y of [0.35, 1.45]) B.add('steel', cyl(0.011, 0.9, [0.3, y, -0.22], 10, null, 'x'));
     const root = B.build('boiler');
     root.userData.colliders = [[[-0.25, 0, -0.33], [1.06, 1.9, 0.33]]];

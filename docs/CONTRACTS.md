@@ -238,3 +238,5 @@
 - **Missing models never throw** in landscape code: `InstancedModels.model()` resolves null (one console warning),
   `kind()` returns null, `add()/size()` ignore it; trees whose model is missing are skipped (ring / far trees use only the
   loaded species); gabion stones build without the boulder relief maps.
+- Round 2: paint mode (textures.js) adds mid/fine tone + roughness breakup and base-of-wall grime (`grime: [amount, floorY1, floorY2]`,
+  default [0.1, 0, 3.15]; ceilings pass [0,0,0]). Plaster/render normals baked stronger (normalK 2.2-3).

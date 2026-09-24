@@ -46,7 +46,7 @@ const PRESETS = {
     skyGrade: { disc: { radiusDeg: 0.55, radiance: [60, 57, 52], glow: [1.2, 1.1, 0.95], glowDeg: 2.5 } },
   },
   golden_hour: {
-    hdri: 'golden_hour', azimuth: 262, el: 8,
+    hdri: 'golden_hour', azimuth: 262, el: 13,
     sunColor: 0xffa45a, sunScale: 1.25, sunIntensity: 3.8, sunMax: 4.6,
     hemiSky: 0xd9b08a, hemiGround: 0x7a5e46, hemiIntensity: 0.05,
     inSky: 0xf0d6b8, inGround: 0xe0b890, hemiInterior: 0.14,
@@ -58,7 +58,7 @@ const PRESETS = {
     skyGrade: {
       tint: { horizon: [1.3, 1.0, 0.72], zenith: [1.02, 0.95, 0.95] }, sunSide: 1.6,
       // spruit_sunrise: power pylons + wires 40-70 deg right of the sun (u 0.62..0.93) -> painted out
-      mask: { u0: 0.62, u1: 0.95, el0: 3, el1: 40, radius: 0.009 },
+      mask: { u0: 0.62, u1: 0.95, el0: 2.5, el1: 40, radius: 0.018 },
       disc: { radiusDeg: 0.75, radiance: [70, 38, 14], glow: [3.2, 1.6, 0.55], glowDeg: 3.5, glow2: [0.9, 0.42, 0.14], glow2Deg: 22 },
     },
   },

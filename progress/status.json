@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T07:09:05.472Z",
+ "updated": "2026-09-24T07:30:00.582Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -61,11 +61,11 @@
   {
    "id": "P07",
    "name": "Furniture & props",
-   "status": "lost",
-   "round": 2,
+   "status": "building",
+   "round": 3,
    "verdict": "HF2 wins 3/3 description-based pairs; every room furnished but sparse, repetitive, box-silhouetted, several placement errors",
    "gap": "Rooms are furnished but not lived-in: handful of hero pieces with almost no small clutter (kitchen ~12 props vs HF2 100+), and pieces repeated, box-silhouetted and unseamed.",
-   "updated": "2026-09-24T07:09:05.430Z"
+   "updated": "2026-09-24T07:09:38.335Z"
   },
   {
    "id": "P08",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T07:30:00.582Z",
+   "m": "TEX r2: stronger plaster/render normals, paint tone/rough breakup + wall grime, render grime/streaks, bathroom grout 3.5mm, 28mm gravel"
+  },
   {
    "t": "2026-09-24T07:05:12.853Z",
    "m": "P04 r3: landscape share of exterior tris 1.27M -> 0.88M (grass 250k->~110k, paving no shadow cast, lighter hedge body/gabions/ornamentals). Exteriors 3.16-3.23M -> 2.77-2.84M. Budget blocked by FURNISH (~2.3M of every exterior frame; 0.53M of it shadow casting) and the N8AO pass re-rendering the scene"

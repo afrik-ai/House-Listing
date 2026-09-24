@@ -214,7 +214,7 @@ export const RECIPES = {
     t.each((u, v, k) => { const bind = smooth(-0.2, 0.3, fbm(u, v, 30, 30, 3, 53)); const f = mix(1, 0.62, bind * 0.6); t.r[k] *= f; t.g[k] *= f; t.b[k] *= f; t.h[k] = Math.max(t.h[k], -1.2); t.rough[k] = clamp(t.rough[k] + 0.05, 0, 1); });
     return { t, mm: S(e) / px, opts: { aoK: 0.2, aoR: 3 } };
   },
-  gravel: (px, e) => ({ t: gravel(px, e, { seed: 52, sizeMM: 28, cover: 2.4, bed: lin('#6d665c'), palette: [lin('#c8c0b2'), lin('#a89e8e'), lin('#8a8478'), lin('#d6cfc2'), lin('#7c6e5e'), lin('#b5a48a')], rough: 0.72, sharp: 0.5, irr: 0.2 }), mm: S(e) / px, opts: { meanLum: 0.27 } }),
+  gravel: (px, e) => ({ t: gravel(px, e, { seed: 52, sizeMM: 28, cover: 2.4, bed: lin('#6d665c'), palette: [lin('#c8c0b2'), lin('#a89e8e'), lin('#8a8478'), lin('#d6cfc2'), lin('#7c6e5e'), lin('#b5a48a')], rough: 0.72, sharp: 0.5, irr: 0.2 }), mm: S(e) / px, opts: { meanLum: 0.2 } }),
   soil_beds: (px, e) => {
     const t = gravel(px, e, { seed: 53, sizeMM: 5, cover: 1.6, bed: lin('#3a2a1e'), palette: [lin('#4a3524'), lin('#3e2c1e'), lin('#56402c'), lin('#33251a'), lin('#7a6a58')], rough: 0.95, sharp: 0.8, irr: 0.45, speck: 0.2 });
     t.each((u, v, k) => { const m = fbm(u, v, 4, 4, 4, 54); const f = 1 + m * 0.25; t.r[k] *= f; t.g[k] *= f; t.b[k] *= f * 0.97; });

@@ -174,5 +174,53 @@
    1280,
    720
   ]
+ },
+ "ext_Garden & pool (south-west)_golden_hour": {
+  "fps": 0,
+  "drawCalls": 1983,
+  "triangles": 3345520,
+  "textures": 428,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 131,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Front (street, east)_night": {
+  "fps": 0,
+  "drawCalls": 1978,
+  "triangles": 3410378,
+  "textures": 436,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 140,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Garden & pool (south-west)_night": {
+  "fps": 0,
+  "drawCalls": 1972,
+  "triangles": 3318758,
+  "textures": 440,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 142,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
  }
 }

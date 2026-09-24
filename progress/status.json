@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T06:10:18.019Z",
+ "updated": "2026-09-24T06:10:55.982Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -44,10 +44,10 @@
    "id": "P05",
    "name": "Lighting & atmosphere",
    "status": "building",
-   "round": 1,
+   "round": 2,
    "verdict": "",
    "gap": "",
-   "updated": "2026-09-23T16:28:43.568Z"
+   "updated": "2026-09-24T06:10:55.982Z"
   },
   {
    "id": "P06",

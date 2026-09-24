@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T12:22:18.579Z",
+ "updated": "2026-09-24T12:22:44.931Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T12:22:44.892Z",
+   "m": "TEX critic r3: HF2 - kitchen worktop still woven fabric and bathroom tiles have painted black grout"
+  },
   {
    "t": "2026-09-24T08:51:14.560Z",
    "m": "TEX r3: rock_limestone + concrete_aggregate sets; gabions textured w/ 4 tones; slabs/sidewalk/coping aggregate; bath grout 4.5mm"
@@ -364,6 +368,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-24T12:22:44.931Z",
+   "src": "/reviews/critic/TEX-r3/ext_front_east.png",
+   "caption": "TEX r3 critic view"
+  },
+  {
    "t": "2026-09-24T08:38:40.759Z",
    "src": "/reviews/critic/TEX-r2/pool_surround.png",
    "caption": "TEX r2 critic view"
@@ -477,11 +486,6 @@
    "t": "2026-09-23T01:56:42.153Z",
    "src": "/reviews/P01-r1/flow_title_card_b.png",
    "caption": "P01 r1 critic view"
-  },
-  {
-   "t": "2026-09-23T01:48:04.638Z",
-   "src": "/reviews/p01-check/01_living.png",
-   "caption": "P01 living room, placeholder geometry"
   }
  ]
 }

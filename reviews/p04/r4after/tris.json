@@ -1,0 +1,30 @@
+{
+ "ext_front_east": {
+  "base": 2837114,
+  "no_FURNISH": 520970,
+  "no_LANDSCAPE": 1955154,
+  "no_HOUSE": 2785193,
+  "furnish_noShadow": 2303749
+ },
+ "ext_garden_sw": {
+  "base": 2772500,
+  "no_FURNISH": 484154,
+  "no_LANDSCAPE": 1955154,
+  "no_HOUSE": 2720579,
+  "furnish_noShadow": 2239135
+ },
+ "ext_south": {
+  "base": 2772082,
+  "no_FURNISH": 487378,
+  "no_LANDSCAPE": 1939858,
+  "no_HOUSE": 2720161,
+  "furnish_noShadow": 2238717
+ },
+ "ext_north_west": {
+  "base": 2838650,
+  "no_FURNISH": 521738,
+  "no_LANDSCAPE": 1955154,
+  "no_HOUSE": 2786729,
+  "furnish_noShadow": 2305285
+ }
+}

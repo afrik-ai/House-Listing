@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T06:56:26.074Z",
+ "updated": "2026-09-24T07:05:12.853Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T07:05:12.853Z",
+   "m": "P04 r3: landscape share of exterior tris 1.27M -> 0.88M (grass 250k->~110k, paving no shadow cast, lighter hedge body/gabions/ornamentals). Exteriors 3.16-3.23M -> 2.77-2.84M. Budget blocked by FURNISH (~2.3M of every exterior frame; 0.53M of it shadow casting) and the N8AO pass re-rendering the scene"
+  },
   {
    "t": "2026-09-24T06:56:25.688Z",
    "m": "TEX critic r1: HF2 - walls/render are flat colour with no plaster/stucco texture; tiles have hairline grout; gravel pure white"

@@ -41,7 +41,7 @@ const PRESETS = {
     envIntensity: 0.55, bgIntensity: 0.8, exposure: 0.9, iblSaturation: 0.6,
     interiorEnv: 0.3, interiorExposure: 1.9, wbOut: [1.0, 1.0, 1.0], wbIn: [1.03, 1.0, 0.95],
     bounce: 1.25, fixtures: 0, bulbs: 0, groundAlbedo: [0.17, 0.16, 0.13], grass: [0.06, 0.1, 0.03],
-    grade: { saturation: 0.1, contrast: 0.12, bloom: 0.7, bloomThreshold: 1.0, vignette: 0.34 },
+    grade: { saturation: 0.12, contrast: 0.14, bloom: 0.45, bloomThreshold: 2.6, vignette: 0.3 },
     sky: { turbidity: 3, rayleigh: 1.2, mie: 0.004, mieG: 0.8 },
     skyGrade: { disc: { radiusDeg: 0.55, radiance: [60, 57, 52], glow: [1.2, 1.1, 0.95], glowDeg: 2.5 } },
   },

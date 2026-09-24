@@ -161,7 +161,7 @@ export const RECIPES = {
   oak_plank: (px, e) => {
     const { t, mm } = planks(px, { sizeMM: S(e), cols: 11, off: 99 / 186.18, joints: [1, 2], seed: 11,
       base: lin('#b08a5e'), late: lin('#7a5534'), toneVar: 0.1, hueVar: 0.05, ringMM: 4.5, lateK: 0.45,
-      grooveMM: 0.5, bevelMM: 1.6, rough: 0.42, knotP: 0.12, knotR: 5, quarter: 0.3 });
+      grooveMM: 0.9, bevelMM: 2.4, rough: 0.42, knotP: 0.12, knotR: 5, quarter: 0.3 });
     return { t, mm, opts: { meanLum: 0.19, normalK: 1 } };
   },
   parquet_brown: (px, e) => ({ ...planks(px, { sizeMM: S(e), cols: 18, off: 0, joints: [3, 4], seed: 21,
@@ -204,17 +204,17 @@ export const RECIPES = {
       } }), opts: {} };
   },
 
-  plaster_white_int: (px, e) => ({ t: plaster(px, e, { col: lin('#e9e6e0'), cloud: 0.025, dirt: 0.03, trowMM: 0.05, stipH: 0.03, stipMM: 1.4, stipC: 0.01, rough: 0.9 }), mm: S(e) / px, opts: {} }),
-  render_white_ext: (px, e) => ({ t: plaster(px, e, { col: lin('#e8e6e0'), cloud: 0.04, dirt: 0.08, trowMM: 0.08, stipH: 0.08, stipMM: 2.5, stipC: 0.02, grainMM: 3.5, grainH: 0.35, grainC: -0.05, pits: 1, rough: 0.93, cloudF: 2 }), mm: S(e) / px, opts: { aoK: 0.35, aoR: 2 } }),
-  plaster_white_ext_alt: (px, e) => ({ t: plaster(px, e, { col: lin('#e6e4de'), cloud: 0.035, dirt: 0.05, trowMM: 0.25, trowF: 5, trowAniso: 0.6, stipH: 0.03, stipMM: 1.6, stipC: 0.01, pits: 1, rough: 0.88, trowGloss: 0.1 }), mm: S(e) / px, opts: {} }),
+  plaster_white_int: (px, e) => ({ t: plaster(px, e, { col: lin('#e9e6e0'), cloud: 0.03, dirt: 0.04, trowMM: 0.35, trowF: 6, stipH: 0.22, stipMM: 2.2, stipC: 0.02, rough: 0.9 }), mm: S(e) / px, opts: { normalK: 3 } }),
+  render_white_ext: (px, e) => ({ t: plaster(px, e, { col: lin('#e8e6e0'), cloud: 0.08, dirt: 0.16, trowMM: 0.4, stipH: 0.3, stipMM: 2.5, stipC: 0.04, grainMM: 3.5, grainH: 1.0, grainC: -0.08, pits: 1, rough: 0.93, cloudF: 2 }), mm: S(e) / px, opts: { aoK: 0.35, aoR: 2, normalK: 2.2 } }),
+  plaster_white_ext_alt: (px, e) => ({ t: plaster(px, e, { col: lin('#e6e4de'), cloud: 0.035, dirt: 0.05, trowMM: 0.7, trowF: 5, trowAniso: 0.6, stipH: 0.12, stipMM: 1.6, stipC: 0.01, pits: 1, rough: 0.88, trowGloss: 0.1 }), mm: S(e) / px, opts: { normalK: 2.5 } }),
   concrete_screed: (px, e) => ({ t: concrete(px, e, { col: lin('#9a9893'), cloud: 0.2, agg: 0.03, speck: 0.05, poreDensity: 0.25, poreSize: 0.8, rough: 0.72, burnR: 0.3, burnC: -0.06 }), mm: S(e) / px, opts: { meanLum: 0.31 } }),
-  concrete_smooth_light: (px, e) => ({ t: concrete(px, e, { col: lin('#bdbbb5'), cloud: 0.1, agg: 0.02, speck: 0.03, poreDensity: 0.3, poreCellMM: 10, poreSize: 0.7, rough: 0.8, burnR: 0.1, burnC: 0.0, wave: 0.03 }), mm: S(e) / px, opts: { meanLum: 0.48 } }),
+  concrete_smooth_light: (px, e) => ({ t: concrete(px, e, { col: lin('#bdbbb5'), cloud: 0.1, agg: 0.02, speck: 0.03, poreDensity: 0.12, poreCellMM: 10, poreSize: 0.45, rough: 0.8, burnR: 0.1, burnC: 0.0, wave: 0.03 }), mm: S(e) / px, opts: { meanLum: 0.48 } }),
   asphalt: (px, e) => {
     const t = gravel(px, e, { seed: 51, sizeMM: 7, cover: 1.3, bed: lin('#2a2a2a'), palette: [lin('#4a4a48'), lin('#5c5b58'), lin('#3a3a3a'), lin('#6e6b66'), lin('#35332f')], rough: 0.85, sharp: 0.25, irr: 0.3, speck: 0.15 });
     t.each((u, v, k) => { const bind = smooth(-0.2, 0.3, fbm(u, v, 30, 30, 3, 53)); const f = mix(1, 0.62, bind * 0.6); t.r[k] *= f; t.g[k] *= f; t.b[k] *= f; t.h[k] = Math.max(t.h[k], -1.2); t.rough[k] = clamp(t.rough[k] + 0.05, 0, 1); });
     return { t, mm: S(e) / px, opts: { aoK: 0.2, aoR: 3 } };
   },
-  gravel: (px, e) => ({ t: gravel(px, e, { seed: 52, sizeMM: 14, cover: 2.2, bed: lin('#6d665c'), palette: [lin('#c8c0b2'), lin('#a89e8e'), lin('#8a8478'), lin('#d6cfc2'), lin('#7c6e5e'), lin('#b5a48a')], rough: 0.72, sharp: 0.5, irr: 0.2 }), mm: S(e) / px, opts: {} }),
+  gravel: (px, e) => ({ t: gravel(px, e, { seed: 52, sizeMM: 28, cover: 2.4, bed: lin('#6d665c'), palette: [lin('#c8c0b2'), lin('#a89e8e'), lin('#8a8478'), lin('#d6cfc2'), lin('#7c6e5e'), lin('#b5a48a')], rough: 0.72, sharp: 0.5, irr: 0.2 }), mm: S(e) / px, opts: { meanLum: 0.27 } }),
   soil_beds: (px, e) => {
     const t = gravel(px, e, { seed: 53, sizeMM: 5, cover: 1.6, bed: lin('#3a2a1e'), palette: [lin('#4a3524'), lin('#3e2c1e'), lin('#56402c'), lin('#33251a'), lin('#7a6a58')], rough: 0.95, sharp: 0.8, irr: 0.45, speck: 0.2 });
     t.each((u, v, k) => { const m = fbm(u, v, 4, 4, 4, 54); const f = 1 + m * 0.25; t.r[k] *= f; t.g[k] *= f; t.b[k] *= f * 0.97; });

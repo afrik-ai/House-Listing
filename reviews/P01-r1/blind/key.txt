@@ -1,0 +1,5 @@
+pair1: ours=A (ultra_day_living.png) hf2=../hf2/hf2-loft-living-room-brick-daylight.png
+pair2: ours=B (ultra_day_ext_garden_sw.png) hf2=../hf2/hf2-aframe-cabin-exterior-forest-day.png
+pair3: ours=A (ultra_night_living.png) hf2=../hf2/hf2-living-room-fireplace-evening-modio.png
+pair4: ours=A (ultra_night_ext_front_east.png) hf2=../hf2/hf2-modern-villa-exterior-night-neon.png
+pair5: ours=A (ultra_day_office.png) hf2=../hf2/hf2-empty-room-paint-roller-fpv-day.png

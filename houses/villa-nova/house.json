@@ -1,0 +1,1125 @@
+{
+  "id": "villa-nova",
+  "name": "Villa Nova",
+  "tagline": "Modern two-storey villa with pool, covered terrace and double garage",
+  "style": "Contemporary cubist: white render, anthracite (RAL 7016) panels, larch wood slats, flat roofs at staggered heights, glass balustrade, black aluminium frames",
+  "units": "meters",
+  "coords": "X = east, Z = south (toward the street is EAST; terrace + pool are WEST), Y = up. Origin (0,0,0) = ground-floor finished-floor level at the NORTH-WEST corner of the house body (wall centre-lines). All room rects are [x, z, w, d] on WALL CENTRE-LINES; exterior walls are 0.30 thick, interior 0.12.",
+  "plan_notes": "P02 corrected the transcribed rects so that each level tiles cleanly (no overlaps, no gaps). Original transcriptions are kept in rect_src. 'rects' (plural) = L-shaped room made of several rects.",
+  "site": {
+    "width_x": 24.66,
+    "depth_z": 21.5,
+    "setback_w": 3,
+    "setback_e": 4,
+    "setback_n": 3,
+    "setback_s": 3,
+    "street_side": "east",
+    "grade_y": -0.3,
+    "pool": {
+      "x": -9.5,
+      "z": 6,
+      "w": 7,
+      "d": 3.5,
+      "depth": 1.5
+    }
+  },
+  "levels": [
+    {
+      "id": "ground",
+      "elevation": 0,
+      "clear_height": 2.85,
+      "slab": 0.3
+    },
+    {
+      "id": "first",
+      "elevation": 3.15,
+      "clear_height": 2.7,
+      "slab": 0.3,
+      "roof_parapet": 0.45
+    }
+  ],
+  "ground_rooms": [
+    {
+      "id": "living",
+      "name": "Living room + Dining",
+      "area": 45.84,
+      "rect": [0, 4.82, 8.05, 5.5],
+      "rect_src": [0, 4.82, 8.05, 5.5],
+      "floor": "oak_plank",
+      "notes": "TV wall + fireplace on the NORTH wall; full-height sliding glass on WEST wall to terrace and on SOUTH wall to garden; dining table for 8 at the east end"
+    },
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "area": 15.25,
+      "rect": [8.05, 6.46, 3.95, 3.86],
+      "rect_src": [8.05, 6.46, 3.95, 3.86],
+      "floor": "large_format_tile_grey",
+      "notes": "Island facing living; run of matte anthracite cabinets on the EAST wall; window on SOUTH wall with slat screen outside"
+    },
+    {
+      "id": "cloak",
+      "name": "Cloakroom",
+      "area": 2.58,
+      "rect": [8.05, 4.52, 1.45, 1.94],
+      "rect_src": [8.05, 4.82, 2, 1.3],
+      "floor": "large_format_tile_grey"
+    },
+    {
+      "id": "hall",
+      "name": "Hall",
+      "area": 8.97,
+      "rect": [1.5, 2.6, 6.55, 2.22],
+      "rect_src": [5.5, 3.2, 3, 3],
+      "floor": "large_format_tile_grey",
+      "notes": "open to living and vestibule; straight stair along the NORTH wall rising toward the west (first riser x=9.0 inside the vestibule, top x=4.68)"
+    },
+    {
+      "id": "vestibule",
+      "name": "Vestibule",
+      "area": 5.66,
+      "rect": [8.05, 2.6, 2.95, 1.92],
+      "rect_src": [8.5, 3.2, 2.5, 2.3],
+      "floor": "large_format_tile_grey",
+      "notes": "front door on EAST wall, glazed sidelight, larch-slat-clad recess outside; door to garage on the north wall"
+    },
+    {
+      "id": "storage_e",
+      "name": "Storage",
+      "area": 2.93,
+      "rect": [9.5, 4.52, 1.5, 1.94],
+      "rect_src": [8.5, 1.9, 2.2, 1.3],
+      "floor": "large_format_tile_grey"
+    },
+    {
+      "id": "storage_n",
+      "name": "Storage",
+      "area": 3.12,
+      "rect": [3.5, 0, 1.5, 2.6],
+      "rect_src": [5.5, 1.5, 2, 1.6],
+      "floor": "large_format_tile_grey"
+    },
+    {
+      "id": "office",
+      "name": "Office",
+      "area": 9.1,
+      "rect": [0, 0, 3.5, 2.6],
+      "rect_src": [1.6, 0, 3.54, 2.57],
+      "floor": "oak_plank",
+      "notes": "window WEST to terrace"
+    },
+    {
+      "id": "wc",
+      "name": "WC",
+      "area": 3.27,
+      "rect": [0, 2.6, 1.5, 2.22],
+      "rect_src": [1.6, 2.6, 1.6, 2.1],
+      "floor": "small_tile_white"
+    },
+    {
+      "id": "boiler",
+      "name": "Boiler room",
+      "area": 6.5,
+      "rect": [5, 0, 2.6, 2.6],
+      "rect_src": [5.5, -3.23, 2, 3.23],
+      "floor": "concrete_screed",
+      "notes": "door to the garage"
+    },
+    {
+      "id": "garage",
+      "name": "Garage",
+      "area": 33.64,
+      "rect": [7.6, -3.23, 5.8, 5.83],
+      "rect_src": [7.6, -3.23, 5.8, 5.8],
+      "floor": "concrete_screed",
+      "notes": "double sectional door on EAST wall (anthracite); two cars"
+    }
+  ],
+  "ground_exterior": [
+    {
+      "id": "terrace",
+      "name": "Covered terrace",
+      "rect": [-2.6, -0.15, 2.6, 10.62],
+      "rect_src": [-2.49, 0, 2.49, 10.3],
+      "y": 0,
+      "floor": "large_format_tile_light",
+      "notes": "WEST of living, under a deep white cantilevered pergola with 2 square white pillars; outdoor dining + lounge sofa"
+    },
+    {
+      "id": "terrace_steps",
+      "name": "Terrace steps",
+      "rects": [
+        [-2.95, -0.5, 2.95, 0.35],
+        [-2.95, -0.15, 0.35, 1.75]
+      ],
+      "y": -0.15,
+      "floor": "large_format_tile_light",
+      "notes": "north-west corner only; W and S sides meet P04 deck/patio at -0.14",
+      "rect": [-2.95, -0.5, 0.35, 2.1]
+    },
+    {
+      "id": "doorsteps",
+      "name": "Terrace edge",
+      "rect": [-2.95, 10.47, 15.1, 0.35],
+      "rects": [
+        [-2.95, 10.47, 15.1, 0.35],
+        [-2.95, 1.6, 0.35, 8.87]
+      ],
+      "y": -0.07,
+      "floor": "large_format_tile_light"
+    },
+    {
+      "id": "entrance",
+      "name": "Entrance platform",
+      "rect": [11, 2.45, 2.55, 4.16],
+      "rect_src": [11, 3.2, 2.24, 2.3],
+      "y": 0,
+      "floor": "large_format_tile_light",
+      "notes": "EAST, in the larch-clad recess under the entrance canopy; wide steps down to the driveway"
+    },
+    {
+      "id": "entrance_steps",
+      "name": "Entrance steps",
+      "rect": [13.55, 2.45, 0.7, 4.16],
+      "y": -0.125,
+      "floor": "concrete_screed"
+    },
+    {
+      "id": "driveway",
+      "name": "Driveway",
+      "rect": [13.55, -3.6, 7.85, 6.15],
+      "rect_src": [13.4, -3.5, 8, 7.5],
+      "y": 0,
+      "y_far": -0.3,
+      "floor": "concrete_pavers",
+      "notes": "slopes from garage floor (0.0) down to street grade (-0.30) at the east end"
+    }
+  ],
+  "first_rooms": [
+    {
+      "id": "master",
+      "name": "Master bedroom",
+      "area": 18.53,
+      "rects": [
+        [0, 4.82, 3.37, 5.5],
+        [1.6, 2.6, 1.77, 2.22]
+      ],
+      "rect_src": [0, 4.82, 3.37, 5.5],
+      "floor": "oak_plank",
+      "notes": "balcony WEST through sliding glass; dressing alcove to the north leads to wardrobe + en-suite; two armchairs at the window"
+    },
+    {
+      "id": "wardrobe_a",
+      "name": "Wardrobe",
+      "area": 3.51,
+      "rect": [0, 2.6, 1.6, 2.22],
+      "rect_src": [1, 2.9, 2, 1.75],
+      "floor": "oak_plank"
+    },
+    {
+      "id": "wardrobe_b",
+      "name": "Wardrobe",
+      "area": 6.85,
+      "rect": [3.37, 0, 2.63, 2.6],
+      "rect_src": [3.37, 3.2, 2.2, 3.1],
+      "floor": "oak_plank"
+    },
+    {
+      "id": "bath_master",
+      "name": "Master bathroom",
+      "area": 9.1,
+      "rect": [0, 0, 3.37, 2.6],
+      "rect_src": [1, 0, 3.5, 2.6],
+      "floor": "large_format_tile_grey",
+      "notes": "freestanding tub under WEST window, double vanity, glass shower"
+    },
+    {
+      "id": "hall1",
+      "name": "Landing",
+      "area": 10.1,
+      "rect_src": [5.5, 3.2, 3.2, 3.2],
+      "floor": "oak_plank",
+      "notes": "gallery landing around the stair void (x 4.68..9.2, z 2.66..3.66) + corridor x 9.2..10.2 to bath2/bath3",
+      "rects": [
+        [3.37, 2.6, 5.83, 3.86],
+        [9.2, 2.6, 1, 2.22]
+      ]
+    },
+    {
+      "id": "bed2",
+      "name": "Bedroom",
+      "area": 14.05,
+      "rect": [3.37, 6.46, 3.64, 3.86],
+      "rect_src": [3.37, 6.46, 3.64, 3.86],
+      "floor": "oak_plank",
+      "notes": "window SOUTH"
+    },
+    {
+      "id": "bed3",
+      "name": "Bedroom",
+      "area": 14.01,
+      "rect": [7.01, 6.46, 3.99, 3.86],
+      "rect_src": [7.01, 6.96, 3.9, 3.36],
+      "floor": "oak_plank",
+      "notes": "window SOUTH, desk"
+    },
+    {
+      "id": "bath2",
+      "name": "Bathroom",
+      "area": 10.89,
+      "rect": [6, 0, 5, 2.6],
+      "rect_src": [7.6, 0, 3.3, 3.3],
+      "floor": "large_format_tile_grey",
+      "notes": "walk-in shower + tub"
+    },
+    {
+      "id": "bath3",
+      "name": "Bathroom",
+      "area": 3.81,
+      "rect": [10.2, 2.6, 1.8, 2.22],
+      "rect_src": [8.7, 3.3, 2.2, 1.7],
+      "floor": "small_tile_white",
+      "notes": "in the projecting concrete block over the entrance recess; narrow vertical window EAST"
+    },
+    {
+      "id": "laundry",
+      "name": "Laundry",
+      "area": 3.1,
+      "rect": [9.2, 4.82, 1.8, 1.64],
+      "rect_src": [8.7, 5, 2.2, 1.4],
+      "floor": "large_format_tile_grey"
+    }
+  ],
+  "first_exterior": [
+    {
+      "id": "balcony",
+      "name": "Balcony",
+      "rect": [-2.6, 4.82, 2.6, 5.65],
+      "rect_src": [-2.49, 4.82, 2.49, 5.5],
+      "y": 3.15,
+      "floor": "large_format_tile_light",
+      "notes": "WEST of master, frameless glass balustrade, hanging egg chair, sits on the terrace pergola roof"
+    }
+  ],
+  "massing": "Ground floor footprint is larger than the first floor. The first floor is a white box (bedrooms band on the SOUTH) with an anthracite recessed band and larch wood reveals around the big windows. The garage/boiler block on the NORTH-EAST is single storey with a low hipped standing-seam anthracite roof. First-floor central roof is a low anthracite hip. Deep white fascia bands (~0.5 m) wrap every flat roof edge.",
+  "walls": {
+    "exterior": 0.3,
+    "interior": 0.12,
+    "open": {
+      "ground": [
+        ["living", "hall"],
+        ["living", "kitchen"],
+        ["hall", "vestibule"]
+      ],
+      "first": []
+    }
+  },
+  "structure": {
+    "foundation_bottom": -0.6,
+    "canopies": {
+      "ground": [
+        [11, 2.6, 2.4, 3.86]
+      ]
+    },
+    "boxes": [
+      {
+        "id": "terrace_slab",
+        "rect": [-2.6, -0.15, 2.6, 10.62],
+        "y": [-0.6, 0]
+      },
+      {
+        "id": "pergola_slab",
+        "rect": [-2.6, -0.15, 2.6, 10.62],
+        "y": [2.65, 3.15]
+      },
+      {
+        "id": "pillar_n",
+        "rect": [-2.55, -0.1, 0.3, 0.3],
+        "y": [-0.6, 2.65]
+      },
+      {
+        "id": "pillar_s",
+        "rect": [-2.55, 10.12, 0.3, 0.3],
+        "y": [-0.6, 2.65]
+      },
+      {
+        "id": "entrance_platform",
+        "rect": [11, 2.6, 2.55, 4.01],
+        "y": [-0.6, 0]
+      },
+      {
+        "id": "entrance_step",
+        "rect": [13.55, 2.45, 0.7, 4.16],
+        "y": [-0.6, -0.125],
+        "notes": "2 risers of 0.125 down to P04 entrance path (-0.25) at x=14.25"
+      },
+      {
+        "id": "canopy_slab",
+        "rect": [11, 2.45, 3.4, 4.16],
+        "y": [2.7, 3.15],
+        "notes": "deep white canopy over the front-door recess, projects 0.85 m beyond the garage face"
+      },
+      {
+        "id": "concrete_block_top",
+        "rect": [10.85, 2.45, 1.3, 2.52],
+        "y": [6.15, 6.9],
+        "notes": "tall concrete-look block rises above the parapets"
+      },
+      {
+        "id": "terrace_step_n",
+        "rect": [-2.95, -0.5, 2.95, 0.35],
+        "y": [-0.6, -0.15],
+        "notes": "lawn (-0.30) -> terrace (0.0), 2 x 0.15"
+      },
+      {
+        "id": "terrace_step_w",
+        "rect": [-2.95, -0.15, 0.35, 1.75],
+        "y": [-0.6, -0.15]
+      },
+      {
+        "id": "threshold_strip_s",
+        "rect": [-2.95, 10.47, 15.1, 0.35],
+        "y": [-0.6, -0.07],
+        "notes": "doorstep strip along the south sliders, sits 70 mm above P04 patio (-0.14)"
+      },
+      {
+        "id": "threshold_strip_w",
+        "rect": [-2.95, 1.6, 0.35, 8.87],
+        "y": [-0.6, -0.07],
+        "notes": "terrace edge strip over P04 pool deck (-0.14)"
+      }
+    ],
+    "voids": [
+      {
+        "id": "stair_void",
+        "level": "first",
+        "rect": [4.68, 2.66, 4.52, 1],
+        "notes": "covers the whole flight (first riser x=9.0) -> full headroom"
+      }
+    ],
+    "col_ramps": [
+      {
+        "id": "entrance",
+        "axis": "x",
+        "slope": [15.35, -0.32, 13.55, 0],
+        "span": [2.45, 6.61],
+        "notes": "plane through both step nosings"
+      },
+      {
+        "id": "south",
+        "axis": "z",
+        "slope": [12.07, -0.32, 10.47, 0],
+        "span": [-2.95, 12.15]
+      },
+      {
+        "id": "west_a",
+        "axis": "x",
+        "slope": [-4.2, -0.32, -2.6, 0],
+        "span": [1.6, 5.9]
+      },
+      {
+        "id": "west_b",
+        "axis": "x",
+        "slope": [-4.2, -0.32, -2.6, 0],
+        "span": [9.6, 10.47]
+      },
+      {
+        "id": "north",
+        "axis": "z",
+        "slope": [-0.9, -0.32, -0.15, 0],
+        "span": [-2.95, 0]
+      },
+      {
+        "id": "northwest",
+        "axis": "x",
+        "slope": [-3.35, -0.32, -2.6, 0],
+        "span": [-0.15, 1.6]
+      }
+    ]
+  },
+  "roofs": [
+    {
+      "id": "roof_ground",
+      "type": "flat",
+      "top": 3.15,
+      "parapet": 0.35,
+      "coping": true,
+      "rects": [
+        [11, 0, 2.4, 6.46],
+        [11, 6.46, 1, 3.86],
+        [7.6, -3.23, 5.8, 3.23]
+      ],
+      "parapet_skip": [
+        [0, 0, 11, 10.32],
+        [11, 2.6, 1, 2.22]
+      ],
+      "notes": "garage + entrance + kitchen strip: flat white band, garage hip sits inside"
+    },
+    {
+      "id": "roof_first",
+      "type": "flat",
+      "top": 6.15,
+      "parapet": 0.45,
+      "coping": true,
+      "rects": [
+        [0, 0, 3.37, 10.32],
+        [3.37, 6.46, 7.63, 3.86]
+      ],
+      "parapet_skip": [],
+      "notes": "white box (W + S bands)"
+    },
+    {
+      "id": "roof_centre_flat",
+      "type": "flat",
+      "top": 6.15,
+      "parapet": 0.45,
+      "coping": true,
+      "rects": [
+        [3.37, 0, 7.63, 6.46],
+        [11, 2.6, 1, 2.22]
+      ],
+      "parapet_skip": [
+        [0, 0, 3.37, 10.32],
+        [3.37, 6.46, 7.63, 3.86],
+        [10.85, 2.45, 1.3, 2.52]
+      ],
+      "notes": "anthracite centre: parapet band, hip behind it"
+    },
+    {
+      "id": "roof_centre",
+      "type": "hip",
+      "base": 6.15,
+      "pitch": 12,
+      "thickness": 0.18,
+      "outline": [3.52, 0.15, 7.33, 6.16],
+      "seam_spacing": 0.5,
+      "notes": "inside the parapets; only the top peeks above"
+    },
+    {
+      "id": "roof_garage",
+      "type": "hip",
+      "base": 3.15,
+      "pitch": 12,
+      "thickness": 0.2,
+      "outline": [7.75, -3.08, 5.5, 2.93],
+      "seam_spacing": 0.5,
+      "notes": "inside the garage parapet band"
+    }
+  ],
+  "facade_zones": [
+    {
+      "id": "concrete_block",
+      "material": "concrete_block_ext",
+      "panels": false,
+      "box": [10.84, 2.8, 2.3, 12.3, 6.95, 5.1]
+    },
+    {
+      "id": "centre_band",
+      "material": "wall_ext_anthracite",
+      "panels": true,
+      "box": [3.36, 3.15, -0.3, 11.3, 6.15, 6.46]
+    },
+    {
+      "id": "entrance_recess",
+      "material": "wall_ext_anthracite",
+      "panels": false,
+      "box": [10.8, 0, 2.6, 13.5, 2.7, 6.35]
+    }
+  ],
+  "openings": [
+    {
+      "id": "W_living_w",
+      "level": "ground",
+      "type": "slide",
+      "at": [0, 7.57],
+      "width": 4.9,
+      "height": 2.75,
+      "sill": 0,
+      "panes": 4,
+      "open_panel": 1
+    },
+    {
+      "id": "W_living_s",
+      "level": "ground",
+      "type": "slide",
+      "at": [4, 10.32],
+      "width": 6.9,
+      "height": 2.75,
+      "sill": 0,
+      "panes": 4,
+      "open_panel": 0
+    },
+    {
+      "id": "W_kitchen_s",
+      "level": "ground",
+      "type": "window",
+      "at": [10, 10.32],
+      "width": 2.6,
+      "height": 1.3,
+      "sill": 0.95,
+      "panes": 2
+    },
+    {
+      "id": "W_kitchen_e",
+      "level": "ground",
+      "type": "window",
+      "at": [12, 8.4],
+      "width": 3.2,
+      "height": 0.8,
+      "sill": 1.1,
+      "panes": 3,
+      "notes": "wide low window in the projecting white ground-floor band (street side)"
+    },
+    {
+      "id": "W_office_w",
+      "level": "ground",
+      "type": "window",
+      "at": [0, 1.3],
+      "width": 1.8,
+      "height": 2.1,
+      "sill": 0.45,
+      "panes": 1
+    },
+    {
+      "id": "W_office_n",
+      "level": "ground",
+      "type": "window",
+      "at": [1.75, 0],
+      "width": 1.2,
+      "height": 1.4,
+      "sill": 0.9,
+      "panes": 1
+    },
+    {
+      "id": "W_wc_w",
+      "level": "ground",
+      "type": "window",
+      "at": [0, 3.71],
+      "width": 0.6,
+      "height": 0.7,
+      "sill": 1.6,
+      "panes": 1
+    },
+    {
+      "id": "W_boiler_n",
+      "level": "ground",
+      "type": "window",
+      "at": [6.3, 0],
+      "width": 0.8,
+      "height": 0.8,
+      "sill": 1.5,
+      "panes": 1
+    },
+    {
+      "id": "W_garage_n",
+      "level": "ground",
+      "type": "window",
+      "at": [10.5, -3.23],
+      "width": 2.4,
+      "height": 0.6,
+      "sill": 1.8,
+      "panes": 2
+    },
+    {
+      "id": "W_front_side",
+      "level": "ground",
+      "type": "window",
+      "at": [11, 2.93],
+      "width": 0.36,
+      "height": 2.45,
+      "sill": 0,
+      "panes": 1,
+      "reveal": "wood_slats"
+    },
+    {
+      "id": "G_garage",
+      "level": "ground",
+      "type": "garage",
+      "at": [13.4, -0.315],
+      "width": 4.8,
+      "height": 2.3,
+      "sill": 0
+    },
+    {
+      "id": "D_front",
+      "level": "ground",
+      "type": "front_door",
+      "at": [11, 3.8],
+      "width": 1.1,
+      "height": 2.45,
+      "hinge": "min",
+      "swing_into": "vestibule",
+      "reveal": "wood_slats"
+    },
+    {
+      "id": "D_garage",
+      "level": "ground",
+      "type": "door",
+      "at": [9.95, 2.6],
+      "width": 0.9,
+      "height": 2.13,
+      "hinge": "max",
+      "swing_into": "garage"
+    },
+    {
+      "id": "D_office",
+      "level": "ground",
+      "type": "door",
+      "at": [2.6, 2.6],
+      "width": 0.86,
+      "height": 2.13,
+      "hinge": "max",
+      "swing_into": "office"
+    },
+    {
+      "id": "D_wc",
+      "level": "ground",
+      "type": "door",
+      "at": [1.5, 3.3],
+      "width": 0.8,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "wc"
+    },
+    {
+      "id": "D_storage_n",
+      "level": "ground",
+      "type": "door",
+      "at": [4.05, 2.6],
+      "width": 0.8,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "storage_n"
+    },
+    {
+      "id": "D_boiler",
+      "level": "ground",
+      "type": "door",
+      "at": [7.6, 1.4],
+      "width": 0.86,
+      "height": 2.13,
+      "hinge": "max",
+      "swing_into": "boiler"
+    },
+    {
+      "id": "D_cloak",
+      "level": "ground",
+      "type": "door",
+      "at": [8.75, 4.52],
+      "width": 0.8,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "cloak"
+    },
+    {
+      "id": "D_storage_e",
+      "level": "ground",
+      "type": "door",
+      "at": [10.25, 4.52],
+      "width": 0.8,
+      "height": 2.13,
+      "hinge": "max",
+      "swing_into": "storage_e"
+    },
+    {
+      "id": "W_master_w",
+      "level": "first",
+      "type": "slide",
+      "at": [0, 7.57],
+      "width": 4.6,
+      "height": 2.5,
+      "sill": 0,
+      "panes": 3,
+      "open_panel": 1
+    },
+    {
+      "id": "W_master_s",
+      "level": "first",
+      "type": "window",
+      "at": [1.7, 10.32],
+      "width": 2.2,
+      "height": 2,
+      "sill": 0.5,
+      "panes": 1,
+      "reveal": "wood_slats",
+      "surround": true
+    },
+    {
+      "id": "W_bed2_s",
+      "level": "first",
+      "type": "window",
+      "at": [5.19, 10.32],
+      "width": 2.6,
+      "height": 2.1,
+      "sill": 0.4,
+      "panes": 2,
+      "reveal": "wood_slats",
+      "surround": true
+    },
+    {
+      "id": "W_bed3_s",
+      "level": "first",
+      "type": "window",
+      "at": [9, 10.32],
+      "width": 2.6,
+      "height": 2.1,
+      "sill": 0.4,
+      "panes": 2,
+      "reveal": "wood_slats",
+      "surround": true
+    },
+    {
+      "id": "W_bed3_e",
+      "level": "first",
+      "type": "window",
+      "at": [11, 8.4],
+      "width": 2.4,
+      "height": 2.1,
+      "sill": 0.4,
+      "panes": 2,
+      "reveal": "wood_slats",
+      "surround": true,
+      "notes": "street side: one large window with larch surround"
+    },
+    {
+      "id": "W_bathm_w",
+      "level": "first",
+      "type": "window",
+      "at": [0, 1.3],
+      "width": 1.6,
+      "height": 1.6,
+      "sill": 0.6,
+      "panes": 1
+    },
+    {
+      "id": "W_wardb_n",
+      "level": "first",
+      "type": "window",
+      "at": [4.7, 0],
+      "width": 0.8,
+      "height": 0.7,
+      "sill": 1.5,
+      "panes": 1
+    },
+    {
+      "id": "W_bath2_n",
+      "level": "first",
+      "type": "window",
+      "at": [8.5, 0],
+      "width": 2,
+      "height": 0.9,
+      "sill": 1.4,
+      "panes": 2
+    },
+    {
+      "id": "W_bath3_e",
+      "level": "first",
+      "type": "window",
+      "at": [12, 3.71],
+      "width": 0.5,
+      "height": 2.3,
+      "sill": 0.25,
+      "panes": 1,
+      "notes": "single narrow vertical window in the concrete block"
+    },
+    {
+      "id": "W_laundry_e",
+      "level": "first",
+      "type": "window",
+      "at": [11, 5.64],
+      "width": 0.8,
+      "height": 0.9,
+      "sill": 1.4,
+      "panes": 1
+    },
+    {
+      "id": "D_master",
+      "level": "first",
+      "type": "door",
+      "at": [3.37, 5.75],
+      "width": 0.86,
+      "height": 2.13,
+      "hinge": "max",
+      "swing_into": "master"
+    },
+    {
+      "id": "D_bed2",
+      "level": "first",
+      "type": "door",
+      "at": [4.2, 6.46],
+      "width": 0.86,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "bed2"
+    },
+    {
+      "id": "D_bed3",
+      "level": "first",
+      "type": "door",
+      "at": [7.8, 6.46],
+      "width": 0.86,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "bed3"
+    },
+    {
+      "id": "D_wardrobe_b",
+      "level": "first",
+      "type": "door",
+      "at": [4, 2.6],
+      "width": 0.8,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "wardrobe_b"
+    },
+    {
+      "id": "D_bath2",
+      "level": "first",
+      "type": "door",
+      "at": [9.7, 2.6],
+      "width": 0.76,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "bath2"
+    },
+    {
+      "id": "D_bath3",
+      "level": "first",
+      "type": "door",
+      "at": [10.2, 3.4],
+      "width": 0.76,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "bath3"
+    },
+    {
+      "id": "D_laundry",
+      "level": "first",
+      "type": "door",
+      "at": [9.2, 5.6],
+      "width": 0.8,
+      "height": 2.13,
+      "hinge": "max",
+      "swing_into": "laundry"
+    },
+    {
+      "id": "D_wardrobe_a",
+      "level": "first",
+      "type": "door",
+      "at": [1.6, 3.7],
+      "width": 0.8,
+      "height": 2.13,
+      "hinge": "min",
+      "swing_into": "wardrobe_a"
+    },
+    {
+      "id": "D_bath_master",
+      "level": "first",
+      "type": "door",
+      "at": [2.5, 2.6],
+      "width": 0.86,
+      "height": 2.13,
+      "hinge": "max",
+      "swing_into": "bath_master"
+    }
+  ],
+  "stairs": [
+    {
+      "id": "main",
+      "level": "ground",
+      "first_riser": [9, 2.66],
+      "dir": [-1, 0],
+      "side": [0, 1],
+      "width": 1,
+      "risers": 17,
+      "riser": 0.185,
+      "tread": 0.27,
+      "nosing": 0.02,
+      "tread_thickness": 0.04,
+      "handrail_side": "open",
+      "rail_newel_x": 6.55
+    }
+  ],
+  "balustrades": [
+    {
+      "id": "void",
+      "level": "first",
+      "type": "glass_rail",
+      "height": 1,
+      "path": [
+        [4.68, 3.69],
+        [9.23, 3.69],
+        [9.23, 2.66]
+      ]
+    },
+    {
+      "id": "balcony",
+      "level": "first",
+      "type": "glass",
+      "height": 1,
+      "path": [
+        [-0.15, 4.87],
+        [-2.53, 4.87],
+        [-2.53, 10.4],
+        [-0.15, 10.4]
+      ]
+    }
+  ],
+  "cladding": [
+    {
+      "id": "recess_e",
+      "type": "slats",
+      "orient": "h",
+      "axis": "x",
+      "plane": 11.15,
+      "normal": 1,
+      "u": [2.8, 6.26],
+      "y": [0, 2.7]
+    },
+    {
+      "id": "recess_s",
+      "type": "slats",
+      "orient": "h",
+      "axis": "z",
+      "plane": 2.75,
+      "normal": 1,
+      "u": [11.15, 13.55],
+      "y": [0, 2.7]
+    },
+    {
+      "id": "recess_n",
+      "type": "slats",
+      "orient": "h",
+      "axis": "z",
+      "plane": 6.31,
+      "normal": -1,
+      "u": [11.2, 12.15],
+      "y": [0, 2.7]
+    },
+    {
+      "id": "canopy_soffit",
+      "type": "soffit_slats",
+      "rect": [11.15, 2.75, 3.2, 3.56],
+      "y": 2.7
+    }
+  ],
+  "materials": {
+    "wall_ext_white": "smooth white render, roughness 0.9",
+    "wall_ext_anthracite": "RAL 7016 fibre-cement panels with visible panel joints, roughness 0.6",
+    "wood_slats": "larch vertical/horizontal slats, warm honey tone, 40 mm slats 20 mm gaps",
+    "frames": "matte black aluminium window frames, 60 mm profiles",
+    "glass": "clear low-iron glass, slight green edge tint, reflective",
+    "wall_int": "warm white matte paint (#f2efe9), roughness 0.95",
+    "oak_plank": "wide oak plank, 190 mm boards, natural satin",
+    "large_format_tile_grey": "600x1200 concrete-look porcelain, 2 mm grout",
+    "large_format_tile_light": "600x600 light limestone-look porcelain",
+    "small_tile_white": "100x100 white glazed mosaic/porcelain (WC, small bathroom floors)",
+    "concrete_screed": "sealed grey concrete",
+    "ceiling": "white matte, ground floor has a lighting cove at the living room",
+    "roof_membrane": "flat roof: grey EPDM membrane / light gravel",
+    "concrete_pavers": "grey concrete driveway pavers",
+    "concrete_block_ext": "light-grey board-formed concrete look (street-side block), roughness 0.85"
+  },
+  "extra_materials": {
+    "roof_standing_seam": "anthracite standing-seam metal roof (RAL 7016), seams every 500 mm",
+    "stair_tread": "solid oak stair tread, 40 mm",
+    "handrail_black": "slim matte black steel handrail and balusters",
+    "door_leaf_white": "flush white interior door leaf, satin",
+    "skirting_white": "80 mm white MDF skirting board"
+  },
+  "lighting": {
+    "sun": "late afternoon, warm, from the SOUTH-WEST",
+    "interior": "recessed downlights on a 1.5 m grid, pendant over dining table, LED cove in living, under-cabinet strip in kitchen, wall sconces on the terrace pillars, pool underwater lights, garden bollards along the path",
+    "modes": ["day", "golden_hour", "night"],
+    "downlight_grid": 1.5,
+    "single_light_rooms": ["storage_n", "storage_e", "cloak", "wc", "boiler", "wardrobe_a", "bath3", "laundry"],
+    "fixtures": [
+      {
+        "id": "dining_pendant",
+        "type": "pendant",
+        "room": "living",
+        "pos": [6.3, 1.85, 7.57],
+        "mount_y": 2.85
+      },
+      {
+        "id": "living_cove",
+        "type": "cove",
+        "room": "living",
+        "pos": [4, 2.8, 7.57],
+        "size": [7.4, 4.9]
+      },
+      {
+        "id": "garage_strip_a",
+        "type": "strip",
+        "room": "garage",
+        "pos": [9.6, 2.83, -0.3],
+        "length": 1.5
+      },
+      {
+        "id": "garage_strip_b",
+        "type": "strip",
+        "room": "garage",
+        "pos": [11.6, 2.83, -0.3],
+        "length": 1.5
+      },
+      {
+        "id": "sconce_pillar_n",
+        "type": "sconce",
+        "room": "terrace",
+        "pos": [-2.22, 2.2, 0.05],
+        "dir": [1, 0, 0]
+      },
+      {
+        "id": "sconce_pillar_s",
+        "type": "sconce",
+        "room": "terrace",
+        "pos": [-2.22, 2.2, 10.27],
+        "dir": [1, 0, 0]
+      },
+      {
+        "id": "terrace_down_a",
+        "type": "downlight",
+        "room": "terrace",
+        "pos": [-1.3, 2.64, 2.5]
+      },
+      {
+        "id": "terrace_down_b",
+        "type": "downlight",
+        "room": "terrace",
+        "pos": [-1.3, 2.64, 5.2]
+      },
+      {
+        "id": "terrace_down_c",
+        "type": "downlight",
+        "room": "terrace",
+        "pos": [-1.3, 2.64, 7.9]
+      },
+      {
+        "id": "entrance_down_a",
+        "type": "downlight",
+        "room": "entrance",
+        "pos": [12.3, 2.82, 3.8]
+      },
+      {
+        "id": "entrance_down_b",
+        "type": "downlight",
+        "room": "entrance",
+        "pos": [12.3, 2.82, 5.4]
+      },
+      {
+        "id": "balcony_wall",
+        "type": "sconce",
+        "room": "balcony",
+        "pos": [-0.17, 5.25, 4.95],
+        "dir": [-1, 0, 0]
+      }
+    ]
+  },
+  "spawn": {
+    "pos": [10.35, 0, 4.05],
+    "yaw": 90,
+    "room": "vestibule",
+    "notes": "pos = feet on the floor; yaw 90 = looking west (-X) into the hall"
+  },
+  "doors_default_open_deg": 92
+}

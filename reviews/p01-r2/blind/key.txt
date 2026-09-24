@@ -1,0 +1,4 @@
+pair1: ours=B (critic/ours_living_day.png vs hf2-loft-living-room-brick-daylight.png)
+pair2: ours=B (critic/ours_ext_front_east_day.png vs hf2-aframe-cabin-exterior-forest-day.png)
+pair3: ours=A (critic/ours_living_night.png vs hf2-living-room-fireplace-evening-modio.png)
+pair4: ours=A (critic/ours_ext_front_east_night.png vs hf2-modern-villa-exterior-night-neon.png)

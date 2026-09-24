@@ -1,0 +1,5 @@
+pair1: ours=A (d01_street.png vs hf2-aframe-cabin-exterior-forest-day.png)
+pair2: ours=B (d14_pergola.png vs hf2-beach-shack-exterior-day-dirty.png)
+pair3: ours=A (d10_south_upper_close.png vs hf2-aframe-cabin-exterior-forest-day.png)
+pair4: ours=B (n03_entrance_far.png vs hf2-diner-exterior-night-neon.png)
+pair5: ours=B (n01_street.png vs hf2-modern-villa-exterior-night-neon.png)

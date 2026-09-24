@@ -1,0 +1,5 @@
+pair1: ours=B (reviews/P02-r1/ours_ext_garden.png)
+pair2: ours=B (reviews/P02-r1/tour/08_office.png)
+pair3: ours=B (reviews/P02-r1/ours_living.png)
+pair4: ours=A (reviews/P02-r1/ours_stair_hall.png)
+pair5: ours=B (reviews/P02-r1/ours_ext_front.png)

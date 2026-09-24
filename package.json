@@ -1,0 +1,31 @@
+{
+  "name": "houselisting",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "n8ao": "^2.0.1",
+    "playwright": "^1.63.0",
+    "postprocessing": "^6.39.5",
+    "three": "^0.186.0",
+    "three-mesh-bvh": "^0.9.15",
+    "vite": "^8.3.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.5.0",
+    "@gltf-transform/core": "^4.5.0",
+    "@gltf-transform/extensions": "^4.5.0",
+    "@gltf-transform/functions": "^4.5.0",
+    "draco3dgltf": "^1.5.7",
+    "sharp": "^0.35.4"
+  }
+}

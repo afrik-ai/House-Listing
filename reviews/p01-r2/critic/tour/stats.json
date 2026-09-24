@@ -1,0 +1,1423 @@
+{
+  "summary": {
+    "id": "villa-nova",
+    "date": "2026-09-23T11:14:03.709Z",
+    "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3080 (0x00002216) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "resolution": [
+      1600,
+      900
+    ],
+    "quality": "high",
+    "tod": "day",
+    "loadMs": 1650,
+    "tourMs": 31035,
+    "shots": 28,
+    "benchmark": {
+      "views": [
+        {
+          "id": "living",
+          "frames": 150,
+          "avgMs": 6.21,
+          "fps": 161,
+          "drawCalls": 348,
+          "triangles": 54554,
+          "rafFps": 60
+        },
+        {
+          "id": "kitchen",
+          "frames": 150,
+          "avgMs": 5.49,
+          "fps": 182.2,
+          "drawCalls": 412,
+          "triangles": 56454,
+          "rafFps": 60
+        },
+        {
+          "id": "master",
+          "frames": 150,
+          "avgMs": 5.48,
+          "fps": 182.5,
+          "drawCalls": 422,
+          "triangles": 55682,
+          "rafFps": 60
+        },
+        {
+          "id": "ext_garden_sw",
+          "frames": 150,
+          "avgMs": 4.69,
+          "fps": 213.3,
+          "drawCalls": 426,
+          "triangles": 56770,
+          "rafFps": 60
+        },
+        {
+          "id": "ext_front_east",
+          "frames": 150,
+          "avgMs": 3.62,
+          "fps": 276.3,
+          "drawCalls": 28,
+          "triangles": 134,
+          "rafFps": 7.8
+        }
+      ],
+      "worstFps": 161,
+      "worstView": "living",
+      "meetsTarget60": true
+    },
+    "imageFlags": [],
+    "maxDrawCalls": 426,
+    "maxTriangles": 56770,
+    "consoleErrors": [],
+    "consoleWarnings": [
+      "THREE.WebGLProgram: Program Info Log: (210,81-129): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision",
+      "THREE.WebGLProgram: Program Info Log: (85,12-86): warning X3595: gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value\n(85,12-86): warning X3595: gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value",
+      "WebGL: INVALID_OPERATION: texImage3D: FLIP_Y or PREMULTIPLY_ALPHA isn't allowed for uploading 3D textures"
+    ]
+  },
+  "shots": [
+    {
+      "file": "01_living.png",
+      "id": "living",
+      "name": "Living room + Dining",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        0.45,
+        1.6,
+        5.27
+      ],
+      "yaw": -122.8,
+      "pitch": -8,
+      "room": "living",
+      "stats": {
+        "fps": 30.6,
+        "drawCalls": 348,
+        "triangles": 54554,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 148,
+        "p2": 0,
+        "p50": 147,
+        "p98": 223,
+        "contrast": 223,
+        "clippedPct": 0,
+        "crushedPct": 3,
+        "saturation": 0.299,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "02_kitchen.png",
+      "id": "kitchen",
+      "name": "Kitchen",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        11.55,
+        1.6,
+        9.87
+      ],
+      "yaw": 45.9,
+      "pitch": -8,
+      "room": "kitchen",
+      "stats": {
+        "fps": 50.7,
+        "drawCalls": 412,
+        "triangles": 56454,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 163,
+        "p2": 54,
+        "p50": 179,
+        "p98": 223,
+        "contrast": 169,
+        "clippedPct": 0,
+        "crushedPct": 0.7,
+        "saturation": 0.124,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "03_cloak.png",
+      "id": "cloak",
+      "name": "Cloakroom",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        8.775,
+        1.6,
+        4.74
+      ],
+      "yaw": -180,
+      "pitch": -16,
+      "room": "cloak",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 264,
+        "triangles": 51106,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 142,
+        "p2": 56,
+        "p50": 146,
+        "p98": 185,
+        "contrast": 129,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.107,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "04_hall.png",
+      "id": "hall",
+      "name": "Hall",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        1.72,
+        1.6,
+        3.71
+      ],
+      "yaw": -90,
+      "pitch": -16,
+      "room": "hall",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 368,
+        "triangles": 54902,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 148,
+        "p2": 72,
+        "p50": 155,
+        "p98": 199,
+        "contrast": 127,
+        "clippedPct": 0,
+        "crushedPct": 0.3,
+        "saturation": 0.167,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "05_vestibule.png",
+      "id": "vestibule",
+      "name": "Vestibule",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        10.78,
+        1.6,
+        3.56
+      ],
+      "yaw": 90,
+      "pitch": -16,
+      "room": "vestibule",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 360,
+        "triangles": 52986,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 137,
+        "p2": 30,
+        "p50": 148,
+        "p98": 187,
+        "contrast": 157,
+        "clippedPct": 0,
+        "crushedPct": 1.3,
+        "saturation": 0.122,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "06_storage_e.png",
+      "id": "storage_e",
+      "name": "Storage",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        10.25,
+        1.6,
+        4.74
+      ],
+      "yaw": -180,
+      "pitch": -16,
+      "room": "storage_e",
+      "stats": {
+        "fps": 59,
+        "drawCalls": 254,
+        "triangles": 49716,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 141,
+        "p2": 57,
+        "p50": 143,
+        "p98": 183,
+        "contrast": 126,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.105,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "07_storage_n.png",
+      "id": "storage_n",
+      "name": "Storage",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        4.25,
+        1.6,
+        2.38
+      ],
+      "yaw": 0,
+      "pitch": -16,
+      "room": "storage_n",
+      "stats": {
+        "fps": 59,
+        "drawCalls": 244,
+        "triangles": 46954,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 151,
+        "p2": 60,
+        "p50": 158,
+        "p98": 176,
+        "contrast": 116,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.08,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "08_office.png",
+      "id": "office",
+      "name": "Office",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        0.45,
+        1.6,
+        2.15
+      ],
+      "yaw": -56.8,
+      "pitch": -8,
+      "room": "office",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 346,
+        "triangles": 53670,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 146,
+        "p2": 22,
+        "p50": 163,
+        "p98": 186,
+        "contrast": 164,
+        "clippedPct": 0,
+        "crushedPct": 1.6,
+        "saturation": 0.159,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "09_wc.png",
+      "id": "wc",
+      "name": "WC",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        0.75,
+        1.6,
+        4.6
+      ],
+      "yaw": 0,
+      "pitch": -16,
+      "room": "wc",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 258,
+        "triangles": 46236,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 155,
+        "p2": 68,
+        "p50": 166,
+        "p98": 184,
+        "contrast": 116,
+        "clippedPct": 0,
+        "crushedPct": 1.6,
+        "saturation": 0.08,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "10_boiler.png",
+      "id": "boiler",
+      "name": "Boiler room",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        5.45,
+        1.6,
+        0.45
+      ],
+      "yaw": -135,
+      "pitch": -8,
+      "room": "boiler",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 352,
+        "triangles": 54714,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 149,
+        "p2": 52,
+        "p50": 152,
+        "p98": 177,
+        "contrast": 125,
+        "clippedPct": 0,
+        "crushedPct": 0.1,
+        "saturation": 0.084,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "11_garage.png",
+      "id": "garage",
+      "name": "Garage",
+      "level": "ground",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        12.95,
+        1.6,
+        -2.78
+      ],
+      "yaw": 135.2,
+      "pitch": -8,
+      "room": "garage",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 426,
+        "triangles": 56770,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 126,
+        "p2": 73,
+        "p50": 133,
+        "p98": 157,
+        "contrast": 84,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.081,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "12_master.png",
+      "id": "master",
+      "name": "Master bedroom",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        0.45,
+        4.75,
+        9.87
+      ],
+      "yaw": -28.2,
+      "pitch": -8,
+      "room": "master",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 422,
+        "triangles": 55682,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 160,
+        "p2": 4,
+        "p50": 185,
+        "p98": 233,
+        "contrast": 229,
+        "clippedPct": 0,
+        "crushedPct": 3.1,
+        "saturation": 0.204,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "13_wardrobe_a.png",
+      "id": "wardrobe_a",
+      "name": "Wardrobe",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        1.38,
+        4.75,
+        3.71
+      ],
+      "yaw": 90,
+      "pitch": -16,
+      "room": "wardrobe_a",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 224,
+        "triangles": 43308,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 145,
+        "p2": 52,
+        "p50": 163,
+        "p98": 170,
+        "contrast": 118,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.112,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "14_wardrobe_b.png",
+      "id": "wardrobe_b",
+      "name": "Wardrobe",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        3.82,
+        4.75,
+        0.45
+      ],
+      "yaw": -134.5,
+      "pitch": -8,
+      "room": "wardrobe_b",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 378,
+        "triangles": 55386,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 149,
+        "p2": 52,
+        "p50": 152,
+        "p98": 175,
+        "contrast": 123,
+        "clippedPct": 0,
+        "crushedPct": 0.1,
+        "saturation": 0.108,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "15_bath_master.png",
+      "id": "bath_master",
+      "name": "Master bathroom",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        0.45,
+        4.75,
+        2.15
+      ],
+      "yaw": -55.5,
+      "pitch": -8,
+      "room": "bath_master",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 344,
+        "triangles": 53590,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 155,
+        "p2": 55,
+        "p50": 171,
+        "p98": 187,
+        "contrast": 132,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.067,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "16_hall1.png",
+      "id": "hall1",
+      "name": "Landing",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        3.82,
+        4.75,
+        6.01
+      ],
+      "yaw": -59,
+      "pitch": -8,
+      "room": "hall1",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 366,
+        "triangles": 54058,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 141,
+        "p2": 2,
+        "p50": 155,
+        "p98": 187,
+        "contrast": 185,
+        "clippedPct": 0,
+        "crushedPct": 2.2,
+        "saturation": 0.194,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "17_bed2.png",
+      "id": "bed2",
+      "name": "Bedroom",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        3.82,
+        4.75,
+        9.87
+      ],
+      "yaw": -42.8,
+      "pitch": -8,
+      "room": "bed2",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 400,
+        "triangles": 56010,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 171,
+        "p2": 50,
+        "p50": 189,
+        "p98": 231,
+        "contrast": 181,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.176,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "18_bed3.png",
+      "id": "bed3",
+      "name": "Bedroom",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        10.55,
+        4.75,
+        9.87
+      ],
+      "yaw": 46.2,
+      "pitch": -8,
+      "room": "bed3",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 410,
+        "triangles": 55498,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 149,
+        "p2": 48,
+        "p50": 166,
+        "p98": 194,
+        "contrast": 146,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.208,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "19_bath2.png",
+      "id": "bath2",
+      "name": "Bathroom",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        10.55,
+        4.75,
+        2.15
+      ],
+      "yaw": 67.5,
+      "pitch": -8,
+      "room": "bath2",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 322,
+        "triangles": 48906,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 142,
+        "p2": 36,
+        "p50": 148,
+        "p98": 200,
+        "contrast": 164,
+        "clippedPct": 0,
+        "crushedPct": 1.6,
+        "saturation": 0.083,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "20_bath3.png",
+      "id": "bath3",
+      "name": "Bathroom",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        10.1,
+        4.75,
+        4.6
+      ],
+      "yaw": 0,
+      "pitch": -16,
+      "room": "bath3",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 282,
+        "triangles": 51710,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 143,
+        "p2": 1,
+        "p50": 151,
+        "p98": 178,
+        "contrast": 177,
+        "clippedPct": 0,
+        "crushedPct": 2.4,
+        "saturation": 0.082,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "21_laundry.png",
+      "id": "laundry",
+      "name": "Laundry",
+      "level": "first",
+      "kind": "room",
+      "tod": "day",
+      "pos": [
+        9.42,
+        4.75,
+        5.64
+      ],
+      "yaw": -90,
+      "pitch": -16,
+      "room": "laundry",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 262,
+        "triangles": 50308,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 142,
+        "p2": 31,
+        "p50": 150,
+        "p98": 185,
+        "contrast": 154,
+        "clippedPct": 0,
+        "crushedPct": 1.9,
+        "saturation": 0.103,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "22_ext_front_east.png",
+      "id": "ext_front_east",
+      "name": "Front (street, east)",
+      "level": "exterior",
+      "kind": "exterior",
+      "tod": "day",
+      "pos": [
+        23.25,
+        1.6,
+        9.620000000000001
+      ],
+      "yaw": 68.7,
+      "pitch": 2.8,
+      "room": null,
+      "stats": {
+        "fps": 60,
+        "drawCalls": 426,
+        "triangles": 56770,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 134,
+        "p2": 9,
+        "p50": 133,
+        "p98": 218,
+        "contrast": 209,
+        "clippedPct": 0,
+        "crushedPct": 1.1,
+        "saturation": 0.319,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "23_ext_garden_sw.png",
+      "id": "ext_garden_sw",
+      "name": "Garden & pool (south-west)",
+      "level": "exterior",
+      "kind": "exterior",
+      "tod": "day",
+      "pos": [
+        -13.6,
+        1.6,
+        18.47
+      ],
+      "yaw": -51.1,
+      "pitch": 2.4,
+      "room": null,
+      "stats": {
+        "fps": 60,
+        "drawCalls": 426,
+        "triangles": 56770,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 136,
+        "p2": 74,
+        "p50": 129,
+        "p98": 223,
+        "contrast": 149,
+        "clippedPct": 0,
+        "crushedPct": 0.2,
+        "saturation": 0.359,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "24_ext_south.png",
+      "id": "ext_south",
+      "name": "South facade",
+      "level": "exterior",
+      "kind": "exterior",
+      "tod": "day",
+      "pos": [
+        6.825,
+        1.6,
+        23.47
+      ],
+      "yaw": 2.9,
+      "pitch": 3.5,
+      "room": null,
+      "stats": {
+        "fps": 60,
+        "drawCalls": 426,
+        "triangles": 56770,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 136,
+        "p2": 70,
+        "p50": 129,
+        "p98": 228,
+        "contrast": 158,
+        "clippedPct": 0,
+        "crushedPct": 0,
+        "saturation": 0.357,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "25_ext_north_west.png",
+      "id": "ext_north_west",
+      "name": "North-west corner",
+      "level": "exterior",
+      "kind": "exterior",
+      "tod": "day",
+      "pos": [
+        -10.6,
+        1.6,
+        -12.23
+      ],
+      "yaw": -134,
+      "pitch": 2.5,
+      "room": null,
+      "stats": {
+        "fps": 60,
+        "drawCalls": 426,
+        "triangles": 56770,
+        "textures": 40,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 147,
+        "p2": 52,
+        "p50": 132,
+        "p98": 223,
+        "contrast": 171,
+        "clippedPct": 0,
+        "crushedPct": 0.1,
+        "saturation": 0.306,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "26_ext_garden_sw_golden_hour.png",
+      "id": "ext_garden_sw_golden_hour",
+      "name": "Garden & pool (south-west) — golden hour",
+      "level": "exterior",
+      "kind": "variant",
+      "tod": "golden_hour",
+      "pos": [
+        -13.6,
+        1.6,
+        18.47
+      ],
+      "yaw": -51.1,
+      "pitch": 2.4,
+      "room": null,
+      "stats": {
+        "fps": 38.6,
+        "drawCalls": 426,
+        "triangles": 56770,
+        "textures": 44,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 125,
+        "p2": 19,
+        "p50": 177,
+        "p98": 226,
+        "contrast": 207,
+        "clippedPct": 0,
+        "crushedPct": 0.2,
+        "saturation": 0.341,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "27_ext_garden_sw_night.png",
+      "id": "ext_garden_sw_night",
+      "name": "Garden & pool (south-west) — night",
+      "level": "exterior",
+      "kind": "variant",
+      "tod": "night",
+      "pos": [
+        -13.6,
+        1.6,
+        18.47
+      ],
+      "yaw": -51.1,
+      "pitch": 2.4,
+      "room": null,
+      "stats": {
+        "fps": 36.6,
+        "drawCalls": 426,
+        "triangles": 56770,
+        "textures": 48,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 16,
+        "p2": 0,
+        "p50": 13,
+        "p98": 95,
+        "contrast": 95,
+        "clippedPct": 0,
+        "crushedPct": 45.7,
+        "saturation": 0.265,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    },
+    {
+      "file": "28_living_night.png",
+      "id": "living_night",
+      "name": "Living room + Dining — night",
+      "level": "ground",
+      "kind": "variant",
+      "tod": "night",
+      "pos": [
+        0.45,
+        1.6,
+        5.27
+      ],
+      "yaw": -122.8,
+      "pitch": -8,
+      "room": "living",
+      "stats": {
+        "fps": 60,
+        "drawCalls": 348,
+        "triangles": 54554,
+        "textures": 48,
+        "geometries": 148,
+        "programs": 29,
+        "memoryMB": 65,
+        "gpuTexMB": 0,
+        "quality": "high",
+        "pixelRatio": 1,
+        "resolution": [
+          1600,
+          900
+        ]
+      },
+      "image": {
+        "mean": 95,
+        "p2": 1,
+        "p50": 95,
+        "p98": 220,
+        "contrast": 219,
+        "clippedPct": 0,
+        "crushedPct": 7.9,
+        "saturation": 0.556,
+        "size": [
+          1600,
+          900
+        ],
+        "flags": []
+      },
+      "errors": []
+    }
+  ]
+}

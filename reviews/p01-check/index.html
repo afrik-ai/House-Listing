@@ -1,0 +1,261 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Tour — villa-nova</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root { color-scheme: dark; --bg:#0d0f12; --card:#15191e; --ink:#eeebe5; --dim:#8d949c; --acc:#d9a45f; --bad:#ff8b7a; --ok:#8fd19e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 "Segoe UI", system-ui, sans-serif; padding: 28px 16px 60px; }
+  main { max-width: 1680px; margin: 0 auto; }
+  h1 { font-weight: 300; font-size: 34px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  h2 { font-size: 12px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--acc); margin: 36px 0 14px; font-weight: 600; }
+  .meta { color: var(--dim); display: flex; flex-wrap: wrap; gap: 6px 22px; }
+  .meta b { color: var(--ink); font-weight: 600; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 14px; }
+  figure { margin: 0; background: var(--card); border-radius: 6px; overflow: hidden; }
+  img { display: block; width: 100%; aspect-ratio: 1600 / 900; object-fit: cover; background: #000; }
+  figcaption { padding: 10px 12px 12px; display: grid; gap: 2px; }
+  figcaption span { color: var(--dim); font-size: 12px; }
+  code { font: 11px/1.4 ui-monospace, Consolas, monospace; color: var(--dim); }
+  em { color: var(--bad); font-style: normal; font-size: 12px; }
+  table { border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+  td, th { padding: 4px 14px 4px 0; text-align: left; } th { color: var(--dim); font-weight: 500; }
+  pre { white-space: pre-wrap; color: var(--bad); font-size: 12px; }
+</style></head><body><main>
+<h1>villa-nova — standard tour</h1>
+<div class="meta">
+  <span><b>28</b> shots</span><span><b>1600×900</b> · high</span>
+  <span>load <b>1.9 s</b></span>
+  <span>worst GPU-bound fps <b class="ok">199.1</b> (living)</span>
+  <span>max <b>113</b> draw calls · <b>0.01M</b> tris</span>
+  <span>console errors <b class="ok">0</b></span>
+  <span>ANGLE (NVIDIA, NVIDIA GeForce RTX 3080 (0x00002216) Direct3D11 vs_5_0 ps_5_0, D3D11)</span><span>2026-09-23T01:46:53.729Z</span>
+</div>
+<table><tr><th>bench view</th><th>avg ms</th><th>fps</th><th>rAF fps</th><th>calls</th><th>tris</th></tr>
+<tr><td>living</td><td>5.02</td><td>199.1</td><td>60</td><td>102</td><td>6356</td></tr><tr><td>kitchen</td><td>4.09</td><td>244.7</td><td>60</td><td>111</td><td>6480</td></tr><tr><td>master</td><td>4</td><td>249.9</td><td>60</td><td>110</td><td>6452</td></tr><tr><td>ext_garden_sw</td><td>3.49</td><td>286.8</td><td>60</td><td>113</td><td>6504</td></tr><tr><td>ext_front_east</td><td>4.7</td><td>212.9</td><td>60</td><td>113</td><td>6504</td></tr></table>
+
+<h2>Rooms — ground floor</h2><div class="grid">
+    <figure>
+      <a href="01_living.png" target="_blank"><img src="01_living.png" loading="lazy" alt="Living room + Dining"></a>
+      <figcaption><b>Living room + Dining</b><span>living · day</span>
+      <code>pos 0.45, 1.60, 5.27 · yaw -122.8 · pitch -8</code>
+      <code>102 calls · 6.4k tris · 42 tex</code>
+      <code>luma 126 · p2–p98 69–217 · clip 0% · sat 0.303 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="02_kitchen.png" target="_blank"><img src="02_kitchen.png" loading="lazy" alt="Kitchen"></a>
+      <figcaption><b>Kitchen</b><span>kitchen · day</span>
+      <code>pos 11.55, 1.60, 9.87 · yaw 45.9 · pitch -8</code>
+      <code>111 calls · 6.5k tris · 42 tex</code>
+      <code>luma 134 · p2–p98 70–214 · clip 0% · sat 0.151 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="03_cloak.png" target="_blank"><img src="03_cloak.png" loading="lazy" alt="Cloakroom"></a>
+      <figcaption><b>Cloakroom</b><span>cloak · day</span>
+      <code>pos 8.78, 1.60, 4.74 · yaw -180 · pitch -16</code>
+      <code>91 calls · 6.2k tris · 42 tex</code>
+      <code>luma 129 · p2–p98 76–160 · clip 0% · sat 0.056 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="04_hall.png" target="_blank"><img src="04_hall.png" loading="lazy" alt="Hall"></a>
+      <figcaption><b>Hall</b><span>hall · day</span>
+      <code>pos 1.72, 1.60, 3.71 · yaw -90 · pitch -16</code>
+      <code>107 calls · 6.4k tris · 42 tex</code>
+      <code>luma 119 · p2–p98 46–181 · clip 0% · sat 0.204 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="05_vestibule.png" target="_blank"><img src="05_vestibule.png" loading="lazy" alt="Vestibule"></a>
+      <figcaption><b>Vestibule</b><span>vestibule · day</span>
+      <code>pos 8.27, 1.60, 3.56 · yaw -90 · pitch -16</code>
+      <code>93 calls · 6.2k tris · 42 tex</code>
+      <code>luma 139 · p2–p98 80–200 · clip 0% · sat 0.092 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="06_storage_e.png" target="_blank"><img src="06_storage_e.png" loading="lazy" alt="Storage"></a>
+      <figcaption><b>Storage</b><span>storage_e · day</span>
+      <code>pos 10.25, 1.60, 4.74 · yaw -180 · pitch -16</code>
+      <code>88 calls · 6.0k tris · 42 tex</code>
+      <code>luma 130 · p2–p98 77–160 · clip 0% · sat 0.056 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="07_storage_n.png" target="_blank"><img src="07_storage_n.png" loading="lazy" alt="Storage"></a>
+      <figcaption><b>Storage</b><span>storage_n · day</span>
+      <code>pos 4.25, 1.60, 2.38 · yaw 0 · pitch -16</code>
+      <code>90 calls · 6.2k tris · 42 tex</code>
+      <code>luma 141 · p2–p98 71–167 · clip 0% · sat 0.054 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="08_office.png" target="_blank"><img src="08_office.png" loading="lazy" alt="Office"></a>
+      <figcaption><b>Office</b><span>office · day</span>
+      <code>pos 0.45, 1.60, 2.15 · yaw -56.8 · pitch -8</code>
+      <code>102 calls · 6.4k tris · 42 tex</code>
+      <code>luma 143 · p2–p98 54–181 · clip 0% · sat 0.136 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="09_wc.png" target="_blank"><img src="09_wc.png" loading="lazy" alt="WC"></a>
+      <figcaption><b>WC</b><span>wc · day</span>
+      <code>pos 0.75, 1.60, 4.60 · yaw 0 · pitch -16</code>
+      <code>92 calls · 6.1k tris · 42 tex</code>
+      <code>luma 146 · p2–p98 84–182 · clip 0% · sat 0.055 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="10_boiler.png" target="_blank"><img src="10_boiler.png" loading="lazy" alt="Boiler room"></a>
+      <figcaption><b>Boiler room</b><span>boiler · day</span>
+      <code>pos 5.45, 1.60, 0.45 · yaw -135 · pitch -8</code>
+      <code>101 calls · 6.3k tris · 42 tex</code>
+      <code>luma 130 · p2–p98 83–160 · clip 0% · sat 0.063 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="11_garage.png" target="_blank"><img src="11_garage.png" loading="lazy" alt="Garage"></a>
+      <figcaption><b>Garage</b><span>garage · day</span>
+      <code>pos 12.95, 1.60, -2.78 · yaw 135.2 · pitch -8</code>
+      <code>113 calls · 6.5k tris · 42 tex</code>
+      <code>luma 114 · p2–p98 83–136 · clip 0% · sat 0.097 </code>
+      </figcaption>
+    </figure></div><h2>Rooms — first floor</h2><div class="grid">
+    <figure>
+      <a href="12_master.png" target="_blank"><img src="12_master.png" loading="lazy" alt="Master bedroom"></a>
+      <figcaption><b>Master bedroom</b><span>master · day</span>
+      <code>pos 0.45, 4.75, 9.87 · yaw -28.2 · pitch -8</code>
+      <code>110 calls · 6.5k tris · 42 tex</code>
+      <code>luma 150 · p2–p98 70–233 · clip 0% · sat 0.177 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="13_wardrobe_a.png" target="_blank"><img src="13_wardrobe_a.png" loading="lazy" alt="Wardrobe"></a>
+      <figcaption><b>Wardrobe</b><span>wardrobe_a · day</span>
+      <code>pos 1.38, 4.75, 3.71 · yaw 90 · pitch -16</code>
+      <code>87 calls · 6.0k tris · 42 tex</code>
+      <code>luma 124 · p2–p98 73–144 · clip 0% · sat 0.055 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="14_wardrobe_b.png" target="_blank"><img src="14_wardrobe_b.png" loading="lazy" alt="Wardrobe"></a>
+      <figcaption><b>Wardrobe</b><span>wardrobe_b · day</span>
+      <code>pos 3.82, 4.75, 0.45 · yaw -134.5 · pitch -8</code>
+      <code>104 calls · 6.4k tris · 42 tex</code>
+      <code>luma 133 · p2–p98 61–220 · clip 0% · sat 0.116 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="15_bath_master.png" target="_blank"><img src="15_bath_master.png" loading="lazy" alt="Master bathroom"></a>
+      <figcaption><b>Master bathroom</b><span>bath_master · day</span>
+      <code>pos 0.45, 4.75, 2.15 · yaw -55.5 · pitch -8</code>
+      <code>101 calls · 6.3k tris · 42 tex</code>
+      <code>luma 147 · p2–p98 66–168 · clip 0% · sat 0.057 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="16_hall1.png" target="_blank"><img src="16_hall1.png" loading="lazy" alt="Landing"></a>
+      <figcaption><b>Landing</b><span>hall1 · day</span>
+      <code>pos 3.82, 4.75, 6.01 · yaw -59 · pitch -8</code>
+      <code>102 calls · 6.4k tris · 42 tex</code>
+      <code>luma 129 · p2–p98 61–168 · clip 0% · sat 0.17 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="17_bed2.png" target="_blank"><img src="17_bed2.png" loading="lazy" alt="Bedroom"></a>
+      <figcaption><b>Bedroom</b><span>bed2 · day</span>
+      <code>pos 3.82, 4.75, 9.87 · yaw -42.8 · pitch -8</code>
+      <code>107 calls · 6.4k tris · 42 tex</code>
+      <code>luma 139 · p2–p98 59–216 · clip 0% · sat 0.178 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="18_bed3.png" target="_blank"><img src="18_bed3.png" loading="lazy" alt="Bedroom"></a>
+      <figcaption><b>Bedroom</b><span>bed3 · day</span>
+      <code>pos 10.55, 4.75, 9.87 · yaw 46.2 · pitch -8</code>
+      <code>109 calls · 6.5k tris · 42 tex</code>
+      <code>luma 125 · p2–p98 54–168 · clip 0% · sat 0.174 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="19_bath2.png" target="_blank"><img src="19_bath2.png" loading="lazy" alt="Bathroom"></a>
+      <figcaption><b>Bathroom</b><span>bath2 · day</span>
+      <code>pos 10.55, 4.75, 2.15 · yaw 67.5 · pitch -8</code>
+      <code>103 calls · 6.4k tris · 42 tex</code>
+      <code>luma 135 · p2–p98 74–201 · clip 0% · sat 0.079 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="20_bath3.png" target="_blank"><img src="20_bath3.png" loading="lazy" alt="Bathroom"></a>
+      <figcaption><b>Bathroom</b><span>bath3 · day</span>
+      <code>pos 10.78, 4.75, 3.71 · yaw 90 · pitch -16</code>
+      <code>107 calls · 6.4k tris · 42 tex</code>
+      <code>luma 128 · p2–p98 69–168 · clip 0% · sat 0.085 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="21_laundry.png" target="_blank"><img src="21_laundry.png" loading="lazy" alt="Laundry"></a>
+      <figcaption><b>Laundry</b><span>laundry · day</span>
+      <code>pos 9.42, 4.75, 5.64 · yaw -90 · pitch -16</code>
+      <code>86 calls · 6.0k tris · 42 tex</code>
+      <code>luma 143 · p2–p98 95–199 · clip 0% · sat 0.052 <b class="bad">WASHED-OUT</b></code>
+      </figcaption>
+    </figure></div><h2>Exteriors</h2><div class="grid">
+    <figure>
+      <a href="22_ext_front_east.png" target="_blank"><img src="22_ext_front_east.png" loading="lazy" alt="Front (street, east)"></a>
+      <figcaption><b>Front (street, east)</b><span>ext_front_east · day</span>
+      <code>pos 23.25, 1.60, 9.62 · yaw 68.7 · pitch 2.8</code>
+      <code>113 calls · 6.5k tris · 42 tex</code>
+      <code>luma 145 · p2–p98 69–211 · clip 0% · sat 0.333 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="23_ext_garden_sw.png" target="_blank"><img src="23_ext_garden_sw.png" loading="lazy" alt="Garden &amp; pool (south-west)"></a>
+      <figcaption><b>Garden &amp; pool (south-west)</b><span>ext_garden_sw · day</span>
+      <code>pos -13.60, 1.60, 18.47 · yaw -51.1 · pitch 2.4</code>
+      <code>113 calls · 6.5k tris · 42 tex</code>
+      <code>luma 139 · p2–p98 69–216 · clip 0% · sat 0.394 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="24_ext_south.png" target="_blank"><img src="24_ext_south.png" loading="lazy" alt="South facade"></a>
+      <figcaption><b>South facade</b><span>ext_south · day</span>
+      <code>pos 6.83, 1.60, 23.47 · yaw 2.9 · pitch 3.5</code>
+      <code>113 calls · 6.5k tris · 42 tex</code>
+      <code>luma 137 · p2–p98 65–222 · clip 0% · sat 0.398 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="25_ext_north_west.png" target="_blank"><img src="25_ext_north_west.png" loading="lazy" alt="North-west corner"></a>
+      <figcaption><b>North-west corner</b><span>ext_north_west · day</span>
+      <code>pos -10.60, 1.60, -12.23 · yaw -134 · pitch 2.5</code>
+      <code>113 calls · 6.5k tris · 42 tex</code>
+      <code>luma 150 · p2–p98 93–216 · clip 0% · sat 0.351 <b class="bad">WASHED-OUT</b></code>
+      </figcaption>
+    </figure></div><h2>Time-of-day variants</h2><div class="grid">
+    <figure>
+      <a href="26_ext_garden_sw_golden_hour.png" target="_blank"><img src="26_ext_garden_sw_golden_hour.png" loading="lazy" alt="Garden &amp; pool (south-west) — golden hour"></a>
+      <figcaption><b>Garden &amp; pool (south-west) — golden hour</b><span>ext_garden_sw_golden_hour · golden_hour</span>
+      <code>pos -13.60, 1.60, 18.47 · yaw -51.1 · pitch 2.4</code>
+      <code>113 calls · 6.5k tris · 46 tex</code>
+      <code>luma 135 · p2–p98 33–224 · clip 0% · sat 0.384 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="27_ext_garden_sw_night.png" target="_blank"><img src="27_ext_garden_sw_night.png" loading="lazy" alt="Garden &amp; pool (south-west) — night"></a>
+      <figcaption><b>Garden &amp; pool (south-west) — night</b><span>ext_garden_sw_night · night</span>
+      <code>pos -13.60, 1.60, 18.47 · yaw -51.1 · pitch 2.4</code>
+      <code>113 calls · 6.5k tris · 50 tex</code>
+      <code>luma 22 · p2–p98 0–142 · clip 0% · sat 0.58 </code>
+      </figcaption>
+    </figure>
+    <figure>
+      <a href="28_living_night.png" target="_blank"><img src="28_living_night.png" loading="lazy" alt="Living room + Dining — night"></a>
+      <figcaption><b>Living room + Dining — night</b><span>living_night · night</span>
+      <code>pos 0.45, 1.60, 5.27 · yaw -122.8 · pitch -8</code>
+      <code>102 calls · 6.4k tris · 50 tex</code>
+      <code>luma 92 · p2–p98 1–211 · clip 0% · sat 0.507 </code>
+      </figcaption>
+    </figure></div>
+</main></body></html>

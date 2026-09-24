@@ -1,0 +1,3963 @@
+{
+ "version": 1,
+ "notes": "P07 furniture placements. pos = [x, height above the room's level floor, z] in house coords (X east, Z south). rotY deg: 0 = front faces +Z (south), 90 = east, 180 = north, -90 = west. snap pushes the piece against the wall on that side; drop lands it on the surface below. proc = procedural generator (src/game/furnish/proc).",
+ "models": {
+  "pendant_lamp_modern": {
+   "collide": false
+  },
+  "rug_rect_200x300": {
+   "collide": false,
+   "shadow": false
+  },
+  "rug_round_160": {
+   "collide": false,
+   "shadow": false
+  },
+  "floor_lamp_arc": {
+   "collider": [
+    [
+     -1.08,
+     0,
+     -0.2
+    ],
+    [
+     -0.72,
+     0.4,
+     0.2
+    ]
+   ]
+  },
+  "parasol_cantilever": {
+   "collider": [
+    [
+     -1.9,
+     0,
+     -0.5
+    ],
+    [
+     -1.1,
+     0.3,
+     0.5
+    ]
+   ]
+  }
+ },
+ "rooms": {
+  "living": {
+   "items": [
+    {
+     "proc": "media_wall",
+     "pos": [
+      1.91,
+      0,
+      4.97
+     ],
+     "params": {
+      "width": 3.5,
+      "height": 2.6,
+      "unitWidth": 2.2,
+      "tv": 1.45,
+      "tvX": 0.59,
+      "tvY": 1.3
+     },
+     "id": "media_wall"
+    },
+    {
+     "model": "rug_rect_200x300",
+     "pos": [
+      2.45,
+      0,
+      6.75
+     ],
+     "rotY": 90,
+     "id": "rug"
+    },
+    {
+     "proc": "sofa",
+     "pos": [
+      2.5,
+      0,
+      8.06
+     ],
+     "rotY": 180,
+     "params": {
+      "length": 2.95,
+      "depth": 0.98,
+      "chaise": "left",
+      "chaiseLength": 1.7,
+      "fabric": "fabric_grey",
+      "pillows": [
+       [
+        "fabric_rust",
+        -1.05,
+        0,
+        0.1
+       ],
+       [
+        "fabric_natural",
+        -0.62,
+        0.02,
+        -0.08
+       ],
+       [
+        "fabric_ochre",
+        0.62,
+        0,
+        0.12
+       ],
+       [
+        "fabric_sage",
+        1.0,
+        0,
+        -0.1
+       ]
+      ]
+     },
+     "id": "sofa"
+    },
+    {
+     "model": "coffee_table_round_marble",
+     "pos": [
+      2.25,
+      0,
+      6.45
+     ],
+     "id": "coffee_table"
+    },
+    {
+     "model": "armchair_modern",
+     "pos": [
+      0.8,
+      0,
+      5.65
+     ],
+     "rotY": 110,
+     "id": "armchair"
+    },
+    {
+     "model": "side_table_oak",
+     "pos": [
+      0.62,
+      0,
+      8.2
+     ],
+     "rotY": 90,
+     "id": "side_table"
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      0.37,
+      0,
+      9.92
+     ],
+     "params": {
+      "plant": "plant_pachira_d",
+      "pot": "cylinder",
+      "r": 0.22,
+      "h": 0.42,
+      "mat": "concrete",
+      "plantScale": 0.95,
+      "plantRot": 0
+     },
+     "id": "plant_sw"
+    },
+    {
+     "model": "floor_lamp_arc",
+     "pos": [
+      2.96,
+      0,
+      8.72
+     ],
+     "rotY": 145,
+     "id": "arc_lamp"
+    },
+    {
+     "proc": "books",
+     "pos": [
+      1.25,
+      0,
+      5.28
+     ],
+     "rotY": 0,
+     "params": {
+      "length": 0.34,
+      "seed": 11,
+      "stack": 4
+     },
+     "collide": false,
+     "drop": 0.9
+    },
+    {
+     "model": "vase_ceramic_tall",
+     "pos": [
+      1.62,
+      0,
+      5.3
+     ],
+     "drop": 0.9
+    },
+    {
+     "model": "vase_ceramic_03",
+     "pos": [
+      1.75,
+      0,
+      5.24
+     ],
+     "drop": 0.9
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      3.3,
+      0,
+      5.28
+     ],
+     "params": {
+      "plant": "plant_calathea_b",
+      "pot": "cylinder",
+      "r": 0.11,
+      "h": 0.14,
+      "mat": "ceramic_white",
+      "plantScale": 0.7,
+      "plantRot": 0
+     },
+     "drop": 0.9,
+     "collide": false
+    },
+    {
+     "model": "picture_frame_standing",
+     "pos": [
+      3.05,
+      0,
+      5.18
+     ],
+     "rotY": 10,
+     "drop": 0.9
+    },
+    {
+     "model": "gaming_console",
+     "pos": [
+      2.55,
+      0,
+      5.3
+     ],
+     "drop": 0.9
+    },
+    {
+     "proc": "books",
+     "pos": [
+      2.1,
+      0,
+      6.35
+     ],
+     "rotY": 25,
+     "params": {
+      "length": 0.3,
+      "seed": 21,
+      "stack": 3
+     },
+     "collide": false,
+     "drop": 0.8
+    },
+    {
+     "model": "vase_ceramic_02",
+     "pos": [
+      2.5,
+      0,
+      6.6
+     ],
+     "drop": 0.8
+    },
+    {
+     "model": "plant_succulent_small",
+     "pos": [
+      2.0,
+      0,
+      6.72
+     ],
+     "drop": 0.8
+    },
+    {
+     "model": "candlesticks_brass",
+     "pos": [
+      2.45,
+      0,
+      6.25
+     ],
+     "variant": "brass_candleholder_02",
+     "drop": 0.8,
+     "scale": 0.6
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      0.62,
+      0,
+      8.25
+     ],
+     "params": {
+      "base": "ceramic_black",
+      "h": 0.48
+     },
+     "instanceKey": "lamp_ceramic_black_0.48",
+     "collide": false,
+     "drop": 0.9
+    }
+   ]
+  },
+  "dining": {
+   "level": "ground",
+   "shotRect": [
+    3.8,
+    5.2,
+    8.0,
+    10.1
+   ],
+   "items": [
+    {
+     "proc": "table",
+     "pos": [
+      6.3,
+      0,
+      7.57
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 2.4,
+      "d": 1.0,
+      "h": 0.75,
+      "top": "oak",
+      "legs": "sled"
+     },
+     "id": "dining_table"
+    },
+    {
+     "proc": "dining_chair",
+     "pos": [
+      5.62,
+      0,
+      6.67
+     ],
+     "rotY": 90,
+     "instanceKey": "oak_natural",
+     "tuck": true,
+     "repeat": {
+      "n": 4,
+      "step": [
+       0,
+       0,
+       0.6
+      ]
+     },
+     "id": "chair_w"
+    },
+    {
+     "proc": "dining_chair",
+     "pos": [
+      6.98,
+      0,
+      6.67
+     ],
+     "rotY": -90,
+     "instanceKey": "oak_natural",
+     "tuck": true,
+     "repeat": {
+      "n": 4,
+      "step": [
+       0,
+       0,
+       0.6
+      ]
+     },
+     "id": "chair_e"
+    },
+    {
+     "model": "pendant_lamp_modern",
+     "pos": [
+      6.3,
+      1.9,
+      6.9
+     ],
+     "repeat": {
+      "n": 3,
+      "step": [
+       0,
+       0,
+       0.67
+      ]
+     },
+     "id": "pendant"
+    },
+    {
+     "model": "vase_ceramic_03",
+     "pos": [
+      6.25,
+      0,
+      7.45
+     ],
+     "drop": 1.2
+    },
+    {
+     "model": "vase_ceramic_04",
+     "pos": [
+      6.36,
+      0,
+      7.62
+     ],
+     "drop": 1.2
+    },
+    {
+     "model": "bowl_wood_02",
+     "pos": [
+      6.3,
+      0,
+      8.1
+     ],
+     "drop": 1.2,
+     "scale": 1.6
+    },
+    {
+     "model": "candlesticks_brass",
+     "pos": [
+      6.3,
+      0,
+      7.0
+     ],
+     "variant": "brass_candleholder_01",
+     "drop": 1.2,
+     "scale": 0.55
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      7.7,
+      0,
+      5.64
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 1.5,
+      "h": 0.72,
+      "d": 0.45,
+      "body": "walnut",
+      "cols": 3,
+      "rows": 1,
+      "doors": true,
+      "legs": 0.14
+     },
+     "snap": "E",
+     "id": "sideboard"
+    },
+    {
+     "proc": "art",
+     "pos": [
+      7.7,
+      1.15,
+      5.64
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 1.0,
+      "h": 1.25,
+      "style": "shapes",
+      "seed": 3,
+      "frame": "oak",
+      "mat": 0.0
+     },
+     "collide": false,
+     "snap": "E",
+     "rayY": 1.775,
+     "gap": 0.005
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      7.75,
+      0,
+      5.1
+     ],
+     "params": {
+      "base": "brass",
+      "h": 0.5
+     },
+     "instanceKey": "lamp_brass_0.5",
+     "collide": false,
+     "drop": 1.2
+    },
+    {
+     "model": "vase_brass",
+     "pos": [
+      7.75,
+      0,
+      6.05
+     ],
+     "drop": 1.2,
+     "scale": 0.7
+    },
+    {
+     "proc": "books",
+     "pos": [
+      7.72,
+      0,
+      5.62
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.3,
+      "seed": 31,
+      "stack": 3
+     },
+     "collide": false,
+     "drop": 1.2
+    }
+   ]
+  },
+  "kitchen": {
+   "items": [
+    {
+     "proc": "kitchen_run",
+     "pos": [
+      11.5,
+      0,
+      8.345
+     ],
+     "rotY": -90,
+     "params": {
+      "modules": [
+       {
+        "type": "tall_fridge",
+        "w": 0.6
+       },
+       {
+        "type": "tall_oven",
+        "w": 0.6
+       },
+       {
+        "type": "drawers",
+        "w": 0.6
+       },
+       {
+        "type": "oven_hob",
+        "w": 0.9
+       },
+       {
+        "type": "drawers",
+        "w": 0.6
+       },
+       {
+        "type": "door",
+        "w": 0.35
+       }
+      ]
+     },
+     "snap": "E",
+     "gap": 0.0,
+     "id": "run"
+    },
+    {
+     "proc": "kitchen_island",
+     "pos": [
+      9.88,
+      0,
+      8.35
+     ],
+     "rotY": 90,
+     "params": {
+      "modules": [
+       {
+        "type": "sink",
+        "w": 1.2
+       },
+       {
+        "type": "dishwasher",
+        "w": 0.6
+       }
+      ],
+      "overhang": 0.3
+     },
+     "id": "island"
+    },
+    {
+     "proc": "counter_stool",
+     "pos": [
+      8.98,
+      0,
+      7.8
+     ],
+     "instanceKey": "oak",
+     "repeat": {
+      "n": 3,
+      "step": [
+       0,
+       0,
+       0.55
+      ]
+     },
+     "id": "stool"
+    },
+    {
+     "model": "toaster",
+     "pos": [
+      11.62,
+      0,
+      7.9
+     ],
+     "rotY": -90,
+     "drop": 1.3
+    },
+    {
+     "model": "kettle",
+     "pos": [
+      11.6,
+      0,
+      8.2
+     ],
+     "rotY": -90,
+     "drop": 1.3
+    },
+    {
+     "model": "pot_enamel",
+     "pos": [
+      11.52,
+      0,
+      8.6
+     ],
+     "drop": 1.3
+    },
+    {
+     "model": "pan_brass",
+     "pos": [
+      11.5,
+      0,
+      9.0
+     ],
+     "rotY": 60,
+     "drop": 1.3
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      11.7,
+      0,
+      9.36
+     ],
+     "params": {
+      "plant": "plant_calathea_e",
+      "pot": "cylinder",
+      "r": 0.065,
+      "h": 0.11,
+      "mat": "terracotta",
+      "plantScale": 0.6,
+      "plantRot": 0
+     },
+     "drop": 1.3,
+     "collide": false
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      11.72,
+      0,
+      9.53
+     ],
+     "params": {
+      "plant": "plant_anthurium_f",
+      "pot": "cylinder",
+      "r": 0.065,
+      "h": 0.11,
+      "mat": "terracotta",
+      "plantScale": 0.55,
+      "plantRot": 0
+     },
+     "drop": 1.3,
+     "collide": false
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      11.7,
+      0,
+      9.7
+     ],
+     "params": {
+      "plant": "plant_calathea_d",
+      "pot": "cylinder",
+      "r": 0.065,
+      "h": 0.11,
+      "mat": "terracotta",
+      "plantScale": 0.8,
+      "plantRot": 0
+     },
+     "drop": 1.3,
+     "collide": false
+    },
+    {
+     "model": "cutting_board",
+     "pos": [
+      11.47,
+      0,
+      9.98
+     ],
+     "rotY": 90,
+     "drop": 1.3
+    },
+    {
+     "model": "fruit_bowl_wood",
+     "pos": [
+      9.55,
+      0,
+      7.8
+     ],
+     "drop": 1.3
+    },
+    {
+     "model": "apple",
+     "pos": [
+      9.52,
+      0,
+      7.76
+     ],
+     "drop": 1.3
+    },
+    {
+     "model": "apple",
+     "pos": [
+      9.6,
+      0,
+      7.84
+     ],
+     "rotY": 40,
+     "drop": 1.3
+    },
+    {
+     "model": "lemon",
+     "pos": [
+      9.5,
+      0,
+      7.86
+     ],
+     "drop": 1.3
+    },
+    {
+     "model": "wine_bottles",
+     "pos": [
+      9.42,
+      0,
+      8.55
+     ],
+     "variant": "wine_bottles_01_bordeaux",
+     "drop": 1.3
+    },
+    {
+     "model": "wine_bottles",
+     "pos": [
+      9.5,
+      0,
+      8.62
+     ],
+     "variant": "wine_bottles_01_burgundy",
+     "drop": 1.3
+    },
+    {
+     "model": "tea_set",
+     "pos": [
+      9.52,
+      0,
+      9.0
+     ],
+     "rotY": 90,
+     "drop": 1.3,
+     "scale": 0.7
+    }
+   ]
+  },
+  "hall": {
+   "items": [
+    {
+     "proc": "cabinet",
+     "pos": [
+      2.55,
+      0,
+      4.7
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 1.2,
+      "h": 0.78,
+      "d": 0.34,
+      "body": "oak",
+      "cols": 2,
+      "rows": 1,
+      "legs": 0.18,
+      "handle": "none"
+     },
+     "id": "console"
+    },
+    {
+     "proc": "mirror",
+     "pos": [
+      2.55,
+      1.1,
+      4.878
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 0.7,
+      "shape": "round"
+     },
+     "collide": false
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      2.15,
+      0,
+      4.72
+     ],
+     "params": {
+      "base": "brass",
+      "h": 0.46
+     },
+     "instanceKey": "lamp_brass_0.46",
+     "collide": false,
+     "drop": 1.2
+    },
+    {
+     "model": "vase_ceramic_tall",
+     "pos": [
+      2.95,
+      0,
+      4.72
+     ],
+     "drop": 1.2
+    },
+    {
+     "model": "basket_wicker",
+     "pos": [
+      2.55,
+      0,
+      4.72
+     ],
+     "drop": 1.2,
+     "scale": 0.8
+    },
+    {
+     "proc": "slab",
+     "pos": [
+      5.9,
+      0,
+      4.25
+     ],
+     "params": {
+      "size": [
+       2.2,
+       0.012,
+       0.8
+      ],
+      "mat": "rug_wool"
+     },
+     "collide": false,
+     "id": "runner"
+    }
+   ]
+  },
+  "vestibule": {
+   "items": [
+    {
+     "proc": "slab",
+     "pos": [
+      10.45,
+      0,
+      3.8
+     ],
+     "params": {
+      "size": [
+       0.7,
+       0.012,
+       1.0
+      ],
+      "mat": "rug_grey"
+     },
+     "collide": false,
+     "id": "doormat"
+    },
+    {
+     "proc": "art",
+     "pos": [
+      9.5,
+      1.2,
+      4.2
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 0.5,
+      "h": 0.7,
+      "style": "photo_bw",
+      "seed": 5,
+      "frame": "black_matte",
+      "mat": 0.06
+     },
+     "collide": false,
+     "snap": "S",
+     "rayY": 1.5499999999999998,
+     "gap": 0.005
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      9.52,
+      0,
+      4.2
+     ],
+     "params": {
+      "plant": "plant_fern_b",
+      "pot": "taper",
+      "r": 0.17,
+      "h": 0.36,
+      "mat": "ceramic_black",
+      "plantScale": 0.6,
+      "plantRot": 0
+     },
+     "snap": "S"
+    }
+   ]
+  },
+  "cloak": {
+   "items": [
+    {
+     "proc": "coat_rail",
+     "pos": [
+      8.12,
+      0,
+      5.8
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 1.2,
+      "y": 1.75,
+      "fill": 0.8,
+      "seed": 4
+     },
+     "snap": "W",
+     "gap": 0.002,
+     "collide": false
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      8.3,
+      0,
+      5.85
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 1.0,
+      "h": 0.45,
+      "d": 0.34,
+      "body": "oak",
+      "cols": 2,
+      "rows": 1,
+      "handle": "none"
+     },
+     "snap": "W"
+    },
+    {
+     "proc": "mirror",
+     "pos": [
+      9.43,
+      0.9,
+      5.85
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.5,
+      "h": 1.1
+     },
+     "snap": "E",
+     "rayY": 1.4,
+     "gap": 0.003,
+     "collide": false
+    },
+    {
+     "proc": "wall_shelves",
+     "pos": [
+      8.78,
+      0,
+      6.28
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 1.2,
+      "d": 0.24,
+      "levels": [
+       1.95
+      ]
+     },
+     "snap": "S",
+     "rayY": 2.0,
+     "collide": false
+    },
+    {
+     "model": "basket_wicker",
+     "pos": [
+      8.55,
+      0,
+      6.28
+     ],
+     "drop": 2.3
+    },
+    {
+     "model": "basket_wicker",
+     "pos": [
+      9.0,
+      0,
+      6.28
+     ],
+     "drop": 2.3
+    }
+   ]
+  },
+  "storage_e": {
+   "items": [
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      9.95,
+      0,
+      6.15
+     ],
+     "rotY": 180,
+     "snap": "S",
+     "id": "shelf_a"
+    },
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      10.55,
+      0,
+      6.15
+     ],
+     "rotY": 180,
+     "snap": "S",
+     "id": "shelf_b"
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      9.95,
+      0,
+      6.15
+     ],
+     "rotY": 90,
+     "drop": 0.5,
+     "scale": 0.8
+    },
+    {
+     "model": "crate_plastic",
+     "pos": [
+      10.55,
+      0,
+      6.15
+     ],
+     "rotY": 90,
+     "drop": 0.5
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      9.95,
+      0,
+      6.15
+     ],
+     "rotY": 90,
+     "drop": 1.1,
+     "scale": 0.75
+    },
+    {
+     "model": "crate_plastic",
+     "pos": [
+      10.55,
+      0,
+      6.15
+     ],
+     "rotY": 90,
+     "drop": 1.1
+    },
+    {
+     "model": "cleaner_bottle",
+     "pos": [
+      10.45,
+      0,
+      6.12
+     ],
+     "drop": 1.6
+    },
+    {
+     "model": "cleaner_bottle",
+     "pos": [
+      10.62,
+      0,
+      6.18
+     ],
+     "rotY": 30,
+     "drop": 1.6
+    }
+   ]
+  },
+  "storage_n": {
+   "items": [
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      3.9,
+      0,
+      0.4
+     ],
+     "snap": "N"
+    },
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      4.55,
+      0,
+      0.4
+     ],
+     "snap": "N"
+    },
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      4.7,
+      0,
+      1.3
+     ],
+     "rotY": -90,
+     "snap": "E"
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      3.9,
+      0,
+      0.4
+     ],
+     "rotY": 90,
+     "drop": 0.5,
+     "scale": 0.8
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      4.55,
+      0,
+      0.4
+     ],
+     "drop": 1.1,
+     "scale": 0.8
+    },
+    {
+     "model": "crate_plastic",
+     "pos": [
+      4.55,
+      0,
+      0.4
+     ],
+     "rotY": 90,
+     "drop": 0.5
+    },
+    {
+     "model": "crate_plastic",
+     "pos": [
+      4.7,
+      0,
+      1.3
+     ],
+     "drop": 0.5
+    },
+    {
+     "model": "toolbox",
+     "pos": [
+      4.7,
+      0,
+      1.3
+     ],
+     "rotY": 90,
+     "drop": 1.1
+    }
+   ]
+  },
+  "boiler": {
+   "items": [
+    {
+     "proc": "boiler",
+     "pos": [
+      5.4,
+      0,
+      1.3
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "gap": 0.01,
+     "id": "boiler_plant"
+    },
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      5.6,
+      0,
+      2.3
+     ],
+     "rotY": 180,
+     "snap": "S"
+    },
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      6.25,
+      0,
+      2.3
+     ],
+     "rotY": 180,
+     "snap": "S"
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      5.6,
+      0,
+      2.3
+     ],
+     "rotY": 90,
+     "drop": 0.5,
+     "scale": 0.8
+    },
+    {
+     "model": "bucket_wood",
+     "pos": [
+      6.25,
+      0,
+      2.3
+     ],
+     "drop": 0.5,
+     "scale": 0.7
+    },
+    {
+     "model": "drill",
+     "pos": [
+      6.2,
+      0,
+      2.3
+     ],
+     "rotY": 20,
+     "drop": 1.1
+    },
+    {
+     "model": "toolbox",
+     "pos": [
+      5.6,
+      0,
+      2.3
+     ],
+     "rotY": 90,
+     "drop": 1.1
+    }
+   ]
+  },
+  "wc": {
+   "items": [
+    {
+     "model": "bathroom_vanity",
+     "pos": [
+      0.4,
+      0,
+      3.0
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "scale": [
+      0.7,
+      1,
+      1
+     ],
+     "id": "vanity"
+    },
+    {
+     "model": "toilet_wall_hung",
+     "pos": [
+      0.8,
+      0,
+      4.5
+     ],
+     "rotY": 180,
+     "snap": "S",
+     "gap": 0.0,
+     "id": "toilet"
+    },
+    {
+     "proc": "art",
+     "pos": [
+      0.8,
+      1.35,
+      4.7
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 0.4,
+      "h": 0.5,
+      "style": "lines",
+      "seed": 8,
+      "frame": "oak",
+      "mat": 0.05
+     },
+     "collide": false,
+     "snap": "S",
+     "rayY": 1.6,
+     "gap": 0.005
+    },
+    {
+     "proc": "toiletries",
+     "pos": [
+      0.4,
+      0,
+      3.12
+     ],
+     "rotY": 90,
+     "drop": 1.2,
+     "collide": false
+    }
+   ]
+  },
+  "office": {
+   "items": [
+    {
+     "model": "rug_round_160",
+     "pos": [
+      1.7,
+      0,
+      1.4
+     ],
+     "id": "rug"
+    },
+    {
+     "proc": "table",
+     "pos": [
+      1.75,
+      0,
+      0.53
+     ],
+     "params": {
+      "w": 1.6,
+      "d": 0.72,
+      "h": 0.75,
+      "top": "oak",
+      "legs": "four",
+      "drawer": true
+     },
+     "snap": "N",
+     "id": "desk"
+    },
+    {
+     "model": "office_chair",
+     "pos": [
+      1.75,
+      0,
+      1.25
+     ],
+     "rotY": 170,
+     "tuck": true,
+     "id": "office_chair"
+    },
+    {
+     "proc": "shelf_unit",
+     "pos": [
+      3.26,
+      0,
+      0.95
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 1.4,
+      "h": 2.0,
+      "d": 0.35
+     },
+     "snap": "E",
+     "gap": 0.01,
+     "id": "shelf"
+    },
+    {
+     "model": "lounge_chair_midcentury",
+     "pos": [
+      0.76,
+      0,
+      1.95
+     ],
+     "rotY": 90,
+     "id": "lounge"
+    },
+    {
+     "model": "side_table_tall",
+     "pos": [
+      1.55,
+      0,
+      2.3
+     ],
+     "id": "side"
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      0.45,
+      0,
+      0.42
+     ],
+     "params": {
+      "plant": "plant_pachira_b",
+      "pot": "cylinder",
+      "r": 0.19,
+      "h": 0.36,
+      "mat": "ceramic_white",
+      "plantScale": 1.0,
+      "plantRot": 0
+     }
+    },
+    {
+     "proc": "art",
+     "pos": [
+      1.2,
+      1.3,
+      2.4
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 0.9,
+      "h": 0.6,
+      "style": "landscape",
+      "seed": 12,
+      "frame": "black_matte",
+      "mat": 0.06
+     },
+     "collide": false,
+     "snap": "S",
+     "rayY": 1.6,
+     "gap": 0.005
+    },
+    {
+     "model": "laptop",
+     "pos": [
+      1.7,
+      0,
+      0.5
+     ],
+     "drop": 1.2,
+     "scale": 0.62
+    },
+    {
+     "model": "desk_lamp",
+     "pos": [
+      2.35,
+      0,
+      0.35
+     ],
+     "rotY": -60,
+     "drop": 1.2,
+     "scale": 0.7
+    },
+    {
+     "model": "binder",
+     "pos": [
+      1.15,
+      0,
+      0.42
+     ],
+     "rotY": 10,
+     "drop": 1.2
+    },
+    {
+     "model": "binder",
+     "pos": [
+      1.15,
+      0,
+      0.42
+     ],
+     "rotY": 4,
+     "drop": 1.2
+    },
+    {
+     "model": "stationery",
+     "pos": [
+      1.25,
+      0,
+      0.72
+     ],
+     "drop": 1.2
+    },
+    {
+     "model": "picture_frame_standing_02",
+     "pos": [
+      2.2,
+      0,
+      0.3
+     ],
+     "rotY": -20,
+     "drop": 1.2
+    },
+    {
+     "model": "plant_succulent_small",
+     "pos": [
+      1.0,
+      0,
+      0.3
+     ],
+     "drop": 1.2
+    },
+    {
+     "model": "alarm_clock",
+     "pos": [
+      1.55,
+      0,
+      2.3
+     ],
+     "rotY": 20,
+     "drop": 1.2
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      0.62
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.62,
+      "seed": 41,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 0.18
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      1.3
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.55,
+      "seed": 42,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 0.18
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      0.5
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.45,
+      "seed": 43,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 0.56
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      0.7
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.7,
+      "seed": 44,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 0.94
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      1.4
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.3,
+      "seed": 45,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 0.94
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      0.45
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.35,
+      "seed": 46,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 1.32
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      1.25
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.55,
+      "seed": 47,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 1.32
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.26,
+      0,
+      0.8
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.8,
+      "seed": 48,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 1.7000000000000002
+    },
+    {
+     "model": "vase_ceramic_04",
+     "pos": [
+      3.26,
+      0,
+      1.3
+     ],
+     "drop": 0.56
+    },
+    {
+     "model": "plant_succulent_small",
+     "pos": [
+      3.26,
+      0,
+      1.45
+     ],
+     "drop": 0.56
+    },
+    {
+     "model": "picture_frame_standing",
+     "pos": [
+      3.28,
+      0,
+      1.2
+     ],
+     "rotY": -90,
+     "drop": 0.94
+    },
+    {
+     "model": "mantel_clock",
+     "pos": [
+      3.26,
+      0,
+      0.35
+     ],
+     "rotY": -90,
+     "drop": 1.7,
+     "scale": 0.8
+    },
+    {
+     "model": "vase_brass",
+     "pos": [
+      3.26,
+      0,
+      1.45
+     ],
+     "drop": 1.7,
+     "scale": 0.5
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      3.26,
+      0,
+      1.2
+     ],
+     "drop": 2.3,
+     "scale": 0.6
+    }
+   ]
+  },
+  "garage": {
+   "items": [
+    {
+     "model": "car_suv",
+     "pos": [
+      10.65,
+      0,
+      0.45
+     ],
+     "rotY": 90,
+     "id": "car"
+    },
+    {
+     "model": "bicycle",
+     "pos": [
+      11.55,
+      0,
+      -2.75
+     ],
+     "snap": "N",
+     "gap": 0.04,
+     "id": "bike"
+    },
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      8.1,
+      0,
+      -2.8
+     ],
+     "snap": "N",
+     "id": "gs1"
+    },
+    {
+     "model": "garage_shelves_steel_narrow",
+     "pos": [
+      8.72,
+      0,
+      -2.8
+     ],
+     "snap": "N",
+     "id": "gs2"
+    },
+    {
+     "model": "tool_cart",
+     "pos": [
+      9.85,
+      0,
+      -2.7
+     ],
+     "snap": "N",
+     "id": "cart"
+    },
+    {
+     "model": "tool_chest",
+     "pos": [
+      9.7,
+      0,
+      -2.75
+     ],
+     "drop": 1.5
+    },
+    {
+     "model": "toolbox",
+     "pos": [
+      10.25,
+      0,
+      -2.75
+     ],
+     "rotY": 20,
+     "drop": 1.5
+    },
+    {
+     "model": "fridge_modern",
+     "pos": [
+      8.1,
+      0,
+      -2.15
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "id": "garage_fridge"
+    },
+    {
+     "model": "trash_can_metal",
+     "pos": [
+      8.2,
+      0,
+      -1.42
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "id": "bin"
+    },
+    {
+     "model": "tire_pump",
+     "pos": [
+      12.65,
+      0,
+      -2.9
+     ],
+     "snap": "N"
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      8.1,
+      0,
+      -2.8
+     ],
+     "drop": 0.5,
+     "scale": 0.8
+    },
+    {
+     "model": "box_cardboard",
+     "pos": [
+      8.72,
+      0,
+      -2.8
+     ],
+     "rotY": 90,
+     "drop": 0.5,
+     "scale": 0.8
+    },
+    {
+     "model": "crate_plastic",
+     "pos": [
+      8.1,
+      0,
+      -2.8
+     ],
+     "rotY": 90,
+     "drop": 1.1
+    },
+    {
+     "model": "jerrycan",
+     "pos": [
+      8.72,
+      0,
+      -2.8
+     ],
+     "rotY": 90,
+     "drop": 1.1
+    },
+    {
+     "model": "watering_can",
+     "pos": [
+      8.1,
+      0,
+      -2.8
+     ],
+     "drop": 1.6
+    },
+    {
+     "model": "garden_gloves",
+     "pos": [
+      8.72,
+      0,
+      -2.8
+     ],
+     "drop": 1.6
+    },
+    {
+     "model": "trowel",
+     "pos": [
+      8.8,
+      0,
+      -2.75
+     ],
+     "rotY": 60,
+     "drop": 1.6
+    },
+    {
+     "model": "drill",
+     "pos": [
+      9.95,
+      0,
+      -2.7
+     ],
+     "rotY": 30,
+     "drop": 1.5
+    }
+   ]
+  },
+  "master": {
+   "items": [
+    {
+     "model": "rug_rect_200x300",
+     "pos": [
+      1.9,
+      0,
+      7.8
+     ],
+     "id": "rug"
+    },
+    {
+     "model": "bed_double_modern",
+     "pos": [
+      2.15,
+      0,
+      7.8
+     ],
+     "rotY": -90,
+     "snap": "E",
+     "gap": 0.01,
+     "id": "bed"
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      3.1,
+      0,
+      6.55
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.46,
+      "h": 0.46,
+      "d": 0.4,
+      "body": "oak",
+      "cols": 1,
+      "rows": 2,
+      "legs": 0.12
+     },
+     "snap": "E",
+     "instanceKey": "nightstand"
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      3.1,
+      0,
+      9.05
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.46,
+      "h": 0.46,
+      "d": 0.4,
+      "body": "oak",
+      "cols": 1,
+      "rows": 2,
+      "legs": 0.12
+     },
+     "snap": "E",
+     "instanceKey": "nightstand"
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      3.1,
+      0,
+      6.55
+     ],
+     "params": {
+      "base": "ceramic_white",
+      "h": 0.5
+     },
+     "instanceKey": "lamp_ceramic_white_0.5",
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      3.1,
+      0,
+      9.05
+     ],
+     "params": {
+      "base": "ceramic_white",
+      "h": 0.5
+     },
+     "instanceKey": "lamp_ceramic_white_0.5",
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "model": "alarm_clock",
+     "pos": [
+      3.05,
+      0,
+      6.35
+     ],
+     "rotY": -110,
+     "drop": 1.0
+    },
+    {
+     "proc": "books",
+     "pos": [
+      3.1,
+      0,
+      9.25
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.25,
+      "seed": 61,
+      "stack": 2
+     },
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "art",
+     "pos": [
+      3.3,
+      1.35,
+      7.8
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 1.5,
+      "h": 0.85,
+      "style": "landscape",
+      "seed": 21,
+      "frame": "oak",
+      "mat": 0.07
+     },
+     "collide": false,
+     "snap": "E",
+     "rayY": 1.7750000000000001,
+     "gap": 0.005
+    },
+    {
+     "model": "armchair_modern",
+     "pos": [
+      0.8,
+      0,
+      9.68
+     ],
+     "rotY": 80,
+     "id": "chair_a"
+    },
+    {
+     "model": "armchair_modern",
+     "pos": [
+      2.4,
+      0,
+      9.68
+     ],
+     "rotY": -80,
+     "id": "chair_b"
+    },
+    {
+     "model": "side_table_oak",
+     "pos": [
+      1.62,
+      0,
+      9.95
+     ],
+     "id": "chair_table",
+     "scale": 0.8
+    },
+    {
+     "model": "vase_ceramic_02",
+     "pos": [
+      1.55,
+      0,
+      9.95
+     ],
+     "drop": 1.0
+    },
+    {
+     "proc": "books",
+     "pos": [
+      1.68,
+      0,
+      9.9
+     ],
+     "rotY": 15,
+     "params": {
+      "length": 0.25,
+      "seed": 62,
+      "stack": 2
+     },
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      1.85,
+      0,
+      5.1
+     ],
+     "params": {
+      "plant": "plant_pachira_c",
+      "pot": "bowl",
+      "r": 0.2,
+      "h": 0.38,
+      "mat": "concrete",
+      "plantScale": 0.9,
+      "plantRot": 0
+     }
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      0.85,
+      0,
+      5.1
+     ],
+     "params": {
+      "w": 1.3,
+      "h": 0.8,
+      "d": 0.45,
+      "body": "oak",
+      "cols": 3,
+      "rows": 2,
+      "legs": 0.12
+     },
+     "snap": "N",
+     "id": "dresser"
+    },
+    {
+     "proc": "mirror",
+     "pos": [
+      0.85,
+      1.05,
+      4.9
+     ],
+     "params": {
+      "w": 0.75,
+      "shape": "round"
+     },
+     "snap": "N",
+     "rayY": 1.4,
+     "gap": 0.003,
+     "collide": false
+    },
+    {
+     "model": "vase_ceramic_tall",
+     "pos": [
+      0.35,
+      0,
+      5.1
+     ],
+     "drop": 1.3
+    },
+    {
+     "model": "candlesticks_brass",
+     "pos": [
+      1.3,
+      0,
+      5.1
+     ],
+     "variant": "brass_candleholder_03",
+     "drop": 1.3,
+     "scale": 0.5
+    },
+    {
+     "model": "picture_frame_standing_02",
+     "pos": [
+      0.95,
+      0,
+      5.0
+     ],
+     "rotY": 5,
+     "drop": 1.3
+    },
+    {
+     "proc": "mirror",
+     "pos": [
+      3.3,
+      0.25,
+      3.7
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.6,
+      "h": 1.8
+     },
+     "snap": "E",
+     "rayY": 1.0,
+     "gap": 0.003,
+     "collide": false,
+     "id": "dress_mirror"
+    },
+    {
+     "proc": "slab",
+     "pos": [
+      2.45,
+      0,
+      3.75
+     ],
+     "params": {
+      "size": [
+       1.2,
+       0.012,
+       1.6
+      ],
+      "mat": "rug_wool"
+     },
+     "collide": false,
+     "id": "alcove_rug"
+    }
+   ]
+  },
+  "wardrobe_a": {
+   "items": [
+    {
+     "proc": "closet",
+     "pos": [
+      0.43,
+      0,
+      3.71
+     ],
+     "rotY": 90,
+     "params": {
+      "h": 2.3,
+      "d": 0.55,
+      "seed": 71,
+      "sections": [
+       {
+        "type": "hang",
+        "w": 1.0
+       },
+       {
+        "type": "shelves",
+        "w": 0.5
+       },
+       {
+        "type": "hang2",
+        "w": 0.6
+       }
+      ]
+     },
+     "snap": "W",
+     "gap": 0.005
+    }
+   ]
+  },
+  "wardrobe_b": {
+   "items": [
+    {
+     "proc": "closet",
+     "pos": [
+      4.69,
+      0,
+      0.43
+     ],
+     "params": {
+      "h": 2.3,
+      "d": 0.55,
+      "seed": 81,
+      "sections": [
+       {
+        "type": "hang",
+        "w": 1.0
+       },
+       {
+        "type": "drawers",
+        "w": 0.6
+       },
+       {
+        "type": "shelves",
+        "w": 0.4
+       },
+       {
+        "type": "hang2",
+        "w": 0.5
+       }
+      ]
+     },
+     "snap": "N",
+     "gap": 0.005
+    },
+    {
+     "proc": "closet",
+     "pos": [
+      5.66,
+      0,
+      1.62
+     ],
+     "rotY": -90,
+     "params": {
+      "h": 2.3,
+      "d": 0.55,
+      "seed": 82,
+      "sections": [
+       {
+        "type": "shoes",
+        "w": 0.8
+       },
+       {
+        "type": "hang2",
+        "w": 1.0
+       }
+      ]
+     },
+     "snap": "E",
+     "gap": 0.005
+    },
+    {
+     "proc": "mirror",
+     "pos": [
+      3.45,
+      0.25,
+      1.3
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 0.6,
+      "h": 1.8
+     },
+     "snap": "W",
+     "rayY": 1.0,
+     "gap": 0.003,
+     "collide": false
+    },
+    {
+     "model": "rug_round_160",
+     "pos": [
+      4.55,
+      0,
+      1.45
+     ],
+     "scale": 0.8
+    }
+   ]
+  },
+  "bath_master": {
+   "items": [
+    {
+     "model": "bathtub_freestanding",
+     "pos": [
+      0.62,
+      0,
+      1.3
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "gap": 0.12,
+     "id": "tub"
+    },
+    {
+     "model": "bathroom_vanity",
+     "pos": [
+      1.6,
+      0,
+      0.4
+     ],
+     "snap": "N",
+     "gap": 0.0,
+     "id": "vanity"
+    },
+    {
+     "proc": "shower",
+     "pos": [
+      2.73,
+      0,
+      0.75
+     ],
+     "params": {
+      "w": 1.14,
+      "d": 1.2,
+      "glassEdge": "left",
+      "glassLen": 0.85
+     },
+     "snap": [
+      "N",
+      "E"
+     ],
+     "gap": 0.0,
+     "id": "shower"
+    },
+    {
+     "model": "toilet_wall_hung",
+     "pos": [
+      1.5,
+      0,
+      2.3
+     ],
+     "rotY": 180,
+     "snap": "S",
+     "gap": 0.0,
+     "id": "toilet"
+    },
+    {
+     "proc": "towel_rail",
+     "pos": [
+      3.2,
+      0,
+      1.9
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.5,
+      "y0": 0.4,
+      "h": 1.1
+     },
+     "snap": "E",
+     "gap": 0.0,
+     "collide": false
+    },
+    {
+     "model": "stool_wood",
+     "pos": [
+      0.5,
+      0,
+      2.35
+     ],
+     "id": "stool"
+    },
+    {
+     "model": "towel_stack",
+     "pos": [
+      0.5,
+      0,
+      2.35
+     ],
+     "rotY": 10,
+     "drop": 0.6
+    },
+    {
+     "proc": "toiletries",
+     "pos": [
+      1.85,
+      0,
+      0.36
+     ],
+     "drop": 1.2,
+     "collide": false
+    },
+    {
+     "model": "towel_folded",
+     "pos": [
+      1.25,
+      0,
+      0.36
+     ],
+     "rotY": 5,
+     "drop": 1.2
+    },
+    {
+     "proc": "slab",
+     "pos": [
+      1.6,
+      0,
+      0.95
+     ],
+     "params": {
+      "size": [
+       0.8,
+       0.012,
+       0.5
+      ],
+      "mat": "fabric_light"
+     },
+     "collide": false,
+     "id": "mat"
+    }
+   ]
+  },
+  "bath2": {
+   "items": [
+    {
+     "model": "bathtub_freestanding",
+     "pos": [
+      8.5,
+      0,
+      0.65
+     ],
+     "snap": "N",
+     "gap": 0.12,
+     "id": "tub"
+    },
+    {
+     "proc": "shower",
+     "pos": [
+      10.27,
+      0,
+      0.85
+     ],
+     "params": {
+      "w": 1.15,
+      "d": 1.4,
+      "glassEdge": "left",
+      "glassLen": 0.95
+     },
+     "snap": [
+      "N",
+      "E"
+     ],
+     "gap": 0.0,
+     "id": "shower"
+    },
+    {
+     "model": "bathroom_vanity",
+     "pos": [
+      6.3,
+      0,
+      0.75
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "gap": 0.0,
+     "id": "vanity_a"
+    },
+    {
+     "model": "bathroom_vanity",
+     "pos": [
+      6.3,
+      0,
+      1.8
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "gap": 0.0,
+     "id": "vanity_b"
+    },
+    {
+     "model": "toilet_wall_hung",
+     "pos": [
+      7.35,
+      0,
+      2.3
+     ],
+     "rotY": 180,
+     "snap": "S",
+     "gap": 0.0,
+     "id": "toilet"
+    },
+    {
+     "proc": "towel_rail",
+     "pos": [
+      10.8,
+      0,
+      2.1
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.5,
+      "y0": 0.4,
+      "h": 1.1,
+      "towelColor": "#3a3f44"
+     },
+     "snap": "E",
+     "gap": 0.0,
+     "collide": false
+    },
+    {
+     "proc": "toiletries",
+     "pos": [
+      6.3,
+      0,
+      1.05
+     ],
+     "rotY": 90,
+     "drop": 1.2,
+     "collide": false
+    },
+    {
+     "model": "towel_folded",
+     "pos": [
+      6.3,
+      0,
+      2.05
+     ],
+     "rotY": 90,
+     "drop": 1.2
+    },
+    {
+     "model": "rubber_duck",
+     "pos": [
+      8.95,
+      0,
+      0.62
+     ],
+     "rotY": -30,
+     "drop": 1.0,
+     "scale": 0.4
+    },
+    {
+     "proc": "slab",
+     "pos": [
+      8.5,
+      0,
+      1.45
+     ],
+     "params": {
+      "size": [
+       0.8,
+       0.012,
+       0.5
+      ],
+      "mat": "fabric_light"
+     },
+     "collide": false
+    }
+   ]
+  },
+  "bath3": {
+   "items": [
+    {
+     "model": "toilet_wall_hung",
+     "pos": [
+      10.55,
+      0,
+      2.9
+     ],
+     "snap": "N",
+     "gap": 0.0,
+     "id": "toilet"
+    },
+    {
+     "model": "bathroom_vanity",
+     "pos": [
+      10.6,
+      0,
+      3.55
+     ],
+     "rotY": -90,
+     "snap": "E",
+     "gap": 0.0,
+     "scale": [
+      0.7,
+      1,
+      1
+     ],
+     "id": "vanity"
+    },
+    {
+     "proc": "shower",
+     "pos": [
+      10.06,
+      0,
+      4.36
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 1.58,
+      "d": 0.82,
+      "glassEdge": "right",
+      "glassLen": 0.6
+     },
+     "snap": "S",
+     "gap": 0.0,
+     "id": "shower"
+    },
+    {
+     "proc": "toiletries",
+     "pos": [
+      10.6,
+      0,
+      3.7
+     ],
+     "rotY": -90,
+     "drop": 1.2,
+     "collide": false
+    }
+   ]
+  },
+  "laundry": {
+   "items": [
+    {
+     "model": "washing_machine",
+     "pos": [
+      10.55,
+      0,
+      5.2
+     ],
+     "rotY": -90,
+     "snap": [
+      "E",
+      "N"
+     ],
+     "gap": 0.01,
+     "id": "washer"
+    },
+    {
+     "model": "washing_machine",
+     "pos": [
+      10.55,
+      0.87,
+      5.2
+     ],
+     "rotY": -90,
+     "snap": [
+      "E",
+      "N"
+     ],
+     "gap": 0.01,
+     "id": "dryer",
+     "rayY": 1.2
+    },
+    {
+     "proc": "wall_shelves",
+     "pos": [
+      10.4,
+      0,
+      6.28
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 0.8,
+      "d": 0.26,
+      "levels": [
+       1.35,
+       1.7
+      ]
+     },
+     "snap": "S",
+     "rayY": 1.5,
+     "collide": false
+    },
+    {
+     "model": "towel_stack",
+     "pos": [
+      10.2,
+      0,
+      6.28
+     ],
+     "drop": 1.5
+    },
+    {
+     "model": "cleaner_bottle",
+     "pos": [
+      10.55,
+      0,
+      6.28
+     ],
+     "drop": 1.5
+    },
+    {
+     "model": "cleaner_bottle",
+     "pos": [
+      10.66,
+      0,
+      6.3
+     ],
+     "rotY": 40,
+     "drop": 1.5
+    },
+    {
+     "model": "basket_wicker",
+     "pos": [
+      10.4,
+      0,
+      6.28
+     ],
+     "drop": 1.9
+    },
+    {
+     "model": "laundry_basket_wicker",
+     "pos": [
+      10.5,
+      0,
+      6.15
+     ],
+     "id": "basket"
+    }
+   ]
+  },
+  "hall1": {
+   "items": [
+    {
+     "proc": "cabinet",
+     "pos": [
+      6.0,
+      0,
+      6.2
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 1.6,
+      "h": 0.72,
+      "d": 0.4,
+      "body": "oak",
+      "cols": 4,
+      "rows": 1,
+      "doors": true,
+      "legs": 0.16
+     },
+     "snap": "S",
+     "id": "landing_cabinet"
+    },
+    {
+     "proc": "art",
+     "pos": [
+      6.0,
+      1.2,
+      6.38
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 1.2,
+      "h": 0.8,
+      "style": "shapes",
+      "seed": 33,
+      "frame": "black_matte",
+      "mat": 0.06
+     },
+     "collide": false,
+     "snap": "S",
+     "rayY": 1.6,
+     "gap": 0.005
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      5.45,
+      0,
+      6.2
+     ],
+     "params": {
+      "base": "ceramic_black",
+      "h": 0.5
+     },
+     "instanceKey": "lamp_ceramic_black_0.5",
+     "collide": false,
+     "drop": 1.2
+    },
+    {
+     "proc": "books",
+     "pos": [
+      6.4,
+      0,
+      6.2
+     ],
+     "rotY": 180,
+     "params": {
+      "length": 0.3,
+      "seed": 91,
+      "stack": 3
+     },
+     "collide": false,
+     "drop": 1.2
+    },
+    {
+     "model": "vase_ceramic_tall",
+     "pos": [
+      6.65,
+      0,
+      6.22
+     ],
+     "drop": 1.2
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      8.85,
+      0,
+      6.15
+     ],
+     "params": {
+      "plant": "plant_pachira_a",
+      "pot": "cylinder",
+      "r": 0.2,
+      "h": 0.38,
+      "mat": "concrete",
+      "plantScale": 0.95,
+      "plantRot": 0
+     }
+    },
+    {
+     "proc": "slab",
+     "pos": [
+      6.2,
+      0,
+      5.1
+     ],
+     "params": {
+      "size": [
+       3.2,
+       0.012,
+       0.8
+      ],
+      "mat": "rug_wool"
+     },
+     "collide": false,
+     "id": "runner"
+    },
+    {
+     "proc": "art",
+     "pos": [
+      3.45,
+      1.2,
+      4.5
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 0.6,
+      "h": 0.8,
+      "style": "lines",
+      "seed": 34,
+      "frame": "oak",
+      "mat": 0.05
+     },
+     "collide": false,
+     "snap": "W",
+     "rayY": 1.6,
+     "gap": 0.005
+    }
+   ]
+  },
+  "bed2": {
+   "items": [
+    {
+     "model": "rug_rect_200x300",
+     "pos": [
+      5.7,
+      0,
+      8.4
+     ],
+     "rotY": 90,
+     "scale": 0.85
+    },
+    {
+     "model": "bed_double_modern",
+     "pos": [
+      5.9,
+      0,
+      8.4
+     ],
+     "rotY": -90,
+     "snap": "E",
+     "gap": 0.01,
+     "scale": 0.9,
+     "id": "bed"
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      6.7,
+      0,
+      7.26
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.46,
+      "h": 0.46,
+      "d": 0.4,
+      "body": "oak",
+      "cols": 1,
+      "rows": 2,
+      "legs": 0.12
+     },
+     "snap": "E",
+     "instanceKey": "nightstand"
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      6.7,
+      0,
+      9.54
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 0.46,
+      "h": 0.46,
+      "d": 0.4,
+      "body": "oak",
+      "cols": 1,
+      "rows": 2,
+      "legs": 0.12
+     },
+     "snap": "E",
+     "instanceKey": "nightstand"
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      6.7,
+      0,
+      7.26
+     ],
+     "params": {
+      "base": "terracotta",
+      "h": 0.46
+     },
+     "instanceKey": "lamp_terracotta_0.46",
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      6.7,
+      0,
+      9.54
+     ],
+     "params": {
+      "base": "terracotta",
+      "h": 0.46
+     },
+     "instanceKey": "lamp_terracotta_0.46",
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "books",
+     "pos": [
+      6.72,
+      0,
+      9.4
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.22,
+      "seed": 101,
+      "stack": 2
+     },
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "art",
+     "pos": [
+      6.93,
+      1.3,
+      8.4
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 1.2,
+      "h": 0.8,
+      "style": "shapes",
+      "seed": 41,
+      "frame": "white_lacquer",
+      "mat": 0.05
+     },
+     "collide": false,
+     "snap": "E",
+     "rayY": 1.7000000000000002,
+     "gap": 0.005
+    },
+    {
+     "proc": "wardrobe",
+     "pos": [
+      3.73,
+      0,
+      8.6
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 2.4,
+      "h": 2.6,
+      "d": 0.6,
+      "fronts": "oak"
+     },
+     "snap": "W",
+     "gap": 0.0,
+     "id": "wardrobe"
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      5.6,
+      0,
+      6.72
+     ],
+     "params": {
+      "w": 1.2,
+      "h": 0.75,
+      "d": 0.4,
+      "body": "white_lacquer",
+      "cols": 2,
+      "rows": 3,
+      "legs": 0.12
+     },
+     "snap": "N",
+     "id": "dresser"
+    },
+    {
+     "proc": "mirror",
+     "pos": [
+      5.6,
+      1.1,
+      6.55
+     ],
+     "params": {
+      "w": 0.6,
+      "shape": "round"
+     },
+     "snap": "N",
+     "rayY": 1.4,
+     "gap": 0.003,
+     "collide": false
+    },
+    {
+     "model": "vase_ceramic_04",
+     "pos": [
+      5.2,
+      0,
+      6.72
+     ],
+     "drop": 1.3
+    },
+    {
+     "model": "picture_frame_standing",
+     "pos": [
+      5.95,
+      0,
+      6.68
+     ],
+     "rotY": 15,
+     "drop": 1.3
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      4.3,
+      0,
+      9.92
+     ],
+     "params": {
+      "plant": "plant_fern_c",
+      "pot": "taper",
+      "r": 0.2,
+      "h": 0.4,
+      "mat": "terracotta",
+      "plantScale": 0.8,
+      "plantRot": 0
+     }
+    }
+   ]
+  },
+  "bed3": {
+   "items": [
+    {
+     "model": "rug_rect_200x300",
+     "pos": [
+      8.2,
+      0,
+      8.75
+     ],
+     "rotY": 90,
+     "scale": 0.85
+    },
+    {
+     "model": "bed_double_modern",
+     "pos": [
+      8.1,
+      0,
+      8.75
+     ],
+     "rotY": 90,
+     "snap": "W",
+     "gap": 0.01,
+     "scale": 0.9,
+     "id": "bed"
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      7.3,
+      0,
+      7.62
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 0.46,
+      "h": 0.46,
+      "d": 0.4,
+      "body": "oak",
+      "cols": 1,
+      "rows": 2,
+      "legs": 0.12
+     },
+     "snap": "W",
+     "instanceKey": "nightstand"
+    },
+    {
+     "proc": "cabinet",
+     "pos": [
+      7.3,
+      0,
+      9.89
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 0.46,
+      "h": 0.46,
+      "d": 0.4,
+      "body": "oak",
+      "cols": 1,
+      "rows": 2,
+      "legs": 0.12
+     },
+     "snap": "W",
+     "instanceKey": "nightstand"
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      7.3,
+      0,
+      7.62
+     ],
+     "params": {
+      "base": "brass",
+      "h": 0.46
+     },
+     "instanceKey": "lamp_brass_0.46",
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "table_lamp",
+     "pos": [
+      7.3,
+      0,
+      9.89
+     ],
+     "params": {
+      "base": "brass",
+      "h": 0.46
+     },
+     "instanceKey": "lamp_brass_0.46",
+     "collide": false,
+     "drop": 1.0
+    },
+    {
+     "proc": "art",
+     "pos": [
+      7.09,
+      1.3,
+      8.75
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 1.1,
+      "h": 0.75,
+      "style": "lines",
+      "seed": 51,
+      "frame": "black_matte",
+      "mat": 0.06
+     },
+     "collide": false,
+     "snap": "W",
+     "rayY": 1.675,
+     "gap": 0.005
+    },
+    {
+     "proc": "wardrobe",
+     "pos": [
+      9.6,
+      0,
+      6.82
+     ],
+     "params": {
+      "w": 2.45,
+      "h": 2.6,
+      "d": 0.6,
+      "fronts": "white_lacquer"
+     },
+     "snap": "N",
+     "gap": 0.0,
+     "id": "wardrobe"
+    },
+    {
+     "proc": "table",
+     "pos": [
+      10.57,
+      0,
+      8.4
+     ],
+     "rotY": -90,
+     "params": {
+      "w": 1.2,
+      "d": 0.55,
+      "h": 0.75,
+      "top": "oak",
+      "legs": "four"
+     },
+     "snap": "E",
+     "id": "desk"
+    },
+    {
+     "model": "office_chair",
+     "pos": [
+      9.95,
+      0,
+      8.4
+     ],
+     "rotY": 90,
+     "tuck": true,
+     "id": "chair"
+    },
+    {
+     "model": "laptop",
+     "pos": [
+      10.6,
+      0,
+      8.45
+     ],
+     "rotY": -90,
+     "drop": 1.2,
+     "scale": 0.62
+    },
+    {
+     "model": "desk_lamp",
+     "pos": [
+      10.65,
+      0,
+      7.95
+     ],
+     "rotY": -150,
+     "drop": 1.2,
+     "scale": 0.7
+    },
+    {
+     "proc": "books",
+     "pos": [
+      10.7,
+      0,
+      8.95
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 0.25,
+      "seed": 111,
+      "stack": 3
+     },
+     "collide": false,
+     "drop": 1.2
+    },
+    {
+     "proc": "shelf_unit",
+     "pos": [
+      10.6,
+      0,
+      9.99
+     ],
+     "rotY": 180,
+     "params": {
+      "w": 0.5,
+      "h": 1.8,
+      "d": 0.32,
+      "levels": [
+       0.08,
+       0.5,
+       0.92,
+       1.34,
+       1.78
+      ]
+     },
+     "snap": [
+      "S",
+      "E"
+     ],
+     "gap": 0.01,
+     "id": "bookshelf"
+    },
+    {
+     "proc": "books",
+     "pos": [
+      10.6,
+      0,
+      9.99
+     ],
+     "rotY": 180,
+     "params": {
+      "length": 0.42,
+      "seed": 112,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 0.2
+    },
+    {
+     "proc": "books",
+     "pos": [
+      10.6,
+      0,
+      9.99
+     ],
+     "rotY": 180,
+     "params": {
+      "length": 0.38,
+      "seed": 113,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 0.62
+    },
+    {
+     "proc": "books",
+     "pos": [
+      10.6,
+      0,
+      9.99
+     ],
+     "rotY": 180,
+     "params": {
+      "length": 0.3,
+      "seed": 114,
+      "stack": 0
+     },
+     "collide": false,
+     "drop": 1.46
+    },
+    {
+     "model": "plant_succulent_small",
+     "pos": [
+      10.6,
+      0,
+      9.99
+     ],
+     "drop": 1.04
+    }
+   ]
+  },
+  "terrace": {
+   "level": "ground",
+   "floorY": 0.0,
+   "shotRect": [
+    -2.45,
+    -0.1,
+    -0.2,
+    10.3
+   ],
+   "items": [
+    {
+     "proc": "table",
+     "pos": [
+      -1.3,
+      0,
+      1.75
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 1.8,
+      "d": 0.9,
+      "h": 0.74,
+      "top": "teak",
+      "legs": "four",
+      "legMat": "black_metal"
+     },
+     "id": "terrace_table"
+    },
+    {
+     "proc": "dining_chair",
+     "pos": [
+      -2.08,
+      0,
+      1.35
+     ],
+     "rotY": 90,
+     "params": {
+      "frame": "teak",
+      "seat": "fabric_outdoor"
+     },
+     "instanceKey": "teak",
+     "tuck": true,
+     "repeat": {
+      "n": 2,
+      "step": [
+       0,
+       0,
+       0.8
+      ]
+     }
+    },
+    {
+     "proc": "dining_chair",
+     "pos": [
+      -0.52,
+      0,
+      1.35
+     ],
+     "rotY": -90,
+     "params": {
+      "frame": "teak",
+      "seat": "fabric_outdoor"
+     },
+     "instanceKey": "teak",
+     "tuck": true,
+     "repeat": {
+      "n": 2,
+      "step": [
+       0,
+       0,
+       0.8
+      ]
+     }
+    },
+    {
+     "proc": "dining_chair",
+     "pos": [
+      -1.3,
+      0,
+      0.42
+     ],
+     "params": {
+      "frame": "teak",
+      "seat": "fabric_outdoor"
+     },
+     "instanceKey": "teak",
+     "tuck": true
+    },
+    {
+     "proc": "dining_chair",
+     "pos": [
+      -1.3,
+      0,
+      3.08
+     ],
+     "rotY": 180,
+     "params": {
+      "frame": "teak",
+      "seat": "fabric_outdoor"
+     },
+     "instanceKey": "teak",
+     "tuck": true
+    },
+    {
+     "model": "vase_ceramic_tall",
+     "pos": [
+      -1.3,
+      0,
+      1.6
+     ],
+     "drop": 1.2
+    },
+    {
+     "model": "bowl_wood_02",
+     "pos": [
+      -1.3,
+      0,
+      2.0
+     ],
+     "drop": 1.2,
+     "scale": 1.5
+    },
+    {
+     "proc": "sofa",
+     "pos": [
+      -0.6,
+      0,
+      4.95
+     ],
+     "rotY": -90,
+     "params": {
+      "length": 2.2,
+      "depth": 0.85,
+      "chaise": null,
+      "fabric": "fabric_outdoor",
+      "frame": "teak",
+      "seatH": 0.42,
+      "backH": 0.74,
+      "pillows": [
+       [
+        "fabric_navy",
+        -0.6,
+        0,
+        0.08
+       ],
+       [
+        "fabric_ochre",
+        0.62,
+        0,
+        -0.1
+       ]
+      ]
+     },
+     "snap": "E",
+     "gap": 0.02,
+     "id": "terrace_sofa"
+    },
+    {
+     "proc": "table",
+     "pos": [
+      -1.6,
+      0,
+      4.95
+     ],
+     "rotY": 90,
+     "params": {
+      "w": 1.0,
+      "d": 0.6,
+      "h": 0.36,
+      "top": "teak",
+      "thick": 0.05,
+      "legs": "four",
+      "legMat": "teak"
+     },
+     "id": "terrace_coffee"
+    },
+    {
+     "model": "lantern",
+     "pos": [
+      -1.75,
+      0,
+      4.8
+     ],
+     "drop": 0.8
+    },
+    {
+     "model": "plant_succulent_small",
+     "pos": [
+      -1.5,
+      0,
+      5.2
+     ],
+     "drop": 0.8
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      -2.0,
+      0,
+      9.9
+     ],
+     "params": {
+      "plant": "plant_pachira_d",
+      "pot": "cylinder",
+      "r": 0.28,
+      "h": 0.55,
+      "mat": "anthracite",
+      "plantScale": 0.9,
+      "plantRot": 0
+     }
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      -1.95,
+      0,
+      3.75
+     ],
+     "params": {
+      "plant": "plant_fern_b",
+      "pot": "bowl",
+      "r": 0.24,
+      "h": 0.45,
+      "mat": "anthracite",
+      "plantScale": 0.8,
+      "plantRot": 0
+     }
+    }
+   ]
+  },
+  "pool": {
+   "level": "ground",
+   "floorY": 0.0,
+   "shotRect": [
+    -11.5,
+    1.8,
+    -3.0,
+    12.3
+   ],
+   "items": [
+    {
+     "model": "sun_lounger",
+     "pos": [
+      -9.4,
+      0,
+      3.3
+     ],
+     "drop": 0.5,
+     "collide": true,
+     "id": "lounger1"
+    },
+    {
+     "model": "sun_lounger",
+     "pos": [
+      -8.1,
+      0,
+      3.3
+     ],
+     "drop": 0.5,
+     "collide": true,
+     "id": "lounger2"
+    },
+    {
+     "model": "sun_lounger",
+     "pos": [
+      -6.8,
+      0,
+      3.3
+     ],
+     "drop": 0.5,
+     "collide": true,
+     "id": "lounger3"
+    },
+    {
+     "proc": "table",
+     "pos": [
+      -8.75,
+      0,
+      2.75
+     ],
+     "params": {
+      "w": 0.4,
+      "d": 0.4,
+      "h": 0.4,
+      "top": "teak",
+      "legs": "four",
+      "legMat": "teak"
+     },
+     "drop": 0.5,
+     "collide": true,
+     "instanceKey": "lounger_table",
+     "repeat": {
+      "n": 2,
+      "step": [
+       1.3,
+       0,
+       0
+      ]
+     }
+    },
+    {
+     "model": "parasol_cantilever",
+     "pos": [
+      -8.75,
+      0,
+      3.4
+     ],
+     "drop": 0.5,
+     "id": "parasol",
+     "collide": true
+    },
+    {
+     "model": "towel_folded",
+     "pos": [
+      -9.4,
+      0,
+      4.0
+     ],
+     "drop": 1.5
+    },
+    {
+     "model": "towel_folded",
+     "pos": [
+      -6.8,
+      0,
+      3.95
+     ],
+     "rotY": 8,
+     "drop": 1.5
+    },
+    {
+     "model": "lantern",
+     "pos": [
+      -8.75,
+      0,
+      2.7
+     ],
+     "drop": 1.0
+    },
+    {
+     "proc": "sofa",
+     "pos": [
+      -7.5,
+      0,
+      11.4
+     ],
+     "rotY": 180,
+     "params": {
+      "length": 2.8,
+      "depth": 0.9,
+      "chaise": "right",
+      "chaiseLength": 1.6,
+      "fabric": "fabric_outdoor",
+      "frame": "teak",
+      "seatH": 0.42,
+      "backH": 0.74,
+      "pillows": [
+       [
+        "fabric_navy",
+        -0.9,
+        0,
+        0.1
+       ],
+       [
+        "fabric_rust",
+        -0.45,
+        0,
+        -0.1
+       ],
+       [
+        "fabric_ochre",
+        0.7,
+        0,
+        0.1
+       ]
+      ]
+     },
+     "drop": 0.5,
+     "collide": true,
+     "id": "deck_sofa"
+    },
+    {
+     "proc": "table",
+     "pos": [
+      -7.0,
+      0,
+      10.3
+     ],
+     "params": {
+      "w": 1.1,
+      "d": 0.7,
+      "h": 0.36,
+      "top": "teak",
+      "thick": 0.05,
+      "legs": "four",
+      "legMat": "teak"
+     },
+     "drop": 0.5,
+     "collide": true,
+     "id": "deck_coffee"
+    },
+    {
+     "model": "bowl_wood_02",
+     "pos": [
+      -6.85,
+      0,
+      10.3
+     ],
+     "drop": 1.0,
+     "scale": 1.5
+    },
+    {
+     "model": "lantern",
+     "pos": [
+      -7.25,
+      0,
+      10.2
+     ],
+     "drop": 1.0
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      -9.6,
+      0,
+      11.6
+     ],
+     "params": {
+      "plant": "plant_pachira_c",
+      "pot": "cylinder",
+      "r": 0.3,
+      "h": 0.6,
+      "mat": "anthracite",
+      "plantScale": 1.0,
+      "plantRot": 0
+     },
+     "drop": 0.5,
+     "collide": true
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      -5.4,
+      0,
+      11.6
+     ],
+     "params": {
+      "plant": "plant_fern_c",
+      "pot": "bowl",
+      "r": 0.26,
+      "h": 0.5,
+      "mat": "anthracite",
+      "plantScale": 0.9,
+      "plantRot": 0
+     },
+     "drop": 0.5,
+     "collide": true
+    }
+   ]
+  },
+  "balcony": {
+   "level": "first",
+   "floorY": 3.15,
+   "shotRect": [
+    -2.45,
+    4.95,
+    -0.2,
+    10.3
+   ],
+   "items": [
+    {
+     "model": "hanging_egg_chair",
+     "pos": [
+      -1.35,
+      0,
+      9.4
+     ],
+     "rotY": -90,
+     "id": "egg_chair"
+    },
+    {
+     "proc": "table",
+     "pos": [
+      -1.35,
+      0,
+      8.55
+     ],
+     "params": {
+      "w": 0.42,
+      "d": 0.42,
+      "h": 0.45,
+      "top": "teak",
+      "legs": "round",
+      "legMat": "black_metal",
+      "legR": 0.012
+     },
+     "id": "balcony_table"
+    },
+    {
+     "model": "lantern",
+     "pos": [
+      -1.35,
+      0,
+      8.55
+     ],
+     "drop": 1.0
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      -2.15,
+      0,
+      5.3
+     ],
+     "params": {
+      "plant": "plant_fern_b",
+      "pot": "cylinder",
+      "r": 0.25,
+      "h": 0.5,
+      "mat": "anthracite",
+      "plantScale": 0.8,
+      "plantRot": 0
+     }
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      -0.55,
+      0,
+      10.0
+     ],
+     "params": {
+      "plant": "plant_pachira_b",
+      "pot": "cylinder",
+      "r": 0.22,
+      "h": 0.45,
+      "mat": "anthracite",
+      "plantScale": 1.0,
+      "plantRot": 0
+     }
+    }
+   ]
+  }
+ }
+}

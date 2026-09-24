@@ -1,0 +1,30 @@
+# Dependencies and tools
+node_modules/
+tools/
+dist/
+
+# Downloaded / generated assets (textures, models, HDRIs, house GLB) — rebuild with scripts/assets and pipeline/
+public/assets/
+
+# Scratch and temp files
+scratch/
+scratch_*
+*.log
+__pycache__/
+pipeline/props/_build/
+
+# Review screenshots (large; HF2 references are third-party). Verdicts and reports (.md/.json) are kept.
+reviews/**/*.png
+reviews/**/*.jpg
+reviews/**/*.jpeg
+reviews/**/*.webp
+reviews/**/*.gif
+reviews/**/*.mp4
+reviews/**/*.webm
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local Claude Code session state
+.claude/*.lock

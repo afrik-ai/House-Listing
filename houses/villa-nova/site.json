@@ -1,0 +1,108 @@
+{
+  "id": "villa-nova",
+  "notes": "P04 landscape. Coordinates = house.json (X east, Z south, Y up, metres). Rects are [x, z, w, d]. house.json site.width/depth + setbacks describe a tight plot that cannot contain its own pool (x=-9.5) or the driveway (to x=21.4), or the standard exterior viewpoints, so the plot here is the generous garden from the client photos. grade_y = lawn top.",
+  "grade_y": -0.30,
+  "plot": [-16.5, -14.5, 37.9, 40.0],
+  "house_footprint": [
+    [-0.15, -0.15, 11.3, 10.62], [7.45, -3.38, 6.1, 3.2], [11.0, 2.6, 3.25, 4.01], [-2.6, -0.15, 2.6, 10.62], [11.0, 6.4, 1.15, 4.07],
+    [-2.95, 10.47, 15.10, 0.35], [-2.95, 1.60, 0.35, 8.87], [-2.95, -0.50, 2.95, 0.35], [-2.95, -0.15, 0.35, 1.75], [13.55, 2.45, 0.70, 4.16]
+  ],
+  "materials": {
+    "lawn":      { "tex": "grass_lawn_02", "tex2": "grass_lawn_01", "scale": 1.6, "tint": [0.8, 0.84, 0.7], "desat": 0.18, "stripes": 0.07 },
+    "meadow":    { "tex": "grass_lawn_01", "scale": 3.2, "tint": [0.66, 0.7, 0.56], "desat": 0.25 },
+    "gravel":    { "tex": "gravel", "scale": 1.3, "tint": [2.05, 2.0, 1.95], "desat": 0.75, "roughness": 1.0 },
+    "deck":      { "tex": "limestone_tile_light", "scale": 3.0, "tint": [1.12, 1.1, 1.06], "desat": 0.35, "antitile": false, "macro": 0.12 },
+    "concrete":  { "tex": "concrete_smooth_light", "scale": 2.2, "tint": [0.86, 0.85, 0.83] },
+    "coping":    { "tex": "concrete_smooth_light", "scale": 1.5, "tint": [0.2, 0.2, 0.21], "roughness": 0.55 },
+    "asphalt":   { "tex": "asphalt", "scale": 4.0, "tint": [0.95, 0.95, 0.95] },
+    "mulch":     { "tex": "bark_mulch", "scale": 2.0, "tint": [0.8, 0.75, 0.72] },
+    "pool_tile": { "tex": "pool_tile_blue", "scale": 0.5, "tint": [1.08, 1.1, 1.12] }
+  },
+  "deck": [
+    { "id": "pool_deck", "rect": [-13.4, 1.6, 10.8, 11.0], "top": -0.14, "material": "deck" },
+    { "id": "south_patio", "rect": [-2.6, 10.47, 14.8, 2.13], "top": -0.14, "material": "deck" }
+  ],
+  "pool": {
+    "rect": [-11.0, 5.3, 7.0, 3.5], "water_y": -0.215, "depth": 1.45, "coping": 0.32, "coping_top": -0.125,
+    "shallow_depth": 1.05,
+    "lights": [[-9.25, 5.3], [-5.75, 5.3], [-9.25, 8.8], [-5.75, 8.8]],
+    "light_y": -0.75,
+    "water_color": [0.03, 0.34, 0.42], "absorption": [0.46, 0.11, 0.075]
+  },
+  "gravel_beds": [
+    { "id": "west_border",  "rect": [-15.6, -1.0, 2.2, 15.0], "planting": "border" },
+    { "id": "south_border", "rect": [-15.6, 23.2, 36.1, 1.4], "planting": "border" },
+    { "id": "street_bed",   "rect": [18.3, 6.9, 2.25, 16.3], "planting": "border" },
+    { "id": "island_bed",   "rect": [5.8, 15.4, 5.4, 3.2], "planting": "island" },
+    { "id": "drive_strip",  "rect": [14.25, 2.55, 7.15, 0.35], "planting": "none" },
+    { "id": "north_drip",   "rect": [-2.6, -0.75, 10.05, 0.6], "planting": "none" },
+    { "id": "garage_drip",  "rect": [7.45, -3.95, 6.1, 0.57], "planting": "none" },
+    { "id": "east_drip",    "rect": [12.15, 6.61, 0.5, 3.86], "planting": "low" },
+    { "id": "firepit_pad",  "circle": [-1.8, 18.2, 2.3], "planting": "none" }
+  ],
+  "mulch_beds": [
+    { "id": "nw_tree", "circle": [-13.3, -6.2, 1.7] },
+    { "id": "ne_tree", "circle": [17.3, -10.0, 1.6] }
+  ],
+  "slab_paths": [
+    { "id": "entrance", "from": [21.4, 4.65], "to": [14.25, 4.65], "width": 3.5, "slab": 0.92, "gap": 0.1, "top": -0.25, "material": "concrete", "stepped": [-0.255, -0.24, -0.225, -0.21, -0.195, -0.18, -0.165] },
+    { "id": "sidewalk", "from": [22.35, -600.0], "to": [22.35, 600.0], "width": 1.9, "slab": 1.0, "gap": 0.012, "top": -0.28, "material": "concrete", "noCull": true }
+  ],
+  "stepping_stones": [
+    { "id": "front_to_patio", "points": [[16.6, 6.75], [16.6, 11.55], [12.6, 11.55]], "size": [1.0, 0.5], "spacing": 0.78, "top": -0.265 },
+    { "id": "patio_to_firepit", "points": [[0.6, 12.95], [-1.0, 16.0]], "size": [1.0, 0.5], "spacing": 0.78, "top": -0.265 },
+    { "id": "north_walk", "points": [[15.2, -4.15], [15.2, -6.0], [-1.2, -6.0], [-4.6, -3.0], [-4.6, 1.3]], "size": [1.0, 0.5], "spacing": 0.8, "top": -0.265 },
+    { "id": "west_walk", "points": [[-13.1, 12.95], [-12.2, 16.8], [-11.2, 18.2]], "size": [0.9, 0.45], "spacing": 0.8, "top": -0.265 }
+  ],
+  "hedges": [
+    { "id": "west",  "rect": [-16.45, -13.7, 0.85, 39.1], "height": 1.9 },
+    { "id": "south", "rect": [-15.6, 24.6, 36.1, 0.85], "height": 1.9 },
+    { "id": "north_w", "rect": [-15.6, -14.35, 6.0, 0.8], "height": 1.75 },
+    { "id": "street_n", "rect": [20.55, -13.6, 0.75, 10.0], "height": 1.15 },
+    { "id": "nbr_street", "rect": [32.9, -60.0, 0.9, 52.0], "height": 2.1, "cards": 0.5 },
+    { "id": "nbr_street2", "rect": [32.9, -3.0, 0.9, 20.0], "height": 2.1, "cards": 0.5 },
+    { "id": "nbr_street3", "rect": [32.9, 23.0, 0.9, 60.0], "height": 2.1, "cards": 0.5 },
+    { "id": "nbr_west", "rect": [-28.0, -40.0, 0.9, 90.0], "height": 2.6, "cards": 0.4 },
+    { "id": "nbr_south", "rect": [-28.0, 40.0, 49.4, 0.9], "height": 2.4, "cards": 0.4 },
+    { "id": "nbr_north", "rect": [-28.0, -32.0, 49.4, 0.9], "height": 2.4, "cards": 0.4 }
+  ],
+  "fences": [
+    { "id": "north", "points": [[-9.6, -14.6], [21.35, -14.6]], "height": 1.6 },
+    { "id": "west",  "points": [[-16.6, -14.6], [-16.6, 25.5]], "height": 1.6 },
+    { "id": "south", "points": [[-16.6, 25.5], [21.0, 25.5]], "height": 1.6 },
+    { "id": "street_n", "points": [[21.35, -14.6], [21.35, -3.7]], "height": 1.1 }
+  ],
+  "gabions": [
+    { "id": "street", "rect": [20.55, 6.9, 0.45, 18.6], "height": 1.0 },
+    { "id": "entry", "rect": [17.2, 6.9, 1.1, 0.42], "height": 0.62 }
+  ],
+  "trees": [
+    { "model": "tree_island_01", "pos": [-10.6, 21.4], "scale": 2.1, "rot": 20, "shadow": true },
+    { "model": "tree_small",     "pos": [8.5, 17.0],   "scale": 1.55, "rot": 140, "shadow": true },
+    { "model": "tree_island_02", "pos": [-13.3, -6.2], "scale": 2.4, "rot": 75, "shadow": true },
+    { "model": "tree_island_01", "pos": [17.3, -10.0], "scale": 1.7, "rot": 200, "shadow": true },
+    { "model": "tree_island_02", "pos": [15.8, 19.0],  "scale": 2.1, "rot": 300, "shadow": true }
+  ],
+  "tree_ring": { "seed": 7, "count": 46, "inner": 3.0, "outer": 20.0, "scale": [1.8, 2.8], "avoid": [[21.2, -200, 12.0, 400]] },
+  "far_trees": { "seed": 11, "count": 520, "inner": 55, "outer": 330, "scale": [9, 17] },
+  "street": { "road": [23.45, -600.0, 7.1, 1200.0], "curbs": [23.3, 30.55], "far_sidewalk": [30.7, -600.0, 1.9, 1200.0], "curb_h": 0.12, "road_top": -0.40 },
+  "bollards": [
+    [20.9, 2.75], [18.2, 2.75], [15.5, 2.75],
+    [17.3, 7.2], [17.3, 10.3], [14.3, 12.2],
+    [11.9, 12.85], [6.0, 12.85], [0.0, 12.85],
+    [-2.9, 14.3],
+    [14.2, -4.4], [9.0, -6.7], [3.0, -6.7], [-3.2, -4.1], [-5.3, 0.6]
+  ],
+  "planting": {
+    "border": { "grass_step": 1.25, "shrub_step": 2.5, "rock_chance": 0.18 },
+    "island": { "grass_step": 1.1, "shrub_step": 2.2, "rock_chance": 0.3 },
+    "low": { "grass_step": 0, "shrub_step": 0.9, "rock_chance": 0 }
+  },
+  "features": [
+    { "model": "fire_pit_stone", "pos": [-1.8, 18.2], "rot": 0, "y": -0.29 }
+  ],
+  "bounds_walls": [
+    [21.4, -24.0, 12.0, 0.4], [21.4, 34.0, 12.0, 0.4], [33.0, -24.0, 0.4, 58.4]
+  ],
+  "terrain": { "hill_start": 110, "hill_end": 420, "hill_height": 34, "seed": 3 }
+}

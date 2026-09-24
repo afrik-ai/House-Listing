@@ -1,0 +1,754 @@
+[
+ {
+  "name": "stairs_up_1",
+  "ok": true,
+  "fromRoom": "vestibule",
+  "from": [
+   9.9,
+   0,
+   3.15
+  ],
+  "to": [
+   3.73,
+   3.15,
+   3.092
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "stairs_down_1",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   4.3,
+   3.15,
+   3.15
+  ],
+  "to": [
+   10.55,
+   0,
+   2.978
+  ],
+  "toRoom": "vestibule"
+ },
+ {
+  "name": "stairs_up_2",
+  "ok": true,
+  "fromRoom": "vestibule",
+  "from": [
+   9.9,
+   0,
+   3.2
+  ],
+  "to": [
+   3.73,
+   3.15,
+   3.183
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "stairs_down_2",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   4.3,
+   3.15,
+   3.2
+  ],
+  "to": [
+   10.55,
+   0,
+   2.978
+  ],
+  "toRoom": "vestibule"
+ },
+ {
+  "name": "stairs_up_3",
+  "ok": true,
+  "fromRoom": "vestibule",
+  "from": [
+   9.9,
+   0,
+   3.25
+  ],
+  "to": [
+   3.73,
+   3.15,
+   3.287
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "stairs_down_3",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   4.3,
+   3.15,
+   3.25
+  ],
+  "to": [
+   17.162,
+   -0.3,
+   3.6
+  ],
+  "toRoom": "outside"
+ },
+ {
+  "name": "living_to_terrace_W",
+  "ok": false,
+  "fromRoom": "living",
+  "from": [
+   1.2,
+   0,
+   6.973
+  ],
+  "to": [
+   1.07,
+   0,
+   7.22
+  ],
+  "toRoom": "living"
+ },
+ {
+  "name": "terrace_to_living_W",
+  "ok": false,
+  "fromRoom": "out",
+  "from": [
+   -1.2,
+   0,
+   6.973
+  ],
+  "to": [
+   0.073,
+   0.012,
+   7.112
+  ],
+  "toRoom": "living"
+ },
+ {
+  "name": "living_to_garden_S",
+  "ok": true,
+  "fromRoom": "living",
+  "from": [
+   1.47,
+   0,
+   9.2
+  ],
+  "to": [
+   1.47,
+   -0.3,
+   14.891
+  ],
+  "toRoom": "outside"
+ },
+ {
+  "name": "garden_to_living_S",
+  "ok": true,
+  "fromRoom": "out",
+  "from": [
+   1.47,
+   -0.14,
+   11.8
+  ],
+  "to": [
+   1.47,
+   0,
+   8.85
+  ],
+  "toRoom": "living"
+ },
+ {
+  "name": "master_to_balcony",
+  "ok": true,
+  "fromRoom": "master",
+  "from": [
+   1.2,
+   3.15,
+   7.57
+  ],
+  "to": [
+   -2.19,
+   3.15,
+   7.57
+  ],
+  "toRoom": "outside"
+ },
+ {
+  "name": "deck_to_terrace",
+  "ok": true,
+  "fromRoom": "out",
+  "from": [
+   -5,
+   -0.14,
+   4
+  ],
+  "to": [
+   -0.479,
+   0,
+   4
+  ],
+  "toRoom": "outside"
+ },
+ {
+  "name": "lawn_to_terrace_N",
+  "ok": true,
+  "fromRoom": "out",
+  "from": [
+   -1.3,
+   -0.3,
+   -2
+  ],
+  "to": [
+   -1.3,
+   0,
+   2.564
+  ],
+  "toRoom": "outside"
+ },
+ {
+  "name": "street_to_vestibule",
+  "ok": true,
+  "fromRoom": "out",
+  "from": [
+   18,
+   -0.25,
+   4
+  ],
+  "to": [
+   8.625,
+   0,
+   4
+  ],
+  "toRoom": "vestibule"
+ },
+ {
+  "name": "vestibule_to_street",
+  "ok": true,
+  "fromRoom": "vestibule",
+  "from": [
+   10.3,
+   0,
+   4
+  ],
+  "to": [
+   17.893,
+   -0.3,
+   4
+  ],
+  "toRoom": "outside"
+ },
+ {
+  "name": "D_garage_in",
+  "ok": true,
+  "fromRoom": "vestibule",
+  "from": [
+   9.95,
+   0,
+   3.4
+  ],
+  "to": [
+   9.95,
+   0,
+   -0.364
+  ],
+  "toRoom": "garage"
+ },
+ {
+  "name": "D_garage_out",
+  "ok": true,
+  "fromRoom": "garage",
+  "from": [
+   9.95,
+   0,
+   1.9
+  ],
+  "to": [
+   10.18,
+   0,
+   5.348
+  ],
+  "toRoom": "storage_e"
+ },
+ {
+  "name": "D_office_in",
+  "ok": true,
+  "fromRoom": "hall",
+  "from": [
+   2.6,
+   0,
+   3.4
+  ],
+  "to": [
+   2.6,
+   0,
+   0.45
+  ],
+  "toRoom": "office"
+ },
+ {
+  "name": "D_office_out",
+  "ok": true,
+  "fromRoom": "office",
+  "from": [
+   2.6,
+   0,
+   1.9
+  ],
+  "to": [
+   2.6,
+   0,
+   4.585
+  ],
+  "toRoom": "hall"
+ },
+ {
+  "name": "D_wc_in",
+  "ok": true,
+  "fromRoom": "hall",
+  "from": [
+   2.3,
+   0,
+   3.3
+  ],
+  "to": [
+   0.45,
+   0,
+   3.261
+  ],
+  "toRoom": "wc"
+ },
+ {
+  "name": "D_wc_out",
+  "ok": true,
+  "fromRoom": "wc",
+  "from": [
+   0.8,
+   0,
+   3.3
+  ],
+  "to": [
+   4.565,
+   0,
+   3.3
+  ],
+  "toRoom": "hall"
+ },
+ {
+  "name": "D_storage_n_in",
+  "ok": true,
+  "fromRoom": "hall",
+  "from": [
+   4.05,
+   0,
+   3.4
+  ],
+  "to": [
+   4.05,
+   0,
+   0.45
+  ],
+  "toRoom": "storage_n"
+ },
+ {
+  "name": "D_storage_n_out",
+  "ok": true,
+  "fromRoom": "storage_n",
+  "from": [
+   4.05,
+   0,
+   1.9
+  ],
+  "to": [
+   4.05,
+   0,
+   5.697
+  ],
+  "toRoom": "living"
+ },
+ {
+  "name": "D_boiler_in",
+  "ok": true,
+  "fromRoom": "garage",
+  "from": [
+   8.4,
+   0,
+   1.4
+  ],
+  "to": [
+   5.36,
+   0,
+   1.4
+  ],
+  "toRoom": "boiler"
+ },
+ {
+  "name": "D_boiler_out",
+  "ok": true,
+  "fromRoom": "boiler",
+  "from": [
+   6.9,
+   0,
+   1.4
+  ],
+  "to": [
+   10.665,
+   0,
+   1.4
+  ],
+  "toRoom": "garage"
+ },
+ {
+  "name": "D_cloak_in",
+  "ok": true,
+  "fromRoom": "vestibule",
+  "from": [
+   8.75,
+   0,
+   3.72
+  ],
+  "to": [
+   8.807,
+   0,
+   6.1
+  ],
+  "toRoom": "cloak"
+ },
+ {
+  "name": "D_cloak_out",
+  "ok": true,
+  "fromRoom": "cloak",
+  "from": [
+   8.75,
+   0,
+   5.22
+  ],
+  "to": [
+   8.838,
+   0,
+   3.96
+  ],
+  "toRoom": "vestibule"
+ },
+ {
+  "name": "D_storage_e_in",
+  "ok": true,
+  "fromRoom": "vestibule",
+  "from": [
+   10.25,
+   0,
+   3.72
+  ],
+  "to": [
+   10.25,
+   0,
+   6.1
+  ],
+  "toRoom": "storage_e"
+ },
+ {
+  "name": "D_storage_e_out",
+  "ok": true,
+  "fromRoom": "storage_e",
+  "from": [
+   10.25,
+   0,
+   5.22
+  ],
+  "to": [
+   10.07,
+   0,
+   1.638
+  ],
+  "toRoom": "garage"
+ },
+ {
+  "name": "D_master_in",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   4.17,
+   3.15,
+   5.75
+  ],
+  "to": [
+   0.405,
+   3.15,
+   5.75
+  ],
+  "toRoom": "master"
+ },
+ {
+  "name": "D_master_out",
+  "ok": true,
+  "fromRoom": "master",
+  "from": [
+   2.67,
+   3.15,
+   5.75
+  ],
+  "to": [
+   6.434,
+   3.15,
+   5.75
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "D_bed2_in",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   4.2,
+   3.15,
+   5.66
+  ],
+  "to": [
+   4.2,
+   3.15,
+   9.425
+  ],
+  "toRoom": "bed2"
+ },
+ {
+  "name": "D_bed2_out",
+  "ok": true,
+  "fromRoom": "bed2",
+  "from": [
+   4.2,
+   3.15,
+   7.16
+  ],
+  "to": [
+   4.2,
+   3.15,
+   3.396
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "D_bed3_in",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   7.8,
+   3.15,
+   5.66
+  ],
+  "to": [
+   7.8,
+   3.15,
+   9.425
+  ],
+  "toRoom": "bed3"
+ },
+ {
+  "name": "D_bed3_out",
+  "ok": true,
+  "fromRoom": "bed3",
+  "from": [
+   7.8,
+   3.15,
+   7.16
+  ],
+  "to": [
+   7.8,
+   3.15,
+   4.03
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "D_wardrobe_b_in",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   4,
+   3.15,
+   3.4
+  ],
+  "to": [
+   4.067,
+   3.15,
+   0.45
+  ],
+  "toRoom": "wardrobe_b"
+ },
+ {
+  "name": "D_wardrobe_b_out",
+  "ok": true,
+  "fromRoom": "wardrobe_b",
+  "from": [
+   4,
+   3.15,
+   1.9
+  ],
+  "to": [
+   4,
+   3.15,
+   5.665
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "D_bath2_in",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   9.7,
+   3.15,
+   3.4
+  ],
+  "to": [
+   9.7,
+   3.15,
+   0.45
+  ],
+  "toRoom": "bath2"
+ },
+ {
+  "name": "D_bath2_out",
+  "ok": true,
+  "fromRoom": "bath2",
+  "from": [
+   9.7,
+   3.15,
+   1.9
+  ],
+  "to": [
+   9.7,
+   3.15,
+   4.46
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "D_bath3_in",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   9.4,
+   3.15,
+   3.4
+  ],
+  "to": [
+   11.55,
+   3.15,
+   3.291
+  ],
+  "toRoom": "bath3"
+ },
+ {
+  "name": "D_bath3_out",
+  "ok": true,
+  "fromRoom": "bath3",
+  "from": [
+   10.9,
+   3.15,
+   3.4
+  ],
+  "to": [
+   9.57,
+   3.15,
+   3.4
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "D_laundry_in",
+  "ok": true,
+  "fromRoom": "hall1",
+  "from": [
+   8.4,
+   3.15,
+   5.6
+  ],
+  "to": [
+   10.525,
+   3.15,
+   5.6
+  ],
+  "toRoom": "laundry"
+ },
+ {
+  "name": "D_laundry_out",
+  "ok": true,
+  "fromRoom": "laundry",
+  "from": [
+   9.9,
+   3.15,
+   5.6
+  ],
+  "to": [
+   6.135,
+   3.15,
+   5.6
+  ],
+  "toRoom": "hall1"
+ },
+ {
+  "name": "D_wardrobe_a_in",
+  "ok": true,
+  "fromRoom": "master",
+  "from": [
+   2.4,
+   3.15,
+   3.7
+  ],
+  "to": [
+   0.45,
+   3.15,
+   3.7
+  ],
+  "toRoom": "wardrobe_a"
+ },
+ {
+  "name": "D_wardrobe_a_out",
+  "ok": true,
+  "fromRoom": "wardrobe_a",
+  "from": [
+   0.9,
+   3.15,
+   3.7
+  ],
+  "to": [
+   3.01,
+   3.15,
+   3.7
+  ],
+  "toRoom": "master"
+ },
+ {
+  "name": "D_bath_master_in",
+  "ok": true,
+  "fromRoom": "master",
+  "from": [
+   2.5,
+   3.15,
+   3.4
+  ],
+  "to": [
+   2.5,
+   3.15,
+   0.45
+  ],
+  "toRoom": "bath_master"
+ },
+ {
+  "name": "D_bath_master_out",
+  "ok": true,
+  "fromRoom": "bath_master",
+  "from": [
+   2.5,
+   3.15,
+   1.9
+  ],
+  "to": [
+   2.5,
+   3.15,
+   5.665
+  ],
+  "toRoom": "master"
+ }
+]

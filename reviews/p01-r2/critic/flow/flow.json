@@ -1,0 +1,163 @@
+{
+  "log": [
+    {
+      "readyAtMs": 1574,
+      "loadShots": [
+        {
+          "t": 72,
+          "f": "load_00072.png"
+        },
+        {
+          "t": 1139,
+          "f": "load_01139.png",
+          "s": "loading",
+          "cls": "ld is-loading",
+          "txt": "HOUSELISTING\nLOT 01 · VILLA NOVA\n11.95 m\nNOW TOURING\nVilla Nova\n\nModern two-storey villa with pool, covered terrace and double garage\n\n231 m²\nLIVING AREA\n3\nBEDROOMS\n3\nBATHROOMS\n2\nFLOORS\nPool\n7×3.5 M\nC"
+        },
+        {
+          "t": 1574,
+          "f": "load_01574.png",
+          "s": "attract",
+          "cls": "ld is-loading",
+          "txt": "HOUSELISTING\nLOT 01 · VILLA NOVA\n11.95 m\nNOW TOURING\nVilla Nova\n\nModern two-storey villa with pool, covered terrace and double garage\n\n231 m²\nLIVING AREA\n3\nBEDROOMS\n3\nBATHROOMS\n2\nFLOORS\nPool\n7×3.5 M\nP"
+        },
+        {
+          "t": 3242,
+          "f": "load_03242.png",
+          "s": "attract",
+          "cls": "ld is-ready",
+          "txt": "HOUSELISTING\nLOT 01 · VILLA NOVA\n11.95 m\nNOW TOURING\nVilla Nova\n\nModern two-storey villa with pool, covered terrace and double garage\n\n231 m²\nLIVING AREA\n3\nBEDROOMS\n3\nBATHROOMS\n2\nFLOORS\nPool\n7×3.5 M\nR"
+        },
+        {
+          "t": 4157,
+          "f": "load_04157.png",
+          "s": "attract",
+          "cls": "ld is-ready",
+          "txt": "HOUSELISTING\nLOT 01 · VILLA NOVA\n11.95 m\nNOW TOURING\nVilla Nova\n\nModern two-storey villa with pool, covered terrace and double garage\n\n231 m²\nLIVING AREA\n3\nBEDROOMS\n3\nBATHROOMS\n2\nFLOORS\nPool\n7×3.5 M\nR"
+        }
+      ]
+    },
+    {
+      "entryShots": [
+        {
+          "t": 29,
+          "f": "enter_0029.png",
+          "s": "entering"
+        },
+        {
+          "t": 698,
+          "f": "enter_0698.png",
+          "s": "entering"
+        },
+        {
+          "t": 914,
+          "f": "enter_0914.png",
+          "s": "entering"
+        },
+        {
+          "t": 1329,
+          "f": "enter_1329.png",
+          "s": "playing"
+        },
+        {
+          "t": 1791,
+          "f": "enter_1791.png",
+          "s": "playing"
+        },
+        {
+          "t": 2238,
+          "f": "enter_2238.png",
+          "s": "playing"
+        },
+        {
+          "t": 2702,
+          "f": "enter_2702.png",
+          "s": "playing"
+        },
+        {
+          "t": 3149,
+          "f": "enter_3149.png",
+          "s": "playing"
+        },
+        {
+          "t": 3593,
+          "f": "enter_3593.png",
+          "s": "playing"
+        },
+        {
+          "t": 4056,
+          "f": "enter_4056.png",
+          "s": "playing"
+        },
+        {
+          "t": 4518,
+          "f": "enter_4518.png",
+          "s": "playing"
+        },
+        {
+          "t": 5624,
+          "f": "enter_5624.png",
+          "s": "playing"
+        },
+        {
+          "t": 6072,
+          "f": "enter_6072.png",
+          "s": "playing"
+        },
+        {
+          "t": 6519,
+          "f": "enter_6519.png",
+          "s": "playing"
+        },
+        {
+          "t": 6967,
+          "f": "enter_6967.png",
+          "s": "playing"
+        },
+        {
+          "t": 7415,
+          "f": "enter_7415.png",
+          "s": "playing"
+        }
+      ],
+      "entryFt": {
+        "n": 429,
+        "avg": 18.26,
+        "p50": 16.7,
+        "p95": 16.7,
+        "p99": 16.8,
+        "max": 383.3,
+        "over20": 2,
+        "over33": 2
+      },
+      "stateAfter": {
+        "state": "playing",
+        "eye": [
+          7.35,
+          1.65,
+          4.45
+        ],
+        "feet": [
+          7.35,
+          0,
+          4.45
+        ],
+        "yaw": 110,
+        "pitch": -3,
+        "onGround": true,
+        "room": {
+          "id": "hall",
+          "name": "Hall",
+          "level": "ground"
+        },
+        "tod": "day",
+        "quality": "high"
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "THREE.WebGLProgram: Program Info Log: (210,81-129): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision",
+    "THREE.WebGLProgram: Program Info Log: (85,12-86): warning X3595: gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value\n(85,12-86): warning X3595: gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value"
+  ]
+}

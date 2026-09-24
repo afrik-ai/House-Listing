@@ -1,0 +1,426 @@
+{
+ "updated": "2026-09-24T02:21:01.588Z",
+ "phase": "Wave 2: dressing the house",
+ "wave": 2,
+ "headline": "The villa now reads as a finished home from the garden: facade, pool, lawn, planting and furniture all in. Critics reviewing exterior, interior surfaces and house shell; lighting and engine builders working.",
+ "pieces": [
+  {
+   "id": "P01",
+   "name": "Foundation & engine",
+   "status": "building",
+   "round": 3,
+   "verdict": "HF2 wins 4/4 blind pairs: engine renders evenly soft overcast-looking light; locked 60 fps but 0.4-0.7 s post-entry freeze",
+   "gap": "Lighting is shadowless and evenly soft: furniture and fixtures cast no sun or lamp shadows, there is no coloured bounce and contact AO is weak, so every frame reads as overcast and flat next to HF2's contrasty sun shafts and light pools.",
+   "updated": "2026-09-23T16:28:43.499Z"
+  },
+  {
+   "id": "P02",
+   "name": "House shell (Blender pipeline)",
+   "status": "critic",
+   "round": 2,
+   "verdict": "HF2 wins 5-0 blind; stairs unclimbable, terrace/balcony/front door unreachable, floating balusters, street facade misses key client features",
+   "gap": "The shell is not playable as architecture: the stair blocks at the 5th riser under the slab edge (x=8.05), terrace/balcony/front door are unreachable, and balusters float and clash with the glass balustrade",
+   "updated": "2026-09-23T16:23:20.524Z"
+  },
+  {
+   "id": "P03",
+   "name": "Exterior finish",
+   "status": "lost",
+   "round": 1,
+   "verdict": "HF2 wins 5/5 blind pairs: clean facade geometry, but flat untextured render, black matte anthracite, sky-only glass",
+   "gap": "The white render and anthracite panels are flat untextured colours (roughness 1, no maps), so the house's largest surfaces read as clean CG next to HF2; add fine render normal/roughness/albedo variation with base grime and a satin RAL 7016 anthracite.",
+   "updated": "2026-09-24T02:21:01.498Z"
+  },
+  {
+   "id": "P04",
+   "name": "Landscape & sky",
+   "status": "building",
+   "round": 1,
+   "verdict": "",
+   "gap": "",
+   "updated": "2026-09-23T06:27:59.797Z"
+  },
+  {
+   "id": "P05",
+   "name": "Lighting & atmosphere",
+   "status": "building",
+   "round": 1,
+   "verdict": "",
+   "gap": "",
+   "updated": "2026-09-23T16:28:43.568Z"
+  },
+  {
+   "id": "P06",
+   "name": "Interior surfaces",
+   "status": "critic",
+   "round": 1,
+   "verdict": "",
+   "gap": "",
+   "updated": "2026-09-23T16:18:14.623Z"
+  },
+  {
+   "id": "P07",
+   "name": "Furniture & props",
+   "status": "building",
+   "round": 1,
+   "verdict": "",
+   "gap": "",
+   "updated": "2026-09-23T06:27:01.567Z"
+  },
+  {
+   "id": "P08",
+   "name": "Player & collision",
+   "status": "pending",
+   "round": 0,
+   "verdict": "",
+   "gap": ""
+  },
+  {
+   "id": "P09",
+   "name": "Interactions",
+   "status": "pending",
+   "round": 0,
+   "verdict": "",
+   "gap": ""
+  },
+  {
+   "id": "P10",
+   "name": "HUD, menus & catalog",
+   "status": "pending",
+   "round": 0,
+   "verdict": "",
+   "gap": ""
+  },
+  {
+   "id": "P11",
+   "name": "Audio",
+   "status": "pending",
+   "round": 0,
+   "verdict": "",
+   "gap": ""
+  },
+  {
+   "id": "P12",
+   "name": "Performance & polish",
+   "status": "pending",
+   "round": 0,
+   "verdict": "",
+   "gap": ""
+  },
+  {
+   "id": "P13",
+   "name": "Pipeline repeatability",
+   "status": "pending",
+   "round": 0,
+   "verdict": "",
+   "gap": ""
+  }
+ ],
+ "log": [
+  {
+   "t": "2026-09-24T02:15:24.911Z",
+   "m": "Resumed after stalls and a usage-limit pause: P01 r3, P04, P05, P07 builders and P02/P03/P06 critics continuing (hard timeouts added to browser waits)."
+  },
+  {
+   "t": "2026-09-23T21:17:29.769Z",
+   "m": "P03 exterior finish done: render, anthracite panels, concrete block, larch, reflective glass, doors, pergola beams, roof flashings, wall lights. Critic round 1 started."
+  },
+  {
+   "t": "2026-09-23T21:14:40.939Z",
+   "m": "P03: exterior.js materials (render, RAL7016, formwork concrete, larch, Fresnel glass) + exterior_detail.glb (2.3k tris: fascia joints, pergola beams, screen, surrounds, garage grooves, up/down wall lights); 0 errors, 77 fps bench"
+  },
+  {
+   "t": "2026-09-23T21:12:01.241Z",
+   "m": "Resumed after fifth usage-limit pause: P01 r3, P03, P04, P05, P07 builders and P02/P06 critics continuing."
+  },
+  {
+   "t": "2026-09-23T16:28:43.703Z",
+   "m": "Assets: foliage alpha fixed in 40 models (trees, shrubs, grass, flowers, pot plants)."
+  },
+  {
+   "t": "2026-09-23T16:28:43.637Z",
+   "m": "P01 critic r2: HF2 won 4/4. Gap: flat, shadowless lighting (no furniture shadows, no coloured bounce, flat golden hour, black night). Lighting handed to a new P05 builder; P01 r3 fixes post-entry freeze, tier stalls, loading and harness robustness."
+  },
+  {
+   "t": "2026-09-23T16:28:16.487Z",
+   "m": "Assets: foliage alpha fixed (40 models: 37 foliage GLBs incl. all tree/shrub/grass/flower/plant splits + sofa_fabric_3seat fringe, wine_bottles labels, broom bristles) - RGBA WebP, alphaMode MASK 0.5, same file/node names; public/assets 153 MB"
+  },
+  {
+   "t": "2026-09-23T16:23:20.645Z",
+   "m": "P02 round 2 done: stairs, terrace, balcony and street entrance walkable (45/47 walk tests), street-facade massing rebuilt, copings/sills/sash trims added, doors default open. Critic round 2 started."
+  },
+  {
+   "t": "2026-09-23T16:22:48.571Z",
+   "m": "P02 r2: stair void over full flight + nosing COL ramp (up/down 3/3), open slider panels (SLIDE_*), doors exported open, step ramps, street massing (concrete block, deep canopy, wide low window, horizontal slats), parapet copings+drip, hips behind parapets; browser walk 45/47 (2 fails = P07 furniture in W slider gap)"
+  },
+  {
+   "t": "2026-09-23T16:21:16.568Z",
+   "m": "Asset bug found by P04: foliage GLBs lost leaf alpha in conversion (leaves render as rectangles). Assets agent re-exporting all alpha foliage; props agent checking the egg-chair weave."
+  },
+  {
+   "t": "2026-09-23T16:18:14.719Z",
+   "m": "P06 interior surfaces done: world-space oak planks (no repeats, no doorway seams), 60x120 porcelain, bathroom mosaics and wall tiles, kitchen splashback, shared material registry. Critic round 1 started."
+  },
+  {
+   "t": "2026-09-23T16:17:48.661Z",
+   "m": "P06: verified day+night tours, close-ups (floor 1 m, skirting corner, bath tile wall, door threshold, terrace), 0 console errors; ready for critic"
+  },
+  {
+   "t": "2026-09-23T16:17:33.847Z",
+   "m": "P06: registry live (15_materials + materials/{index,textures,interior}.js); P03 exterior.js plugs in via game.materials. World-space procedural oak (no repetition), 60x120 porcelain, 60x60 limestone, 10x10 mosaic, bath/WC/kitchen wall-tile zones, paint w/ plaster normal"
+  },
+  {
+   "t": "2026-09-23T16:11:55.874Z",
+   "m": "Resumed after fourth usage-limit pause: P02 r2, P03, P04, P06, P07 builders and P01 r2 critic continuing."
+  },
+  {
+   "t": "2026-09-23T11:13:17.898Z",
+   "m": "P01 round 2 done: sunlight now enters interiors, neutral grade, per-room bounce light, grounded horizon, single-fetch loading (enter in ~2.5 s), plugin hook live. Fresh critic round 2 started."
+  },
+  {
+   "t": "2026-09-23T11:12:54.266Z",
+   "m": "P01 r2: glass/COL no shadows (sun enters), HDRI ground/horizon + grass/fog, bounce+fixture light pool, emissive bulbs, grade retune, single fetches + lazy HDRIs, ready 2.1-2.8 s, tiers ordered (low<med<high<ultra SSAA), entry glide + open entry view"
+  },
+  {
+   "t": "2026-09-23T11:11:59.546Z",
+   "m": "Resumed after third usage-limit pause: all six builders (P01 r2, P02 r2, P03, P04, P06, P07) continuing."
+  },
+  {
+   "t": "2026-09-23T06:30:26.304Z",
+   "m": "P02 critic r1: HF2 won 5/5, client fidelity 3/10. Gap: stairs, terrace, balcony and front door not walkable; street massing incomplete. Builder sent back for round 2."
+  },
+  {
+   "t": "2026-09-23T06:29:26.969Z",
+   "m": "P06: started — registry design (procedural plank shuffle for oak, procedural 60x120/60x60/10x10 tile grids, plaster walls)"
+  },
+  {
+   "t": "2026-09-23T06:27:56.146Z",
+   "m": "P04: started - reading spec, site data, assets"
+  },
+  {
+   "t": "2026-09-23T06:27:22.371Z",
+   "m": "P03: started - reading shell, planning exterior materials + exterior_detail.glb"
+  },
+  {
+   "t": "2026-09-23T06:27:01.628Z",
+   "m": "P07: started furniture & props (reading spec, manifest, house meta)"
+  },
+  {
+   "t": "2026-09-23T06:26:38.434Z",
+   "m": "Props done: 19 Blender-built items (bed, car, bathtub, fridge...). Wave 2 started: P03 exterior finish, P04 landscape, P06 interior surfaces, P07 furniture."
+  },
+  {
+   "t": "2026-09-23T06:26:38.323Z",
+   "m": "P01: plugin hook ready (src/game/plugins/*.js)"
+  },
+  {
+   "t": "2026-09-23T06:25:07.616Z",
+   "m": "Props: 19 procedural props shipped (bed, SUV, lounger, egg chair, bike, office chair, parasol, arc lamp, fridge, washer, sink, toaster, WC, tub, vanity, towels x2, rugs x2) — manifest + CREDITS updated, glTF validator 0 errors, assets 146 MB"
+  },
+  {
+   "t": "2026-09-23T06:16:19.530Z",
+   "m": "Props: office chair (mesh back), cantilever parasol, arc floor lamp, bicycle and rattan hanging egg chair built + reviewed; bed and car next"
+  },
+  {
+   "t": "2026-09-23T06:14:52.392Z",
+   "m": "P02 house shell built by Blender pipeline (1.15 MB, 13.4k tris, 26 rooms, 17 doors). Critic round 1 started."
+  },
+  {
+   "t": "2026-09-23T06:14:21.112Z",
+   "m": "P02: docs/NEW_HOUSE.md draft + pipeline/build.mjs validator (names vs meta, materials, UV2, size) - OK"
+  },
+  {
+   "t": "2026-09-23T06:14:21.037Z",
+   "m": "P02: chamfered skirting+casings embedded into walls (closes skirting light-leak line), DOOR_ children renamed LEAF_<id>, previews re-rendered"
+  },
+  {
+   "t": "2026-09-23T06:12:00.892Z",
+   "m": "Resumed after second usage-limit pause: P01 round 2 fixes, P02 trim + validation, props (bed, car, bike, egg chair) continuing."
+  },
+  {
+   "t": "2026-09-23T01:57:11.025Z",
+   "m": "P01 critic r1: HF2 won 5/5 blind pairs. Gap: glass + collision meshes cast shadows so no sun enters. Builder sent back for round 2."
+  },
+  {
+   "t": "2026-09-23T01:56:07.626Z",
+   "m": "P02: build_house.py v1 works - voxel wall-graph shell, 129 objects, ~12k tris, 1.1 MB GLB, 17 doors, 91 lights, validation OK"
+  },
+  {
+   "t": "2026-09-23T01:54:45.905Z",
+   "m": "Props: Blender procedural prop pipeline up (pipeline/props: helpers + build/pack/render); fridge, washer, toaster, sink, WC, bathtub, vanity, towels, 2 rugs, teak lounger built + reviewed"
+  },
+  {
+   "t": "2026-09-23T01:47:56.570Z",
+   "m": "P01 engine built (0 console errors, 1.9 s load, 5 ms/frame). Fresh critic round 1 started with blind HF2 comparison."
+  },
+  {
+   "t": "2026-09-23T01:47:16.451Z",
+   "m": "P01: tour reviews/p01-check — 21 rooms + 4 exteriors + 3 TOD variants, 0 console errors, worst GPU-bound 199 fps @1600x900 high (rAF 60), load 1.9 s"
+  },
+  {
+   "t": "2026-09-23T01:45:13.601Z",
+   "m": "P01: HDRI lighting — sun clamped out of IBL and re-emitted as measured-irradiance shadow light, HDRI rotated to preset azimuth, eye adaptation inside rooms; fixed N8AO double-gamma + removed PCFSoftShadowMap"
+  },
+  {
+   "t": "2026-09-23T01:45:13.542Z",
+   "m": "P01: engine resumed — Game.js orchestrator (fixed 120 Hz loop, events, full __game API), main.js, Loading screen, shot/tour harness done"
+  },
+  {
+   "t": "2026-09-23T01:30:30.895Z",
+   "m": "Assets complete: 34 CC0 texture sets, 165 models, 3 HDRIs (133 MB). Missing items (fridge, toilet, bathtub, bed, car, etc.) handed to a Blender prop-modelling agent."
+  },
+  {
+   "t": "2026-09-23T01:29:57.684Z",
+   "m": "Assets: DONE - 34 texture sets, 165 model GLBs (all pass glTF validator + Blender import), 3 HDRIs; manifest.json + CREDITS.md written; public/assets 134 MB. Missing (not on Poly Haven): fridge, sink, toilet, bathtub, basin, towels, washing machine, sun lounger, parasol, bicycle, office chair, floor lamp, egg chair, modern bed; car only as covered_car (Sketchfab needs auth)"
+  },
+  {
+   "t": "2026-09-23T01:27:30.096Z",
+   "m": "Assets: 163 model GLBs packed (webp textures, quantized, base-centred; trees thinned to ~100k tris). public/assets ~135 MB"
+  },
+  {
+   "t": "2026-09-23T01:24:45.884Z",
+   "m": "P02: builder restarted - designing clean tiled plan + wall-graph Blender pipeline"
+  },
+  {
+   "t": "2026-09-23T01:21:57.934Z",
+   "m": "Assets: 36 texture sets done (oak wide plank 2K, limestone 2K, screed 2K, roof seam anthracite, lawn x2, pool mosaic, linen, brushed black metal, soil...). Starting ~147 Poly Haven model GLBs"
+  },
+  {
+   "t": "2026-09-23T01:17:23.277Z",
+   "m": "Assets: resuming asset sourcing (HDRI done, 11 texture sets present; verifying + continuing textures/models)"
+  },
+  {
+   "t": "2026-09-23T01:17:15.918Z",
+   "m": "Resumed after usage-limit pause: HF2 reference pack complete (20 shots + rubric). Relaunched P01 engine, P02 Blender shell, asset sourcing."
+  },
+  {
+   "t": "2026-09-10T23:28:17.591Z",
+   "m": "P02: read spec/contracts/house.json; designing wall-graph + voxel generator for Blender pipeline"
+  },
+  {
+   "t": "2026-09-10T23:15:01.843Z",
+   "m": "Assets: sourcing agent started — fetching Poly Haven catalogs (textures, models, HDRIs)"
+  },
+  {
+   "t": "2026-09-10T23:14:55.254Z",
+   "m": "Spawned 4 agents: p01-foundation, p02-shell, hf2-research, assets-sourcing"
+  }
+ ],
+ "shots": [
+  {
+   "t": "2026-09-24T02:21:01.588Z",
+   "src": "/reviews/critic/P03-r1/d02_garden_sw.png",
+   "caption": "P03 r1 critic view"
+  },
+  {
+   "t": "2026-09-23T21:21:06.796Z",
+   "src": "/reviews/p03/final/sw34.png",
+   "caption": "Garden view: facade finish, pool, landscape, furniture"
+  },
+  {
+   "t": "2026-09-23T21:14:41.099Z",
+   "src": "/reviews/p03/r2/sw34.png",
+   "caption": "P03 south-west 3/4: pergola beams, reflective glass, larch surrounds"
+  },
+  {
+   "t": "2026-09-23T21:14:41.024Z",
+   "src": "/reviews/p03/r3/night_entrance.png",
+   "caption": "P03 entrance at night: larch soffit, horizontal slats, up/down wall wash"
+  },
+  {
+   "t": "2026-09-23T16:26:13.926Z",
+   "src": "/reviews/P01-r2/critic/ours_ext_front_east_night.png",
+   "caption": "P01 r2 critic view"
+  },
+  {
+   "t": "2026-09-23T16:23:20.757Z",
+   "src": "/reviews/p02-blender/02_east_from_street.png",
+   "caption": "P02 r2 street facade"
+  },
+  {
+   "t": "2026-09-23T16:22:48.701Z",
+   "src": "/reviews/p02-blender/02_east_from_street.png",
+   "caption": "P02 r2 street facade"
+  },
+  {
+   "t": "2026-09-23T16:18:30.441Z",
+   "src": "/reviews/p06/final/living.png",
+   "caption": "Living room with floors, furniture and garden in progress"
+  },
+  {
+   "t": "2026-09-23T16:17:48.597Z",
+   "src": "/reviews/p06/final/bath3_night.png",
+   "caption": "P06 gloss subway bath3 at night"
+  },
+  {
+   "t": "2026-09-23T16:17:48.536Z",
+   "src": "/reviews/p06/final/floor1m.png",
+   "caption": "P06 oak 190 mm boards, procedural board shuffle (no repeat), 1 m close-up"
+  },
+  {
+   "t": "2026-09-23T11:13:26.355Z",
+   "src": "/reviews/p01-r2/01_living.png",
+   "caption": "P01 r2: sunlight now enters the living room"
+  },
+  {
+   "t": "2026-09-23T11:12:54.385Z",
+   "src": "/reviews/p01-r2/flow_glide_2000.png",
+   "caption": "P01 r2 entry view (living, sun patches)"
+  },
+  {
+   "t": "2026-09-23T06:29:56.776Z",
+   "src": "/reviews/P02-r1/terrace_pillar.png",
+   "caption": "P02 r1 critic view"
+  },
+  {
+   "t": "2026-09-23T06:26:38.503Z",
+   "src": "/reviews/props/car_suv.png",
+   "caption": "Blender-built prop: car"
+  },
+  {
+   "t": "2026-09-23T06:25:07.675Z",
+   "src": "/reviews/props/bed_double_modern.png",
+   "caption": "Blender-built prop"
+  },
+  {
+   "t": "2026-09-23T06:14:52.452Z",
+   "src": "/reviews/p02-blender/02_east_from_street.png",
+   "caption": "P02 Blender preview, street side"
+  },
+  {
+   "t": "2026-09-23T06:14:21.247Z",
+   "src": "/reviews/p02-blender/02_east_from_street.png",
+   "caption": "P02 Blender preview"
+  },
+  {
+   "t": "2026-09-23T06:12:00.960Z",
+   "src": "/reviews/p02-blender/03_sw_aerial.png",
+   "caption": "P02 Blender house shell, SW aerial"
+  },
+  {
+   "t": "2026-09-23T01:56:42.153Z",
+   "src": "/reviews/P01-r1/flow_title_card_b.png",
+   "caption": "P01 r1 critic view"
+  },
+  {
+   "t": "2026-09-23T01:48:04.638Z",
+   "src": "/reviews/p01-check/01_living.png",
+   "caption": "P01 living room, placeholder geometry"
+  },
+  {
+   "t": "2026-09-23T01:48:04.572Z",
+   "src": "/reviews/p01-check/ui_title.png",
+   "caption": "P01 title screen (placeholder house)"
+  },
+  {
+   "t": "2026-09-23T01:47:16.578Z",
+   "src": "/reviews/p01-check/23_ext_garden_sw.png",
+   "caption": "P01 first render"
+  },
+  {
+   "t": "2026-09-23T01:17:16.079Z",
+   "src": "/reviews/hf2/hf2-living-room-fireplace-evening-modio.png",
+   "caption": "HF2 reference: living room, evening"
+  }
+ ]
+}

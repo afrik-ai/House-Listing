@@ -1,0 +1,26 @@
+import { chromium } from 'playwright';
+const GPU=['--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist'];
+const out='reviews/P01-r1/';
+const browser = await chromium.launch({ headless: true, args: GPU });
+const page = await browser.newPage({ viewport:{width:1600,height:900}, deviceScaleFactor:1 });
+const errs=[], warns=[], reqs=[];
+page.on('console', m=>{ if(m.type()==='error') errs.push(m.text()); else if(m.type()==='warning') warns.push(m.text()); });
+page.on('pageerror', e=>errs.push('pageerror: '+e.message));
+page.on('requestfailed', r=>errs.push('reqfail '+r.url()));
+let bytes=0; page.on('response', async r=>{ try{ const b=await r.body(); bytes+=b.length; reqs.push([r.url().replace('http://127.0.0.1:5173',''), b.length]); }catch{} });
+const t0=Date.now();
+await page.goto('http://127.0.0.1:5173/house.html?id=villa-nova',{waitUntil:'domcontentloaded'});
+const tDom=Date.now()-t0;
+const shots=[100,400,1000,2000,4000];
+let last=0;
+for (const t of shots){ await page.waitForTimeout(t-last); last=t; await page.screenshot({path:out+`load_${t}ms.png`}); }
+await page.waitForFunction(()=>!!window.__game,null,{timeout:120000});
+await page.evaluate(()=>window.__game.ready);
+const tReady=Date.now()-t0;
+await page.waitForTimeout(300);
+await page.screenshot({path:out+'load_ready.png'});
+const text = await page.evaluate(()=>document.body.innerText);
+const info = await page.evaluate(()=>{ const g=window.__game; return { keys:Object.keys(g), views: g.views? g.views():null, rooms:g.rooms(), state: g.state? g.state():null, stats:g.stats() }; });
+console.log(JSON.stringify({tDom,tReady,bytesMB:(bytes/1e6).toFixed(1), text, info, errs, warns:warns.slice(0,30)},null,1));
+reqs.sort((a,b)=>b[1]-a[1]); console.log(reqs.slice(0,25).map(r=>r[1]+'  '+r[0]).join('\n'));
+await browser.close();

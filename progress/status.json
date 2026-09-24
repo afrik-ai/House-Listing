@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T12:43:56.964Z",
+ "updated": "2026-09-24T12:44:42.632Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -70,10 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "pending",
-   "round": 0,
+   "status": "building",
+   "round": 1,
    "verdict": "",
-   "gap": ""
+   "gap": "",
+   "updated": "2026-09-24T12:44:42.632Z"
   },
   {
    "id": "P09",

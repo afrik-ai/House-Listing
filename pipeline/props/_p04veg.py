@@ -368,6 +368,8 @@ class Tree:
                 fi = t * nseg; i0 = min(int(fi), nseg - 1); f = fi - i0
                 pos = pts[i0].lerp(pts[i0 + 1], f)
                 pd = (pts[i0 + 1] - pts[i0]).normalized()
+                if depth + 1 >= 2 and pos.z < P.get('leaf_min_z', 0.0) * 0.95:
+                    continue   # raised canopy: no side shoots on the clear stem / lower limbs
                 az += 2.39996 + rng.uniform(-0.3, 0.3)
                 ang = math.radians(ch.get('angle', 45) + rng.uniform(-1, 1) * ch.get('angle_var', 12))
                 side = _perp(pd)
@@ -442,6 +444,9 @@ def build_tree(name, P, seed, bark, leaves, grid, start=(0, 0, 0), direction=(0,
             T.grow(V(start) + V(off), V(dirv), L, r, 0)
     else:
         T.grow(V(start), V(direction), P['trunk_len'], P['trunk_r'], 0)
+    lmin = P.get('leaf_min_z', 0.0)       # clear trunk: no foliage below this (Landscape keeps >= 2.2 m walkable)
+    if lmin > 0:
+        T.cards = [cd for cd in T.cards if cd[0].z - cd[2] * 1.05 > lmin]
     c, r = crown_of(T.cards)
     CM = cards_mesh(T.cards, grid, c, r, P.get('fold', 0.12), P.get('droop', 0.2), P.get('nblend', 0.75), rng)
     b = T.bark

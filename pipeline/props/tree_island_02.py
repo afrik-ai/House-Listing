@@ -7,7 +7,7 @@ bark = G.bark_mat('bark_birch', 'birch', seed=8)
 img, grid = G.atlas('leaf_birch_atlas', dict(leaf='#5d8a2e', tip='#8fa844', aspect=0.8, len=0.11, n=48, forks=3, twig_len=0.84, shape='round', serr=0.15,
                                              spread=1.2, twig='#3a2a22', jit=(0.03, 0.12, 0.2), petiole=0.2), grid=2, S=512, seed=5)
 leaves = G.leaf_mat('leaves_birch', img)
-P = dict(trunk_len=3.3, trunk_r=0.1, flare=0.35, card=0.5, bark_tile=0.45, fold=0.1, droop=0.35, nblend=0.72, card_up=-0.2,
+P = dict(leaf_min_z=1.2, trunk_len=3.3, trunk_r=0.1, flare=0.35, card=0.5, bark_tile=0.45, fold=0.1, droop=0.35, nblend=0.72, card_up=-0.2,
          levels=[
              dict(seg=0.3, wiggle=0.035, up=0.03, taper=0.25, sides=9),
              dict(n=(9, 11), t0=0.35, t1=0.97, angle=48, angle_var=12, ratio=0.42, shrink=0.55, rratio=0.6, sides=6, up=0.06, wiggle=0.1, taper=0.3, seg=0.25),

@@ -7,7 +7,7 @@ bark = G.bark_mat('bark_olive', 'olive', seed=12)
 img, grid = G.atlas('leaf_olive_atlas', dict(leaf='#6b7a4e', tip='#9aa585', aspect=0.2, len=0.16, n=60, forks=3, shape='lance', spread=0.8,
                                              twig='#5a5446', jit=(0.03, 0.2, 0.25), petiole=0.04, vein=0.02), grid=2, S=512, seed=9)
 leaves = G.leaf_mat('leaves_olive', img, rough=0.7)
-P = dict(card=0.55, bark_tile=0.4, flare=0.3, fold=0.12, droop=0.12, nblend=0.75, card_up=0.3,
+P = dict(leaf_min_z=1.55, card=0.55, bark_tile=0.4, flare=0.3, fold=0.12, droop=0.12, nblend=0.75, card_up=0.3,
          levels=[
              dict(seg=0.2, wiggle=0.12, up=0.02, taper=0.55, sides=9),
              dict(n=(3, 4), t0=0.62, t1=1.0, angle=45, angle_var=12, ratio=0.8, shrink=0.25, rratio=0.7, sides=6, up=0.04, wiggle=0.16, taper=0.4, seg=0.22),

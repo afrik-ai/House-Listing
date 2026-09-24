@@ -50,7 +50,7 @@ const PRESETS = {
     sunColor: 0xffa45a, sunScale: 1.25, sunIntensity: 3.8, sunMax: 4.6,
     hemiSky: 0xd9b08a, hemiGround: 0x7a5e46, hemiIntensity: 0.05,
     inSky: 0xf0d6b8, inGround: 0xe0b890, hemiInterior: 0.14,
-    envIntensity: 0.5, bgIntensity: 0.72, exposure: 1.05, iblSaturation: 0.8,
+    envIntensity: 0.7, bgIntensity: 0.72, exposure: 1.05, iblSaturation: 0.8,
     interiorEnv: 0.42, interiorExposure: 1.75, wbOut: [1.0, 0.99, 0.97], wbIn: [1.03, 0.99, 0.93],
     bounce: 1.3, fixtures: 0.3, bulbs: 0.4, groundAlbedo: [0.17, 0.15, 0.11], grass: [0.06, 0.08, 0.025],
     grade: { saturation: 0.16, contrast: 0.12, bloom: 0.85, bloomThreshold: 0.95, vignette: 0.4 },

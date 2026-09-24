@@ -82,6 +82,12 @@
 - Quality tiers (Renderer.js): low (1024 shadow, no AO/bloom), medium (2048, half-res AO), high (4096 shadow, full AO,
   pixel ratio ≤1.5), ultra (4096, AO High, pixel ratio ≤2). HDRI 1k on low/medium, 2k on high/ultra.
 
+- P05 r2: outdoor sun shadows are VIEW-FITTED (38 m box ahead of the camera, re-fit per 3 m / 30 deg,
+  ~1 cm texels at 4096); `fitShadowTo(box)` now only sets the vertical range. Day sun is fixed (7.5) over
+  IBL 0.55; HDRI suns measured (az/el, texture frame): day immenstadter_horn 126/35, golden spruit_sunrise
+  126/8 (pylons painted out via `skyGrade.mask`), night moonless_golf has no moon (brightest = streetlight);
+  moon painted at az 35 el 30. PostFX: N8AO transparencyAware off (no extra scene renders).
+
 ### window.__game (SPEC + extras)
 - SPEC: `ready, teleport(x,y,z,yawDeg,pitchDeg)` (EYE position; player floats until movement input), `setTimeOfDay`
   (Promise), `setQuality`, `hideUI`, `stats()` -> `{fps, drawCalls, triangles, textures, geometries, programs, memoryMB,
@@ -240,3 +246,16 @@
   loaded species); gabion stones build without the boulder relief maps.
 - Round 2: paint mode (textures.js) adds mid/fine tone + roughness breakup and base-of-wall grime (`grime: [amount, floorY1, floorY2]`,
   default [0.1, 0, 3.15]; ceilings pass [0,0,0]). Plaster/render normals baked stronger (normalK 2.2-3).
+- **Round 3: clutter.** `src/game/furnish/clutter.js` runs after placement. It probes every host (worktops, shelves,
+  nightstands, consoles, desks, tables, vanities, washers, beds, bedroom chairs, WCs, tubs) with downward rays to find
+  each horizontal level and the free height above it. It then fills shelves with book rows, lying stacks, boxes and jars, and
+  scatters recipe props on the surfaces (plus floor props such as bath mats, bins and toilet brushes). Each prop kind is one
+  `InstancedMesh` per part per floor (`FC_*`). None of them cast shadows or collide. Counts: `report.clutter.{total,perRoom}`.
+- **Visibility.** The furnisher chains `scene.onBeforeRender` (main camera only). Inside a room, only that floor's
+  furniture is drawn: shadows as authored, and the other floor is hidden. Outdoors (terrace, pool, balcony), furniture always
+  draws, with no shadows while the camera is inside. With the camera outside, interior furniture draws only within 5 m of the
+  house, without shadows or clutter. Every top node carries `userData.p07 = { floorY, zone, clutter? }`.
+  `furnisher.stats(visibleOnly)` gives `{tris, drawCalls, shadowTris, shadowDrawCalls}`. `report.budget` is the whole set and
+  `report.view` is the current view.
+- Also: `_unpoke()` pushes floor pieces out of walls. Planters inside a room's spawn view are skipped. A vanity mirror in front
+  of a window is dropped. Bedding is tinted per bedroom (`ROOM_TINTS`). Mirror and car-paint materials are corrected at load.

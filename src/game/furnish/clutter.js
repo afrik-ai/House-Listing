@@ -106,6 +106,11 @@ function defs() {
     palette: ['#2f3e56', '#c8c0b0', '#6b2f2a', '#3d3d40', '#8a9a7a', '#d7c29a'] };
   D.magazine = { fp: 0.13, h: 0.008, parts: [{ geo: bx(0.21, 0.006, 0.28, WHITE), mat: 'gloss', tint: true }], palette: ['#d9d2c0', '#b83a2e', '#2f4a6a', '#e8c85a', '#f2f0ea'] };
   D.bowl = { fp: 0.09, h: 0.07, parts: [{ geo: lathe([[0.001, 0], [0.04, 0], [0.085, 0.06], [0.08, 0.065], [0.035, 0.008], [0.001, 0.008]], WHITE, 18), mat: 'glaze', tint: true }], palette: ['#e8e0d0', '#3c5a6a', '#b86a4a'] };
+  D.brush = { fp: 0.06, h: 0.4, parts: [{ geo: merge(cyl(0.05, 0.12, '#f0f0ee', { seg: 14 }), cyl(0.008, 0.3, '#2a2a2a', { y: 0.1, seg: 6 }), cyl(0.012, 0.03, '#2a2a2a', { y: 0.38, seg: 8 })), mat: 'std', tint: false }] };
+  D.bin = { fp: 0.12, h: 0.3, parts: [{ geo: merge(cyl(0.11, 0.27, WHITE, { seg: 18 }), cyl(0.112, 0.03, WHITE, { y: 0.27, seg: 18 }), bx(0.06, 0.015, 0.04, '#333', { z: 0.11 })), mat: 'metal', tint: true }], palette: ['#d9d9d6', '#2b2b2b', '#e8e2d6'] };
+  D.rolls = { fp: 0.07, h: 0.3, parts: [{ geo: merge(cyl(0.055, 0.1, '#f7f6f2', { seg: 14 }), cyl(0.055, 0.1, '#f7f6f2', { y: 0.1, seg: 14 }), cyl(0.055, 0.1, '#f7f6f2', { y: 0.2, seg: 14 })), mat: 'cloth', tint: false }] };
+  D.basketfloor = { fp: 0.2, h: 0.3, parts: [{ geo: merge(lathe([[0.001, 0], [0.16, 0], [0.19, 0.25], [0.18, 0.25], [0.15, 0.02], [0.001, 0.02]], '#a88457', 18),
+    bx(0.3, 0.06, 0.2, '#f2efe8', { y: 0.2, r: 0.02 }), bx(0.28, 0.06, 0.18, '#8ea0ad', { y: 0.24, r: 0.02 })), mat: 'cloth', tint: false }] };
   D.detergent = { fp: 0.08, h: 0.28, parts: [{ geo: merge(bx(0.14, 0.24, 0.09, WHITE, { r: 0.02 }), cyl(0.025, 0.04, '#f0f0f0', { y: 0.24, x: 0.035, seg: 10 })), mat: 'std', tint: true }], palette: ['#2a6fb0', '#e36a2a', '#f0f0ee', '#6ab04a'] };
   return D;
 }
@@ -124,8 +129,9 @@ const RECIPES = {
   sidetable: { items: [['booklie', 2, 'any'], ['glass', 1, 'any'], ['mug', 1, 'any']] },
   desk: { items: [['mug', 1, 'any'], ['magazine', 2, 'any'], ['booklie', 3, 'any'], ['phone', 1, 'any'], ['glass', 1, 'any'], ['spectacles', 1, 'any'], ['storebox', 1, 'back']] },
   dining: { items: [['plate', 6, 'any'], ['glass', 6, 'any'], ['bottle', 1, 'any'], ['magazine', 1, 'any']] },
-  vanity: { items: [['soap', 1, 'any'], ['toiletry', 4, 'any'], ['toothcup', 1, 'any'], ['towel', 1, 'any'], ['candle', 1, 'any'], ['jar', 1, 'any']], mat: true },
-  tub: { items: [], mat: true },
+  vanity: { items: [['soap', 1, 'any'], ['toiletry', 4, 'any'], ['toothcup', 1, 'any'], ['towel', 1, 'any'], ['candle', 1, 'any'], ['jar', 1, 'any']], mat: true, floor: [['bin', 1]] },
+  tub: { items: [], mat: true, floor: [['basketfloor', 1], ['toiletry', -1]] },
+  wc: { items: [], floor: [['brush', 1], ['bin', -1], ['rolls', -1.9]] },
   washer: { items: [['detergent', 1, 'any'], ['towel', 2, 'any']] },
   bed: { items: [['clothes', 1, 'any'], ['booklie', 1, 'any'], ['magazine', 1, 'any']] },
   chair: { items: [['clothes', 1, 'any']] },
@@ -148,6 +154,7 @@ function hostKind(p) {
   if (n === 'bed_double_modern' && room !== 'master') return 'bed';
   if (n === 'armchair_modern' && BEDROOMS.has(room)) return 'chair';
   if (n === 'stool_wood') return 'stool';
+  if (n === 'toilet_wall_hung') return 'wc';
   return null;
 }
 
@@ -334,6 +341,22 @@ export class Clutter {
     }
     // scattered items (top level first for worktops/tables)
     for (const [k, n, zone] of rec.items) for (let i = 0; i < n; i++) place(k, zone, (L) => L.y > S.levels[0].y - 0.01);
+    // floor props beside the host (side = +-1 multiples of the half width + footprint)
+    for (const [k, side] of rec.floor || []) {
+      const d = this.D[k], F = this.F;
+      const half = (S.box.max.x - S.box.min.x) / 2 * S.s.x;
+      const u = (S.box.min.x + S.box.max.x) / 2 * S.s.x + Math.sign(side) * (half + d.fp + 0.04) + (Math.abs(side) > 1 ? Math.sign(side) * (Math.abs(side) - 1) * (d.fp * 2 + 0.03) : 0);
+      const w = S.box.min.z * S.s.z + d.fp + 0.06;
+      const pos = toWorld(u, w, p.floorY + 0.6);
+      F._ray.set(pos, V(0, -1, 0)); F._ray.far = 0.7;
+      if (F._ray.intersectObject(F.work, true).length) continue;
+      const hh = F.game.physics.raycast(pos, V(0, -1, 0), 0.7);
+      if (!hh || Math.abs(hh.point.y - p.floorY) > 0.03) continue;
+      // keep clear of walls
+      let ok = true;
+      for (const dir of [V(1, 0, 0), V(-1, 0, 0), V(0, 0, 1), V(0, 0, -1)]) { const w2 = F.game.physics.raycast(V(pos.x, p.floorY + 0.15, pos.z), dir, d.fp + 0.01); if (w2) ok = false; }
+      if (ok) this.add(k, p.room, p.floorY, V(pos.x, hh.point.y, pos.z), hostYaw, 1, pal(k));
+    }
     // bath mat on the floor in front of the host
     if (rec.mat) {
       const w = S.box.max.z * S.s.z + 0.34;

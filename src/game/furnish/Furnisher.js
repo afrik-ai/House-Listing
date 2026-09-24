@@ -116,7 +116,7 @@ export class Furnisher {
 
   // Runtime material corrections for shipped GLBs (mirrors read as black discs, blown-out car paint).
   _fixMaterial(m) {
-    if (/^mirror/i.test(m.name)) { m.color.set('#cfd8dc'); m.metalness = 0.15; m.roughness = 0.1; m.envMapIntensity = 2.0; }
+    if (/^mirror/i.test(m.name)) { m.color.set('#aab6bc'); m.metalness = 0.35; m.roughness = 0.1; m.envMapIntensity = 1.6; m.emissive?.set('#3c4549'); }
     if (/paint_graphite/i.test(m.name)) { m.color.set('#2d3237'); m.metalness = 0.35; m.roughness = 0.42; m.envMapIntensity = 0.7; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
   }
 
@@ -197,6 +197,7 @@ export class Furnisher {
         }
       }
     }
+    if (it.proc === 'kitchen_run' && it.params?.modules) it = this._fitRun(it);
     if (it.proc) {
       const gen = GENERATORS[it.proc];
       if (!gen) throw new Error(`unknown generator "${it.proc}"`);
@@ -279,14 +280,19 @@ export class Furnisher {
   // Is there a wall right behind the item (local -Z) at height h? (false = window / opening behind it)
   _wallBehind(it, h) {
     const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
-    const back = V(-Math.sin(yaw), 0, -Math.cos(yaw));
-    const o = V(it.pos[0], it.floorY + h, it.pos[2]).addScaledVector(back, -0.3);
-    this._ray.set(o, back); this._ray.far = 1.2;
+    const back = V(-Math.sin(yaw), 0, -Math.cos(yaw)), side = V(Math.cos(yaw), 0, -Math.sin(yaw));
     const targets = this.game.scene.children.filter((c) => c !== this.root && !c.isLight);
-    const hit = this._ray.intersectObjects(targets, true).find((q) => q.object.isMesh && q.object.visible);
-    if (!hit) return false;
-    const m = [].concat(hit.object.material)[0];
-    return !(m && (m.transparent || (m.transmission ?? 0) > 0 || /glass|window|frame/i.test(`${m.name} ${hit.object.name}`)));
+    // probe a grid over the mirror area: any opening / glass / miss behind it means it would hang over a window
+    for (const dy of [-0.15, 0, 0.15]) for (const dx of [-0.18, 0, 0.18]) {
+      const o = V(it.pos[0], it.floorY + h + dy, it.pos[2]).addScaledVector(back, -0.3).addScaledVector(side, dx);
+      this._ray.set(o, back); this._ray.far = 1.0;
+      const hit = this._ray.intersectObjects(targets, true).find((q) => q.object.isMesh && q.object.visible);
+      if (!hit) return false;
+      const m = [].concat(hit.object.material)[0];
+      const n = `${m?.name || ''} ${hit.object.name || ''} ${hit.object.parent?.name || ''}`;
+      if (m && (m.transparent || (m.transmission ?? 0) > 0 || /glass|window|frame|reveal|sill|mullion|opening/i.test(n))) return false;
+    }
+    return true;
   }
 
   // Remove (hide) the sub-meshes / primitives of a model that use a material matching re (e.g. a mirror over a window).
@@ -299,7 +305,7 @@ export class Furnisher {
   _unpoke() {
     for (const p of this.placed) {
       const it = p.item;
-      if (it.drop || it.tuck) continue;
+      if (it.drop || it.tuck || it.proc === 'planter' || /^rug_/.test(it.model || '') || it.collide === false || p.size.y < 0.3) continue;
       p.wrap.updateMatrixWorld(true);
       const m = p.wrap.matrixWorld, b = p.box;
       const corners = [[b.min.x, b.min.z], [b.max.x, b.min.z], [b.max.x, b.max.z], [b.min.x, b.max.z]].map(([x, z]) => V(x, 0, z).applyMatrix4(m));
@@ -317,8 +323,37 @@ export class Furnisher {
           }
         }
       }
-      if (push.lengthSq() > 0 && push.length() < 0.3) { p.wrap.position.add(push); p.wrap.updateMatrixWorld(true); this.report.unpoked = (this.report.unpoked || 0) + 1; }
+      if (push.lengthSq() > 0) (this.report.unpokeLog ||= []).push(`${p.room}/${it.id || it.model || it.proc} push ${push.x.toFixed(3)},${push.z.toFixed(3)}`);
+      if (push.lengthSq() > 0 && push.length() < 0.16) { p.wrap.position.add(push); p.wrap.updateMatrixWorld(true); this.report.unpoked = (this.report.unpoked || 0) + 1; }
     }
+  }
+
+  // Fit a kitchen run between the walls along its length: shift it into the free span and, if the modules are
+  // longer than the span, trim the last non-tall module (so the run never pokes through an end wall).
+  _fitRun(it) {
+    const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
+    const ax = V(Math.cos(yaw), 0, -Math.sin(yaw));
+    const mods = it.params.modules.map((m) => ({ ...m }));
+    const L = mods.reduce((q, m) => q + m.w, 0);
+    let dl = Infinity, dr = Infinity;
+    for (const h of [0.5, 1.2]) {
+      const o = V(it.pos[0], it.floorY + h, it.pos[2]);
+      const a = this.game.physics.raycast(o, ax.clone(), L + 1), b = this.game.physics.raycast(o, ax.clone().negate(), L + 1);
+      if (a) dr = Math.min(dr, a.distance); if (b) dl = Math.min(dl, b.distance);
+    }
+    if (!isFinite(dl) || !isFinite(dr)) return it;
+    const avail = dl + dr - 0.006;
+    if (L <= avail && dl >= L / 2 && dr >= L / 2) return it;
+    let Lf = L;
+    if (L > avail) {
+      const k = [...mods.keys()].reverse().find((i) => !mods[i].type.startsWith('tall') && mods[i].type !== 'sink' && mods[i].type !== 'oven_hob');
+      if (k !== undefined) { const cut = Math.min(L - avail, mods[k].w - 0.15); mods[k].w -= cut; Lf = L - cut; }
+    }
+    // centre of the free span, then keep the run against the wall it is closest to
+    const shift = dl < dr ? (Lf / 2 - dl + 0.003) : -(Lf / 2 - dr + 0.003);
+    const off = Math.abs(shift) < 0.5 ? shift : 0;
+    this._warn(`${it.room}/kitchen_run fitted: span ${avail.toFixed(2)} m, length ${L.toFixed(2)} -> ${Lf.toFixed(2)}, shift ${off.toFixed(3)}`);
+    return { ...it, params: { ...it.params, modules: mods }, pos: [it.pos[0] + ax.x * off, it.pos[1], it.pos[2] + ax.z * off] };
   }
 
   _zone(p) {

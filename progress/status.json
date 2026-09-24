@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T07:30:00.582Z",
+ "updated": "2026-09-24T08:38:40.759Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T08:38:40.654Z",
+   "m": "TEX critic r2: HF2 - gabion stones are untextured grey boxes and concrete slabs flat beige; bath grout hairline"
+  },
   {
    "t": "2026-09-24T07:30:00.582Z",
    "m": "TEX r2: stronger plaster/render normals, paint tone/rough breakup + wall grime, render grime/streaks, bathroom grout 3.5mm, 28mm gravel"
@@ -356,6 +360,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-24T08:38:40.759Z",
+   "src": "/reviews/critic/TEX-r2/pool_surround.png",
+   "caption": "TEX r2 critic view"
+  },
+  {
    "t": "2026-09-24T07:09:05.472Z",
    "src": "/reviews/critic/P07-r2/room_master.png",
    "caption": "P07 r2 critic view"
@@ -469,11 +478,6 @@
    "t": "2026-09-23T01:48:04.638Z",
    "src": "/reviews/p01-check/01_living.png",
    "caption": "P01 living room, placeholder geometry"
-  },
-  {
-   "t": "2026-09-23T01:48:04.572Z",
-   "src": "/reviews/p01-check/ui_title.png",
-   "caption": "P01 title screen (placeholder house)"
   }
  ]
 }

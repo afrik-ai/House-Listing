@@ -187,6 +187,7 @@ export class Game extends EventEmitter {
 
   _progress(fraction, label) {
     this._lastProgress = Math.max(this._lastProgress || 0, fraction);
+    if (label) this._lastLabel = label;
     this.emit('progress', { fraction: this._lastProgress, label });
   }
 
@@ -531,7 +532,7 @@ export class Game extends EventEmitter {
     const eyeY = floorY + 1.6;
     const cx = x + w / 2, cz = z + d / 2;
     // Normal rooms: the 4 corners (classic two-wall listing shot). Narrow rooms (WC, storage):
-    // the middle of each edge looking across the long axis — a corner is too close to the walls.
+    // the middle of each edge looking across the long axis ï¿½ a corner is too close to the walls.
     const narrow = Math.min(w, d) < 2.4;
     const inset = narrow ? 0.22 : Math.min(0.45, w / 4, d / 4);
     const corners = narrow

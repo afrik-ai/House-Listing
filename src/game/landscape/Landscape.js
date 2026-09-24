@@ -62,7 +62,6 @@ export class Landscape {
     const views = (this.game.views?.().exteriors || []).map((v) => v.pos);
     const clearOf = (x, z, r = 2.0) => !views.some((p) => Math.hypot(p[0] - x, p[2] - z) < r);
 
-    const shrubKinds = await Promise.all(['shrub_02_a', 'shrub_02_b', 'shrub_02_c', 'shrub_02_d'].map((n) => inst.kind(n, null, { alphaTest: 0.45 })));
     const rockKinds = await Promise.all([1, 2, 3, 4, 5, 6].map((i) => inst.kind('rock_moss_set', `rock_moss_set_01_rock0${i}`, { tint: [1.15, 1.1, 1.05] })));
     const lowKinds = await Promise.all(['a', 'b', 'c', 'd'].map((v) => inst.kind('grass_clump_medium_02', `grass_medium_02_${v}`, { alphaTest: 0.5, tint: [0.8, 0.85, 0.7] })));
     const orn = [];
@@ -107,7 +106,7 @@ export class Landscape {
           if (!clearOf(px, pz, 2.4)) continue;
           const slot = (i + r * 2) % 5;
           if (slot === 0) balls.push({ ball: [px, pz, 0.32 + R() * 0.1] });
-          else if (slot === 3) place(shrubKinds[Math.floor(R() * 4)], px, pz, 0.48 + R() * 0.12, R() * 6.28);
+          else if (slot === 3) balls.push({ ball: [px, pz, 0.42 + R() * 0.14], squash: 0.62 + R() * 0.12 });   // low mounded shrub
           else orn.push({ type: (slot === 2) === (r === 0) ? 'pampas' : 'feather', variant: i + r, x: px, y: G, z: pz, scale: 0.85 + R() * 0.3, rot: R() * 6.28 });
         }
         if (R() < P.rock_chance) {

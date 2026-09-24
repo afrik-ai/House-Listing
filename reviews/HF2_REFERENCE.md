@@ -245,12 +245,12 @@ Total out of 100. Any single criterion at 3 or below is an automatic "HF2 wins" 
 | hf2-derelict-concrete-interior-beach-day.png | Dirty "before" state, stains, sun through opening | Dirt layers, exposure |
 | hf2-derelict-bathroom-tiles-fluorescent.png | Rusty tile bathroom under fluorescents | Interior artificial light |
 | hf2-aframe-cabin-exterior-forest-day.png | A-frame in forest, grass blades, foliage translucency | Exterior day |
-| hf2-cottage-exterior-garden-picket-fence-day.png | Cottage behind picket fence, flowers | Exterior lawn/garden |
+| hf2-coffee-shop-interior-day.png | Cottage behind picket fence, flowers | Exterior lawn/garden |
 | hf2-beach-shack-exterior-day-dirty.png | Shack on sand, tyres, tree shadows | Exterior shadows, clutter |
 | hf2-beach-house-exterior-dusk-warm-interior-modio.png | Dusk, warm interior through glass, palms | Dusk / glow through windows |
 | hf2-diner-exterior-night-neon.png | Night, moon bloom, OPEN neon, path lights | Night exterior |
 | hf2-modern-villa-exterior-night-neon.png | Night villa, magenta/cyan strip lights | Night exterior, emissive |
-| hf2-snowman-front-yard-winter-closeup.png | Close-up snowman, snow material, fence | Material close-up |
+| hf2-derelict-bathroom-2.png | Close-up snowman, snow material, fence | Material close-up |
 
 Files marked `-modio` carry a mod.io "Community Content" watermark (official Steam gallery
 images of community builds rendered in-game).

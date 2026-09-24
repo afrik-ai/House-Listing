@@ -101,8 +101,10 @@ export function buildHedges(ctx, shapes) {
       ctx.colliderBoxes.push([x, G - 0.3, z, x + w, G + Math.max(h, 1.3), z + d]);
     } else if (s.ball) {
       const [cx, cz, r] = s.ball;
-      const cy = G + r * 0.85;
+      const sq = s.squash ?? 1;
+      const cy = G + r * 0.85 * sq;
       const sg = new THREE.SphereGeometry(r, 18, 12);
+      sg.scale(1, sq, 1);
       sg.translate(cx, cy, cz);
       const pa = sg.attributes.position, na = sg.attributes.normal, ua = sg.attributes.uv;
       const idx = sg.index.array;
@@ -121,8 +123,8 @@ export function buildHedges(ctx, shapes) {
         const nn = [q * Math.cos(a), Math.abs(u) * (u > -0.3 ? 1 : -1), q * Math.sin(a)];
         const L = Math.hypot(...nn);
         const nrm = nn.map((v) => v / L);
-        if (cy + nrm[1] * r < G + 0.02) continue;
-        cards.push({ p: [cx + nrm[0] * r, cy + nrm[1] * r, cz + nrm[2] * r], n: nrm, size: 0.13 + R() * 0.08, out: R() * 0.025 });
+        if (cy + nrm[1] * r * sq < G + 0.02) continue;
+        cards.push({ p: [cx + nrm[0] * r, cy + nrm[1] * r * sq, cz + nrm[2] * r], n: nrm, size: 0.13 + R() * 0.08, out: R() * 0.025 });
       }
     }
   }
@@ -204,7 +206,7 @@ function stoneGeometry(seed) {
   const p = g.attributes.position;
   const R = rng(seed * 7 + 3);
   for (let i = 0; i < p.count; i++) {
-    p.setXYZ(i, p.getX(i) * (0.7 + R() * 0.45) + (R() - 0.5) * 0.25, p.getY(i) * (0.75 + R() * 0.4), p.getZ(i) * (0.7 + R() * 0.45) + (R() - 0.5) * 0.25);
+    p.setXYZ(i, p.getX(i) * (0.86 + R() * 0.2) + (R() - 0.5) * 0.12, p.getY(i) * (0.85 + R() * 0.2), p.getZ(i) * (0.86 + R() * 0.2) + (R() - 0.5) * 0.12);
   }
   g = g.toNonIndexed();
   g.computeVertexNormals();
@@ -246,7 +248,7 @@ export async function buildGabions(ctx) {
       const s = 0.056 + R() * 0.03;
       const m = new THREE.Matrix4().compose(
         new THREE.Vector3(Math.min(x + w - 0.06, Math.max(x + 0.06, px + jx)), Math.min(y1 - 0.06, py + jy), Math.min(z + d - 0.06, Math.max(z + 0.06, pz + jz))),
-        new THREE.Quaternion().setFromEuler(new THREE.Euler(R() * 6.28, R() * 6.28, R() * 6.28)),
+        new THREE.Quaternion().setFromEuler(new THREE.Euler((R() - 0.5) * 0.7, R() * 6.28, (R() - 0.5) * 0.7)),
         new THREE.Vector3(s * (1.1 + R() * 0.5), s * (0.75 + R() * 0.3), s * (0.95 + R() * 0.4)));
       const k = Math.floor(R() * 4);
       lists[k].push({ m, c: 0.3 + R() * 0.22, warm: R() });

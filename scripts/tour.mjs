@@ -1,6 +1,7 @@
 // Standard tour (P01): every room + 4 exteriors (+ golden-hour and night variants of the garden view).
 //   node scripts/tour.mjs --out reviews/tour-<name>/ [--w 1600 --h 900] [--quality high] [--tod day]
 //        [--ui] [--id villa-nova] [--only living,kitchen] [--no-variants] [--base http://127.0.0.1:5173]
+//        [--hmr] [--attempts 3]   (HMR blocked by default; reload-retry as in shot.mjs)
 // Writes <out>/NN_<view>.png, <out>/index.html (contact sheet) and <out>/stats.json
 // (per-shot __game.stats(), GPU benchmark, load time, console errors). Exit code 2 on console errors.
 import fs from 'fs';
@@ -13,7 +14,7 @@ const outDir = path.resolve(a.out);
 fs.mkdirSync(outDir, { recursive: true });
 
 const t0 = Date.now();
-const G = await openGame({ base: a.base, id: a.id, w: a.w, h: a.h, quality: a.quality, tod: a.tod, attempts: +(a.attempts || 3) });
+const G = await openGame({ base: a.base, id: a.id, w: a.w, h: a.h, quality: a.quality, tod: a.tod, attempts: +(a.attempts || 3), hmr: !!a.hmr });
 const { browser, page, errors, warnings, loadMs, gpu } = G;
 console.log(`ready on attempt ${G.readyAttempt}/${+(a.attempts || 3)} (load ${(loadMs / 1000).toFixed(1)} s)`);
 const shots = [];

@@ -1,0 +1,226 @@
+{
+ "ext_Front (street, east)": {
+  "fps": 0,
+  "drawCalls": 1970,
+  "triangles": 3396749,
+  "textures": 379,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 123,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Garden & pool (south-west)": {
+  "fps": 0,
+  "drawCalls": 1964,
+  "triangles": 3305129,
+  "textures": 383,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 123,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_South facade": {
+  "fps": 0,
+  "drawCalls": 1954,
+  "triangles": 3338605,
+  "textures": 387,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_North-west corner": {
+  "fps": 0,
+  "drawCalls": 1974,
+  "triangles": 3398285,
+  "textures": 391,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "garden_from_terrace": {
+  "fps": 0,
+  "drawCalls": 615,
+  "triangles": 1314921,
+  "textures": 395,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "pool_close": {
+  "fps": 0,
+  "drawCalls": 609,
+  "triangles": 1280625,
+  "textures": 399,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "street_approach": {
+  "fps": 0,
+  "drawCalls": 1974,
+  "triangles": 3398285,
+  "textures": 403,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "living_window_out": {
+  "fps": 0,
+  "drawCalls": 399,
+  "triangles": 1013992,
+  "textures": 407,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "garden_south_lawn": {
+  "fps": 0,
+  "drawCalls": 1026,
+  "triangles": 2383977,
+  "textures": 411,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "tree_close": {
+  "fps": 0,
+  "drawCalls": 583,
+  "triangles": 1221774,
+  "textures": 415,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Front (street, east)_golden_hour": {
+  "fps": 0,
+  "drawCalls": 1989,
+  "triangles": 3437140,
+  "textures": 424,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 131,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Garden & pool (south-west)_golden_hour": {
+  "fps": 0,
+  "drawCalls": 1983,
+  "triangles": 3345520,
+  "textures": 428,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 131,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Front (street, east)_night": {
+  "fps": 0,
+  "drawCalls": 1978,
+  "triangles": 3410378,
+  "textures": 436,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 140,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Garden & pool (south-west)_night": {
+  "fps": 0,
+  "drawCalls": 1972,
+  "triangles": 3318758,
+  "textures": 440,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 142,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ }
+}

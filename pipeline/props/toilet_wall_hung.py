@@ -1,6 +1,6 @@
 # Wall-hung rimless WC (white ceramic, slim soft-close seat, lid closed) + matte-black dual flush plate.
 # FLOOR-REFERENCED: y=0 is the finished floor (bowl floats 0.10 m above it); back face (-Z in glTF) goes to the wall.
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

@@ -1,7 +1,7 @@
 # Modern upholstered double bed (160 x 200 mattress): channel-tufted headboard, upholstered base on a recessed
 # plinth, draped duvet with turned-down fold and soft folds (analytic cloth wrap + displacement), 2 sleeping
 # pillows, 2 cushions, knitted throw across the foot. ~1.80 x 1.20 x 2.18 m; headboard at glTF -Z (the wall).
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

@@ -33,7 +33,7 @@ export class Landscape {
     const lap = (k) => { const n = performance.now(); this.timings[k] = Math.round(n - tl); tl = n; };
     await buildGround(ctx); lap('ground');
     this.pool = await buildPool(ctx); lap('pool');
-    this.grass = buildGrass(ctx, { radius: 13.5 }); lap('grass');
+    this.grass = buildGrass(ctx, { radius: 11.5 }); lap('grass');
     this.bollards = buildBollards(ctx);
     await buildFences(ctx); lap('fences');
     await buildGabions(ctx); lap('gabions');
@@ -130,6 +130,7 @@ export class Landscape {
     // features (fire pit ...)
     for (const f of site.features || []) {
       const key = await inst.kind(f.model);
+      if (!key) continue;
       const m = new THREE.Matrix4().compose(new THREE.Vector3(f.pos[0], f.y ?? G, f.pos[1]), new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(f.rot || 0)), new THREE.Vector3(1, 1, 1));
       inst.add(key, m);
       const sz = inst.size(key);
@@ -148,14 +149,16 @@ export class Landscape {
     // canopy clear of the viewpoints (+1 m); lowest foliage >= 2.2 m (walkable lawn) -> scale up if not.
     this.treeInfo = [];
     const views3 = (this.game.views?.().exteriors || []).map((v) => v.pos);
+    const loadedNames = names.filter((n) => trees.models.has(n));
     for (const t of site.trees || []) {
       const M = trees.models.get(t.model);
+      if (!M) continue;   // model missing (warned by InstancedModels.kind)
       const leafMin = Math.min(...M.parts.filter((p) => /leaf|leaves/i.test(p.material.name)).map((p) => { p.geometry.computeBoundingBox(); return p.geometry.boundingBox.min.y; }), 99);
       let scale = t.scale;
       if (leafMin < 99 && leafMin * scale < 2.2) scale = Math.min(3.4, 2.2 / Math.max(leafMin, 0.3));
-      const crown = (Math.max(M.size.x, M.size.z) / 2) * scale * 0.85;
+      const crown = (Math.max(M.size.x, M.size.z) / 2) * scale;   // full half-extent: procedural crowns are lopsided
       const avoid = [
-        ...views3.map((p) => [p[0], p[2], Math.max(3, crown + 1.0)]),
+        ...views3.map((p) => [p[0], p[2], Math.max(3, crown + 2.0)]),
         ...(ctx.stones || []).map((s) => [s.x, s.z, 3.0]),
         ...(site.bollards || []).map((b) => [b[0], b[1], 3.0]),
       ];
@@ -174,17 +177,22 @@ export class Landscape {
     }
     const hgt = ctx.terrainHeight || (() => G);
     const sr = site.tree_ring;
-    if (sr) {
+    if (sr && loadedNames.length) {
       for (const p of scatterRing(site, sr, sr.avoid)) {
-        trees.addDynamic({ model: names[Math.floor(p.r * names.length)], x: p.x, y: hgt(p.x, p.z) - 0.05, z: p.z, scale: sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]), rot: p.r2 * 6.28 });
+        const model = loadedNames[Math.floor(p.r * loadedNames.length)];
+        const M = trees.models.get(model);
+        const sc = sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]);
+        const crown = (Math.max(M.size.x, M.size.z) / 2) * sc;
+        if (views3.some((v) => Math.hypot(v[0] - p.x, v[2] - p.z) < crown + 2.0)) continue;   // keep viewpoints clear
+        trees.addDynamic({ model, x: p.x, y: hgt(p.x, p.z) - 0.05, z: p.z, scale: sr.scale[0] + p.r2 * (sr.scale[1] - sr.scale[0]), rot: p.r2 * 6.28 });
       }
     }
     const sf = site.far_trees;
-    if (sf) {
+    if (sf && loadedNames.length) {
       const st = site.street;
       for (const p of scatterFar(site, sf, hgt, st ? [st.curbs[0] - 2, st.curbs[1] + 2] : null)) {
         // far trees are scaled so their height (not the model's) lands in [scale0, scale1] metres
-        const model = names[Math.floor(p.r * names.length)];
+        const model = loadedNames[Math.floor(p.r * loadedNames.length)];
         const h = trees.models.get(model).size.y;
         trees.addFar({ model, x: p.x, y: p.y, z: p.z, scale: (sf.scale[0] + p.r2 * (sf.scale[1] - sf.scale[0])) / h, rot: p.r2 * 6.28 });
       }

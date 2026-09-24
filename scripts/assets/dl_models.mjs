@@ -1,3 +1,5 @@
+import os from 'os';
+import { fileURLToPath } from 'url';
 // Downloads Poly Haven models (1k glTF) listed in models.json and packs each into ONE self-contained GLB:
 //   public/assets/models/<name>.glb  — Y-up, metres, origin at base centre (bbox centre XZ, min Y = 0), textures <= 1024.
 // usage: node scripts/assets/dl_models.mjs [name ...]      (env: CONC=6 parallel downloads, FORCE=1 re-pack)
@@ -10,9 +12,9 @@ import { dedup, prune, weld, simplify, textureCompress, getBounds, quantize, sim
 import { MeshoptSimplifier } from 'meshoptimizer';
 import sharp from 'sharp';
 
-const ROOT = 'C:/Users/Owner/HouseListing';
+const ROOT = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '');
 const OUT = ROOT + '/public/assets/models';
-const TMP = 'C:/Users/Owner/AppData/Local/Temp/claude/C--Users-Owner-HouseListing/6f4200f6-d6d1-4f63-a08e-32106c165318/scratchpad/models';
+const TMP = os.tmpdir().replace(/\\/g, '/') + '/houselisting-models';
 fs.mkdirSync(OUT, { recursive: true }); fs.mkdirSync(TMP, { recursive: true });
 const list = JSON.parse(fs.readFileSync(new URL('./models.json', import.meta.url)));
 const only = process.argv.slice(2);

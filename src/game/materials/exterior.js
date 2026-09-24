@@ -112,7 +112,7 @@ float rFbm(vec2 p) { return 0.5 * rNoise(p) + 0.3 * rNoise(p * 2.07 + 5.3) + 0.2
 float rLine(float d, float hw) { float w = max(fwidth(d), 1e-5); return 1.0 - smoothstep(hw - w, hw + w, abs(d)); }
 `;
 
-async function renderWhite(tex, ctx, name, { color = '#eeede8', grime = 0.2, bands = true, scale = 1.0 } = {}) {
+async function renderWhite(tex, ctx, name, { color = '#eeede8', grime = 0.45, bands = true, scale = 1.0 } = {}) {
   const t = await tex('render_white_ext', { scale, maps: ['color', 'normal', 'roughness'] });
   const n2 = await ctx.lib.base('plaster_white_ext_alt', 'normal');
   const m = new THREE.MeshStandardMaterial({ name, map: t.map, normalMap: t.normalMap, roughnessMap: t.roughnessMap,
@@ -141,7 +141,9 @@ async function renderWhite(tex, ctx, name, { color = '#eeede8', grime = 0.2, ban
         vec2 rP = rVert ? vec2(rn.x > rn.z ? vRW.z : vRW.x, vRW.y) : vRW.xz;
         float rM = rFbm(rP / 2.6) - 0.5;
         float rF = rNoise(rP * 7.0) - 0.5;
-        diffuseColor.rgb *= 1.0 + rM * 0.075 + rF * 0.02;
+        diffuseColor.rgb *= 1.0 + rM * 0.11 + rF * 0.035;
+        float rStreak = smoothstep(0.55, 0.9, rNoise(vec2(rP.x * 3.1, rP.y * 0.35))) * 0.06;
+        diffuseColor.rgb *= 1.0 - rStreak;
         float rG = 1.0 - smoothstep(uGrade + 0.02, uGrade + 0.55, vRW.y);
         rG *= 0.55 + 0.45 * rNoise(vec2(rP.x * 2.3, vRW.y * 9.0));
         rG *= rVert ? 1.0 : 0.0;

@@ -12,7 +12,13 @@ import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
 
-export const GPU_ARGS = ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist'];
+// d3d11 ANGLE only exists on Windows; elsewhere Chromium picks its own backend (SwiftShader without a GPU).
+export const GPU_ARGS = process.platform === 'win32'
+  ? ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist']
+  : ['--enable-gpu', '--ignore-gpu-blocklist', '--enable-unsafe-swiftshader'];
+
+// CHROMIUM_PATH: use a pre-installed Chromium when Playwright's own browser build is not downloadable.
+export const CHROMIUM_PATH = process.env.CHROMIUM_PATH || undefined;
 
 export function parseArgs(argv, defaults = {}) {
   const out = { ...defaults };
@@ -29,10 +35,12 @@ export function parseArgs(argv, defaults = {}) {
 
 // Hard cap for every wait in the harness (Playwright waits and page-side promises): a reload or a
 // hung boot can never stall a caller for longer than this per attempt.
-export const WAIT_MS = 60000;
+// HARNESS_SLOW scales every cap for software rendering (SwiftShader, no GPU), where one frame can take seconds.
+export const SLOW = Math.max(1, +process.env.HARNESS_SLOW || 1);
+export const WAIT_MS = 60000 * SLOW;
 // The FIRST load may take minutes on a busy machine (Vite transforming files other builders are
 // editing); it gets its own, longer cap and prints progress while waiting.
-export const BOOT_MS = 300000;
+export const BOOT_MS = 300000 * SLOW;
 
 // Rejects if `promise` does not settle within `ms`.
 export function hard(promise, ms = WAIT_MS, label = 'wait') {
@@ -50,7 +58,7 @@ export function hard(promise, ms = WAIT_MS, label = 'wait') {
 // Returns {browser, page, errors, warnings, loadMs, gpu, readyAttempt, reloads, waitReady}.
 // `errors` only holds errors of the page lifetime that succeeded (earlier ones: `staleErrors`).
 export async function openGame({ base = 'http://127.0.0.1:5173', id = 'villa-nova', w = 1920, h = 1080, quality = 'high', tod = 'day', timeout = WAIT_MS, bootTimeout = BOOT_MS, attempts = 3, query = '', hmr = false, quiet = false } = {}) {
-  const browser = await chromium.launch({ headless: true, args: GPU_ARGS });
+  const browser = await chromium.launch({ headless: true, args: GPU_ARGS, executablePath: CHROMIUM_PATH });
   const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1 });
   page.setDefaultTimeout(timeout);
   page.setDefaultNavigationTimeout(timeout);
@@ -106,7 +114,7 @@ export async function openGame({ base = 'http://127.0.0.1:5173', id = 'villa-nov
         if (ok !== true) throw new Error(ok);
         await page.waitForTimeout(500);
         if (nav.count !== nav0) throw new Error('page reloaded right after ready');
-        await hard(page.evaluate(() => window.__game.ready), 5000, `${label} recheck`);   // throws if the context died
+        await hard(page.evaluate(() => window.__game.ready.then(() => true)), 5000 * SLOW, `${label} recheck`);   // throws if the context died
         if (attempt > 1) console.error(`[harness] ${label}: ready on attempt ${attempt}/${attempts}`);
         return attempt;
       } catch (err) {

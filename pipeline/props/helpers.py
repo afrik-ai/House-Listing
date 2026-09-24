@@ -9,7 +9,7 @@ import numpy as np
 from mathutils import Vector, Matrix, Euler
 from mathutils.bvhtree import BVHTree
 
-ROOT = 'C:/Users/Owner/HouseListing'
+ROOT = __import__('os').path.abspath(__import__('os').path.join(__import__('os').path.dirname(__file__), '..', '..'))
 BUILD = ROOT + '/pipeline/props/_build'
 TEXD = BUILD + '/tex'
 os.makedirs(TEXD, exist_ok=True)

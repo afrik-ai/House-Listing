@@ -1,6 +1,6 @@
 # City / hybrid bicycle (700c): matte sage diamond frame, silver rims, 32 steel spokes, gumwall tyres, brown
 # saddle + grips, 1x drivetrain with chain, fenders, kickstand. ~1.76 x 1.05 x 0.60 m (length along glTF X)
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

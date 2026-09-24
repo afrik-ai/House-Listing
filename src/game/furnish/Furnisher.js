@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { Materials, rng } from './materials.js';
 import { GENERATORS } from './proc/index.js';
+import { Clutter, clutterMaterials } from './clutter.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Data-driven furnishing (P07). Reads houses/<id>/furniture.json:
 //   { rooms: { <roomId>: { level?: 'ground'|'first', floorY?: m, items: [ Item, ... ] } }, models?: { <name>: ModelDefaults } }
@@ -11,6 +13,13 @@ import { GENERATORS } from './proc/index.js';
 // Model conventions (manifest): origin at base centre, min Y = 0, front = +Z. rotY 0 -> front faces +Z (south),
 // 90 -> east (+X), 180 -> north, -90 -> west. ModelDefaults.yaw (deg) corrects models whose front is not +Z.
 const V = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
+// Per-room bedding / upholstery variation (materials of bed_double_modern), so bedrooms don't repeat.
+const ROOM_TINTS = {
+  bed_double_modern: {
+    bed2: { throw_knit_charcoal: '#9a5b3a', cushion_anthracite: '#c9b99a', cushion_sage: '#6f8aa3', upholstery_greige: '#5f6b78', duvet_cotton_white: '#e9e4da' },
+    bed3: { throw_knit_charcoal: '#5d6f55', cushion_anthracite: '#d8c7a8', cushion_sage: '#b5773f', upholstery_greige: '#8a7a68', duvet_cotton_white: '#dfe6ea', pillow_cotton_white: '#eef1f2' },
+  },
+};
 const DIRS = { N: [0, 0, -1], S: [0, 0, 1], E: [1, 0, 0], W: [-1, 0, 0] };
 
 export class Furnisher {
@@ -40,19 +49,34 @@ export class Furnisher {
       if (it.model) need.add(it.model);
       if (it.proc && GENERATORS[it.proc]?.deps) for (const d of GENERATORS[it.proc].deps(it.params || {})) need.add(d);
     }
-    await Promise.all([...need].map((n) => this._loadModel(n).catch((e) => this._warn(`model ${n}: ${e.message}`))));
+    // A missing/failed model never aborts furnishing: one warning per model, its items are skipped and
+    // generators get an empty placeholder (partial asset sets still furnish).
+    this.missing = new Set();
+    await Promise.all([...need].map((n) => this._loadModel(n).catch((e) => {
+      this.missing.add(n); this._warn(`model ${n}: ${e.message} (skipped)`); console.warn(`[furnish] model "${n}" unavailable: ${e.message} — skipped`);
+    })));
     // Build + place in list order (so `drop` lands on things placed earlier).
     this.work = new THREE.Group(); this.work.name = 'FURNISH_work';
     this.root.add(this.work);
     for (const it of items) {
       try { this._place(it); } catch (e) { this._warn(`${it.room}/${it.model || it.proc}: ${e.message}`); console.error(e); }
     }
+    const safe = (label, fn) => { try { fn(); } catch (e) { this._warn(`${label}: ${e.message}`); console.error('[furnish]', label, e); } };
+    safe('unpoke', () => this._unpoke());
+    for (const p of this.placed) { p.zone = 'in'; safe('zone', () => { p.zone = this._zone(p); }); }
+    this.clutter = new Clutter(this);
+    safe('clutter', () => this.clutter.run());
     this._instance();
     this._buildColliders();
     this._validate();          // against the house-only BVH (before our boxes join it)
     this._registerColliders();
+    if (!/[?&]nomerge\b/.test(globalThis.location?.search || '')) this._merge();
+    safe('clutter build', () => this.clutter.build(this.root, clutterMaterials()));
+    safe('tag', () => this._tag());
     this.root.traverse((o) => { if (o.isMesh) this.report.meshes++; });
+    this._budget();
     this.game.scene.add(this.root);
+    safe('visibility', () => this._hookVisibility());
     this.game.renderer.applyAnisotropy?.(this.root);
     return this;
   }
@@ -90,6 +114,13 @@ export class Furnisher {
     return out;
   }
 
+  // Runtime material corrections for shipped GLBs (mirrors read as black discs, blown-out car paint).
+  _fixMaterial(m) {
+    if (/^mirror/i.test(m.name)) { m.color.set('#aab6bc'); m.metalness = 0.35; m.roughness = 0.1; m.envMapIntensity = 1.6; m.emissive?.set('#3c4549'); }
+    if (/^grille$|^drl_led$/i.test(m.name) && m.color.getHex() === 0xffffff) m.color.set(/grille/i.test(m.name) ? '#1d1f21' : '#dfe6ee');
+    if (/paint_graphite/i.test(m.name)) { m.color.set('#2d3237'); m.metalness = 0.3; m.roughness = 0.5; m.envMapIntensity = 0.35; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
+  }
+
   async _loadModel(name) {
     if (this.templates.has(name)) return;
     const info = this.manifest.models?.[name];
@@ -102,6 +133,7 @@ export class Furnisher {
       for (const m of mats) {
         if (!m) continue;
         if (m.map) m.map.anisotropy = 8;
+        this._fixMaterial(m);
         // alpha-masked foliage/weaves: keep them cheap and sorted-free
         if (m.transparent && m.alphaTest === 0 && m.map && !/glass/i.test(m.name)) { m.alphaTest = 0.5; m.transparent = false; }
       }
@@ -115,11 +147,11 @@ export class Furnisher {
     let t = this.templates.get(key);
     if (t?.object) return t;
     const base = this.templates.get(model);
-    if (!base) throw new Error(`model "${model}" not loaded`);
+    if (!base) return this._placeholder(key, model, `model "${model}" not loaded`);
     let src = base.scene;
     if (variant) {
       src = base.scene.getObjectByName(variant);
-      if (!src) throw new Error(`variant "${variant}" not found in ${model}`);
+      if (!src) return this._placeholder(key, model, `variant "${variant}" not found in ${model}`);
     }
     let object;
     if (variant) {
@@ -138,10 +170,23 @@ export class Furnisher {
     return t;
   }
 
-  _place(it) {
+  // Empty stand-in for a missing model/variant (warned once per key); `missing` lets _place skip items.
+  _placeholder(key, model, why) {
+    if (!this.missing?.has(model) && !this._phWarned?.has(key)) {
+      (this._phWarned ||= new Set()).add(key); this._warn(`${why} (skipped)`); console.warn(`[furnish] ${why} — skipped`);
+    }
+    const object = new THREE.Group(); object.name = `missing_${key}`;
+    const t = { object, box: new THREE.Box3(V(), V()), info: null, missing: true };
+    this.templates.set(key, t);
+    return t;
+  }
+
+  _place(it0) {
+    let it = it0;
     const G = this.game;
     let object, box, key;
     const defaults = this.data.models?.[it.model] || {};
+    if (it.proc === 'kitchen_run' && it.params?.modules) it = this._fitRun(it);
     if (it.proc) {
       const gen = GENERATORS[it.proc];
       if (!gen) throw new Error(`unknown generator "${it.proc}"`);
@@ -156,10 +201,13 @@ export class Furnisher {
       key = it.instanceKey ? `proc:${it.proc}:${it.instanceKey}` : null;   // procedural pieces are unique unless keyed
     } else {
       const t = this._template(it.model, it.variant || defaults.variant);
+      if (t.missing) { this.report.skipped = (this.report.skipped || 0) + 1; return; }
       object = t.object.clone(true);
       box = t.box.clone();
-      key = `${it.model}#${it.variant || ''}#${JSON.stringify(it.tint || '')}`;
-      if (it.tint) this._tint(object, it.tint);
+      const tint = it.tint || ROOM_TINTS[it.model]?.[it.room];
+      key = `${it.model}#${it.variant || ''}#${JSON.stringify(tint || '')}`;
+      if (tint) this._tint(object, tint);
+      if (it.model === 'bathroom_vanity' && !this._wallBehind(it, 1.48)) this._dropMaterial(object, /^mirror/);
     }
     // scale
     const s = it.scale ?? defaults.scale ?? 1;
@@ -205,7 +253,9 @@ export class Furnisher {
     wrap.updateMatrixWorld(true);
     // shadows
     const size = box.getSize(V()).multiply(scl);
-    const cast = it.shadow ?? defaults.shadow ?? (size.y > 0.18 || Math.max(size.x, size.z) > 0.45);
+    // Shadow passes carry only large pieces: small props (books, clutter, kitchen items, decor < ~0.3 m) never cast.
+    const big = Math.max(size.x, size.z);
+    const cast = it.shadow ?? defaults.shadow ?? ((size.y > 0.3 && big > 0.3) || big > 0.9);
     wrap.traverse((o) => {
       if (!o.isMesh) return;
       const clear = [].concat(o.material).some((m) => m && (m.transparent || (m.transmission ?? 0) > 0));
@@ -214,6 +264,154 @@ export class Furnisher {
     });
     this.placed.push({ item: it, key, wrap, box, size, floorY: it.floorY, room: it.room });
     this.report.items++;
+  }
+
+  // Is there a wall right behind the item (local -Z) at height h? (false = window / opening behind it)
+  _wallBehind(it, h) {
+    const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
+    const back = V(-Math.sin(yaw), 0, -Math.cos(yaw)), side = V(Math.cos(yaw), 0, -Math.sin(yaw));
+    const targets = this.game.scene.children.filter((c) => c !== this.root && !c.isLight);
+    // probe a grid over the mirror area: any opening / glass / miss behind it means it would hang over a window
+    for (const dy of [-0.15, 0, 0.15]) for (const dx of [-0.18, 0, 0.18]) {
+      const o = V(it.pos[0], it.floorY + h + dy, it.pos[2]).addScaledVector(back, -0.3).addScaledVector(side, dx);
+      this._ray.set(o, back); this._ray.far = 1.0;
+      const hit = this._ray.intersectObjects(targets, true).find((q) => q.object.isMesh && q.object.visible);
+      if (!hit) return false;
+      const mm = hit.object.material, m = Array.isArray(mm) ? mm[hit.face?.materialIndex ?? 0] : mm;
+      const n = `${m?.name || ''} ${hit.object.name || ''} ${hit.object.parent?.name || ''}`;
+      if (m && (m.transparent || (m.transmission ?? 0) > 0 || /glass|window|frame|reveal|sill|mullion|opening/i.test(n))) return false;
+    }
+    return true;
+  }
+
+  // Remove (hide) the sub-meshes / primitives of a model that use a material matching re (e.g. a mirror over a window).
+  _dropMaterial(object, re) {
+    object.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => re.test(m?.name || ''))) { o.visible = false; o.userData.noMerge = true; } });
+    this._warn(`dropped ${re} on a model placed in front of an opening`);
+  }
+
+  // Pieces that poke through a wall get pushed back out (floor-standing items, before instancing).
+  _unpoke() {
+    for (const p of this.placed) {
+      const it = p.item;
+      if (it.drop || it.tuck || it.proc === 'planter' || /^rug_/.test(it.model || '') || it.collide === false || p.size.y < 0.3) continue;
+      p.wrap.updateMatrixWorld(true);
+      const m = p.wrap.matrixWorld, b = p.box;
+      const corners = [[b.min.x, b.min.z], [b.max.x, b.min.z], [b.max.x, b.max.z], [b.min.x, b.max.z]].map(([x, z]) => V(x, 0, z).applyMatrix4(m));
+      const cx = corners.reduce((q, v) => q + v.x, 0) / 4, cz = corners.reduce((q, v) => q + v.z, 0) / 4;
+      const push = V();
+      for (const h of [p.floorY + 0.12, p.floorY + Math.min(1.0, p.size.y - 0.05)]) {
+        for (const q of corners) {
+          const dir = V(q.x - cx, 0, q.z - cz); const len = dir.length(); if (len < 1e-3) continue; dir.normalize();
+          const hit = this.game.physics.raycast(V(cx, h, cz), dir, len);
+          if (hit && len - hit.distance > 0.02) {
+            const n = hit.face?.normal && hit.object ? hit.face.normal.clone().transformDirection(hit.object.matrixWorld) : (hit.normal ? hit.normal.clone() : dir.clone().negate());
+            n.y = 0; if (n.lengthSq() < 1e-6) continue; n.normalize(); if (n.dot(dir) > 0) n.negate();
+            const d = (len - hit.distance) * Math.abs(dir.dot(n)) + 0.004;
+            if (Math.abs(n.x) > Math.abs(n.z)) push.x = Math.abs(push.x) > d ? push.x : Math.sign(n.x) * d; else push.z = Math.abs(push.z) > d ? push.z : Math.sign(n.z) * d;
+          }
+        }
+      }
+      if (push.lengthSq() > 0) (this.report.unpokeLog ||= []).push(`${p.room}/${it.id || it.model || it.proc} push ${push.x.toFixed(3)},${push.z.toFixed(3)}`);
+      if (push.lengthSq() > 0 && push.length() < 0.16) { p.wrap.position.add(push); p.wrap.updateMatrixWorld(true); this.report.unpoked = (this.report.unpoked || 0) + 1; }
+    }
+  }
+
+  // Fit a kitchen run between the walls along its length: shift it into the free span and, if the modules are
+  // longer than the span, trim the last non-tall module (so the run never pokes through an end wall).
+  _fitRun(it) {
+    const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
+    const ax = V(Math.cos(yaw), 0, -Math.sin(yaw));
+    const mods = it.params.modules.map((m) => ({ ...m }));
+    const L = mods.reduce((q, m) => q + m.w, 0);
+    let dl = Infinity, dr = Infinity;
+    for (const h of [0.5, 1.2]) {
+      const o = V(it.pos[0], it.floorY + h, it.pos[2]);
+      const a = this.game.physics.raycast(o, ax.clone(), L + 1), b = this.game.physics.raycast(o, ax.clone().negate(), L + 1);
+      if (a) dr = Math.min(dr, a.distance); if (b) dl = Math.min(dl, b.distance);
+    }
+    if (!isFinite(dl) || !isFinite(dr)) return it;
+    const avail = dl + dr - 0.006;
+    if (L <= avail && dl >= L / 2 && dr >= L / 2) return it;
+    let Lf = L;
+    if (L > avail) {
+      const k = [...mods.keys()].reverse().find((i) => !mods[i].type.startsWith('tall') && mods[i].type !== 'sink' && mods[i].type !== 'oven_hob');
+      if (k !== undefined) { const cut = Math.min(L - avail, mods[k].w - 0.15); mods[k].w -= cut; Lf = L - cut; }
+    }
+    // centre of the free span, then keep the run against the wall it is closest to
+    const shift = dl < dr ? (Lf / 2 - dl + 0.003) : -(Lf / 2 - dr + 0.003);
+    const off = Math.abs(shift) < 0.5 ? shift : 0;
+    this._warn(`${it.room}/kitchen_run fitted: span ${avail.toFixed(2)} m, length ${L.toFixed(2)} -> ${Lf.toFixed(2)}, shift ${off.toFixed(3)}`);
+    return { ...it, params: { ...it.params, modules: mods }, pos: [it.pos[0] + ax.x * off, it.pos[1], it.pos[2] + ax.z * off] };
+  }
+
+  _zone(p) {
+    const c = new THREE.Box3().setFromObject(p.wrap).getCenter(V());
+    c.y = p.floorY + 0.3;
+    return this.game.house.roomAt?.(c) ? 'in' : 'out';
+  }
+
+  // Every top-level node of the furniture root gets userData.p07 = { floorY, zone, clutter? } for visibility.
+  _tag() {
+    for (const p of this.placed) if (!p.instanced && p.wrap.parent) p.wrap.userData.p07 = { floorY: p.floorY, zone: p.zone };
+    this.nodes = [...this.work.children, ...this.root.children.filter((o) => o !== this.work)].filter((o) => o.userData.p07);
+    for (const o of this.nodes) o.traverse((m) => { if (m.isMesh) m.userData._cast = m.castShadow; });
+  }
+
+  // Budget numbers (whole set + what is drawn right now) -> report.budget / stats()
+  _budget() { this.report.budget = this.stats(false); this.report.clutter = { total: this.clutter.total, perRoom: this.clutter.count }; }
+  stats(visibleOnly = true) {
+    let tris = 0, calls = 0, shadowTris = 0, shadowCalls = 0;
+    const walk = (o) => {
+      if (visibleOnly && !o.visible) return;
+      if (o.isMesh) {
+        const g = o.geometry; const n = (g.index ? g.index.count : g.attributes.position.count) / 3;
+        const k = o.isInstancedMesh ? o.count : 1;
+        const groups = Array.isArray(o.material) ? Math.max(1, g.groups.length) : 1;
+        tris += n * k; calls += groups;
+        if (o.castShadow) { shadowTris += n * k; shadowCalls += groups; }
+      }
+      for (const c of o.children) walk(c);
+    };
+    walk(this.root);
+    return { tris: Math.round(tris), drawCalls: calls, shadowTris: Math.round(shadowTris), shadowDrawCalls: shadowCalls };
+  }
+
+  // Visibility by camera: inside on level F -> that level fully, the other level hidden (except stair halls);
+  // outside -> interior big pieces visible without shadows (seen through glass), interior clutter hidden.
+  _hookVisibility() {
+    const G = this.game, scene = G.scene;
+    const prev = scene.onBeforeRender;
+    const floors = [...new Set(this.placed.map((p) => p.floorY))];
+    scene.onBeforeRender = (...a) => {
+      try { prev?.apply(scene, a); } catch (e) { /* keep going */ }
+      const cam = a[2];
+      if (cam && cam === G.camera) this.updateVisibility(cam.getWorldPosition(this._cp || (this._cp = V())));
+    };
+    this._floors = floors;
+  }
+
+  updateVisibility(pos) {
+    const r = this.game.house.roomAt?.(V(pos.x, pos.y - 1.5, pos.z)) || this.game.house.roomAt?.(pos);
+    const inside = !!r;
+    const fy = inside ? this._levelFloor(r.level) : null;
+    // outside: interior furniture only when the camera is close to the house (looking in through the glass)
+    const hb = this.game.house.bounds;
+    this._nearHouse = !inside && !!hb && hb.distanceToPoint(pos) < 5;
+    const state = inside ? `in:${fy}` : `out:${this._nearHouse}`;
+    if (state === this._visState) return;
+    this._visState = state;
+    for (const o of this.nodes || []) {
+      const t = o.userData.p07;
+      let vis = true, shadow = true;
+      if (t.zone === 'out') { vis = !t.clutter || !inside; shadow = !inside; }
+      else if (inside) { const same = Math.abs(t.floorY - fy) < 0.05; vis = same; shadow = same; }
+      else { vis = !t.clutter && this._nearHouse; shadow = false; }
+      o.visible = vis;
+      o.traverse((m) => { if (m.isMesh) m.castShadow = shadow && m.userData._cast; });
+    }
+    this.game.lighting?.invalidateShadows?.();
+    this.report.view = { state, ...this.stats(true) };
   }
 
   _tint(object, tint) {
@@ -249,8 +447,9 @@ export class Furnisher {
     const groups = new Map();
     for (const p of this.placed) {
       if (!p.key || p.item.noInstance) continue;
-      if (!groups.has(p.key)) groups.set(p.key, []);
-      groups.get(p.key).push(p);
+      const k = `${p.key}|${p.floorY}|${p.zone}`;
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(p);
     }
     const inv = new THREE.Matrix4();
     for (const [key, list] of groups) {
@@ -268,11 +467,91 @@ export class Furnisher {
         im.instanceMatrix.needsUpdate = true;
         im.castShadow = m.castShadow; im.receiveShadow = m.receiveShadow;
         im.computeBoundingSphere(); im.computeBoundingBox?.();
+        im.userData.p07 = { floorY: list[0].floorY, zone: list[0].zone };
         this.root.add(im);
       }
       for (const p of list) { p.wrap.removeFromParent(); p.instanced = true; }
       this.report.instanced += list.length;
     }
+  }
+
+  // Draw-call budget: bake every remaining (non-instanced) opaque mesh into one mesh per (room, material,
+  // shadow flags, attribute layout). Shared palette/GLB materials merge by identity; plain untextured GLB
+  // materials (colour-only) additionally collapse into one vertex-coloured material per (roughness,
+  // metalness, side) bucket. Emissive / night-glow / transparent / skinned meshes stay as they are.
+  _merge() {
+    const groups = new Map();
+    const shared = new Map();
+    const q = (v) => Math.round((v ?? 0) * 20) / 20;
+    const plain = (m) => m.isMeshStandardMaterial && !m.vertexColors && !m.map && !m.normalMap && !m.roughnessMap && !m.metalnessMap && !m.aoMap &&
+      !m.emissiveMap && !m.alphaMap && !(m.transmission > 0) && !(m.clearcoat > 0) && !(m.sheen > 0) && m.emissive.getHex() === 0 && !m.userData?.night;
+    this.work.updateMatrixWorld(true);
+    // grouped per LEVEL (not per room): fewer draw calls; indoors the frustum rarely culls a whole room anyway
+    const byRoom = new Map(this.placed.filter((p) => !p.instanced).map((p) => [p.wrap, `L${p.floorY.toFixed(2)}${p.zone === 'out' ? 'out' : ''}`]));
+    for (const wrap of [...this.work.children]) {
+      const room = byRoom.get(wrap) ?? '_';
+      wrap.traverse((o) => {
+        if (!o.isMesh || o.isInstancedMesh || o.isSkinnedMesh || Array.isArray(o.material) || !o.visible) return;
+        const m = o.material;
+        if (!m || m.transparent || m.userData?.night !== undefined || o.userData.noMerge || (m.emissive && m.emissive.getHex() !== 0)) return;
+        const attrs = Object.keys(o.geometry.attributes).filter((a) => ['position', 'normal', 'uv', 'uv1', 'color'].includes(a)).sort();
+        if (!attrs.includes('normal')) return;
+        let mat = m, colour = null;
+        if (plain(m)) {
+          const k = `${q(m.roughness)}|${q(m.metalness)}|${m.side}|${m.flatShading}`;
+          mat = shared.get(k);
+          if (!mat) {
+            mat = new THREE.MeshStandardMaterial({ roughness: m.roughness, metalness: m.metalness, side: m.side, vertexColors: true, envMapIntensity: m.envMapIntensity ?? 1 });
+            mat.name = `P07_plain_${k}`; shared.set(k, mat);
+          }
+          colour = m.color;
+        }
+        // plain materials: colour becomes a vertex colour (UVs dropped); others keep their own attributes (incl. vertex colours)
+        const layout = colour ? attrs.filter((a) => a === 'position' || a === 'normal').join(',') + ',color' : attrs.join(',');
+        const key = `${room}|${mat.uuid}|${o.castShadow}|${o.receiveShadow}|${layout}`;
+        if (!groups.has(key)) groups.set(key, { mat, cast: o.castShadow, recv: o.receiveShadow, list: [] });
+        groups.get(key).list.push({ o, colour, layout: layout.split(',') });
+      });
+    }
+    let merged = 0, saved = 0;
+    for (const [key, g] of groups) {
+      if (g.list.length < 2 && !g.list[0].colour) continue;
+      const geos = g.list.map(({ o, colour, layout }) => {
+        const src = o.geometry;
+        const geo = new THREE.BufferGeometry();
+        for (const a of layout) {
+          if (a === 'color' && colour) continue;
+          const at = src.attributes[a];
+          const arr = new Float32Array(at.count * at.itemSize);
+          const get = [at.getX, at.getY, at.getZ, at.getW];   // these denormalise quantized (KHR_mesh_quantization) data
+          for (let i = 0; i < at.count; i++) for (let c = 0; c < at.itemSize; c++) arr[i * at.itemSize + c] = get[c].call(at, i);
+          geo.setAttribute(a, new THREE.BufferAttribute(arr, at.itemSize));
+        }
+        const n = geo.attributes.position.count;
+        if (colour) {
+          const col = new Float32Array(n * 3);
+          for (let i = 0; i < n; i++) { col[i * 3] = colour.r; col[i * 3 + 1] = colour.g; col[i * 3 + 2] = colour.b; }
+          geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+        }
+        if (src.index) geo.setIndex(Array.from(src.index.array));
+        else { const idx = new Uint32Array(n); for (let i = 0; i < n; i++) idx[i] = i; geo.setIndex(new THREE.BufferAttribute(idx, 1)); }
+        geo.applyMatrix4(o.matrixWorld);
+        return geo;
+      });
+      const geo = mergeGeometries(geos, false);
+      if (!geo) { this._warn(`merge failed for ${key}`); continue; }
+      geo.computeBoundingSphere(); geo.computeBoundingBox();
+      const mesh = new THREE.Mesh(geo, g.mat);
+      mesh.name = `FM_${key.split('|')[0]}_${g.mat.name || 'mat'}`;
+      mesh.castShadow = g.cast; mesh.receiveShadow = g.recv;
+      const lk = key.split('|')[0];
+      mesh.userData.p07 = { floorY: parseFloat(lk.slice(1)), zone: lk.endsWith('out') ? 'out' : 'in' };
+      this.root.add(mesh);
+      for (const { o } of g.list) { o.removeFromParent(); }
+      for (const gg of geos) gg.dispose();
+      merged++; saved += g.list.length - 1;
+    }
+    this.report.merged = { meshes: merged, drawCallsSaved: saved };
   }
 
   // Oriented collision boxes for floor-standing furniture, merged into ONE invisible mesh, registered

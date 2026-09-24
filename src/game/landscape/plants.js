@@ -8,18 +8,26 @@ import { rng, fbm, GLSL_NOISE } from './util.js';
 export class InstancedModels {
   constructor(ctx) { this.ctx = ctx; this.gltf = new Map(); this.kinds = new Map(); this.meshes = []; }
 
+  // Missing / broken models never abort the landscape: model() resolves null (warned once), kind()
+  // returns null, and add()/build() ignore null kinds, so the rest of the garden still builds.
   async model(name) {
-    if (!this.gltf.has(name)) this.gltf.set(name, this.ctx.game.loader.loadGLTF(`/assets/models/${name}.glb`, `garden: ${name}`));
+    if (!this.gltf.has(name)) {
+      this.gltf.set(name, this.ctx.game.loader.loadGLTF(`/assets/models/${name}.glb`, `garden: ${name}`).catch((e) => {
+        console.warn(`[landscape] model "${name}" unavailable: ${e?.message || e} (skipped)`);
+        return null;
+      }));
+    }
     return this.gltf.get(name);
   }
 
-  // Returns a kind key. `variant` = top-level child name (manifest "variants").
+  // Returns a kind key (or null if the model / variant is missing). `variant` = top-level child name (manifest "variants").
   async kind(name, variant = null, { alphaTest = 0.5, tint = null } = {}) {
     const key = `${name}:${variant || ''}`;
     if (this.kinds.has(key)) return key;
     const g = await this.model(name);
+    if (!g) return null;
     const root = variant ? g.scene.getObjectByName(variant) : g.scene;
-    if (!root) throw new Error(`model ${name} has no variant ${variant}`);
+    if (!root) { console.warn(`[landscape] model ${name} has no variant ${variant} (skipped)`); return null; }
     root.updateWorldMatrix(true, true);
     const inv = root.matrixWorld.clone().invert();
     // variants are authored side by side: re-centre on the variant's own base
@@ -57,8 +65,8 @@ export class InstancedModels {
     return key;
   }
 
-  size(key) { return this.kinds.get(key).size; }
-  add(key, matrix) { this.kinds.get(key).instances.push(matrix.clone()); }
+  size(key) { return this.kinds.get(key)?.size ?? new THREE.Vector3(); }
+  add(key, matrix) { this.kinds.get(key)?.instances.push(matrix.clone()); }
 
   build(group, { castShadow = true, receiveShadow = true, prefix = 'LS_plant' } = {}) {
     for (const [key, k] of this.kinds) {
@@ -88,8 +96,31 @@ function fixFoliage(mat, alphaTest, tint) {
     m.alphaToCoverage = false;
   }
   if (tint) m.color.multiply(new THREE.Color().setRGB(...tint));
+  if (m.alphaTest > 0 && m.map && /leaf|leaves|grass|flower/i.test(mat.name)) foliageShading(m);
   fixed.set(key, m);
   return m;
+}
+
+// Procedural foliage (pipeline/props, P04) authors leaf-card normals as the crown's ellipsoid normal, so a
+// back-facing card must NOT flip its normal (three's DoubleSide default), or half the cards go dark.
+// Plus a cheap translucency term: light leaking through thin leaves when looking towards the sun
+// (view . -L), tinted by the leaf albedo, and a small wrap on the shadow side.
+function foliageShading(m) {
+  m.userData.lsFoliage = true;
+  m.customProgramCacheKey = () => 'ls-foliage-1';
+  m.onBeforeCompile = (sh) => {
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <normal_fragment_begin>', '#include <normal_fragment_begin>\n#ifdef DOUBLE_SIDED\n normal *= faceDirection;\n#endif')
+      .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
+        #if NUM_DIR_LIGHTS > 0
+        {
+          vec3 lsL = directionalLights[0].direction;
+          float lsBack = pow(clamp(dot(normalize(-vViewPosition), lsL), 0.0, 1.0), 3.0);
+          float lsWrap = clamp(0.5 - 0.5 * dot(normal, lsL), 0.0, 1.0);
+          reflectedLight.directDiffuse += diffuseColor.rgb * directionalLights[0].color * (lsBack * 0.28 + lsWrap * 0.08);
+        }
+        #endif`);
+  };
 }
 
 // ---- procedural ornamental grasses ---------------------------------------------------------------
@@ -98,7 +129,7 @@ function fixFoliage(mat, alphaTest, tint) {
 function ornamentalGeometry(type, seed) {
   const R = rng(seed);
   const P = [], N = [], C = [], idx = [];
-  const leaf = type === 'feather' ? { n: 70, len: [0.5, 0.9], arch: 0.3, spread: 0.4, w: 0.016 } : { n: 90, len: [0.45, 0.85], arch: 0.6, spread: 0.75, w: 0.014 };
+  const leaf = type === 'feather' ? { n: 44, len: [0.5, 0.9], arch: 0.3, spread: 0.4, w: 0.02 } : { n: 56, len: [0.45, 0.85], arch: 0.6, spread: 0.75, w: 0.018 };
   const plume = type === 'feather' ? { n: 22, len: [1.1, 1.5], head: 0.3, w: 0.02, spread: 0.12 } : { n: 11, len: [0.9, 1.2], head: 0.3, w: 0.05, spread: 0.5 };
   const green = type === 'feather' ? [0.07, 0.13, 0.03] : [0.09, 0.14, 0.05];
   const tip = type === 'feather' ? [0.2, 0.22, 0.08] : [0.24, 0.26, 0.14];
@@ -127,8 +158,8 @@ function ornamentalGeometry(type, seed) {
     const dx = Math.cos(az), dz = Math.sin(az);
     const r0 = R() * 0.06;
     const pts = [];
-    for (let s = 0; s <= 6; s++) {
-      const t = s / 6;
+    for (let s = 0; s <= 4; s++) {
+      const t = s / 4;
       const horiz = Math.sin(tilt) * len * t + leaf.arch * len * t * t * (0.4 + tilt);
       const up = Math.cos(tilt) * len * t - leaf.arch * 0.5 * len * t * t * t * (0.3 + tilt);
       pts.push([dx * (r0 + horiz), Math.max(0, up), dz * (r0 + horiz)]);
@@ -157,15 +188,15 @@ function ornamentalGeometry(type, seed) {
       const a = head[0];
       const top = [dx * (Math.sin(tilt) * len + 0.02), Math.cos(tilt) * len, dz * (Math.sin(tilt) * len + 0.02)];
       const axis = [top[0] - a[0], top[1] - a[1], top[2] - a[2]];
-      const nStr = type === 'feather' ? 9 : 22;
+      const nStr = type === 'feather' ? 5 : 12;   // triangle budget: ~half the strands, same silhouette
       for (let k = 0; k < nStr; k++) {
         const fa = R() * Math.PI * 2, fan = (type === 'feather' ? 0.05 : 0.22) * (0.4 + R() * 0.6);
         const off = [Math.cos(fa) * fan, 0, Math.sin(fa) * fan];
         const startT = R() * 0.45, sl = 0.55 + R() * 0.45;
         const pts = [];
-        for (let s = 0; s <= 4; s++) {
-          const t = startT + (1 - startT) * sl * (s / 4);
-          const spread = (s / 4);
+        for (let s = 0; s <= 3; s++) {
+          const t = startT + (1 - startT) * sl * (s / 3);
+          const spread = (s / 3);
           pts.push([a[0] + axis[0] * t + off[0] * spread * plume.head, a[1] + axis[1] * t - (type === 'pampas' ? 0.04 * spread * spread : 0), a[2] + axis[2] * t + off[2] * spread * plume.head]);
         }
         const c = hc.map((v) => v * (0.8 + R() * 0.35));
@@ -248,6 +279,7 @@ export class Trees {
   async load(names, instanced) {
     for (const n of names) {
       const key = await instanced.kind(n, null, { alphaTest: 0.45 });
+      if (!key) continue;   // missing tree model: warned in kind(), trees using it are skipped
       const k = instanced.kinds.get(key);
       this.models.set(n, { parts: k.parts, size: k.size, impostor: this._bake(k) });
     }
@@ -280,9 +312,9 @@ export class Trees {
     return { tex: rt.texture, w, h, rt };
   }
 
-  addFixed(t) { this.fixed.push(t); }
-  addDynamic(t) { this.dynamic.push(t); }
-  addFar(t) { this.far.push(t); }
+  addFixed(t) { if (this.models.has(t.model)) this.fixed.push(t); }
+  addDynamic(t) { if (this.models.has(t.model)) this.dynamic.push(t); }
+  addFar(t) { if (this.models.has(t.model)) this.far.push(t); }
 
   // All trees share one LOD: the `maxFull` nearest within `fullDist` use the real mesh (casts
   // shadows); every other tree is a camera-facing impostor whose shadow pass faces the sun instead,

@@ -102,7 +102,8 @@ export class Materials {
     // --- glass / screens / mirror
     this.plain('glass_black', '#050607', 0.08, 0, { envMapIntensity: 1.2 });
     this.plain('screen', '#030405', 0.12, 0, { envMapIntensity: 1.0 });
-    this.plain('mirror', '#c9cdd0', 0.02, 1, { envMapIntensity: 1.0 });
+    // No real-time reflections indoors (the IBL is flattened there): a bright, faintly lit silvered look instead of a black disc.
+    this.plain('mirror', '#aab6bc', 0.1, 0.35, { envMapIntensity: 1.6, emissive: new THREE.Color('#3c4549'), emissiveIntensity: 1 });
     this.m.glass = new THREE.MeshPhysicalMaterial({ name: 'P07_glass', color: 0xf4f8f6, roughness: 0.05, metalness: 0, transmission: 0.92, thickness: 0.008, ior: 1.5, transparent: true, opacity: 0.35, depthWrite: false });
     this.m.glass_frosted = new THREE.MeshStandardMaterial({ name: 'P07_glass_frosted', color: 0xf2f4f3, roughness: 0.35, transparent: true, opacity: 0.55, depthWrite: false });
     // --- fabrics

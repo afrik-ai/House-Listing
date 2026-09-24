@@ -1,6 +1,6 @@
 # Cantilever parasol: 3 x 3 m off-white canvas canopy on 8 ribs, anthracite aluminium mast + arm,
 # cross base weighted with 4 concrete slabs. ~3.5 x 2.95 x 3.0 m
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

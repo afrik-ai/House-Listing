@@ -189,6 +189,7 @@ uniform float sfPaintScale;
 uniform vec3 sfMacro;       // (albedo amount, scale m, roughness amount)
 uniform float sfCoat;       // clearcoat on tile faces (0 on grout)
 uniform float sfAO;         // grout cavity occlusion strength
+uniform vec3 sfGrime;       // paint: (amount, floor level 1 y, floor level 2 y) base-of-wall grime
 #if SF_ZONES > 0
 uniform vec3 sfZoneMin[SF_ZONES];
 uniform vec3 sfZoneMax[SF_ZONES];
@@ -347,7 +348,7 @@ SfOut sfEval() {
     // bevelled tile edges: tilt the normal toward the nearest joint
     vec2 toE = vec2(f.x < 0.5 * sfTile.x ? -1.0 : 1.0, f.y < 0.5 * sfTile.y ? -1.0 : 1.0);
     float bf = (1.0 - smoothstep(sfBevel * 0.6, sfBevel * 2.5, ps)) * step(1e-5, hg);
-    vec2 tilt = vec2(toE.x * (1.0 - smoothstep(hg, hg + sfBevel, e.x)), toE.y * (1.0 - smoothstep(hg, hg + sfBevel, e.y))) * 0.7 * bf;
+    vec2 tilt = vec2(toE.x * (1.0 - smoothstep(hg, hg + sfBevel, e.x)), toE.y * (1.0 - smoothstep(hg, hg + sfBevel, e.y))) * 0.35 * bf;
     vec3 nT = normalize(Tu * (n.x + tilt.x) + Tv * (n.y + tilt.y) + N * max(n.z, 0.2));
     o.nW = normalize(mix(nT, N, grout));
     o.albedo = mix(o.albedo, sfGroutColor * (1.0 + macro * sfMacro.x), grout);
@@ -362,8 +363,20 @@ SfOut sfEval() {
     vec3 n = textureGrad(sfPlasterMap, pp, dPx / sfPaintScale, dPy / sfPaintScale).xyz * 2.0 - 1.0;
     n.xy *= sfPaintNormalK;
     o.nW = normalize(Tu * n.x + Tv * n.y + N * max(n.z, 0.2));
-    o.albedo = sfPaintColor * (1.0 + macro * sfMacro.x);
-    o.rough = sfPaintRough + macro * sfMacro.z;
+    // roller/trowel tone + gloss breakup (mid/fine noise, slope of the plaster normal)
+    float mid = sfFbm(P / 0.45) - 0.5, fine = sfFbm(P / 0.06) - 0.5;
+    float slope = clamp(length(n.xy) * 3.0, 0.0, 1.0);
+    o.albedo = sfPaintColor * (1.0 + macro * sfMacro.x + mid * 0.035 + fine * 0.015 - slope * 0.02);
+    o.rough = sfPaintRough + macro * sfMacro.z + mid * 0.06 + fine * 0.05 - slope * 0.06;
+    // grime / scuffs just above the floor on walls (both storeys)
+    if (isY < 0.5 && sfGrime.x > 0.0) {
+      float hy = W.y - sfGrime.y; if (W.y >= sfGrime.z - 0.05) hy = W.y - sfGrime.z;
+      float g = (1.0 - smoothstep(0.06, 0.45, hy)) * step(-0.05, hy);
+      g *= 0.5 + 0.9 * sfFbm(vec2((isX * W.z + isZ * W.x) * 3.0, W.y * 14.0));
+      o.albedo *= 1.0 - sfGrime.x * clamp(g, 0.0, 1.0) * vec3(1.0, 1.05, 1.15);
+      o.rough += 0.04 * g;
+      o.ao *= 1.0 - 0.25 * (1.0 - smoothstep(0.0, 0.3, hy)) * step(-0.05, hy);
+    }
 #endif
   }
   o.rough = clamp(o.rough, 0.04, 1.0);
@@ -379,7 +392,7 @@ const DEFAULTS = {
   groutColor: [0.5, 0.5, 0.5], groutRough: 0.85, bevel: 0.0015, gridVertical: 1,
   grainAxis: [1, 0, 0], seedRise: 0,
   paintColor: [0.85, 0.84, 0.82], paintRough: 0.9, paintNormalK: 0.2, paintScale: 1.2,
-  macro: [0.03, 3.0, 0.03], coat: 0, ao: 0.5,
+  macro: [0.03, 3.0, 0.03], coat: 0, ao: 0.5, grime: [0.1, 0.0, 3.15],
 };
 
 let _dummy = null;
@@ -424,7 +437,7 @@ export function applySurface(material, cfg) {
   set('sfGrainAxis', new THREE.Vector3(...c.grainAxis).normalize()); set('sfSeedRise', c.seedRise);
   set('sfPaintColor', colorVec(c.paintColor)); set('sfPaintRough', c.paintRough);
   set('sfPaintNormalK', c.paintNormalK); set('sfPaintScale', c.paintScale);
-  set('sfMacro', toVec(c.macro)); set('sfCoat', c.coat); set('sfAO', c.ao);
+  set('sfMacro', toVec(c.macro)); set('sfCoat', c.coat); set('sfAO', c.ao); set('sfGrime', toVec(c.grime));
   const zones = c.zones || [];
   if (zones.length) {
     set('sfZoneMin', zones.map((z) => new THREE.Vector3(...z[0])));

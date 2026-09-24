@@ -35,34 +35,36 @@ const { DataUtils } = THREE;
 const PRESETS = {
   day: {
     hdri: 'day_partly_cloudy', azimuth: 168, el: 36,
-    sunColor: 0xfff0dc, sunScale: 1.3, sunIntensity: 5.4, sunMax: 6.2,
-    hemiSky: 0xc4d4ec, hemiGround: 0x8f8574, hemiIntensity: 0.08,
+    sunColor: 0xfff2e0, sunScale: 0, sunIntensity: 7.5, sunMax: 7.5,
+    hemiSky: 0xc4d4ec, hemiGround: 0x8f8574, hemiIntensity: 0.04,
     inSky: 0xf2ece4, inGround: 0xeadcc8, hemiInterior: 0.2,
-    envIntensity: 1.0, bgIntensity: 1.0, exposure: 0.95, iblSaturation: 0.45,
+    envIntensity: 0.55, bgIntensity: 0.8, exposure: 0.9, iblSaturation: 0.6,
     interiorEnv: 0.3, interiorExposure: 1.9, wbOut: [1.0, 1.0, 1.0], wbIn: [1.03, 1.0, 0.95],
     bounce: 1.25, fixtures: 0, bulbs: 0, groundAlbedo: [0.17, 0.16, 0.13], grass: [0.06, 0.1, 0.03],
-    grade: { saturation: 0.1, contrast: 0.12, bloom: 0.7, bloomThreshold: 1.0, vignette: 0.34 },
+    grade: { saturation: 0.12, contrast: 0.14, bloom: 0.45, bloomThreshold: 2.6, vignette: 0.3 },
     sky: { turbidity: 3, rayleigh: 1.2, mie: 0.004, mieG: 0.8 },
     skyGrade: { disc: { radiusDeg: 0.55, radiance: [60, 57, 52], glow: [1.2, 1.1, 0.95], glowDeg: 2.5 } },
   },
   golden_hour: {
-    hdri: 'golden_hour', azimuth: 262, el: 10,
+    hdri: 'golden_hour', azimuth: 262, el: 13,
     sunColor: 0xffa45a, sunScale: 1.25, sunIntensity: 3.8, sunMax: 4.6,
     hemiSky: 0xd9b08a, hemiGround: 0x7a5e46, hemiIntensity: 0.05,
     inSky: 0xf0d6b8, inGround: 0xe0b890, hemiInterior: 0.14,
-    envIntensity: 0.5, bgIntensity: 0.72, exposure: 1.05, iblSaturation: 0.8,
+    envIntensity: 0.7, bgIntensity: 0.72, exposure: 1.05, iblSaturation: 0.8,
     interiorEnv: 0.42, interiorExposure: 1.75, wbOut: [1.0, 0.99, 0.97], wbIn: [1.03, 0.99, 0.93],
     bounce: 1.3, fixtures: 0.3, bulbs: 0.4, groundAlbedo: [0.17, 0.15, 0.11], grass: [0.06, 0.08, 0.025],
     grade: { saturation: 0.16, contrast: 0.12, bloom: 0.85, bloomThreshold: 0.95, vignette: 0.4 },
     sky: { turbidity: 6, rayleigh: 2.4, mie: 0.012, mieG: 0.9 },
     skyGrade: {
       tint: { horizon: [1.3, 1.0, 0.72], zenith: [1.02, 0.95, 0.95] }, sunSide: 1.6,
+      // spruit_sunrise: power pylons + wires 40-70 deg right of the sun (u 0.62..0.93) -> painted out
+      mask: { u0: 0.62, u1: 0.95, el0: 2.5, el1: 40, radius: 0.018 },
       disc: { radiusDeg: 0.75, radiance: [70, 38, 14], glow: [3.2, 1.6, 0.55], glowDeg: 3.5, glow2: [0.9, 0.42, 0.14], glow2Deg: 22 },
     },
   },
   night: {
-    hdri: 'night_clear', azimuth: 140, el: 32,
-    sunColor: 0x9fb8ff, sunScale: 0, sunIntensity: 0.32, sunMax: 0.32,
+    hdri: 'night_clear', azimuth: 35, el: 30,
+    sunColor: 0x9fb8ff, sunScale: 0, sunIntensity: 0.6, sunMax: 0.6,
     hemiSky: 0x2a3c66, hemiGround: 0x0e1016, hemiIntensity: 0.12,
     inSky: 0x3c3a44, inGround: 0x6a5240, hemiInterior: 0.06,
     envIntensity: 0.14, bgIntensity: 0.3, exposure: 1.0, iblSaturation: 0.7,
@@ -71,9 +73,10 @@ const PRESETS = {
     grade: { saturation: 0.1, contrast: 0.1, bloom: 0.95, bloomThreshold: 0.8, vignette: 0.45 },
     sky: { turbidity: 2, rayleigh: 0.4, mie: 0.002, mieG: 0.7 },
     skyGrade: {
-      tint: { horizon: [0.9, 0.95, 1.1], zenith: [0.85, 0.88, 1.0] },
+      tint: { horizon: [0.72, 0.88, 1.3], zenith: [0.66, 0.78, 1.2] },
+      clampLow: { el1: 9, k: 2.5 },
       add: { horizon: [0.03, 0.05, 0.11], zenith: [0.002, 0.003, 0.008] },
-      disc: { radiusDeg: 0.7, radiance: [22, 24, 27], glow: [0.1, 0.13, 0.2], glowDeg: 2.2, glow2: [0.02, 0.03, 0.055], glow2Deg: 14 },
+      disc: { radiusDeg: 1.1, radiance: [60, 64, 72], glow: [0.25, 0.3, 0.42], glowDeg: 3, glow2: [0.02, 0.03, 0.055], glow2Deg: 14 },
     },
   },
 };
@@ -84,6 +87,8 @@ const FLOOR_ALBEDO = {
   oak_plank: [0.42, 0.28, 0.16], large_format_tile_grey: [0.36, 0.35, 0.33], large_format_tile_light: [0.6, 0.57, 0.5],
   small_tile_white: [0.72, 0.72, 0.7], concrete_screed: [0.34, 0.33, 0.31], stair_tread: [0.42, 0.28, 0.16],
 };
+const OUT_SHADOW_HALF = 19;   // m: outdoor sun shadow box half-size (38 m, ~1 cm texels at 4096)
+const _fwd = new THREE.Vector3();
 const KEY_SHADOW = { low: 512, medium: 512, high: 1024, ultra: 1024 };
 
 installShadowChunk();   // before any program compiles
@@ -198,7 +203,15 @@ export class Lighting {
   _fitContext() {
     const inside = (this._adaptTarget ?? 0) > 0.5 && !!this.house;
     const level = inside ? (this.game.currentRoom?.level || 'ground') : null;
-    return { inside, level, key: inside ? `in:${level}` : 'out' };
+    if (inside) return { inside, level, key: `in:${level}` };
+    // Outside: a view-fitted receiver box (camera + ahead), re-fitted when the camera crosses a 3 m cell
+    // or turns by ~30 deg. The house-bounds box alone left the garden (trees, umbrella, furniture) unshadowed.
+    const cam = this.game.camera;
+    if (!cam) return { inside, level, key: 'out' };
+    cam.getWorldDirection(_fwd);
+    const hd = Math.round(Math.atan2(_fwd.x, _fwd.z) / (Math.PI / 6));
+    const p = cam.position;
+    return { inside, level, key: `out:${Math.round(p.x / 3)},${Math.round(p.z / 3)},${hd}` };
   }
 
   _levelBox(level) {
@@ -212,10 +225,21 @@ export class Lighting {
     return b;
   }
 
+  _viewBox() {
+    const cam = this.game.camera;
+    if (!cam) return this.bounds;
+    cam.getWorldDirection(_fwd); _fwd.y = 0;
+    if (_fwd.lengthSq() < 1e-4) _fwd.set(0, 0, -1);
+    _fwd.normalize();
+    const R = OUT_SHADOW_HALF, c = cam.position.clone().addScaledVector(_fwd, R * 0.62);
+    const b = new THREE.Box3(new THREE.Vector3(c.x - R, this.bounds.min.y - 0.5, c.z - R), new THREE.Vector3(c.x + R, Math.max(this.bounds.max.y, 9), c.z + R));
+    return b;
+  }
+
   _placeSun() {
     const ctx = this._fitContext();
     this._fitKey = ctx.key;
-    const box = ctx.inside ? this._levelBox(ctx.level) : this.bounds;
+    const box = ctx.inside ? this._levelBox(ctx.level) : this._viewBox();
     const fit = fitSunShadow(this.sun, box, this.sunDir, ctx.inside ? 30 : 45);
     const sh = this.sun.shadow;
     const ch = contactHardening() && fit.far <= SUN_DEPTH + 0.6;
@@ -475,6 +499,8 @@ function prepareHDRI(key, tex, preset) {
   const sg = preset.skyGrade || {};
   const texAz = sun ? sun.az : preset.azimuth;             // the preset azimuth in texture frame
   const lightEl = preset.el ?? THREE.MathUtils.clamp(sun ? sun.el : preset.fallbackEl, preset.minEl, preset.maxEl);
+  if (sg.mask) maskSky(data, W, H, ch, f, t, sg.mask);
+  if (sg.clampLow) clampLowLights(data, W, H, ch, f, t, sg.clampLow);
   gradeSky(img, f, t, {
     removeSun: sun ? { az: sun.az, el: sun.el, radiusDeg: 5 } : null,
     tint: sg.tint, add: sg.add, sunSide: sg.sunSide, sunAz: texAz,
@@ -551,6 +577,64 @@ function prepareHDRI(key, tex, preset) {
   if (sg.disc) gradeSky(img, f, t, { disc: { ...sg.disc, az: texAz, el: lightEl } });
   tex.needsUpdate = true;
   return { key, tex, iblTex, sun, horizon, skyL, groundL };
+}
+
+// Paints out thin structures (pylons, wires) in a sky window: a separable median filter (removes the
+// thin lines) then a box blur gives the local sky, blended in with feathered edges.
+function maskSky(data, W, H, ch, f, t, m) {
+  const x0 = Math.floor(m.u0 * W), x1 = Math.ceil(m.u1 * W);
+  const y0 = Math.max(0, Math.floor((0.5 - m.el1 / 180) * H)), y1 = Math.ceil((0.5 - m.el0 / 180) * H);
+  const R = Math.max(2, Math.round(W * (m.radius ?? 0.008))), P = R * 2;
+  const w = x1 - x0 + 2 * P, h = y1 - y0 + 2 * P;
+  const src = new Float32Array(w * h * 3);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const yy = THREE.MathUtils.clamp(y0 - P + y, 0, H - 1), xx = (x0 - P + x + W) % W, i = (yy * W + xx) * ch;
+    for (let c = 0; c < 3; c++) src[(y * w + x) * 3 + c] = f(data[i + c]);
+  }
+  const pass = (a, fn, dx, dy, r) => {
+    const o = new Float32Array(a.length), buf = new Float32Array(2 * r + 1);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) for (let c = 0; c < 3; c++) {
+      let acc = 0;
+      for (let k = -r; k <= r; k++) {
+        const xx = THREE.MathUtils.clamp(x + k * dx, 0, w - 1), yy = THREE.MathUtils.clamp(y + k * dy, 0, h - 1);
+        const v = a[(yy * w + xx) * 3 + c];
+        if (fn === 'med') buf[k + r] = v; else acc += v;
+      }
+      o[(y * w + x) * 3 + c] = fn === 'med' ? buf.sort()[r] : acc / (2 * r + 1);
+    }
+    return o;
+  };
+  let sky = pass(pass(src, 'med', 1, 0, R), 'med', 0, 1, R);
+  sky = pass(pass(sky, 'avg', 1, 0, R), 'avg', 0, 1, R);
+  for (let y = y0; y < y1; y++) {
+    const el = (0.5 - (y + 0.5) / H) * 180;
+    const ke = THREE.MathUtils.smoothstep(el, m.el0, m.el0 + 1.5) * (1 - THREE.MathUtils.smoothstep(el, m.el1 - 3, m.el1));
+    for (let x = x0; x < x1; x++) {
+      const u = x / W;
+      const k = ke * THREE.MathUtils.smoothstep(u, m.u0, m.u0 + 0.02) * (1 - THREE.MathUtils.smoothstep(u, m.u1 - 0.02, m.u1));
+      if (k <= 0) continue;
+      const i = (y * W + x) * ch, j = ((y - y0 + P) * w + (x - x0 + P)) * 3;
+      for (let c = 0; c < 3; c++) { const v = f(data[i + c]), sv = sky[j + c]; data[i + c] = t(v + (sv - v) * k); }
+    }
+  }
+}
+
+// Caps near-horizon luminance at k x the row median (moonless_golf: street / house lights on the
+// treeline that otherwise bloom as yellow and teal blobs behind the villa at night).
+function clampLowLights(data, W, H, ch, f, t, { el1 = 8, k = 2.5 }) {
+  const row = new Float32Array(W);
+  for (let y = 0; y < H; y++) {
+    const el = (0.5 - (y + 0.5) / H) * 180;
+    if (el > el1) continue;
+    if (el < -2) break;
+    for (let x = 0; x < W; x++) { const i = (y * W + x) * ch; row[x] = 0.2126 * f(data[i]) + 0.7152 * f(data[i + 1]) + 0.0722 * f(data[i + 2]); }
+    const cap = k * Float32Array.from(row).sort()[W >> 1];
+    for (let x = 0; x < W; x++) {
+      if (row[x] <= cap) continue;
+      const q = cap / row[x], i = (y * W + x) * ch;
+      for (let c = 0; c < 3; c++) data[i + c] = t(f(data[i + c]) * q);
+    }
+  }
 }
 
 // Brightest region of the upper hemisphere -> {az, el, clamp, irradiance} (texture frame).

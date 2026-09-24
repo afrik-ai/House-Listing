@@ -1,12 +1,14 @@
+import os from 'os';
+import { fileURLToPath } from 'url';
 // Downloads texture sets listed in textures.json into public/assets/textures/<name>/
 // usage: node scripts/assets/dl_textures.mjs [name]
 import fs from 'fs';
 import { execSync } from 'child_process';
 import sharp from 'sharp';
 
-const ROOT = 'C:/Users/Owner/HouseListing';
+const ROOT = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '');
 const OUT = ROOT + '/public/assets/textures';
-const TMP = 'C:/Users/Owner/AppData/Local/Temp/claude/C--Users-Owner-HouseListing/6f4200f6-d6d1-4f63-a08e-32106c165318/scratchpad/tex';
+const TMP = os.tmpdir().replace(/\\/g, '/') + '/houselisting-tex';
 fs.mkdirSync(TMP, { recursive: true });
 const list = JSON.parse(fs.readFileSync(new URL('./textures.json', import.meta.url)));
 const only = process.argv[2];

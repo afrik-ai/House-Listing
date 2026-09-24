@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+"""Blender-CLI-compatible shim over the PyPI `bpy` module.
+
+Use when a Blender binary cannot be installed (e.g. restricted cloud containers):
+    BLENDER=pipeline/bin/blender-bpy node pipeline/build.mjs villa-nova
+Supports the subset the pipeline uses: -b, --factory-startup, --python-exit-code N,
+--python <script>, and `-- args` (left in sys.argv so scripts parse them as usual).
+"""
+import runpy, sys, traceback
+
+argv = sys.argv[1:]
+script, exit_code = None, 1
+i = 0
+while i < len(argv) and argv[i] != '--':
+    a = argv[i]
+    if a == '--python':
+        script = argv[i + 1]; i += 2; continue
+    if a == '--python-exit-code':
+        exit_code = int(argv[i + 1]); i += 2; continue
+    i += 1  # -b, --factory-startup: implied by the bpy module
+if not script:
+    sys.exit('blender-bpy: --python <script> is required')
+
+import bpy  # noqa: E402  (loads Blender; factory settings, background mode)
+bpy.ops.wm.read_factory_settings(use_empty=False)
+sys.argv = ['blender'] + argv  # keep '--' and trailing args where scripts expect them
+try:
+    runpy.run_path(script, run_name='__main__')
+except SystemExit as e:
+    sys.exit(e.code)
+except Exception:
+    traceback.print_exc()
+    sys.exit(exit_code)

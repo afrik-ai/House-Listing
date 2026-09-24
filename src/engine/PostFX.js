@@ -59,10 +59,13 @@ export class PostFX {
     this.renderPass = new RenderPass(scene, camera);
 
     this.ao = new N8AOPostPass(scene, camera, renderer.width, renderer.height);
+    // No transparency-aware mode: it re-renders every transparent-flagged mesh (many props, glass) twice
+    // per frame into extra targets (measured ~2x furniture triangles). AO reuses the main depth buffer.
+    this.ao.autoDetectTransparency = false;
     // P05: tight contact term (furniture feet, skirting, corners) rather than a broad room-scale dirt.
     Object.assign(this.ao.configuration, {
       ...AO_TIERS.high, screenSpaceRadius: false, halfRes: false, color: new THREE.Color(0x000000),
-      gammaCorrection: false,
+      gammaCorrection: false, transparencyAware: false,
     });
 
     this.bloom = new BloomEffect({

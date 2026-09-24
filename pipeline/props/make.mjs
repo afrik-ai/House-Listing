@@ -1,14 +1,19 @@
 // Build -> pack -> review-render props.  usage: node pipeline/props/make.mjs [name ...] [--no-render]
 // (no names = every <name>.py in pipeline/props except helpers/render)
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
-const R = 'C:/Users/Owner/HouseListing';
+const R = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const P = R + '/pipeline/props';
-const BL = R + '/tools/blender-5.2.1-windows-x64/blender.exe';
+// Blender executable: BLENDER env var wins (see SPEC.md "Stack"). pipeline/bin/blender-bpy runs the same
+// scripts through the PyPI `bpy` module when no Blender binary can be installed.
+const BL = process.env.BLENDER || (process.platform === 'win32'
+  ? R + '/tools/blender-5.2.1-windows-x64/blender.exe' : R + '/tools/blender/blender');
 const args = process.argv.slice(2);
 const noRender = args.includes('--no-render');
 let names = args.filter(a => !a.startsWith('--'));
-if (!names.length) names = fs.readdirSync(P).filter(f => f.endsWith('.py') && !['helpers.py', 'render.py'].includes(f)).map(f => f.slice(0, -3));
+if (!names.length) names = fs.readdirSync(P).filter(f => f.endsWith('.py') && !f.startsWith('_') && !['helpers.py', 'render.py'].includes(f)).map(f => f.slice(0, -3));
 const run = (cmd, a) => {
   const r = spawnSync(cmd, a, { encoding: 'utf8', maxBuffer: 1 << 28 });
   const all = (r.stdout || '') + (r.stderr || '');
@@ -20,8 +25,10 @@ for (const n of names) {
   const t = Date.now();
   try {
     console.log(run(BL, ['-b', '--factory-startup', '--python-exit-code', '1', '--python', `${P}/${n}.py`]));
-    console.log(run('node', [`${P}/pack.mjs`, n]));
-    if (!noRender) console.log(run(BL, ['-b', '--factory-startup', '--python-exit-code', '1', '--python', `${P}/render.py`, '--', n]));
+    // multi-output scripts (P04 split plants) list their GLB names in _build/<n>.outputs.json
+    const outs = fs.existsSync(`${P}/_build/${n}.outputs.json`) ? JSON.parse(fs.readFileSync(`${P}/_build/${n}.outputs.json`, 'utf8')) : [n];
+    console.log(run('node', [`${P}/pack.mjs`, ...outs]));
+    if (!noRender) console.log(run(BL, ['-b', '--factory-startup', '--python-exit-code', '1', '--python', `${P}/render.py`, '--', ...outs]));
   } catch (e) { console.log('FAILED', n, e.message); }
   console.log(n, ((Date.now() - t) / 1000).toFixed(1) + 's');
 }

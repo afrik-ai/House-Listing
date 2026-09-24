@@ -13,7 +13,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const id = args.find(a => !a.startsWith('--')) || 'villa-nova';
 const flag = f => args.includes(f);
-const BLENDER = process.env.BLENDER || path.join(ROOT, 'tools', 'blender-5.2.1-windows-x64', 'blender.exe');
+const BLENDER = process.env.BLENDER || (process.platform === 'win32'
+  ? path.join(ROOT, 'tools', 'blender-5.2.1-windows-x64', 'blender.exe') : path.join(ROOT, 'tools', 'blender', 'blender'));
 const OUT = path.join(ROOT, 'public', 'assets', 'houses', id);
 const GLB = path.join(OUT, 'house.glb');
 const META = path.join(OUT, 'house.meta.json');

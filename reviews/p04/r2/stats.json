@@ -1,0 +1,417 @@
+{
+ "errors": [
+  "Failed to load resource: the server responded with a status of 404 (Not Found)"
+ ],
+ "warnings": [
+  "[.WebGL-0x69c00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+  "[furnish] QA: 0 overlaps, 4 wall pokes, 0 blocked doors, 0 warnings — see __furnish.report",
+  "THREE.WebGLRenderer: KHR_parallel_shader_compile extension not supported.",
+  "[.WebGL-0x69c00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+  "[.WebGL-0x69c00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+  "[.WebGL-0x69c00104800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+ ],
+ "info": {
+  "timings": {
+   "ground": 754,
+   "pool": 53,
+   "grass": 5,
+   "fences": 50,
+   "gabions": 110,
+   "planting": 1686
+  },
+  "treeInfo": [
+   {
+    "model": "tree_island_01",
+    "from": [
+     -10.6,
+     21.4
+    ],
+    "to": [
+     -8.89,
+     22.72
+    ],
+    "scale": 2.1,
+    "leafMinY": 3.05,
+    "crown": 5.3
+   },
+   {
+    "model": "tree_small",
+    "from": [
+     8.5,
+     17
+    ],
+    "to": [
+     8.5,
+     17
+    ],
+    "scale": 1.55,
+    "leafMinY": 2.45,
+    "crown": 3.4
+   },
+   {
+    "model": "tree_island_02",
+    "from": [
+     -13.3,
+     -6.2
+    ],
+    "to": [
+     -13.3,
+     -6.2
+    ],
+    "scale": 2.4,
+    "leafMinY": 2.61,
+    "crown": 4.5
+   },
+   {
+    "model": "tree_island_01",
+    "from": [
+     17.3,
+     -10
+    ],
+    "to": [
+     17.3,
+     -10
+    ],
+    "scale": 1.7,
+    "leafMinY": 2.47,
+    "crown": 4.3
+   },
+   {
+    "model": "tree_island_02",
+    "from": [
+     15.8,
+     19
+    ],
+    "to": [
+     15.8,
+     19
+    ],
+    "scale": 2.1,
+    "leafMinY": 2.28,
+    "crown": 3.9
+   }
+  ]
+ },
+ "breakdown": {
+  "top": {
+   "FURNISH": [
+    753091,
+    652653
+   ],
+   "LANDSCAPE": [
+    663296,
+    91608
+   ],
+   "HOUSE": [
+    17507,
+    16907
+   ],
+   "FIXTURES": [
+    8448,
+    0
+   ],
+   "EXTERIOR_DETAIL_ROOT": [
+    1728,
+    1696
+   ]
+  },
+  "landscape": {
+   "LS_grass_blades_near": [
+    129600,
+    0
+   ],
+   "LS_grass_blades_far": [
+    122640,
+    0
+   ],
+   "LS_hedge_cards": [
+    84086,
+    0
+   ],
+   "LS_ornamental_pampas_0": [
+    40066,
+    0
+   ],
+   "LS_ornamental_feather_1": [
+    35812,
+    0
+   ],
+   "LS_ornamental_pampas_1": [
+    33902,
+    0
+   ],
+   "LS_ornamental_feather_0": [
+    28160,
+    0
+   ],
+   "LS_terrain": [
+    25984,
+    0
+   ],
+   "LS_concrete": [
+    23932,
+    23932
+   ],
+   "LS_tree_tree_island_02": [
+    19378,
+    19378
+   ],
+   "LS_hedge_body": [
+    14752,
+    14752
+   ],
+   "LS_plant_rock_moss_set": [
+    13824,
+    0
+   ],
+   "LS_gabion_stones_2": [
+    11532,
+    0
+   ],
+   "LS_gabion_stones_0": [
+    11520,
+    0
+   ],
+   "LS_gabion_stones_3": [
+    11496,
+    0
+   ],
+   "LS_gabion_stones_1": [
+    11376,
+    0
+   ],
+   "LS_tree_tree_small": [
+    9288,
+    9288
+   ],
+   "LS_tree_tree_island_01": [
+    8994,
+    8994
+   ],
+   "LS_gabion_cage": [
+    8292,
+    0
+   ],
+   "LS_plant_fire_pit_stone": [
+    7216,
+    7216
+   ],
+   "LS_fence_boards": [
+    4860,
+    4860
+   ],
+   "LS_plant_grass_clump_medium_02": [
+    1596,
+    0
+   ],
+   "LS_edge": [
+    1480,
+    0
+   ],
+   "LS_fence_posts": [
+    670,
+    670
+   ],
+   "LS_bollards": [
+    660,
+    660
+   ],
+   "LS_stone": [
+    560,
+    560
+   ],
+   "LS_tree_impostor_tree_island_01": [
+    412,
+    412
+   ],
+   "LS_tree_impostor_tree_small": [
+    376,
+    376
+   ],
+   "LS_tree_impostor_tree_island_02": [
+    348,
+    348
+   ],
+   "LS_bollard_lenses": [
+    120,
+    0
+   ]
+  }
+ },
+ "ext_front_east": {
+  "fps": 0,
+  "drawCalls": 2061,
+  "triangles": 3612323,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "ext_garden_sw": {
+  "fps": 0,
+  "drawCalls": 2055,
+  "triangles": 3510587,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "ext_south": {
+  "fps": 0,
+  "drawCalls": 2045,
+  "triangles": 3544063,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 126,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "ext_north_west": {
+  "fps": 0,
+  "drawCalls": 2065,
+  "triangles": 3615779,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 122,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "c_tree_small": {
+  "fps": 0,
+  "drawCalls": 1907,
+  "triangles": 3352137,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "c_tree_island01": {
+  "fps": 0,
+  "drawCalls": 686,
+  "triangles": 1359452,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 126,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "c_birch": {
+  "fps": 0,
+  "drawCalls": 650,
+  "triangles": 1318852,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 128,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "c_garage": {
+  "fps": 0,
+  "drawCalls": 704,
+  "triangles": 2026810,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 128,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "c_plant_sw": {
+  "fps": 0,
+  "drawCalls": 200,
+  "triangles": 843175,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 130,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "c_firepit": {
+  "fps": 0,
+  "drawCalls": 820,
+  "triangles": 1611817,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 132,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ },
+ "c_terrace": {
+  "fps": 0,
+  "drawCalls": 691,
+  "triangles": 1464195,
+  "textures": 374,
+  "geometries": 740,
+  "programs": 196,
+  "memoryMB": 122,
+  "gpuTexMB": 1157,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   960,
+   540
+  ]
+ }
+}

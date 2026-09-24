@@ -1,5 +1,5 @@
 # Stack of four folded towels: two white bath towels + two anthracite hand towels. ~0.35 x 0.28 x 0.17 m
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 H.reset()
 white = H.terry_mats('towel_white', '#f3f1ec', '#ebe8e1', seed=9)

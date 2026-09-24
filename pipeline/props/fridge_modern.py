@@ -1,5 +1,5 @@
 # Tall freestanding fridge-freezer, brushed stainless doors, bar handles, door display. 0.60 x 0.67 x 1.86 m
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

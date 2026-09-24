@@ -82,6 +82,12 @@
 - Quality tiers (Renderer.js): low (1024 shadow, no AO/bloom), medium (2048, half-res AO), high (4096 shadow, full AO,
   pixel ratio ≤1.5), ultra (4096, AO High, pixel ratio ≤2). HDRI 1k on low/medium, 2k on high/ultra.
 
+- P05 r2: outdoor sun shadows are VIEW-FITTED (38 m box ahead of the camera, re-fit per 3 m / 30 deg,
+  ~1 cm texels at 4096); `fitShadowTo(box)` now only sets the vertical range. Day sun is fixed (7.5) over
+  IBL 0.55; HDRI suns measured (az/el, texture frame): day immenstadter_horn 126/35, golden spruit_sunrise
+  126/8 (pylons painted out via `skyGrade.mask`), night moonless_golf has no moon (brightest = streetlight);
+  moon painted at az 35 el 30. PostFX: N8AO transparencyAware off (no extra scene renders).
+
 ### window.__game (SPEC + extras)
 - SPEC: `ready, teleport(x,y,z,yawDeg,pitchDeg)` (EYE position; player floats until movement input), `setTimeOfDay`
   (Promise), `setQuality`, `hideUI`, `stats()` -> `{fps, drawCalls, triangles, textures, geometries, programs, memoryMB,
@@ -192,3 +198,64 @@
 - (P03, open) `LARCH_surrounds`: box UVs run the larch grain vertically on the head and sill pieces. P03 currently hides the node and
   draws grain-correct copies with identical extents (face_out - 4 mm .. +180 mm, 100 mm wide). If you change the surround dimensions,
   tell P03, or give each piece grain-aligned UVs (v along the piece) and P03 will drop the replacement.
+
+## Procedural textures (scripts/assets/gen_textures.mjs)
+- Offline replacement for dl_textures.mjs: `node scripts/assets/gen_textures.mjs [name...] [--jobs N]` writes all 34 sets of
+  textures.json to public/assets/textures/<name>/{color,normal,roughness,ao}.jpg + meta.json (same fields; source =
+  `procedural (scripts/assets/gen_textures.mjs)`, license CC0). ~35 s total on 3 cores, ~32 MB.
+- Recipes: scripts/assets/texgen/recipes.mjs (wood.mjs planks, tiles.mjs grids/hex, scatter.mjs stones/blades, fabric.mjs weave/leather).
+  All maps tile seamlessly; normals OpenGL +Y from a height field in mm; albedo clamped 0.012..0.85 linear.
+- Layout guarantees the runtime relies on: oak_plank = 11 board columns, first groove at 99/186.18 of a column, grain along v;
+  limestone_tile_light = 6x6 cells. Mean linear luminance pinned to the runtime texMean for oak (0.19), limestone (0.36),
+  concrete_screed (0.31), concrete_smooth_light (0.48).
+- Contact sheet: `node scripts/assets/texgen/sheet.mjs out.jpg 512 color [names]`.
+
+## P07 round 2: furniture fallbacks, procedural indoor props, budget
+- **Missing models never throw.** `Furnisher` logs one warning per missing model or variant (`__furnish.report.warnings`,
+  `report.skipped` counts skipped items). Generators calling `ctx.model()` get an empty Group and `ctx.modelBox()` an empty box.
+- **Indoor props** use the names in `scripts/assets/models.json` and are built by `pipeline/props/<name>.py`
+  (shared kit `_kit.py` / `_photo.py`; `make.mjs` skips `_*.py`). All are registered in `manifest_add.mjs` PROPS.
+  Conventions: origin at base centre, front +Z, wall pieces have their back at -Z. Variants are top-level nodes:
+  `candlesticks_brass#brass_candleholder_01|02|03`, `wine_bottles#wine_bottles_01_bordeaux|_burgundy`. Some props are
+  built oversize to match existing `scale` values in furniture.json (see the manifest `use` text).
+- **Triangle caps**: `pack.mjs` MAXTRIS table (meshoptimizer; UVs are dropped on untextured primitives, normals are snapped so
+  vertices weld). **Draw calls**: after instancing, `Furnisher._merge()` bakes the remaining opaque, non-emissive meshes per level (floor)
+  into one mesh per material. Untextured GLB materials become a shared vertex-colour material per roughness/metalness
+  bucket (`P07_plain_*`). Meshes with transparent, emissive or night-glow materials, or with `userData.noMerge`, stay separate.
+  Stats: `report.merged`.
+
+## P04 landscape: procedural garden / outdoor / garage / plant models (cloud session, no Poly Haven)
+- **Same names, variants and origins as `scripts/assets/models.json`** (categories garden, outdoor, garage and every `plant_*`),
+  built by `pipeline/props/<name>.py` (shared kits `_p04veg.py` vegetation, `_p04kit.py` hard-surface materials,
+  `_p04shelf.py`) and registered in the P04 block of `pipeline/props/manifest_add.mjs`. Origin at base centre, min Y = 0,
+  front +Z; wall-mounted pieces (security_light, aircon_unit, garden_hose) have their back at -Z.
+- **Split models** (models.json `split`) are separate GLBs written by one script: `shrub_02_a..d`, `plant_calathea_a..e`,
+  `plant_anthurium_a..f`, `plant_pachira_a..d`, `plant_fern_a..d` (potted-plant splits are the plant only, base = soil level,
+  for the furnish `planter` proc). A script declares its GLBs in `_build/<script>.outputs.json` (`_p04veg.outputs()`);
+  `make.mjs` packs/renders those names.
+- **Variant node names** (top-level): `rock_moss_set_01_rock01..06`, `grass_medium_02_a..d` (grass_clump_medium_02),
+  `grass_clump_medium_a..c`, `grass_clump_bermuda_a..c`, `shrub_03_a..c`, `shrub_sorrel_a..c`, `flower_gazania_a..c`,
+  `plant_periwinkle_a..c`, `plant_succulent_cheiridopsis_a|b`.
+- **Foliage materials** are alpha MASK (cutoff 0.5) with painted RGBA atlases and names containing `leaves` / `grass` so
+  `Landscape` finds the lowest foliage (`leaves_maple`, `leaves_birch`, `leaves_olive`, ...). Leaf-card normals are authored
+  as the crown's ellipsoid normal: `plants.js foliageShading()` stops three's DoubleSide back-face normal flip for these
+  materials and adds a small sun-transmission + wrap term. Other consumers (furnish) get correct but flatter leaves.
+- Trees as authored: tree_island_01 ~3.6 m, tree_island_02 (birch) ~4.2 m, tree_small (olive) ~3.9 m; site.json scales apply.
+- **Missing models never throw** in landscape code: `InstancedModels.model()` resolves null (one console warning),
+  `kind()` returns null, `add()/size()` ignore it; trees whose model is missing are skipped (ring / far trees use only the
+  loaded species); gabion stones build without the boulder relief maps.
+- Round 2: paint mode (textures.js) adds mid/fine tone + roughness breakup and base-of-wall grime (`grime: [amount, floorY1, floorY2]`,
+  default [0.1, 0, 3.15]; ceilings pass [0,0,0]). Plaster/render normals baked stronger (normalK 2.2-3).
+- **Round 3: clutter.** `src/game/furnish/clutter.js` runs after placement. It probes every host (worktops, shelves,
+  nightstands, consoles, desks, tables, vanities, washers, beds, bedroom chairs, WCs, tubs) with downward rays to find
+  each horizontal level and the free height above it. It then fills shelves with book rows, lying stacks, boxes and jars, and
+  scatters recipe props on the surfaces (plus floor props such as bath mats, bins and toilet brushes). Each prop kind is one
+  `InstancedMesh` per part per floor (`FC_*`). None of them cast shadows or collide. Counts: `report.clutter.{total,perRoom}`.
+- **Visibility.** The furnisher chains `scene.onBeforeRender` (main camera only). Inside a room, only that floor's
+  furniture is drawn: shadows as authored, and the other floor is hidden. Outdoors (terrace, pool, balcony), furniture always
+  draws, with no shadows while the camera is inside. With the camera outside, interior furniture draws only within 5 m of the
+  house, without shadows or clutter. Every top node carries `userData.p07 = { floorY, zone, clutter? }`.
+  `furnisher.stats(visibleOnly)` gives `{tris, drawCalls, shadowTris, shadowDrawCalls}`. `report.budget` is the whole set and
+  `report.view` is the current view.
+- Also: `_unpoke()` pushes floor pieces out of walls. Planters inside a room's spawn view are skipped. A vanity mirror in front
+  of a window is dropped. Bedding is tinted per bedroom (`ROOM_TINTS`). Mirror and car-paint materials are corrected at load.

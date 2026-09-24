@@ -1,8 +1,8 @@
 {
- "updated": "2026-09-24T02:30:16.515Z",
+ "updated": "2026-09-24T12:44:42.632Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
- "headline": "Paused: all agents stopped at a usage limit. Work committed and pushed to GitHub; resume in a new or cloud session.",
+ "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
  "pieces": [
   {
    "id": "P01",
@@ -34,20 +34,20 @@
   {
    "id": "P04",
    "name": "Landscape & sky",
-   "status": "building",
-   "round": 1,
-   "verdict": "",
-   "gap": "",
-   "updated": "2026-09-23T06:27:59.797Z"
+   "status": "lost",
+   "round": 2,
+   "verdict": "HF2 wins 4/0 description-based: flat shadowless day exteriors, box hedges, 3.4M tris",
+   "gap": "Daytime exteriors have no readable sun shadows — trees, umbrella, furniture and hedges cast nothing on lawn or paving, so every day view looks flat and overcast, while also running at 3.3-3.4M triangles (2.2x the 1.5M budget).",
+   "updated": "2026-09-24T06:10:17.983Z"
   },
   {
    "id": "P05",
    "name": "Lighting & atmosphere",
-   "status": "building",
-   "round": 1,
+   "status": "review",
+   "round": 2,
    "verdict": "",
    "gap": "",
-   "updated": "2026-09-23T16:28:43.568Z"
+   "updated": "2026-09-24T12:22:18.579Z"
   },
   {
    "id": "P06",
@@ -62,18 +62,19 @@
    "id": "P07",
    "name": "Furniture & props",
    "status": "building",
-   "round": 1,
-   "verdict": "",
-   "gap": "",
-   "updated": "2026-09-23T06:27:01.567Z"
+   "round": 3,
+   "verdict": "HF2 wins 3/3 description-based pairs; every room furnished but sparse, repetitive, box-silhouetted, several placement errors",
+   "gap": "Rooms are furnished but not lived-in: handful of hero pieces with almost no small clutter (kitchen ~12 props vs HF2 100+), and pieces repeated, box-silhouetted and unseamed.",
+   "updated": "2026-09-24T07:09:38.335Z"
   },
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "pending",
-   "round": 0,
+   "status": "building",
+   "round": 1,
    "verdict": "",
-   "gap": ""
+   "gap": "",
+   "updated": "2026-09-24T12:44:42.632Z"
   },
   {
    "id": "P09",
@@ -117,6 +118,58 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T12:43:56.964Z",
+   "m": "TEX r4: bathroom grout light grey, bevel tilt halved, grout AO 0.2, per-tile tint 12-14%, floor grout lightened, concrete_smooth_light pores removed; lawn macro 0.38"
+  },
+  {
+   "t": "2026-09-24T12:22:44.892Z",
+   "m": "TEX critic r3: HF2 - kitchen worktop still woven fabric and bathroom tiles have painted black grout"
+  },
+  {
+   "t": "2026-09-24T08:51:14.560Z",
+   "m": "TEX r3: rock_limestone + concrete_aggregate sets; gabions textured w/ 4 tones; slabs/sidewalk/coping aggregate; bath grout 4.5mm"
+  },
+  {
+   "t": "2026-09-24T08:38:40.654Z",
+   "m": "TEX critic r2: HF2 - gabion stones are untextured grey boxes and concrete slabs flat beige; bath grout hairline"
+  },
+  {
+   "t": "2026-09-24T07:30:00.582Z",
+   "m": "TEX r2: stronger plaster/render normals, paint tone/rough breakup + wall grime, render grime/streaks, bathroom grout 3.5mm, 28mm gravel"
+  },
+  {
+   "t": "2026-09-24T07:05:12.853Z",
+   "m": "P04 r3: landscape share of exterior tris 1.27M -> 0.88M (grass 250k->~110k, paving no shadow cast, lighter hedge body/gabions/ornamentals). Exteriors 3.16-3.23M -> 2.77-2.84M. Budget blocked by FURNISH (~2.3M of every exterior frame; 0.53M of it shadow casting) and the N8AO pass re-rendering the scene"
+  },
+  {
+   "t": "2026-09-24T06:56:25.688Z",
+   "m": "TEX critic r1: HF2 - walls/render are flat colour with no plaster/stucco texture; tiles have hairline grout; gravel pure white"
+  },
+  {
+   "t": "2026-09-24T04:45:45.203Z",
+   "m": "P07: budget pass (pack caps, small props untextured, runtime per-level material merge, small props no shadows); 90 indoor props built"
+  },
+  {
+   "t": "2026-09-24T04:30:36.028Z",
+   "m": "P04: in-game verified (reviews/p04/r2,r3): trees raised-canopy (leaf min >= 2.2 m after site scale), viewpoints clear (crown+2 m, ring trees too), ornamental grass tris halved; exterior frame ~3.4M tris incl. shadows, dominated by FURNISH shadow casters (650k x cascades); landscape 590k main + 90k shadow-casting"
+  },
+  {
+   "t": "2026-09-24T03:35:25.089Z",
+   "m": "Textures: gen_textures.mjs generates all 34 sets procedurally offline (~35s, 32MB); living-room shot reviewed"
+  },
+  {
+   "t": "2026-09-24T03:23:09.723Z",
+   "m": "P04: 60+ procedural landscape/garden/garage/plant props built (trees w/ painted leaf atlases + crown-normal cards); landscape degrades gracefully on missing models"
+  },
+  {
+   "t": "2026-09-24T03:09:09.242Z",
+   "m": "P07: Furnisher degrades gracefully on missing models; 35 indoor procedural props built (living/decor/kitchen/office)"
+  },
+  {
+   "t": "2026-09-24T02:55:32.385Z",
+   "m": "Cloud session: pipeline ported to Linux (bpy shim), house + 19 props rebuilt, real CC0 HDRIs from GitHub mirrors. Poly Haven/ambientCG/Steam blocked: TEX, P07 and P04 builders regenerating assets procedurally."
+  },
   {
    "t": "2026-09-24T02:30:16.515Z",
    "m": "Paused for usage limit: all agents stopped mid-round (P01 r3, P03 r2, P04, P05, P07 building; P02 r2 and P06 r1 critics unfinished). State committed and pushed."
@@ -320,6 +373,31 @@
  ],
  "shots": [
   {
+   "t": "2026-09-24T12:22:44.931Z",
+   "src": "/reviews/critic/TEX-r3/ext_front_east.png",
+   "caption": "TEX r3 critic view"
+  },
+  {
+   "t": "2026-09-24T08:38:40.759Z",
+   "src": "/reviews/critic/TEX-r2/pool_surround.png",
+   "caption": "TEX r2 critic view"
+  },
+  {
+   "t": "2026-09-24T07:09:05.472Z",
+   "src": "/reviews/critic/P07-r2/room_master.png",
+   "caption": "P07 r2 critic view"
+  },
+  {
+   "t": "2026-09-24T06:56:26.074Z",
+   "src": "/reviews/critic/TEX-r1/living.png",
+   "caption": "TEX r1 critic view"
+  },
+  {
+   "t": "2026-09-24T06:10:18.019Z",
+   "src": "/reviews/critic/P04-r2/ext_Front_street_east_golden_hour.png",
+   "caption": "P04 r2 critic view"
+  },
+  {
    "t": "2026-09-24T02:21:01.588Z",
    "src": "/reviews/critic/P03-r1/d02_garden_sw.png",
    "caption": "P03 r1 critic view"
@@ -413,26 +491,6 @@
    "t": "2026-09-23T01:56:42.153Z",
    "src": "/reviews/P01-r1/flow_title_card_b.png",
    "caption": "P01 r1 critic view"
-  },
-  {
-   "t": "2026-09-23T01:48:04.638Z",
-   "src": "/reviews/p01-check/01_living.png",
-   "caption": "P01 living room, placeholder geometry"
-  },
-  {
-   "t": "2026-09-23T01:48:04.572Z",
-   "src": "/reviews/p01-check/ui_title.png",
-   "caption": "P01 title screen (placeholder house)"
-  },
-  {
-   "t": "2026-09-23T01:47:16.578Z",
-   "src": "/reviews/p01-check/23_ext_garden_sw.png",
-   "caption": "P01 first render"
-  },
-  {
-   "t": "2026-09-23T01:17:16.079Z",
-   "src": "/reviews/hf2/hf2-living-room-fireplace-evening-modio.png",
-   "caption": "HF2 reference: living room, evening"
   }
  ]
 }

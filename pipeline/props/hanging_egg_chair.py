@@ -1,6 +1,6 @@
 # Hanging egg chair: open diagonal rattan weave shell (alpha-masked, baked colour+normal), wrapped rattan rim,
 # off-white seat + back cushions, black steel C-stand with round base, chain + hook. ~1.0 x 2.05 x 1.05 m
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy, bmesh

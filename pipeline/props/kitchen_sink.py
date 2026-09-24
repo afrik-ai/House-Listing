@@ -2,7 +2,7 @@
 #   sink_worktop : 1.20 x 0.62 x 0.03 m light quartz worktop section with the bowl under-mounted and the tap
 #   sink_bowl    : the 0.54 x 0.40 x 0.20 m bowl alone (flange top = its max Y) for a counter with a cut-out
 #   mixer_tap    : the tap alone (origin at the base of its escutcheon)
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

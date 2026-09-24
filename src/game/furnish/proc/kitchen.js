@@ -8,6 +8,7 @@ const PL = 0.10, TOP0 = 0.87, TOP = 0.90, WALL0 = 1.50, TALL = 2.40, GAP = 0.003
 
 // Quartz from the sink module (matches its worktop exactly). Its UVs tile every 0.6 m; ours are metric.
 function quartzMaterial(ctx) {
+  return 'quartz';   // metric box-mapped marble_white quartz (the sink GLB speckle map stretched on the run's vertical ends)
   if (ctx.mats.m.quartz_sink) return 'quartz_sink';
   let q = null;
   try {

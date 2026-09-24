@@ -1,7 +1,7 @@
 # Stylised-realistic modern mid/large SUV (XC90-like massing): lofted + subdivided body with face-classified
 # paint / glass / black trim / lights / grille regions, panel-gap strips raycast onto the body, mirrors, roof
 # rails, 20" twin-spoke alloys with brake discs, tyres with tread grooves. ~1.98 x 1.74 x 4.82 m, nose = glTF +Z.
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy, bmesh

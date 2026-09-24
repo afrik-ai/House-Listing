@@ -304,7 +304,7 @@ export class Furnisher {
     const groups = new Map();
     const shared = new Map();
     const q = (v) => Math.round((v ?? 0) * 20) / 20;
-    const plain = (m) => m.isMeshStandardMaterial && !m.map && !m.normalMap && !m.roughnessMap && !m.metalnessMap && !m.aoMap &&
+    const plain = (m) => m.isMeshStandardMaterial && !m.vertexColors && !m.map && !m.normalMap && !m.roughnessMap && !m.metalnessMap && !m.aoMap &&
       !m.emissiveMap && !m.alphaMap && !(m.transmission > 0) && !(m.clearcoat > 0) && !(m.sheen > 0) && m.emissive.getHex() === 0 && !m.userData?.night;
     this.work.updateMatrixWorld(true);
     // grouped per LEVEL (not per room): fewer draw calls; indoors the frustum rarely culls a whole room anyway
@@ -327,7 +327,8 @@ export class Furnisher {
           }
           colour = m.color;
         }
-        const layout = attrs.filter((a) => a !== 'color' && (a !== 'uv' || !colour) && (a !== 'uv1' || !colour)).join(',') + (colour ? ',color' : '');
+        // plain materials: colour becomes a vertex colour (UVs dropped); others keep their own attributes (incl. vertex colours)
+        const layout = colour ? attrs.filter((a) => a === 'position' || a === 'normal').join(',') + ',color' : attrs.join(',');
         const key = `${room}|${mat.uuid}|${o.castShadow}|${o.receiveShadow}|${layout}`;
         if (!groups.has(key)) groups.set(key, { mat, cast: o.castShadow, recv: o.receiveShadow, list: [] });
         groups.get(key).list.push({ o, colour, layout: layout.split(',') });
@@ -340,7 +341,7 @@ export class Furnisher {
         const src = o.geometry;
         const geo = new THREE.BufferGeometry();
         for (const a of layout) {
-          if (a === 'color') continue;
+          if (a === 'color' && colour) continue;
           const at = src.attributes[a];
           const arr = new Float32Array(at.count * at.itemSize);
           const get = [at.getX, at.getY, at.getZ, at.getW];   // these denormalise quantized (KHR_mesh_quantization) data

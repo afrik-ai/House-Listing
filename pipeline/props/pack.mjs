@@ -12,9 +12,9 @@ import { MeshoptSimplifier } from 'meshoptimizer';
 // Triangle caps (P07 furniture budget: whole placed set <= 600k tris). Props over their cap are simplified
 // with meshoptimizer (attribute seams kept; error bound 0.25-0.6% of the mesh extent). meta.maxTris overrides.
 const MAXTRIS = {
-  rug_rect_200x300: 6000, rug_round_160: 4000, bed_double_modern: 10000, toilet_wall_hung: 4000, armchair_modern: 7000,
-  sun_lounger: 6000, bathroom_vanity: 5000, bathtub_freestanding: 6000, office_chair: 7000, towel_stack: 3000,
-  towel_folded: 1500, washing_machine: 6000, lounge_chair_midcentury: 8000, hanging_egg_chair: 9000,
+  rug_rect_200x300: 4000, rug_round_160: 4000, bed_double_modern: 7000, toilet_wall_hung: 3000, armchair_modern: 6000,
+  sun_lounger: 4500, bathroom_vanity: 3500, bathtub_freestanding: 4500, office_chair: 5000, towel_stack: 3000,
+  towel_folded: 1500, washing_machine: 4500, lounge_chair_midcentury: 8000, hanging_egg_chair: 9000,
   sofa_fabric_3seat: 14000, sofa_leather_2seat: 12000, throw_pillows: 3000, vase_ceramic_tall: 1000,
   basket_wicker: 1500, laundry_basket_wicker: 2500, rubber_duck: 1200, candlesticks_brass: 5000, laptop: 2500,
   desk_lamp: 2200, gaming_console: 1800, fruit_bowl_wood: 1800, alarm_clock: 1500, cleaner_bottle: 1000,
@@ -79,7 +79,13 @@ for (const name of process.argv.slice(2)) {
         if (sem === 'NORMAL') for (let i = 0; i < arr.length; i += 3) { const l = Math.hypot(arr[i], arr[i + 1], arr[i + 2]) || 1; arr[i] /= l; arr[i + 1] /= l; arr[i + 2] /= l; }
         a.setArray(arr);
       }
-      await doc.transform(weld(), simplify({ simplifier: MeshoptSimplifier, ratio: cap / t0, error: t0 > cap * 2.5 ? 0.02 : 0.01 }));
+      await doc.transform(weld());
+      for (const err of [0.01, 0.025, 0.05]) {
+        let t1 = 0;
+        for (const me of root.listMeshes()) for (const p of me.listPrimitives()) t1 += p.getIndices().getCount() / 3;
+        if (t1 <= cap * 1.1) break;
+        await doc.transform(simplify({ simplifier: MeshoptSimplifier, ratio: cap / t1, error: err }));
+      }
       console.log('WARN simplified', name, Math.round(t0), '->', 'cap', cap);
     }
   }

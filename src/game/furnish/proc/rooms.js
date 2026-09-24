@@ -31,7 +31,7 @@ function garments(B, ctx, x0, x1, y, zc, long = false) {
     g.translate(x + t / 2, y, zc);
     B.add(cm, colorize(g, CLOTH[Math.floor(R() * CLOTH.length)], 0.1, R));
     // hanger
-    const hg = new THREE.TorusGeometry(0.02, 0.003, 4, 10, Math.PI); hg.rotateY(Math.PI / 2); hg.translate(x + t / 2, y - 0.005, zc);
+    const hg = new THREE.TorusGeometry(0.02, 0.003, 3, 6, Math.PI); hg.rotateY(Math.PI / 2); hg.translate(x + t / 2, y - 0.005, zc);
     B.add('black_metal', boxUV(hg));
     B.add('black_metal', box([x + t / 2 - 0.002, y - 0.07, zc - 0.2], [x + t / 2 + 0.002, y - 0.06, zc + 0.2]));
     x += t + 0.02 + R() * 0.03;

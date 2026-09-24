@@ -1,0 +1,98 @@
+{
+ "ext_Front (street, east)": {
+  "fps": 0,
+  "drawCalls": 1970,
+  "triangles": 3396749,
+  "textures": 379,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 123,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Garden & pool (south-west)": {
+  "fps": 0,
+  "drawCalls": 1964,
+  "triangles": 3305129,
+  "textures": 383,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 123,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_South facade": {
+  "fps": 0,
+  "drawCalls": 1954,
+  "triangles": 3338605,
+  "textures": 387,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_North-west corner": {
+  "fps": 0,
+  "drawCalls": 1974,
+  "triangles": 3398285,
+  "textures": 391,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "garden_from_terrace": {
+  "fps": 0,
+  "drawCalls": 615,
+  "triangles": 1314921,
+  "textures": 395,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "pool_close": {
+  "fps": 0,
+  "drawCalls": 609,
+  "triangles": 1280625,
+  "textures": 399,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 124,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ }
+}

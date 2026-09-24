@@ -110,5 +110,69 @@
    1280,
    720
   ]
+ },
+ "living_window_out": {
+  "fps": 0,
+  "drawCalls": 399,
+  "triangles": 1013992,
+  "textures": 407,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "garden_south_lawn": {
+  "fps": 0,
+  "drawCalls": 1026,
+  "triangles": 2383977,
+  "textures": 411,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "tree_close": {
+  "fps": 0,
+  "drawCalls": 583,
+  "triangles": 1221774,
+  "textures": 415,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext_Front (street, east)_golden_hour": {
+  "fps": 0,
+  "drawCalls": 1989,
+  "triangles": 3437140,
+  "textures": 424,
+  "geometries": 744,
+  "programs": 197,
+  "memoryMB": 131,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
  }
 }

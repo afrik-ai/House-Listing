@@ -1,0 +1,2330 @@
+{
+ "rooms": [
+  {
+   "id": "living",
+   "name": "Living room + Dining",
+   "level": "ground",
+   "center": [
+    4.025000095367432,
+    0,
+    7.570000171661377
+   ]
+  },
+  {
+   "id": "kitchen",
+   "name": "Kitchen",
+   "level": "ground",
+   "center": [
+    10.024999618530273,
+    0,
+    8.390000343322754
+   ]
+  },
+  {
+   "id": "cloak",
+   "name": "Cloakroom",
+   "level": "ground",
+   "center": [
+    8.774999618530273,
+    0,
+    5.489999771118164
+   ]
+  },
+  {
+   "id": "hall",
+   "name": "Hall",
+   "level": "ground",
+   "center": [
+    4.775000095367432,
+    0,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "vestibule",
+   "name": "Vestibule",
+   "level": "ground",
+   "center": [
+    9.524999618530273,
+    0,
+    3.559999942779541
+   ]
+  },
+  {
+   "id": "storage_e",
+   "name": "Storage",
+   "level": "ground",
+   "center": [
+    10.25,
+    0,
+    5.489999771118164
+   ]
+  },
+  {
+   "id": "storage_n",
+   "name": "Storage",
+   "level": "ground",
+   "center": [
+    4.25,
+    0,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "office",
+   "name": "Office",
+   "level": "ground",
+   "center": [
+    1.75,
+    0,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "wc",
+   "name": "WC",
+   "level": "ground",
+   "center": [
+    0.75,
+    0,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "boiler",
+   "name": "Boiler room",
+   "level": "ground",
+   "center": [
+    6.300000190734863,
+    0,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "garage",
+   "name": "Garage",
+   "level": "ground",
+   "center": [
+    10.5,
+    0,
+    -0.3149999976158142
+   ]
+  },
+  {
+   "id": "master",
+   "name": "Master bedroom",
+   "level": "first",
+   "center": [
+    1.684999942779541,
+    3.1500000953674316,
+    7.570000171661377
+   ]
+  },
+  {
+   "id": "wardrobe_a",
+   "name": "Wardrobe",
+   "level": "first",
+   "center": [
+    0.800000011920929,
+    3.1500000953674316,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "wardrobe_b",
+   "name": "Wardrobe",
+   "level": "first",
+   "center": [
+    4.684999942779541,
+    3.1500000953674316,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "bath_master",
+   "name": "Master bathroom",
+   "level": "first",
+   "center": [
+    1.684999942779541,
+    3.1500000953674316,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "hall1",
+   "name": "Landing",
+   "level": "first",
+   "center": [
+    6.284999847412109,
+    3.1500000953674316,
+    4.53000020980835
+   ]
+  },
+  {
+   "id": "bed2",
+   "name": "Bedroom",
+   "level": "first",
+   "center": [
+    5.190000057220459,
+    3.1500000953674316,
+    8.390000343322754
+   ]
+  },
+  {
+   "id": "bed3",
+   "name": "Bedroom",
+   "level": "first",
+   "center": [
+    9.005000114440918,
+    3.1500000953674316,
+    8.390000343322754
+   ]
+  },
+  {
+   "id": "bath2",
+   "name": "Bathroom",
+   "level": "first",
+   "center": [
+    8.5,
+    3.1500000953674316,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "bath3",
+   "name": "Bathroom",
+   "level": "first",
+   "center": [
+    11.100000381469727,
+    3.1500000953674316,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "laundry",
+   "name": "Laundry",
+   "level": "first",
+   "center": [
+    10.100000381469727,
+    3.1500000953674316,
+    5.639999866485596
+   ]
+  }
+ ],
+ "stats": {
+  "fps": 0,
+  "drawCalls": 406,
+  "triangles": 1058677,
+  "textures": 252,
+  "geometries": 539,
+  "programs": 179,
+  "memoryMB": 116,
+  "gpuTexMB": 990,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "report": {
+  "items": 285,
+  "instanced": 149,
+  "meshes": 382,
+  "warnings": [],
+  "overlaps": [],
+  "wallPokes": [
+   "kitchen/run pokes 12.7 cm",
+   "kitchen/run pokes 12.7 cm",
+   "terrace/planter pokes 4.2 cm",
+   "terrace/planter pokes 4.2 cm"
+  ],
+  "doorBlocks": [],
+  "merged": {
+   "meshes": 98,
+   "drawCallsSaved": 241
+  }
+ },
+ "items": [
+  {
+   "n": "FURNISH_work",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_rug_rect_200x300##\"\"_rug_rect_200x300_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_rug_rect_200x300##\"\"_rug_rect_200x300_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_rug_rect_200x300##\"\"_rug_rect_200x300_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_armchair_modern##\"\"_armchair_modern_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_armchair_modern##\"\"_armchair_modern_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_armchair_modern##\"\"_armchair_modern_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_armchair_modern##\"\"_armchair_modern_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_armchair_modern##\"\"_armchair_modern_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_side_table_oak##\"\"_side_table_oak_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_side_table_oak##\"\"_side_table_oak_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_side_table_oak##\"\"_side_table_oak_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_side_table_oak##\"\"_side_table_oak_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_side_table_oak##\"\"_side_table_oak_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_side_table_oak##\"\"_side_table_oak_6",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_tall##\"\"_vase_ceramic_tall_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_tall##\"\"_vase_ceramic_tall_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_tall##\"\"_vase_ceramic_tall_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_tall##\"\"_vase_ceramic_tall_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_03##\"\"_vase_ceramic_03_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_03##\"\"_vase_ceramic_03_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_03##\"\"_vase_ceramic_03_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_03##\"\"_vase_ceramic_03_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing##\"\"_picture_frame_standing_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing##\"\"_picture_frame_standing_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing##\"\"_picture_frame_standing_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing##\"\"_picture_frame_standing_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing##\"\"_picture_frame_standing_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_02##\"\"_vase_ceramic_02_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_02##\"\"_vase_ceramic_02_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_plant_succulent_small##\"\"_plant_succulent_small_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_plant_succulent_small##\"\"_plant_succulent_small_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_plant_succulent_small##\"\"_plant_succulent_small_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:dining_chair:oak_natural_dining_chair_oak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:dining_chair:oak_natural_dining_chair_fabric_natural",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_pendant_lamp_modern##\"\"_pendant_lamp_modern_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_pendant_lamp_modern##\"\"_pendant_lamp_modern_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_pendant_lamp_modern##\"\"_pendant_lamp_modern_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_pendant_lamp_modern##\"\"_pendant_lamp_modern_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_04##\"\"_vase_ceramic_04_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_04##\"\"_vase_ceramic_04_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_04##\"\"_vase_ceramic_04_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_ceramic_04##\"\"_vase_ceramic_04_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bowl_wood_02##\"\"_bowl_wood_02_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bowl_wood_02##\"\"_bowl_wood_02_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_brass##\"\"_vase_brass_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_vase_brass##\"\"_vase_brass_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:counter_stool:oak_counter_stool_oak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:counter_stool:oak_counter_stool_black_metal",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_apple##\"\"_apple",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_apple##\"\"_apple_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_brass_0.46_table_lamp_brass",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_brass_0.46_table_lamp_shade",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_basket_wicker##\"\"_basket_wicker_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_basket_wicker##\"\"_basket_wicker_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_basket_wicker##\"\"_basket_wicker_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_garage_shelves_steel_narrow##\"\"_garage_shelves_steel_narrow_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_garage_shelves_steel_narrow##\"\"_garage_shelves_steel_narrow_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_garage_shelves_steel_narrow##\"\"_garage_shelves_steel_narrow_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_garage_shelves_steel_narrow##\"\"_garage_shelves_steel_narrow_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_box_cardboard##\"\"_box_cardboard_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_box_cardboard##\"\"_box_cardboard_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_crate_plastic##\"\"_crate_plastic",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_cleaner_bottle##\"\"_cleaner_bottle_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_cleaner_bottle##\"\"_cleaner_bottle_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_cleaner_bottle##\"\"_cleaner_bottle_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_cleaner_bottle##\"\"_cleaner_bottle_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toolbox##\"\"_toolbox_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toolbox##\"\"_toolbox_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toolbox##\"\"_toolbox_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toolbox##\"\"_toolbox_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_drill##\"\"_drill_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_drill##\"\"_drill_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_drill##\"\"_drill_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathroom_vanity##\"\"_bathroom_vanity_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathroom_vanity##\"\"_bathroom_vanity_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathroom_vanity##\"\"_bathroom_vanity_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathroom_vanity##\"\"_bathroom_vanity_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathroom_vanity##\"\"_bathroom_vanity_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathroom_vanity##\"\"_bathroom_vanity_6",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toilet_wall_hung##\"\"_toilet_wall_hung_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toilet_wall_hung##\"\"_toilet_wall_hung_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toilet_wall_hung##\"\"_toilet_wall_hung_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toilet_wall_hung##\"\"_toilet_wall_hung_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_toilet_wall_hung##\"\"_toilet_wall_hung_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_rug_round_160##\"\"_rug_round_160_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_rug_round_160##\"\"_rug_round_160_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_office_chair##\"\"_office_chair_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_office_chair##\"\"_office_chair_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_office_chair##\"\"_office_chair_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_office_chair##\"\"_office_chair_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_office_chair##\"\"_office_chair_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_office_chair##\"\"_office_chair_6",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_office_chair##\"\"_office_chair_7",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_laptop##\"\"_laptop_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_laptop##\"\"_laptop_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_laptop##\"\"_laptop_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_laptop##\"\"_laptop_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_desk_lamp##\"\"_desk_lamp_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_desk_lamp##\"\"_desk_lamp_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_desk_lamp##\"\"_desk_lamp_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_desk_lamp##\"\"_desk_lamp_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_binder##\"\"_binder_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_binder##\"\"_binder_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_binder##\"\"_binder_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_binder##\"\"_binder_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_binder##\"\"_binder_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing_02##\"\"_picture_frame_standing_02_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing_02##\"\"_picture_frame_standing_02_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing_02##\"\"_picture_frame_standing_02_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing_02##\"\"_picture_frame_standing_02_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_picture_frame_standing_02##\"\"_picture_frame_standing_02_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_alarm_clock##\"\"_alarm_clock_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_alarm_clock##\"\"_alarm_clock_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_alarm_clock##\"\"_alarm_clock_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_alarm_clock##\"\"_alarm_clock_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_6",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_7",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bed_double_modern##\"\"_bed_double_modern_8",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:cabinet:nightstand_cabinet_oak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:cabinet:nightstand_cabinet_black_metal",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_ceramic_white_0.5_table_lamp_ceramic_white",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_ceramic_white_0.5_table_lamp_brass",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_ceramic_white_0.5_table_lamp_shade",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathtub_freestanding##\"\"_bathtub_freestanding_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_bathtub_freestanding##\"\"_bathtub_freestanding_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_towel_stack##\"\"_towel_stack_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_towel_stack##\"\"_towel_stack_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_towel_stack##\"\"_towel_stack_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_towel_stack##\"\"_towel_stack_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_towel_folded##\"\"_towel_folded_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_towel_folded##\"\"_towel_folded_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_6",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_7",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_8",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_9",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_washing_machine##\"\"_washing_machine_10",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_terracotta_0.46_table_lamp_terracotta",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_terracotta_0.46_table_lamp_brass",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table_lamp:lamp_terracotta_0.46_table_lamp_shade",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:dining_chair:teak_dining_chair_teak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:dining_chair:teak_dining_chair_fabric_outdoor",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_lantern##\"\"_lantern_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_lantern##\"\"_lantern_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_lantern##\"\"_lantern_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_lantern##\"\"_lantern_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_sun_lounger##\"\"_sun_lounger_1",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_sun_lounger##\"\"_sun_lounger_2",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_sun_lounger##\"\"_sun_lounger_3",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_sun_lounger##\"\"_sun_lounger_4",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_sun_lounger##\"\"_sun_lounger_5",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FI_proc:table:lounger_table_table_teak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.8|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_oak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_anthracite_dark",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_anthracite",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.4|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.1|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_black_metal",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_fabric_rust",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_fabric_ochre",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.6|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.9|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_1|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_pachira_bark",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_leaves_pachira",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.95|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.3|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.15|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.5|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_book_cover_vc",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.95|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.15|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.45|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.35|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.9|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.3|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.55|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_steel",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_quartz_sink",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.1|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.4|0.75|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_1|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.7|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.1|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.85|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.5|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.2|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.3|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.6|0.6|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.8|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.1|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.35|0.6|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.55|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.05|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_leaves_fern",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.35|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.15|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.2|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.5|0.3|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.45|0.8|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.6|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.3|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.4|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.05|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.05|0.6|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.3|0.9|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.75|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.45|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.5|0.4|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.25|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.45|0.3|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.45|0.9|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.85|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.7|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_book_cover_vc",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.95|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_oak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.9|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_concrete",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_1|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.6|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_black_metal",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.55|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.9|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_rug_wool",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.8|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_cloth_vc",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_marble",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.1|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_black_metal",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.15|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.55|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.3|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.35|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.8|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_fabric_light",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.2|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.3|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.3|1|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.4|0|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_teak",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_fabric_outdoor",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_fabric_navy",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.4|0.4|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L0.00_P07_plain_0.5|0.6|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_plain_0.45|0.5|0|false",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "n": "FM_L3.15_P07_anthracite",
+   "p": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

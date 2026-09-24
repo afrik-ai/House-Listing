@@ -330,7 +330,10 @@ export const planter = {
       B.object(plant);
     }
     const root = B.build('planter');
-    root.userData.colliders = [[[-r, 0, -r], [r, h + 0.3, r]]];
+    // collider up to the crown so view/camera probes (and the player) treat the plant as solid, not just the pot
+    let top = h + 0.3;
+    if (p.plant) { root.updateMatrixWorld(true); const bb = new THREE.Box3().setFromObject(root); if (isFinite(bb.max.y)) top = Math.max(top, bb.max.y); }
+    root.userData.colliders = [[[-r, 0, -r], [r, top, r]]];
     return root;
   },
 };

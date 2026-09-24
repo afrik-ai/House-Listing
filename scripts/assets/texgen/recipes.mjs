@@ -280,4 +280,32 @@ export const RECIPES = {
     });
     return { t, mm: sz / px, opts: { normalK: 0.5 } };
   },
+
+  // ---- extra sets (not in textures.json; see EXTRA in gen_textures.mjs) --------------------------
+  rock_limestone: (px, e) => {
+    const t = new Tex(px);
+    t.each((u, v, k) => {
+      const wu = u + fbm(u, v, 2, 2, 4, 101) * 0.15, wv = v + fbm(u, v, 2, 2, 4, 102) * 0.15;
+      const rid = ridged(wu, wv, 3, 3, 6, 103), cloud = fbm(u, v, 3, 3, 5, 104);
+      const xt = gnoise(u * 300, v * 300, 300, 300, 105), sp = Math.max(0, gnoise(u * 160, v * 160, 160, 160, 106) - 0.4) * 1.6;
+      const crack = Math.exp(-Math.abs(fbm(wu, wv, 4, 4, 4, 107)) * 90);
+      const lich = smooth(0.25, 0.4, fbm(u, v, 6, 6, 4, 108)) * 0.5;
+      const c = lerp3(lin('#b3aa9b'), lin('#8f877a'), sat(0.5 + cloud * 2));
+      put(t, k, lerp3(c, lin('#6f6a52'), lich), 1 + xt * 0.06 - sp * 0.12 - crack * 0.35 + (rid - 0.5) * 0.15);
+      t.h[k] = rid * 2.5 + xt * 0.15 - crack * 0.8 - sp * 0.1;
+      t.rough[k] = 0.82 + xt * 0.05 + crack * 0.1 - rid * 0.05;
+    });
+    return { t, mm: S(e) / px, opts: { aoK: 0.2, aoR: 6 } };
+  },
+  concrete_aggregate: (px, e) => {
+    const t = gravel(px, e, { seed: 111, sizeMM: 8, cover: 0.45, bed: lin('#a9a498'), palette: [lin('#9a9488'), lin('#b0a898'), lin('#8a857c'), lin('#b8af9f'), lin('#a0968a')], rough: 0.7, sharp: 0.35, irr: 0.25 });
+    t.each((u, v, k) => {
+      const stain = smooth(0.1, 0.5, fbm(u, v, 3, 3, 5, 112)), drip = smooth(0.3, 0.8, fbm(u, v, 8, 2, 3, 113));
+      const pw = worley(u, v, 90, 90, 114, 1), pore = hash(pw.id, 1, 1) < 0.2 ? 1 - smooth(0.05, 0.14, pw.f1) : 0;
+      const f = (1 - stain * 0.16 - drip * 0.05 - pore * 0.3) * (1 + fbm(u, v, 12, 12, 3, 115) * 0.06);
+      t.r[k] *= f; t.g[k] *= f; t.b[k] *= f * 0.99;
+      t.h[k] = Math.max(t.h[k], -3) - pore * 0.6; t.rough[k] = clamp(t.rough[k] + stain * 0.05 + pore * 0.1, 0, 1);
+    });
+    return { t, mm: S(e) / px, opts: { meanLum: 0.3, aoK: 0.15, aoR: 3 } };
+  },
 };

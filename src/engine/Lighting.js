@@ -74,6 +74,7 @@ const PRESETS = {
     sky: { turbidity: 2, rayleigh: 0.4, mie: 0.002, mieG: 0.7 },
     skyGrade: {
       tint: { horizon: [0.72, 0.88, 1.3], zenith: [0.66, 0.78, 1.2] },
+      clampLow: { el1: 9, k: 2.5 },
       add: { horizon: [0.03, 0.05, 0.11], zenith: [0.002, 0.003, 0.008] },
       disc: { radiusDeg: 1.1, radiance: [60, 64, 72], glow: [0.25, 0.3, 0.42], glowDeg: 3, glow2: [0.02, 0.03, 0.055], glow2Deg: 14 },
     },
@@ -499,6 +500,7 @@ function prepareHDRI(key, tex, preset) {
   const texAz = sun ? sun.az : preset.azimuth;             // the preset azimuth in texture frame
   const lightEl = preset.el ?? THREE.MathUtils.clamp(sun ? sun.el : preset.fallbackEl, preset.minEl, preset.maxEl);
   if (sg.mask) maskSky(data, W, H, ch, f, t, sg.mask);
+  if (sg.clampLow) clampLowLights(data, W, H, ch, f, t, sg.clampLow);
   gradeSky(img, f, t, {
     removeSun: sun ? { az: sun.az, el: sun.el, radiusDeg: 5 } : null,
     tint: sg.tint, add: sg.add, sunSide: sg.sunSide, sunAz: texAz,
@@ -613,6 +615,24 @@ function maskSky(data, W, H, ch, f, t, m) {
       if (k <= 0) continue;
       const i = (y * W + x) * ch, j = ((y - y0 + P) * w + (x - x0 + P)) * 3;
       for (let c = 0; c < 3; c++) { const v = f(data[i + c]), sv = sky[j + c]; data[i + c] = t(v + (sv - v) * k); }
+    }
+  }
+}
+
+// Caps near-horizon luminance at k x the row median (moonless_golf: street / house lights on the
+// treeline that otherwise bloom as yellow and teal blobs behind the villa at night).
+function clampLowLights(data, W, H, ch, f, t, { el1 = 8, k = 2.5 }) {
+  const row = new Float32Array(W);
+  for (let y = 0; y < H; y++) {
+    const el = (0.5 - (y + 0.5) / H) * 180;
+    if (el > el1) continue;
+    if (el < -2) break;
+    for (let x = 0; x < W; x++) { const i = (y * W + x) * ch; row[x] = 0.2126 * f(data[i]) + 0.7152 * f(data[i + 1]) + 0.0722 * f(data[i + 2]); }
+    const cap = k * Float32Array.from(row).sort()[W >> 1];
+    for (let x = 0; x < W; x++) {
+      if (row[x] <= cap) continue;
+      const q = cap / row[x], i = (y * W + x) * ch;
+      for (let c = 0; c < 3; c++) data[i + c] = t(f(data[i + c]) * q);
     }
   }
 }

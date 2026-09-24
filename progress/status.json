@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-24T08:38:40.759Z",
+ "updated": "2026-09-24T08:51:14.560Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
@@ -117,6 +117,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-24T08:51:14.560Z",
+   "m": "TEX r3: rock_limestone + concrete_aggregate sets; gabions textured w/ 4 tones; slabs/sidewalk/coping aggregate; bath grout 4.5mm"
+  },
   {
    "t": "2026-09-24T08:38:40.654Z",
    "m": "TEX critic r2: HF2 - gabion stones are untextured grey boxes and concrete slabs flat beige; bath grout hairline"

@@ -117,7 +117,8 @@ export class Furnisher {
   // Runtime material corrections for shipped GLBs (mirrors read as black discs, blown-out car paint).
   _fixMaterial(m) {
     if (/^mirror/i.test(m.name)) { m.color.set('#aab6bc'); m.metalness = 0.35; m.roughness = 0.1; m.envMapIntensity = 1.6; m.emissive?.set('#3c4549'); }
-    if (/paint_graphite/i.test(m.name)) { m.color.set('#2d3237'); m.metalness = 0.35; m.roughness = 0.42; m.envMapIntensity = 0.7; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
+    if (/^grille$|^drl_led$/i.test(m.name) && m.color.getHex() === 0xffffff) m.color.set(/grille/i.test(m.name) ? '#1d1f21' : '#dfe6ee');
+    if (/paint_graphite/i.test(m.name)) { m.color.set('#2d3237'); m.metalness = 0.3; m.roughness = 0.5; m.envMapIntensity = 0.35; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
   }
 
   async _loadModel(name) {
@@ -185,18 +186,6 @@ export class Furnisher {
     const G = this.game;
     let object, box, key;
     const defaults = this.data.models?.[it.model] || {};
-    // Keep big plants out of the room spawn views (a view must not open inside a plant's leaves).
-    if (it.proc === 'planter' && it.params?.plant && !it.drop && !(it.pos[1] > 0.05)) {
-      this._views ||= this.game.house.rooms().filter((r) => r.main || r.rect).map((r) => { try { return this.game._roomView(r); } catch { return null; } }).filter(Boolean);
-      for (const v of this._views) {
-        const dx = it.pos[0] - v.pos[0], dz = it.pos[2] - v.pos[2], d = Math.hypot(dx, dz);
-        const yaw = THREE.MathUtils.degToRad(v.yaw || 0), fwd = [-Math.sin(yaw), -Math.cos(yaw)];
-        const ahead = d > 1e-3 ? (dx * fwd[0] + dz * fwd[1]) / d : 1;
-        if (d < 1.7 && ahead > 0.2 && Math.abs(v.pos[1] - 1.6 - it.floorY) < 0.5) {
-          this._warn(`${it.room}/planter skipped: inside the ${v.id} view`); return;
-        }
-      }
-    }
     if (it.proc === 'kitchen_run' && it.params?.modules) it = this._fitRun(it);
     if (it.proc) {
       const gen = GENERATORS[it.proc];
@@ -288,7 +277,7 @@ export class Furnisher {
       this._ray.set(o, back); this._ray.far = 1.0;
       const hit = this._ray.intersectObjects(targets, true).find((q) => q.object.isMesh && q.object.visible);
       if (!hit) return false;
-      const m = [].concat(hit.object.material)[0];
+      const mm = hit.object.material, m = Array.isArray(mm) ? mm[hit.face?.materialIndex ?? 0] : mm;
       const n = `${m?.name || ''} ${hit.object.name || ''} ${hit.object.parent?.name || ''}`;
       if (m && (m.transparent || (m.transmission ?? 0) > 0 || /glass|window|frame|reveal|sill|mullion|opening/i.test(n))) return false;
     }

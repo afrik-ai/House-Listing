@@ -10,7 +10,12 @@ import { fileURLToPath } from 'url';
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '');
 const OUT = ROOT + '/public/assets/textures';
-const list = JSON.parse(fs.readFileSync(new URL('./textures.json', import.meta.url)));
+// EXTRA: procedural-only sets with no Poly Haven / ambientCG source (gabion rock, exposed-aggregate slabs)
+const EXTRA = [
+ {"name":"rock_limestone","src":"proc","id":"rock_limestone","res":"1K","scale_m":0.5,"desc":"Pale weathered limestone rock surface (gabion fill, boulders)"},
+ {"name":"concrete_aggregate","src":"proc","id":"concrete_aggregate","res":"1K","scale_m":1.2,"desc":"Exposed-aggregate concrete with faint stains and pores (slabs, steps, coping)"},
+];
+const list = [...JSON.parse(fs.readFileSync(new URL('./textures.json', import.meta.url))), ...EXTRA];
 const args = process.argv.slice(2);
 
 if (args[0] === '--one') {

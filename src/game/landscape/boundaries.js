@@ -221,17 +221,11 @@ export async function buildGabions(ctx) {
   const { site, group, game } = ctx;
   const G = site.grade_y;
   if (!site.gabions?.length) return;
-  // boulder.glb only lends its surface relief; without it the stones still build (flat-shaded, untextured)
-  const boulder = await game.loader.loadGLTF('/assets/models/boulder.glb', 'garden: stones').catch((e) => {
-    console.warn(`[landscape] model "boulder" unavailable: ${e?.message || e} (gabion stones without relief maps)`);
-    return null;
-  });
-  let bmat = null;
-  boulder?.scene.traverse((o) => { if (o.isMesh && !bmat) bmat = o.material; });
-  // colour from instance colours (pale limestone greys); only the boulder's surface relief is reused
+  // procedural rock set (scripts/assets/gen_textures.mjs: rock_limestone); per-instance tone variants below
+  const rock = await ctx.textures.set('rock_limestone').catch(() => null);
   const stoneMat = new THREE.MeshStandardMaterial({
-    normalMap: bmat?.normalMap || null, roughnessMap: bmat?.roughnessMap || null, normalScale: new THREE.Vector2(1.4, 1.4),
-    roughness: 0.95, metalness: 0, color: 0xffffff, flatShading: true,
+    map: rock?.map || null, normalMap: rock?.normalMap || null, roughnessMap: rock?.roughnessMap || null, aoMap: rock?.aoMap || null,
+    normalScale: new THREE.Vector2(1.2, 1.2), roughness: 1, metalness: 0, color: 0xffffff,
   });
   const geos = [stoneGeometry(1), stoneGeometry(2), stoneGeometry(3), stoneGeometry(4)];
   const lists = [[], [], [], []];
@@ -255,7 +249,8 @@ export async function buildGabions(ctx) {
         new THREE.Quaternion().setFromEuler(new THREE.Euler((R() - 0.5) * 0.7, R() * 6.28, (R() - 0.5) * 0.7)),
         new THREE.Vector3(s * (1.1 + R() * 0.5), s * (0.75 + R() * 0.3), s * (0.95 + R() * 0.4)));
       const k = Math.floor(R() * 4);
-      lists[k].push({ m, c: 0.3 + R() * 0.22, warm: R() });
+      const tone = [0.78, 0.92, 1.05, 1.18][Math.floor(R() * 4)]; // 4 tone variants
+      lists[k].push({ m, c: tone * (0.94 + R() * 0.12), warm: R() * 2 - 0.6 });
     }
     // cage: 5 mm wires on a 100 x 100 mm grid, heavier frame edges
     const t = 0.005, eO = 0.004;
@@ -273,7 +268,7 @@ export async function buildGabions(ctx) {
     if (!list.length) return;
     const im = new THREE.InstancedMesh(geos[k], stoneMat, list.length);
     const col = new THREE.Color();
-    list.forEach((s, i) => { im.setMatrixAt(i, s.m); im.setColorAt(i, col.setRGB(s.c * (1 + s.warm * 0.08), s.c, s.c * (1 - s.warm * 0.06))); });
+    list.forEach((s, i) => { im.setMatrixAt(i, s.m); im.setColorAt(i, col.setRGB(s.c * (1 + s.warm * 0.06), s.c, s.c * (1 - s.warm * 0.07))); });
     im.instanceMatrix.needsUpdate = true;
     im.computeBoundingSphere();
     im.castShadow = false; im.receiveShadow = true;

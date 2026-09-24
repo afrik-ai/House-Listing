@@ -5,7 +5,7 @@
 import bpy, sys, math, os
 from mathutils import Vector as V
 
-ROOT = 'C:/Users/Owner/HouseListing'
+ROOT = __import__('os').path.abspath(__import__('os').path.join(__import__('os').path.dirname(__file__), '..', '..'))
 argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 opts = {'az': 35.0, 'el': 18.0, 'zoom': 1.0, 'suffix': '', 'target': None, 'dist': None, 'w': 800, 'h': 600, 'lens': 50.0, 'only': None, 'wall': 0.0}
 names = []

@@ -9,10 +9,16 @@ Quality bar: side-by-side blind comparison against House Flipper 2 screenshots m
 ## Stack (fixed — do not swap)
 - Vite 8 dev server on **http://127.0.0.1:5173** (already running; do NOT start another; HMR is on).
 - Three.js **0.186** (`import * as THREE from 'three'`, addons from `three/addons/...`). WebGLRenderer.
-- Blender 5.2.1 headless: `tools/blender-5.2.1-windows-x64/blender.exe -b --python <script>`.
-  Pipeline scripts live in `pipeline/blender/`. Output GLBs go to `public/assets/houses/<id>/`.
-- Playwright (installed; headless Chromium with the real RTX 3080 GPU when launched with
-  `args: ['--use-angle=d3d11','--enable-gpu','--ignore-gpu-blocklist']`). Screenshot harness: `node scripts/shot.mjs`.
+- Blender 5.x headless. Every pipeline entry point reads the **`BLENDER`** env var (the executable), defaulting to
+  `tools/blender-5.2.1-windows-x64/blender.exe` on Windows and `tools/blender/blender` elsewhere:
+  `$BLENDER -b --factory-startup --python <script> -- <args>`. Where no Blender binary can be installed
+  (restricted cloud containers), `pip install bpy` and set `BLENDER=pipeline/bin/blender-bpy`, a CLI-compatible
+  shim that runs the same scripts through the `bpy` module. Scripts locate the repo from their own path (no
+  hard-coded roots). Pipeline scripts live in `pipeline/blender/`. Output GLBs go to `public/assets/houses/<id>/`.
+- Playwright (headless Chromium). On Windows it uses the real GPU via `--use-angle=d3d11`; on Linux without a GPU
+  it falls back to SwiftShader (judge visuals from screenshots; fps is relative only). Harness env vars:
+  `CHROMIUM_PATH` (use a pre-installed Chromium when Playwright's own build can't be downloaded) and
+  `HARNESS_SLOW` (multiplies every harness timeout; ~6 for SwiftShader). Screenshot harness: `node scripts/shot.mjs`.
 - Assets: CC0 only (Poly Haven models/textures/HDRIs via https://polyhaven.com/api, ambientCG). Keep every
   texture <= 2048px and prefer 1024px. Total shipped assets target < 150 MB. Record every downloaded asset
   in `public/assets/CREDITS.md` (name, source URL, license).

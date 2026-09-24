@@ -1,6 +1,6 @@
 # Teak sun lounger with raised slatted backrest, rear wheels and a white piped outdoor cushion (seat + back).
 # 0.72 x 0.90 x 2.00 m; length along Z in glTF (foot end = +Z front, backrest at -Z).
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

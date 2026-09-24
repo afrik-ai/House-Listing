@@ -1,7 +1,8 @@
+import { fileURLToPath } from 'url';
 // Adds/updates the procedural props in public/assets/manifest.json (same schema as the other model entries)
 // and the one-line procedural-props credit in public/assets/CREDITS.md.  usage: node pipeline/props/manifest_add.mjs
 import fs from 'fs';
-const R = 'C:/Users/Owner/HouseListing';
+const R = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '');
 const B = R + '/pipeline/props/_build';
 const SOURCE = 'procedural (HouseListing pipeline/props)';
 const FR = 'FLOOR-REFERENCED: y=0 is the finished floor (geometry floats), back (-Z) face goes flush to the wall. ';

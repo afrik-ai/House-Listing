@@ -4,7 +4,7 @@ import bpy, sys, os, json, math, mathutils
 argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 TH = argv[0] if argv else None
 only = set(argv[1:])
-D = 'C:/Users/Owner/HouseListing/public/assets/models/'
+D = __import__('os').path.abspath(__import__('os').path.join(__import__('os').path.dirname(__file__), '..', '..', 'public', 'assets', 'models')) + '/'
 res = {}
 sc = bpy.context.scene
 sc.render.engine = 'BLENDER_WORKBENCH'

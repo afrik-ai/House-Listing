@@ -1,6 +1,7 @@
+import { fileURLToPath } from 'url';
 // Downloads 3 Poly Haven pure-sky HDRIs at 2k + 1k into public/assets/hdri/
 import fs from 'fs';
-const OUT = 'C:/Users/Owner/HouseListing/public/assets/hdri';
+const OUT = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '') + '/public/assets/hdri';
 fs.mkdirSync(OUT, { recursive: true });
 const list = [
   { name: 'day_partly_cloudy', id: 'kloofendal_48d_partly_cloudy_puresky', desc: 'Midday, partly cloudy, high contrast pure sky' },

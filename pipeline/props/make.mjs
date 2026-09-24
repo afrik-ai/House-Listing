@@ -1,10 +1,15 @@
 // Build -> pack -> review-render props.  usage: node pipeline/props/make.mjs [name ...] [--no-render]
 // (no names = every <name>.py in pipeline/props except helpers/render)
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
-const R = 'C:/Users/Owner/HouseListing';
+const R = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const P = R + '/pipeline/props';
-const BL = R + '/tools/blender-5.2.1-windows-x64/blender.exe';
+// Blender executable: BLENDER env var wins (see SPEC.md "Stack"). pipeline/bin/blender-bpy runs the same
+// scripts through the PyPI `bpy` module when no Blender binary can be installed.
+const BL = process.env.BLENDER || (process.platform === 'win32'
+  ? R + '/tools/blender-5.2.1-windows-x64/blender.exe' : R + '/tools/blender/blender');
 const args = process.argv.slice(2);
 const noRender = args.includes('--no-render');
 let names = args.filter(a => !a.startsWith('--'));

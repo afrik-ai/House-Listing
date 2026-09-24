@@ -1,7 +1,8 @@
+import { fileURLToPath } from 'url';
 // Validates every GLB in public/assets/models with the Khronos glTF validator; prints errors/warnings.
 import fs from 'fs';
 import validator from 'gltf-validator';
-const D = 'C:/Users/Owner/HouseListing/public/assets/models/';
+const D = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '') + '/public/assets/models/';
 let bad = 0;
 for (const f of fs.readdirSync(D).filter(f => f.endsWith('.glb'))) {
   const r = await validator.validateBytes(new Uint8Array(fs.readFileSync(D + f)), { maxIssues: 20 });

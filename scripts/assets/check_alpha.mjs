@@ -1,9 +1,10 @@
+import { fileURLToPath } from 'url';
 // Reports, per GLB, materials with alphaMode != OPAQUE and whether their baseColor image really has alpha (sharp hasAlpha).
 // usage: node scripts/assets/check_alpha.mjs [name ...]
 import fs from 'fs'; import sharp from 'sharp';
 import { NodeIO } from '@gltf-transform/core'; import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS);
-const D = 'C:/Users/Owner/HouseListing/public/assets/models/';
+const D = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '') + '/public/assets/models/';
 const names = process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(D).filter(f => f.endsWith('.glb')).map(f => f.slice(0, -4));
 let bad = 0;
 for (const n of names) {

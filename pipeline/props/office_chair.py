@@ -1,6 +1,6 @@
 # Ergonomic office chair: polished aluminium 5-star base, twin-wheel casters, gas lift, black fabric seat with
 # waterfall edge, S-curved black frame with see-through mesh back, lumbar pad, T-armrests. ~0.66 x 1.10 x 0.66 m
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

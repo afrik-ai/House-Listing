@@ -1,7 +1,7 @@
 # Wall-hung oak bathroom vanity (2 drawers, black edge pulls), light quartz top, white ceramic vessel basin,
 # tall matte-black mixer, round black-framed mirror above.
 # FLOOR-REFERENCED: y=0 is the finished floor (cabinet underside at 0.40 m, top at 0.85 m); back goes to the wall.
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

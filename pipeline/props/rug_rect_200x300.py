@@ -1,6 +1,6 @@
 # Low-pile wool rug 2.0 x 3.0 m: ivory with a hand-drawn charcoal diamond lattice (Berber style), bound long
 # edges and cotton fringe on the short ends.
-import sys; sys.path.insert(0, 'C:/Users/Owner/HouseListing/pipeline/props')
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 import helpers as H
 from helpers import V, PI
 import math, numpy as np, bpy

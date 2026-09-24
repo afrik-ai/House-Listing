@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 // Packs Blender-exported prop GLBs (pipeline/props/_build/<name>.glb) into public/assets/models/<name>.glb:
 // alpha modes from <name>.json, dedup/prune, WebP textures (<=1024 or <=512), KHR_mesh_quantization,
 // asset.extras.source (so scripts/assets/build_manifest.mjs keeps the right source if it is re-run).
@@ -8,7 +9,7 @@ import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { dedup, prune, textureCompress, quantize, getBounds } from '@gltf-transform/functions';
 import sharp from 'sharp';
 
-const R = 'C:/Users/Owner/HouseListing';
+const R = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '');
 const B = R + '/pipeline/props/_build';
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS);
 const SOURCE = 'procedural (HouseListing pipeline/props)';
@@ -31,6 +32,7 @@ for (const name of process.argv.slice(2)) {
   root.getAsset().extras = extras;
   root.getAsset().generator = 'HouseListing pipeline/props (Blender 5.2 + glTF-Transform)';
   const out = `${R}/public/assets/models/${name}.glb`;
+  fs.mkdirSync(`${R}/public/assets/models`, { recursive: true });
   await io.write(out, doc);
   // stats
   const scene = root.listScenes()[0];

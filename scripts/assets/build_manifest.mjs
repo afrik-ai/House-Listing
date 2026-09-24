@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 // Scans public/assets/{textures,models,hdri} and writes public/assets/manifest.json + public/assets/CREDITS.md
 // usage: node scripts/assets/build_manifest.mjs [--table] [--credits]
 // Merges into an existing manifest: entries for files this pipeline did not produce (other agents' procedural props,
@@ -7,10 +8,11 @@ import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { getBounds } from '@gltf-transform/functions';
 
-const A = 'C:/Users/Owner/HouseListing/public/assets';
+const A = fileURLToPath(new URL('../..', import.meta.url)).replace(/\\/g, '/').replace(/\/$/, '') + '/public/assets';
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS);
 const list = JSON.parse(fs.readFileSync(new URL('./models.json', import.meta.url)));
 const byName = (n) => list.find(m => m.name === n) || list.find(m => n.startsWith(m.name + '_'));
+const ls = (d) => fs.existsSync(d) ? fs.readdirSync(d) : []; // a source may be absent (e.g. download hosts unreachable)
 const mb = (p) => +(fs.statSync(p).size / 1048576).toFixed(2);
 
 const prev = fs.existsSync(A + '/manifest.json') ? JSON.parse(fs.readFileSync(A + '/manifest.json')) : {};
@@ -19,7 +21,7 @@ const manifest = { ...prev, generated: new Date().toISOString(), license: 'CC0 (
   models: 'one self-contained GLB each; Y-up, metres, origin at base centre (bbox centre XZ, min Y = 0). Textures WebP (EXT_texture_webp) <= 1024px (512px for props < 0.5 m); geometry KHR_mesh_quantization. dims = [x,y,z] metres. If "variants" is present, each listed top-level child is a separate variant centred at the origin: pick one by name (root.getObjectByName) instead of adding the whole scene.',
   hdri: 'Radiance .hdr equirectangular, 1k and 2k.' }, textures: { ...(prev.textures || {}) }, models: { ...(prev.models || {}) }, hdri: { ...(prev.hdri || {}) } };
 
-for (const d of fs.readdirSync(A + '/textures').sort()) {
+for (const d of ls(A + '/textures').sort()) {
   if (!fs.existsSync(`${A}/textures/${d}/meta.json`)) continue;
   const m = JSON.parse(fs.readFileSync(`${A}/textures/${d}/meta.json`));
   const maps = {}; for (const [k, f] of Object.entries(m.maps)) maps[k] = `textures/${d}/${f}`;
@@ -27,7 +29,7 @@ for (const d of fs.readdirSync(A + '/textures').sort()) {
 }
 
 const rows = [];
-for (const f of fs.readdirSync(A + '/models').filter(f => f.endsWith('.glb')).sort()) {
+for (const f of ls(A + '/models').filter(f => f.endsWith('.glb')).sort()) {
   const name = f.slice(0, -4);
   if (!byName(name)) continue; // not produced by dl_models.mjs
   const doc = await io.read(`${A}/models/${f}`);
@@ -46,7 +48,7 @@ for (const f of fs.readdirSync(A + '/models').filter(f => f.endsWith('.glb')).so
   rows.push([name, entry.tris, entry.mb]);
 }
 
-const hm = JSON.parse(fs.readFileSync(A + '/hdri/meta.json'));
+const hm = fs.existsSync(A + '/hdri/meta.json') ? JSON.parse(fs.readFileSync(A + '/hdri/meta.json')) : {};
 for (const [k, v] of Object.entries(hm)) manifest.hdri[k] = { files: Object.fromEntries(Object.entries(v.files).map(([r, f]) => [r, 'hdri/' + f])), source: v.source, description: v.description };
 
 fs.writeFileSync(A + '/manifest.json', JSON.stringify(manifest, null, 1));

@@ -43,7 +43,24 @@ for (const name of process.argv.slice(2)) {
   // GPU memory budget (SwiftShader holds ~1 GB): texture size follows the prop's size, not just meta.texres.
   const st = Object.values(meta.stats || {}); const maxDim = Math.max(0, ...st.flatMap((q) => q.dims || []));
   const res = Math.min(meta.texres || 1024, maxDim < 0.45 ? 256 : maxDim < 1.3 ? 512 : 1024);
-  const cap = meta.maxTris || MAXTRIS[name];
+  const P07 = !!process.env.P07_CAPS;   // P07 budget pass: size-based caps + untextured small props
+  const st0 = Object.values(meta.stats || {}); const dim0 = Math.max(0, ...st0.flatMap((q) => q.dims || []));
+  if (P07 && dim0 < 0.45) {
+    // Small props: bake each texture to its mean colour so the prop merges into the shared vertex-colour buckets
+    // at runtime (one draw call per room instead of one per material) and costs no GPU texture memory.
+    for (const m of root.listMaterials()) {
+      if (/photo|art|screen|dial|label|squares/i.test(m.getName())) continue;   // printed images stay
+      const t = m.getBaseColorTexture();
+      if (t) {
+        const s = await sharp(Buffer.from(t.getImage())).stats();
+        const f = m.getBaseColorFactor(); const lin = (c) => ((c / 255) <= 0.04045 ? (c / 255) / 12.92 : (((c / 255) + 0.055) / 1.055) ** 2.4);
+        m.setBaseColorFactor([f[0] * lin(s.channels[0].mean), f[1] * lin(s.channels[1].mean), f[2] * lin(s.channels[2].mean), f[3]]);
+      }
+      m.setBaseColorTexture(null); m.setNormalTexture(null); m.setMetallicRoughnessTexture(null); m.setOcclusionTexture(null);
+      if (m.getEmissiveTexture()) { m.setEmissiveTexture(null); }
+    }
+  }
+  const cap = meta.maxTris || MAXTRIS[name] || (P07 ? (dim0 < 0.45 ? 900 : dim0 < 1.3 ? 4000 : 9000) : 0);
   if (cap) {
     let t0 = 0;
     for (const me of root.listMeshes()) for (const p of me.listPrimitives()) { const i = p.getIndices(); t0 += (i ? i.getCount() : p.getAttribute('POSITION').getCount()) / 3; }

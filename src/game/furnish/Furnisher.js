@@ -224,7 +224,9 @@ export class Furnisher {
     wrap.updateMatrixWorld(true);
     // shadows
     const size = box.getSize(V()).multiply(scl);
-    const cast = it.shadow ?? defaults.shadow ?? (size.y > 0.18 || Math.max(size.x, size.z) > 0.45);
+    // Shadow passes carry only large pieces: small props (books, clutter, kitchen items, decor < ~0.3 m) never cast.
+    const big = Math.max(size.x, size.z);
+    const cast = it.shadow ?? defaults.shadow ?? ((size.y > 0.3 && big > 0.3) || big > 0.9);
     wrap.traverse((o) => {
       if (!o.isMesh) return;
       const clear = [].concat(o.material).some((m) => m && (m.transparent || (m.transmission ?? 0) > 0));
@@ -305,7 +307,8 @@ export class Furnisher {
     const plain = (m) => m.isMeshStandardMaterial && !m.map && !m.normalMap && !m.roughnessMap && !m.metalnessMap && !m.aoMap &&
       !m.emissiveMap && !m.alphaMap && !(m.transmission > 0) && !(m.clearcoat > 0) && !(m.sheen > 0) && m.emissive.getHex() === 0 && !m.userData?.night;
     this.work.updateMatrixWorld(true);
-    const byRoom = new Map(this.placed.filter((p) => !p.instanced).map((p) => [p.wrap, p.room]));
+    // grouped per LEVEL (not per room): fewer draw calls; indoors the frustum rarely culls a whole room anyway
+    const byRoom = new Map(this.placed.filter((p) => !p.instanced).map((p) => [p.wrap, `L${p.floorY.toFixed(2)}`]));
     for (const wrap of [...this.work.children]) {
       const room = byRoom.get(wrap) ?? '_';
       wrap.traverse((o) => {

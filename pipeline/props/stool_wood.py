@@ -1,14 +1,17 @@
-# Simple beech work stool: round 0.32 m seat at 0.46 m, four splayed legs, rung ring.
-import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import helpers as H, _p04kit as K
+# Solid ash bathroom stool (P07): round dished seat 0.32 m, three splayed legs with a stretcher ring. ~0.46 m
+import sys; sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
+import helpers as H, _kit as K
 from helpers import V, PI
-import math, numpy as np
+import math
 H.reset()
-w = K.wood('beech', '#d6b48a', '#c5a074', '#a98458', 0.65, seed=51)
-s = H.cyl('seat', 0.16, 0.03, loc=(0, 0, 0.43), seg=40, mat=w, bev=0.008); H.uv_planar(s, 0.4)
-for i in range(4):
-    a = PI / 4 + i * PI / 2
-    l = K.rod('leg', (math.cos(a) * 0.19, math.sin(a) * 0.19, 0), (math.cos(a) * 0.1, math.sin(a) * 0.1, 0.43), 0.017, w, 12); H.uv_cyl(l, 0.3)
-    b = a + PI / 2
-    K.rod('rung', (math.cos(a) * 0.162, math.sin(a) * 0.162, 0.15), (math.cos(b) * 0.162, math.sin(b) * 0.162, 0.15), 0.01, w, 8)
-H.finish('stool_wood')
+ash = K.wood('ash_stool', light='#d7bf98', mid='#bfa27a', dark='#977a55', seed=26)
+Hh, R = 0.46, 0.16
+s = H.lathe('seat', [(0.0, Hh - 0.028), (R - 0.01, Hh - 0.03), (R, Hh - 0.02), (R, Hh - 0.006), (R - 0.008, Hh), (R * 0.5, Hh - 0.004), (0.0, Hh - 0.006)], 64, ash, sharp=40)
+H.uv_planar(s, 1.0)
+for k in range(3):
+    a = 2 * PI * k / 3
+    top = V((math.cos(a) * 0.09, math.sin(a) * 0.09, Hh - 0.03)); bot = V((math.cos(a) * 0.17, math.sin(a) * 0.17, 0.0))
+    l = H.tube('leg', [bot, top], 0.017, 12, ash); H.uv_box(l, 1.0, along='z')
+ring = [V((math.cos(t / 48 * 2 * PI) * 0.135, math.sin(t / 48 * 2 * PI) * 0.135, 0.16)) for t in range(48)]
+H.tube('stretcher', ring, 0.009, 8, ash, closed=True, up=(0, 0, 1))
+H.finish('stool_wood', extras={'texres': 512})

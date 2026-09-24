@@ -213,8 +213,8 @@
   `candlesticks_brass#brass_candleholder_01|02|03`, `wine_bottles#wine_bottles_01_bordeaux|_burgundy`. Some props are
   built oversize to match existing `scale` values in furniture.json (see the manifest `use` text).
 - **Triangle caps**: `pack.mjs` MAXTRIS table (meshoptimizer; UVs are dropped on untextured primitives, normals are snapped so
-  vertices weld). **Draw calls**: after instancing, `Furnisher._merge()` bakes the remaining opaque, non-emissive meshes per
-  room into one mesh per material. Untextured GLB materials become a shared vertex-colour material per roughness/metalness
+  vertices weld). **Draw calls**: after instancing, `Furnisher._merge()` bakes the remaining opaque, non-emissive meshes per level (floor)
+  into one mesh per material. Untextured GLB materials become a shared vertex-colour material per roughness/metalness
   bucket (`P07_plain_*`). Meshes with transparent, emissive or night-glow materials, or with `userData.noMerge`, stay separate.
   Stats: `report.merged`.
 

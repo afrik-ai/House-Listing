@@ -94,5 +94,21 @@
    1280,
    720
   ]
+ },
+ "street_approach": {
+  "fps": 0,
+  "drawCalls": 1974,
+  "triangles": 3398285,
+  "textures": 403,
+  "geometries": 744,
+  "programs": 196,
+  "memoryMB": 125,
+  "gpuTexMB": 1006,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
  }
 }

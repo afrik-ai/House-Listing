@@ -7,7 +7,7 @@ terrace, double garage; ground + first floor plans encoded in the spec) and a RE
 Quality bar: side-by-side blind comparison against House Flipper 2 screenshots must be won or tied.
 
 ## Stack (fixed — do not swap)
-- Vite 8 dev server on **http://127.0.0.1:5173** (already running; do NOT start another; HMR is on).
+- Vite 8 dev server on **http://127.0.0.1:5174** by default (`npm run dev`; set PORT to change it). Only one runs at a time; do NOT start another (HMR is on). Tools auto-detect ports 5173-5176 or use HOUSE_BASE.
 - Three.js **0.186** (`import * as THREE from 'three'`, addons from `three/addons/...`). WebGLRenderer.
 - Blender 5.x headless. Every pipeline entry point reads the **`BLENDER`** env var (the executable), defaulting to
   `tools/blender-5.2.1-windows-x64/blender.exe` on Windows and `tools/blender/blender` elsewhere:
@@ -22,7 +22,12 @@ Quality bar: side-by-side blind comparison against House Flipper 2 screenshots m
 - Assets: CC0 only (Poly Haven models/textures/HDRIs via https://polyhaven.com/api, ambientCG). Keep every
   texture <= 2048px and prefer 1024px. Total shipped assets target < 150 MB. Record every downloaded asset
   in `public/assets/CREDITS.md` (name, source URL, license).
-- No git repo. Do not create one. Do not delete other agents' files.
+- Git repo (GitHub: afrik-ai/House-Listing, branch `main`). Only the orchestrator commits. Do not delete other agents' files.
+
+## Process (read before working)
+- `docs/LOOP.md`: the build/critic loop, rules learned so far, and prompt templates for every role.
+- `docs/NEW_HOUSE.md`: from a client's plans and photos (`houses/<id>/input/`) to a playable house.
+- Quality gates: `npm run check -- --id <id>` (boot, walkability, performance, views). A FAIL blocks "done" and commits.
 
 ## Pages
 - `/` (index.html) — Catalog: hero, house cards (only Villa Nova real; 2 "coming soon" cards), Enter House.

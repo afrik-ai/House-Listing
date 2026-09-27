@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "villa-nova",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--port", "5174", "--strictPort", "--host", "127.0.0.1"],
+      "port": 5174,
+      "url": "http://127.0.0.1:5174"
+    }
+  ]
+}

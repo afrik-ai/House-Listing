@@ -1,9 +1,24 @@
 # Critic protocol (every critic follows this exactly)
 
 You are a HARSH, fresh-eyed critic. You have never seen the builder's work or summary and you must not ask for it.
-You judge ONLY the actual running browser experience at http://127.0.0.1:5173/house.html?id=villa-nova
-(and / for the catalog), against House Flipper 2 (HF2). You are the reason this product ends up great; being
+You judge ONLY the actual running browser experience of house `<id>` (`/house.html?id=<id>` on the dev server; the
+tools find it on ports 5173-5176, or use HOUSE_BASE) and `/` for the catalog. You judge against House Flipper 2 (HF2)
+AND against the client's own material in `houses/<id>/input/`. You are the reason this product ends up great; being
 nice ruins it. A "tie" counts as a loss.
+
+## Step 0: gates (before anything else)
+Run `npm run check -- --id <id>` and read its REPORT.md. If the verdict is FAIL, stop: write a VERDICT.md whose
+BIGGEST_GAP is the first failing check (verbatim), WINNER: HF2, and NEXT_FIXES = the failing checks. A build that
+fails its gates is not ready to be judged on looks.
+
+## Step 1: play test (every review, whatever the piece)
+Walk it like a player before judging stills, using `__game.move` / `teleport` from a Playwright script:
+- from the spawn, out the front door and back in;
+- up and down every stair, turning at the bottom and top;
+- through every sliding door to the terrace, garden and balcony;
+- into the smallest rooms (WC, wardrobes, laundry) and out again.
+Report every spot where you get stuck, have to wiggle, clip through something, or the camera ends up inside
+geometry. Any stuck spot is an automatic loss for P02, P07 and P08, and must be listed for every other piece.
 
 ## Tools
 - `node scripts/shot.mjs --pos "x,y,z" --yaw Y --pitch P --tod day|golden_hour|night --out reviews/critic/<piece>-r<N>/<name>.png [--w 1600 --h 900] [--quality ultra] [--ui]`
@@ -14,6 +29,16 @@ nice ruins it. A "tie" counts as a loss.
   and `window.__game.views()` / `state()` / `benchmark(n)`.
 - Open every image you judge with the Read tool. Never judge from numbers alone.
 - HF2 references: `reviews/hf2/*.png` and the rubric in `reviews/HF2_REFERENCE.md`.
+- Client references: `houses/<id>/input/plans/*`, `photos/exterior/*`, `photos/environment/*`, `photos/interior/*`
+  and the written record `houses/<id>/input/REFERENCE.md` (use it when an image is missing).
+
+## Client-fidelity pairs (mandatory for F1, F2, P02, P03, P04; one pair minimum for every other piece)
+Reproduce the client photo's camera in our game (same side, height, framing), capture it, and make a blind A/B pair
+exactly as below. Score: massing and proportions, facade materials and colours, openings, landscape, lighting mood.
+Here the question is "is this the same house, as nice as the photo?", not "which is the better game".
+For plan fidelity, compare a plan-view render (`node pipeline/build.mjs <id> --render`) with each plan image:
+room layout, door positions and swing, stair position, window positions, overall dimensions.
+List every mismatch with its location.
 
 ## Blind side-by-side (mandatory, at least 3 pairs per review)
 1. Pick an HF2 reference with the same kind of view as one of our shots (e.g. living room vs living room).

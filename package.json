@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check": "node scripts/check.mjs",
+    "check:walk": "node scripts/check.mjs --only walk",
+    "shot": "node scripts/shot.mjs",
+    "tour": "node scripts/tour.mjs",
+    "build:house": "node pipeline/build.mjs"
   },
   "keywords": [],
   "author": "",

@@ -259,3 +259,11 @@
   `report.view` is the current view.
 - Also: `_unpoke()` pushes floor pieces out of walls. Planters inside a room's spawn view are skipped. A vanity mirror in front
   of a window is dropped. Bedding is tinted per bedroom (`ROOM_TINTS`). Mirror and car-paint materials are corrected at load.
+
+## Physics update (2026-09-26): player width and slopes
+- Player capsule radius is now 0.25 m (was 0.3), so the 0.78 m corridor beside the stair is comfortable to walk.
+- `moveCapsule` follows walkable ground (`groundNormal(p, maxDrop)`, normal Y ≥ `maxSlopeNormalY` = 0.55): the horizontal
+  move is tilted onto the slope before collision. Ramps such as COL_stair are climbed and descended without stalling
+  or floating (constant ~5 cm clearance on the 34° stair ramp).
+- Furniture must keep the hall-to-vestibule lane clear (x 8–10, z 3.7–4.4): the stair foot and the front-door swing
+  leave no room for floor items there.

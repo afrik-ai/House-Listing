@@ -859,6 +859,24 @@
      },
      "collide": false,
      "id": "runner"
+    },
+    {
+     "proc": "planter",
+     "pos": [
+      3.4,
+      0,
+      4.6
+     ],
+     "params": {
+      "plant": "plant_fern_b",
+      "pot": "taper",
+      "r": 0.17,
+      "h": 0.36,
+      "mat": "ceramic_black",
+      "plantScale": 0.6,
+      "plantRot": 0
+     },
+     "note": "moved out of the vestibule: at (9.52, 4.2) it blocked the only lane from the hall to the front door and stair. No wall snap: the fern's leaves offset the snap ray past this short wall (face at z 4.89)."
     }
    ]
   },
@@ -902,24 +920,6 @@
      "snap": "S",
      "rayY": 1.5499999999999998,
      "gap": 0.005
-    },
-    {
-     "proc": "planter",
-     "pos": [
-      9.52,
-      0,
-      4.2
-     ],
-     "params": {
-      "plant": "plant_fern_b",
-      "pot": "taper",
-      "r": 0.17,
-      "h": 0.36,
-      "mat": "ceramic_black",
-      "plantScale": 0.6,
-      "plantRot": 0
-     },
-     "snap": "S"
     }
    ]
   },
@@ -1715,12 +1715,13 @@
     {
      "model": "car_suv",
      "pos": [
-      10.65,
+      10.75,
       0,
-      0.45
+      -0.25
      ],
      "rotY": 90,
-     "id": "car"
+     "id": "car",
+     "note": "kept south of z 0.9 so the boiler door (x 7.6, z 1.0-1.8) and the vestibule door stay reachable"
     },
     {
      "model": "bicycle",
@@ -1798,7 +1799,7 @@
      "pos": [
       8.2,
       0,
-      -1.42
+      -1.62
      ],
      "rotY": 90,
      "snap": "W",

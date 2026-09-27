@@ -8,7 +8,7 @@ export BLENDER=$PWD/pipeline/bin/blender-bpy              # bpy module shim (pip
 export CHROMIUM_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome
 export HARNESS_SLOW=6                                     # SwiftShader: one frame can take seconds
 ```
-- Vite: one shared server on http://127.0.0.1:5173, started by the orchestrator. Never start another.
+- Vite: one shared server (`npm run dev`, port 5174 by default), started by the orchestrator. Never start another.
 - Rendering is SwiftShader (CPU). A harness boot takes ~3-4 min. Judge visuals from screenshots; fps and
   frame times are RELATIVE only (compare before/after on this machine, never against the 60 fps target).
 - 4 CPUs are shared by all agents. Batch views: one `tour.mjs` run or one custom script that captures many views

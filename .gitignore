@@ -28,3 +28,6 @@ Thumbs.db
 
 # Local Claude Code session state
 .claude/*.lock
+
+# Quality-gate run folders (regenerate with npm run check); latest.json is kept as the last result
+reviews/check/*/20*/

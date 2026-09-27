@@ -1,7 +1,7 @@
 // Screenshot harness (P01).
 //   node scripts/shot.mjs --pos "x,y,z" --yaw 0 --pitch 0 --tod day --out reviews/x.png
 //        [--w 1920 --h 1080] [--quality ultra] [--ui] [--id villa-nova] [--room living] [--view ext_garden_sw]
-//        [--base http://127.0.0.1:5173] [--bench] [--hmr] [--attempts 3]
+//        [--base URL (default: HOUSE_BASE or auto-detect ports 5173-5176)] [--bench] [--hmr] [--attempts 3]
 // Robust to Vite HMR reloads: the page's HMR socket is blocked unless --hmr; __game.ready is retried up to
 // --attempts (3) times (first load <= 5 min per attempt with progress lines, every later wait <= 60 s);
 // the JSON reports readyAttempt/reloads.
@@ -57,7 +57,25 @@ export function hard(promise, ms = WAIT_MS, label = 'wait') {
 // First load: up to `bootTimeout` (5 min) per attempt with progress lines; later waits: `timeout` (60 s).
 // Returns {browser, page, errors, warnings, loadMs, gpu, readyAttempt, reloads, waitReady}.
 // `errors` only holds errors of the page lifetime that succeeded (earlier ones: `staleErrors`).
-export async function openGame({ base = 'http://127.0.0.1:5173', id = 'villa-nova', w = 1920, h = 1080, quality = 'high', tod = 'day', timeout = WAIT_MS, bootTimeout = BOOT_MS, attempts = 3, query = '', hmr = false, quiet = false } = {}) {
+// Finds the running HouseListing dev server: HOUSE_BASE if set, else the first of ports 5173-5176 whose
+// /house.html is ours (another project may hold 5173). Throws with a start command if none is found.
+export async function findBase() {
+  if (process.env.HOUSE_BASE) return process.env.HOUSE_BASE.replace(/\/$/, '');
+  for (let pass = 0; pass < 3; pass++) {   // a server that just started may not answer the first request
+    for (const port of [5173, 5174, 5175, 5176]) {
+      const url = `http://127.0.0.1:${port}`;
+      try {
+        const res = await fetch(`${url}/house.html`, { signal: AbortSignal.timeout(5000) });
+        if (res.ok && (await res.text()).includes('/src/game/main.js')) return url;
+      } catch { /* nothing listening */ }
+    }
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+  throw new Error('No HouseListing dev server found on ports 5173-5176. Start one: npx vite --port 5174 --host 127.0.0.1 (or set HOUSE_BASE)');
+}
+
+export async function openGame({ base, id = 'villa-nova', w = 1920, h = 1080, quality = 'high', tod = 'day', timeout = WAIT_MS, bootTimeout = BOOT_MS, attempts = 3, query = '', hmr = false, quiet = false } = {}) {
+  base = base || await findBase();
   const browser = await chromium.launch({ headless: true, args: GPU_ARGS, executablePath: CHROMIUM_PATH });
   const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1 });
   page.setDefaultTimeout(timeout);

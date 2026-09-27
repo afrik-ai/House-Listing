@@ -1,0 +1,360 @@
+{
+ "id": "villa-nova",
+ "stamp": "2026-09-27T13-39-15",
+ "verdict": "PASS",
+ "pass": 44,
+ "warn": 13,
+ "fail": 0,
+ "budget": {
+  "trianglesMax": 1500000,
+  "drawCallsMax": 900,
+  "frameMsMax": 16.7,
+  "note": "Performance budget checked by scripts/check.mjs (perf gate). Numbers are for the busiest standard views on 'high'. frameMsMax is only judged on a real GPU."
+ },
+ "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3080 (0x00002216) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+ "results": [
+  {
+   "gate": "boot",
+   "name": "furniture models exist",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "boot",
+   "name": "no failed plugins",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "boot",
+   "name": "no console errors",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "boot",
+   "name": "no missing asset requests",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "boot",
+   "name": "load time",
+   "status": "PASS",
+   "detail": "184.1 s to ready"
+  },
+  {
+   "gate": "walk",
+   "name": "spawn not inside geometry",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "spawn view is open",
+   "status": "PASS",
+   "detail": "first surface 8.8 m ahead"
+  },
+  {
+   "gate": "walk",
+   "name": "D_front into vestibule",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_front out of vestibule",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_garage into garage",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_garage out of garage",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_office into office",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_office out of office",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_wc into wc",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_wc out of wc",
+   "status": "WARN",
+   "detail": "(started 0.6 m out: nearer spots are blocked)"
+  },
+  {
+   "gate": "walk",
+   "name": "D_storage_n into storage_n",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_storage_n out of storage_n",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_boiler into boiler",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_boiler out of boiler",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_cloak into cloak",
+   "status": "WARN",
+   "detail": "(started 0.6 m out: nearer spots are blocked)"
+  },
+  {
+   "gate": "walk",
+   "name": "D_cloak out of cloak",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_storage_e into storage_e",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_storage_e out of storage_e",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_master into master",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_master out of master",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_bed2 into bed2",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_bed2 out of bed2",
+   "status": "WARN",
+   "detail": "(started 0.75 m out: nearer spots are blocked)"
+  },
+  {
+   "gate": "walk",
+   "name": "D_bed3 into bed3",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_bed3 out of bed3",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_wardrobe_b into wardrobe_b",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_wardrobe_b out of wardrobe_b",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_bath2 into bath2",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_bath2 out of bath2",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_bath3 into bath3",
+   "status": "WARN",
+   "detail": "(started 0.6 m out: nearer spots are blocked)"
+  },
+  {
+   "gate": "walk",
+   "name": "D_bath3 out of bath3",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_laundry into laundry",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_laundry out of laundry",
+   "status": "WARN",
+   "detail": "(started 0.75 m out: nearer spots are blocked)"
+  },
+  {
+   "gate": "walk",
+   "name": "D_wardrobe_a into wardrobe_a",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_wardrobe_a out of wardrobe_a",
+   "status": "WARN",
+   "detail": "(started 0.6 m out: nearer spots are blocked)"
+  },
+  {
+   "gate": "walk",
+   "name": "D_bath_master into bath_master",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "D_bath_master out of bath_master",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "W_living_w out of living",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "W_living_w into living",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "W_living_s out of living",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "W_living_s into living",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "W_master_w out of master",
+   "status": "WARN",
+   "detail": "(started 0.75 m out: nearer spots are blocked)"
+  },
+  {
+   "gate": "walk",
+   "name": "W_master_w into master",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "stair main up",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "walk",
+   "name": "stair main down",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "gate": "perf",
+   "name": "living",
+   "status": "WARN",
+   "detail": "3.35M tris, 660 calls, 17.9 ms/frame | over: triangles 3.35M > 1.50M; frame 17.9 ms > 16.7 ms"
+  },
+  {
+   "gate": "perf",
+   "name": "kitchen",
+   "status": "WARN",
+   "detail": "3.91M tris, 878 calls, 21.4 ms/frame | over: triangles 3.91M > 1.50M; frame 21.4 ms > 16.7 ms"
+  },
+  {
+   "gate": "perf",
+   "name": "master",
+   "status": "WARN",
+   "detail": "2.31M tris, 677 calls, 17.4 ms/frame | over: triangles 2.31M > 1.50M; frame 17.4 ms > 16.7 ms"
+  },
+  {
+   "gate": "perf",
+   "name": "bath_master",
+   "status": "WARN",
+   "detail": "2.72M tris, 712 calls, 17.0 ms/frame | over: triangles 2.72M > 1.50M; frame 17.0 ms > 16.7 ms"
+  },
+  {
+   "gate": "perf",
+   "name": "ext_front_east",
+   "status": "WARN",
+   "detail": "2.58M tris, 708 calls, 13.3 ms/frame | over: triangles 2.58M > 1.50M"
+  },
+  {
+   "gate": "perf",
+   "name": "ext_garden_sw",
+   "status": "WARN",
+   "detail": "2.32M tris, 709 calls, 12.9 ms/frame | over: triangles 2.32M > 1.50M"
+  },
+  {
+   "gate": "views",
+   "name": "10 standard views captured",
+   "status": "PASS",
+   "detail": "reviews\\check\\villa-nova\\2026-09-27T13-39-15\\index.html"
+  },
+  {
+   "gate": "views",
+   "name": "changed since last check",
+   "status": "PASS",
+   "detail": "no big changes"
+  }
+ ],
+ "dir": "reviews\\check\\villa-nova\\2026-09-27T13-39-15"
+}

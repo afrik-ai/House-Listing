@@ -6,7 +6,8 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 // The player is a vertical capsule; `pos` everywhere below is the FEET position
 // (bottom of the capsule, i.e. the point that rests on the floor).
 export class Physics {
-  constructor({ radius = 0.3, height = 1.75, stepHeight = 0.25, gravity = -18 } = {}) {
+  // radius 0.25: a 0.5 m wide body fits the 0.78 m corridor beside the stair with room to steer.
+  constructor({ radius = 0.25, height = 1.75, stepHeight = 0.25, gravity = -18 } = {}) {
     this.radius = radius;
     this.height = height;
     this.stepHeight = stepHeight;
@@ -22,6 +23,9 @@ export class Physics {
     this._dir = new THREE.Vector3();
     this._ray = new THREE.Ray();
     this._tmp = new THREE.Vector3();
+    this._slopeDelta = new THREE.Vector3();
+    this._groundN = new THREE.Vector3();
+    this.maxSlopeNormalY = 0.55;   // walkable if the ground normal's Y is at least this (about 56 degrees)
   }
 
   // Build the static collider from a list of meshes (world transforms are baked in).
@@ -57,6 +61,17 @@ export class Physics {
     const result = out;
     result.pos = result.pos || new THREE.Vector3();
     if (!this.bvh) { result.pos.copy(pos).add(delta); result.onGround = false; result.blocked = false; return result; }
+
+    // On walkable ground, tilt the horizontal move to follow the surface. Moving flat into a slope
+    // (e.g. the stair's collision ramp) gets pushed back out along its normal, which cancels most of
+    // each step; following the plane climbs ramps cleanly and keeps contact walking down them.
+    if (delta.y <= 0 && (delta.x !== 0 || delta.z !== 0)) {
+      const n = this.groundNormal(pos, 0.3);
+      if (n && n.y < 0.999) {
+        const rise = -(n.x * delta.x + n.z * delta.z) / n.y;
+        delta = this._slopeDelta.set(delta.x, delta.y + rise, delta.z);
+      }
+    }
 
     const start = this._tmp.copy(pos);
     const p = result.pos.copy(pos).add(delta);
@@ -126,6 +141,15 @@ export class Physics {
   groundBelow(p, maxDrop) {
     const hit = this.raycast(this._ray.origin.set(p.x, p.y + this.radius, p.z), this._ray.direction.set(0, -1, 0), this.radius + maxDrop);
     return hit ? hit.point.y : null;
+  }
+
+  // Upward-facing normal of walkable ground directly below feet position p (within maxDrop), or null.
+  groundNormal(p, maxDrop) {
+    const hit = this.raycast(this._ray.origin.set(p.x, p.y + this.radius, p.z), this._ray.direction.set(0, -1, 0), this.radius + maxDrop);
+    if (!hit?.face?.normal) return null;
+    const n = this._groundN.copy(hit.face.normal);
+    if (n.y < 0) n.negate();
+    return n.y >= this.maxSlopeNormalY ? n : null;
   }
 
   raycast(origin, direction, far = Infinity) {

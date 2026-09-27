@@ -1,6 +1,6 @@
 // Standard tour (P01): every room + 4 exteriors (+ golden-hour and night variants of the garden view).
 //   node scripts/tour.mjs --out reviews/tour-<name>/ [--w 1600 --h 900] [--quality high] [--tod day]
-//        [--ui] [--id villa-nova] [--only living,kitchen] [--no-variants] [--base http://127.0.0.1:5173]
+//        [--ui] [--id villa-nova] [--only living,kitchen] [--no-variants] [--base URL (default: HOUSE_BASE or auto-detect ports 5173-5176)]
 //        [--hmr] [--attempts 3]   (HMR blocked by default; reload-retry as in shot.mjs)
 // Writes <out>/NN_<view>.png, <out>/index.html (contact sheet) and <out>/stats.json
 // (per-shot __game.stats(), GPU benchmark, load time, console errors). Exit code 2 on console errors.

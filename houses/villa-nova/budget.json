@@ -1,0 +1,6 @@
+{
+  "note": "Performance budget checked by scripts/check.mjs (perf gate). Numbers are for the busiest standard views on 'high'. frameMsMax is only judged on a real GPU.",
+  "trianglesMax": 1500000,
+  "drawCallsMax": 900,
+  "frameMsMax": 16.7
+}

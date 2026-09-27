@@ -1,8 +1,8 @@
 {
- "updated": "2026-09-24T12:44:42.632Z",
+ "updated": "2026-09-27T01:11:21.101Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
- "headline": "Resumed in a Linux cloud session: asset sources blocked, rebuilding textures, furniture and vegetation procedurally",
+ "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
  "pieces": [
   {
    "id": "P01",
@@ -373,6 +373,36 @@
  ],
  "shots": [
   {
+   "t": "2026-09-27T01:11:21.059Z",
+   "src": "/reviews/gallery/01_street_day.png",
+   "caption": "street day"
+  },
+  {
+   "t": "2026-09-27T01:11:21.019Z",
+   "src": "/reviews/gallery/02_living_day.png",
+   "caption": "living day"
+  },
+  {
+   "t": "2026-09-27T01:11:20.980Z",
+   "src": "/reviews/gallery/03_garden_day.png",
+   "caption": "garden day"
+  },
+  {
+   "t": "2026-09-27T01:11:20.936Z",
+   "src": "/reviews/gallery/05_garden_night.png",
+   "caption": "garden night"
+  },
+  {
+   "t": "2026-09-27T01:11:20.896Z",
+   "src": "/reviews/gallery/07_master_bedroom_night.png",
+   "caption": "master bedroom night"
+  },
+  {
+   "t": "2026-09-27T01:11:20.843Z",
+   "src": "/reviews/gallery/08_street_night.png",
+   "caption": "street night"
+  },
+  {
    "t": "2026-09-24T12:22:44.931Z",
    "src": "/reviews/critic/TEX-r3/ext_front_east.png",
    "caption": "TEX r3 critic view"
@@ -461,36 +491,6 @@
    "t": "2026-09-23T06:29:56.776Z",
    "src": "/reviews/P02-r1/terrace_pillar.png",
    "caption": "P02 r1 critic view"
-  },
-  {
-   "t": "2026-09-23T06:26:38.503Z",
-   "src": "/reviews/props/car_suv.png",
-   "caption": "Blender-built prop: car"
-  },
-  {
-   "t": "2026-09-23T06:25:07.675Z",
-   "src": "/reviews/props/bed_double_modern.png",
-   "caption": "Blender-built prop"
-  },
-  {
-   "t": "2026-09-23T06:14:52.452Z",
-   "src": "/reviews/p02-blender/02_east_from_street.png",
-   "caption": "P02 Blender preview, street side"
-  },
-  {
-   "t": "2026-09-23T06:14:21.247Z",
-   "src": "/reviews/p02-blender/02_east_from_street.png",
-   "caption": "P02 Blender preview"
-  },
-  {
-   "t": "2026-09-23T06:12:00.960Z",
-   "src": "/reviews/p02-blender/03_sw_aerial.png",
-   "caption": "P02 Blender house shell, SW aerial"
-  },
-  {
-   "t": "2026-09-23T01:56:42.153Z",
-   "src": "/reviews/P01-r1/flow_title_card_b.png",
-   "caption": "P01 r1 critic view"
   }
  ]
 }

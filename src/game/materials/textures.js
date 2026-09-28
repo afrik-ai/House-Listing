@@ -333,6 +333,8 @@ SfOut sfEval() {
       // glazed tiles: faint low-frequency waviness from the plaster normal
       n = textureGrad(sfPlasterMap, uv * 0.5 + h, g1 * 0.5, g2 * 0.5).xyz * 2.0 - 1.0;
       n.xy *= sfNormalK;
+      // per-tile lippage: each glazed tile sits a fraction of a degree off-plane -> reflections break tile to tile
+      n.xy += (sfHash2(cell + vec2(17.1, 5.3)) - 0.5) * 0.07;
     #endif
   #else
       vec3 c = textureGrad(sfColorMap, uv, g1, g2).rgb;
@@ -353,7 +355,7 @@ SfOut sfEval() {
     o.nW = normalize(mix(nT, N, grout));
     o.albedo = mix(o.albedo, sfGroutColor * (1.0 + macro * sfMacro.x), grout);
     o.rough = mix(o.rough, sfGroutRough, grout);
-    o.coat = sfCoat * (1.0 - grout);
+    o.coat = sfCoat * (1.0 - grout) * (0.45 + 0.55 * h.y);
     o.ao = 1.0 - sfAO * grout;
 #endif
   } else {

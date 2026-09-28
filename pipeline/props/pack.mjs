@@ -19,7 +19,7 @@ const MAXTRIS = {
   basket_wicker: 1500, laundry_basket_wicker: 2500, rubber_duck: 1200, candlesticks_brass: 5000, laptop: 2500,
   desk_lamp: 2200, gaming_console: 1800, fruit_bowl_wood: 1800, alarm_clock: 1500, cleaner_bottle: 1000,
   bookshelf_worn: 9000,
-  car_suv: 6500, garage_shelves_steel_narrow: 1400, crate_plastic: 1200, plant_succulent_small: 1200,
+  car_suv: 6500, workbench_pegboard: 2600, garage_shelves_steel_narrow: 1400, crate_plastic: 1200, plant_succulent_small: 1200,
   pendant_lamp_modern: 1800,
   chess_set: 4000,
   bed_double_gothic: 8000,

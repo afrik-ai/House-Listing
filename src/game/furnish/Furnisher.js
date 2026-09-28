@@ -29,6 +29,13 @@ const LAYOUT_FIX = {
 // everything standing on it move 0.35 m west (1.0 m aisle). terrace: the lounge coffee table / lantern closed the
 // gap in front of the sofa -> 0.35 m further west. wardrobe_a: the 2.1 m closet filled the room -> 1.3 m.
 const LAYOUT_RULES = [
+  // storage / garage: crates dropped on the steel shelves follow the shelf orientation (they clipped the uprights)
+  { room: 'storage_n', test: (it) => it.model === 'crate_plastic', fix: (it) => ({ rotY: it.pos[0] > 4.6 ? -90 : 0 }) },
+  { room: 'garage', test: (it) => it.model === 'crate_plastic', fix: () => ({ rotY: 0 }) },
+  // garage: red tool chest stands on the floor, toolbox on the cart, bike along the south wall (out of the view pose)
+  { room: 'garage', test: (it) => it.model === 'tool_chest', fix: () => ({ pos: [10.55, 0, -2.85], drop: undefined, snap: 'N' }) },
+  { room: 'garage', test: (it) => it.model === 'toolbox', fix: () => ({ pos: [9.8, 0, -2.7], drop: 1.5 }) },
+  { room: 'garage', test: (it) => it.model === 'bicycle', fix: () => ({ pos: [9.2, 0, 2.2], rotY: 0, snap: 'S' }) },
   { room: 'kitchen', test: (it) => it.pos[0] > 8.5 && it.pos[0] < 10.45 && it.id !== 'run', fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
   { room: 'terrace', test: (it) => (it.id === 'terrace_coffee' || it.model === 'lantern' || it.model === 'plant_succulent_small') && it.pos[2] > 4, fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
   { room: 'wardrobe_a', test: (it) => it.proc === 'closet', fix: (it) => ({ params: { ...it.params, sections: [{ type: 'hang', w: 0.8 }, { type: 'shelves', w: 0.5 }] } }) },
@@ -110,10 +117,22 @@ export class Furnisher {
     return it;
   }
 
+  // Extra pieces added in code (garage workbench + pegboard, oil stain under the car).
+  _extras() {
+    return {
+      garage: [
+        { model: 'workbench_pegboard', pos: [11.75, 0, -2.9], snap: 'N', id: 'workbench' },
+        { proc: 'stain', pos: [10.9, 0, 0.5], params: { w: 1.4, d: 1.0, seed: 3 }, collide: false, shadow: false, id: 'oil_stain' },
+      ],
+    };
+  }
+
   _flatten(data) {
     const out = [];
     const rooms = this.game.house.rooms();
-    for (const [roomId, room] of Object.entries(data.rooms || {})) {
+    const extras = this._extras();
+    for (const [roomId, room0] of Object.entries(data.rooms || {})) {
+      const room = extras[roomId] ? { ...room0, items: [...(room0.items || []), ...extras[roomId]] } : room0;
       const r = rooms.find((q) => q.id === roomId);
       const level = room.level || r?.level || 'ground';
       const floorY = room.floorY ?? this._levelFloor(level);
@@ -140,7 +159,7 @@ export class Furnisher {
   _fixMaterial(m) {
     if (/^mirror/i.test(m.name)) { m.color.set('#aab6bc'); m.metalness = 0.35; m.roughness = 0.1; m.envMapIntensity = 1.6; m.emissive?.set('#3c4549'); }
     if (/^grille$|^drl_led$/i.test(m.name) && m.color.getHex() === 0xffffff) m.color.set(/grille/i.test(m.name) ? '#1d1f21' : '#dfe6ee');
-    if (/^glass_tinted$/i.test(m.name)) { m.color.set('#0c1115'); m.metalness = 0; m.roughness = 0.04; m.transparent = true; m.opacity = 0.82; m.envMapIntensity = 0.8; }
+    if (/^glass_tinted$/i.test(m.name)) { m.color.set('#0a0e11'); m.metalness = 0; m.roughness = 0.12; m.transparent = true; m.opacity = 0.9; m.envMapIntensity = 0.25; }
     if (/paint_graphite/i.test(m.name)) { m.color.set('#56606a'); m.metalness = 0.45; m.roughness = 0.38; m.envMapIntensity = 1.0; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
   }
 
@@ -743,6 +762,14 @@ export class Furnisher {
         if (hit) doors.push(`${op.id} slider walkway blocked by ${o.name}`);
       }
     }
+    // mirrors over windows: any remaining mirror/mirror-frame part on a vanity whose back wall has a window behind it
+    const mirrorsOverWindows = [];
+    for (const p of this.placed) {
+      if (p.item.model !== 'bathroom_vanity' || !this._overWindow(p.item, 1.48, 0.26)) continue;
+      let left = 0; p.wrap.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => /^mirror/i.test(m?.name || ''))) left++; });
+      if (left) mirrorsOverWindows.push(`${p.room}/bathroom_vanity: ${left} mirror part(s) over a window`);
+    }
+    this.report.mirrorsOverWindows = mirrorsOverWindows;
     this.report.overlaps = overlaps; this.report.wallPokes = walls; this.report.doorBlocks = doors;
     const n = overlaps.length + walls.length + doors.length + this.report.warnings.length;
     if (n) console.warn(`[furnish] QA: ${overlaps.length} overlaps, ${walls.length} wall pokes, ${doors.length} blocked doors, ${this.report.warnings.length} warnings — see __furnish.report`);

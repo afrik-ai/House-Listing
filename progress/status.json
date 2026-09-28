@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T17:47:10.990Z",
+ "updated": "2026-09-28T18:01:37.700Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "critic",
+   "status": "lost",
    "round": 2,
-   "verdict": "Solid collision and smooth stairs, but 62deg FOV reads tunnel-like and terrace/balcony footsteps say grass; 0/4 blind",
-   "gap": "The camera defaults to a 62° vertical FOV (HF2 is 75-80), so every walk, stair and sprint frame looks zoomed-in and claustrophobic and the sprint FOV kick is invisible, despite solid collision underneath.",
-   "updated": "2026-09-28T13:14:03.851Z"
+   "verdict": "Solid collision, FOV/sprint/surfaces fixed, but stair-descent 10.6cm pop, floaty stop and 2cm bob lose to HF2 (0/3 close pairs)",
+   "gap": "Walking down the main stair drops the camera 10.6 cm in one tick at the last step, plus a floaty 0.35 s stop glide and ~2 cm head-bob, where HF2 is smooth, stops instantly and bobs a few mm.",
+   "updated": "2026-09-28T18:01:37.645Z"
   },
   {
    "id": "P09",
@@ -393,6 +393,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-28T18:01:37.700Z",
+   "src": "/reviews/critic/P08-r2/f4_midstairs_up.png",
+   "caption": "P08 r2 critic view"
+  },
+  {
    "t": "2026-09-28T17:13:27.417Z",
    "src": "/reviews/critic/TEX-r4/ext_front_east.png",
    "caption": "TEX r4 critic view"
@@ -504,11 +509,6 @@
   },
   {
    "t": "2026-09-23T16:23:20.757Z",
-   "src": "/reviews/p02-blender/02_east_from_street.png",
-   "caption": "P02 r2 street facade"
-  },
-  {
-   "t": "2026-09-23T16:22:48.701Z",
    "src": "/reviews/p02-blender/02_east_from_street.png",
    "caption": "P02 r2 street facade"
   }

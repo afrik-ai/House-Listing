@@ -42,7 +42,7 @@ const sphere = (r, hex, { x = 0, y = 0, z = 0, sy = 1 } = {}) => { const g = new
 const WHITE = '#ffffff';
 function defs() {
   const D = {};
-  D.book = { fp: 0.1, h: 1, parts: [{ geo: bx(1, 1, 1, WHITE, { r: 0.002 }), mat: 'cloth', tint: true }],
+  D.book = { fp: 0.1, h: 1, parts: [{ geo: bx(1, 1, 1, WHITE), mat: 'cloth', tint: true }],
     palette: ['#7a2e26', '#2d4a6b', '#d8cfb8', '#3f5a3c', '#b8892f', '#1f1f22', '#8c6d5a', '#5a6b7a', '#a8543a', '#e3ddd0', '#40324a', '#6f7b5a', '#c9b48a', '#23403a'] };
   D.mug = { fp: 0.055, h: 0.095, parts: [{ geo: merge(lathe([[0.001, 0], [0.036, 0], [0.04, 0.01], [0.04, 0.095], [0.036, 0.095], [0.035, 0.012], [0.001, 0.012]], WHITE, 18),
     torus(0.026, 0.006, WHITE, { arc: Math.PI }).rotateZ(-Math.PI / 2).translate(0.04, 0.05, 0)), mat: 'glaze', tint: true }],
@@ -368,22 +368,39 @@ export class Clutter {
     }
   }
 
-  // Build the InstancedMeshes (one per kind part per floor level). No shadows cast.
+  // Bake everything into ONE static mesh per (material, floor): clutter never moves, so merging beats instancing
+  // on draw calls (7 materials x floors instead of ~100 instanced parts). Tints are baked into vertex colours.
   build(root, mats) {
-    const out = [];
+    const groups = new Map();   // `${mat}|${fy}` -> [geo]
+    const c = new THREE.Color();
     for (const [key, list] of this.inst) {
       const [kind, fy] = key.split('|');
       const d = this.D[kind];
-      d.parts.forEach((part, pi) => {
-        const im = new THREE.InstancedMesh(part.geo, mats[part.mat] || mats.std, list.length);
-        im.name = `FC_${kind}_${pi}_${fy}`;
-        list.forEach((e, i) => { im.setMatrixAt(i, e.m); if (part.tint) im.setColorAt(i, e.c || new THREE.Color(1, 1, 1)); });
-        im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
-        im.castShadow = false; im.receiveShadow = true;
-        im.computeBoundingSphere(); im.computeBoundingBox?.();
-        im.userData.p07 = { floorY: +fy, clutter: true };
-        root.add(im); out.push(im);
-      });
+      for (const part of d.parts) {
+        const gk = `${part.mat}|${fy}`;
+        if (!groups.has(gk)) groups.set(gk, []);
+        for (const e of list) {
+          const g = part.geo.clone(); g.applyMatrix4(e.m);
+          if (part.tint && e.c) {
+            const col = g.attributes.color;
+            for (let i = 0; i < col.count; i++) { c.fromBufferAttribute(col, i).multiply(e.c); col.setXYZ(i, c.r, c.g, c.b); }
+          }
+          groups.get(gk).push(g);
+        }
+      }
+    }
+    const out = [];
+    for (const [gk, geos] of groups) {
+      const [mat, fy] = gk.split('|');
+      const geo = mergeGeometries(geos.map(idx), false);
+      for (const g of geos) g.dispose();
+      if (!geo) continue;
+      geo.computeBoundingSphere(); geo.computeBoundingBox();
+      const m = new THREE.Mesh(geo, mats[mat] || mats.std);
+      m.name = `FC_${mat}_${fy}`;
+      m.castShadow = false; m.receiveShadow = true;
+      m.userData.p07 = { floorY: +fy, clutter: true };
+      root.add(m); out.push(m);
     }
     return out;
   }

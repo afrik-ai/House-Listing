@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T03:54:24.024Z",
+ "updated": "2026-09-28T03:54:56.798Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -61,11 +61,11 @@
   {
    "id": "P07",
    "name": "Furniture & props",
-   "status": "lost",
-   "round": 3,
+   "status": "building",
+   "round": 4,
    "verdict": "HF2 3/3: good bedrooms/office/island clutter but r2 placement bugs persist, baths/halls/garage bare, furniture 746k tris/511 dc over budget",
    "gap": "Placement and polish regressions persist from r2 and clutter is concentrated in a few rooms (office 126 items vs baths/halls 4-7). Worst cases: the bath3 mirror over the window, the black slab filling the kitchen view, the WC door on the vanity and the broken garage car. On top of this, the furniture budget is blown at 746k tris and 511 draw calls.",
-   "updated": "2026-09-28T03:54:23.946Z"
+   "updated": "2026-09-28T03:54:56.798Z"
   },
   {
    "id": "P08",

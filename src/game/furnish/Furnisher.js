@@ -20,6 +20,11 @@ const ROOM_TINTS = {
     bed3: { throw_knit_charcoal: '#5d6f55', cushion_anthracite: '#d8c7a8', cushion_sage: '#b5773f', upholstery_greige: '#8a7a68', duvet_cotton_white: '#dfe6ea', pillow_cotton_white: '#eef1f2' },
   },
 };
+// wc: the vanity sat in the door swing (leaf rests on it) -> slide it along the west wall away from the hinge.
+const LAYOUT_FIX = {
+  'wc/bathroom_vanity': (it) => ({ pos: [it.pos[0], it.pos[1], 3.62] }),
+  'wc/toiletries': (it) => ({ pos: [it.pos[0], it.pos[1], 3.72] }),
+};
 const DIRS = { N: [0, 0, -1], S: [0, 0, 1], E: [1, 0, 0], W: [-1, 0, 0] };
 
 export class Furnisher {
@@ -89,6 +94,12 @@ export class Furnisher {
     return s ? s.elevation : 0;
   }
 
+  // Layout corrections applied on top of furniture.json (critic / P08 placement findings).
+  _fixItem(it) {
+    const f = LAYOUT_FIX[`${it.room}/${it.id || it.model || it.proc}`];
+    return f ? { ...it, ...f(it) } : it;
+  }
+
   _flatten(data) {
     const out = [];
     const rooms = this.game.house.rooms();
@@ -100,7 +111,8 @@ export class Furnisher {
         if (raw.skip) continue;
         const n = raw.repeat?.n || 1;
         for (let k = 0; k < n; k++) {
-          const it = { ...raw, room: roomId, floorY };
+          let it = { ...raw, room: roomId, floorY };
+          it = this._fixItem(it);
           if (k) {
             const st = raw.repeat.step || [0, 0, 0];
             it.pos = [raw.pos[0] + st[0] * k, (raw.pos[1] || 0) + st[1] * k, raw.pos[2] + st[2] * k];
@@ -118,7 +130,8 @@ export class Furnisher {
   _fixMaterial(m) {
     if (/^mirror/i.test(m.name)) { m.color.set('#aab6bc'); m.metalness = 0.35; m.roughness = 0.1; m.envMapIntensity = 1.6; m.emissive?.set('#3c4549'); }
     if (/^grille$|^drl_led$/i.test(m.name) && m.color.getHex() === 0xffffff) m.color.set(/grille/i.test(m.name) ? '#1d1f21' : '#dfe6ee');
-    if (/paint_graphite/i.test(m.name)) { m.color.set('#2d3237'); m.metalness = 0.3; m.roughness = 0.5; m.envMapIntensity = 0.35; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
+    if (/^glass_tinted$/i.test(m.name)) { m.color.set('#0c1115'); m.metalness = 0; m.roughness = 0.04; m.transparent = true; m.opacity = 0.82; m.envMapIntensity = 0.8; }
+    if (/paint_graphite/i.test(m.name)) { m.color.set('#56606a'); m.metalness = 0.45; m.roughness = 0.38; m.envMapIntensity = 1.0; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
   }
 
   async _loadModel(name) {
@@ -207,7 +220,7 @@ export class Furnisher {
       const tint = it.tint || ROOM_TINTS[it.model]?.[it.room];
       key = `${it.model}#${it.variant || ''}#${JSON.stringify(tint || '')}`;
       if (tint) this._tint(object, tint);
-      if (it.model === 'bathroom_vanity' && !this._wallBehind(it, 1.48)) this._dropMaterial(object, /^mirror/);
+      if (it.model === 'bathroom_vanity' && this._overWindow(it, 1.48, 0.26)) this._dropMaterial(object, /^mirror/, `${it.room}/bathroom_vanity`);
     }
     // scale
     const s = it.scale ?? defaults.scale ?? 1;
@@ -285,9 +298,29 @@ export class Furnisher {
   }
 
   // Remove (hide) the sub-meshes / primitives of a model that use a material matching re (e.g. a mirror over a window).
-  _dropMaterial(object, re) {
-    object.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => re.test(m?.name || ''))) { o.visible = false; o.userData.noMerge = true; } });
-    this._warn(`dropped ${re} on a model placed in front of an opening`);
+  _dropMaterial(object, re, who = '') {
+    let n = 0;
+    object.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => re.test(m?.name || ''))) { o.parent.remove(o); n++; } });
+    this._warn(`${who}: removed ${n} ${re} part(s) hanging over a window`);
+  }
+
+  // Would a wall-mounted element at height h (radius r, on the item's back wall) overlap a window opening?
+  // Uses the house spec openings (window centre `at`, width along the wall, sill + height).
+  _overWindow(it, h, r) {
+    const lvl = this.game.house.rooms().find((q) => q.id === it.room)?.level;
+    const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
+    const back = [-Math.sin(yaw), -Math.cos(yaw)];
+    const s = Array.isArray(it.scale) ? it.scale : [it.scale ?? 1, 1, it.scale ?? 1];
+    const depth = 0.5 * (s[2] ?? 1);
+    const cx = it.pos[0] + back[0] * depth / 2, cz = it.pos[2] + back[1] * depth / 2;
+    const elev = this._levelFloor(lvl || 'ground');
+    for (const o of this.game.house.spec?.openings || []) {
+      if (o.type !== 'window' || (lvl && o.level !== lvl)) continue;
+      const d = Math.hypot(o.at[0] - cx, o.at[1] - cz);
+      const y0 = elev + (o.sill ?? 0), y1 = y0 + (o.height ?? 1.2), y = it.floorY + h;
+      if (d < o.width / 2 + r + 0.05 && y + r > y0 && y - r < y1) return true;
+    }
+    return false;
   }
 
   // Pieces that poke through a wall get pushed back out (floor-standing items, before instancing).

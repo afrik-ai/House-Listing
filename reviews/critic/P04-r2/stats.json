@@ -158,5 +158,21 @@
    1280,
    720
   ]
+ },
+ "ext_Front (street, east)_golden_hour": {
+  "fps": 0,
+  "drawCalls": 489,
+  "triangles": 705640,
+  "textures": 340,
+  "geometries": 647,
+  "programs": 197,
+  "memoryMB": 127,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
  }
 }

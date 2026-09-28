@@ -22,6 +22,39 @@ export class Physics {
     this._dir = new THREE.Vector3();
     this._ray = new THREE.Ray();
     this._tmp = new THREE.Vector3();
+    this._tri = new THREE.Triangle();
+    this._sphere = new THREE.Sphere();
+    // Dynamic colliders (door leaves): tested with their CURRENT world matrix every query, so they
+    // follow whatever animates them (P09). Small meshes only (a few dozen triangles each).
+    this.dynamic = [];
+  }
+
+  // Register moving collider meshes (e.g. house.doorColliders). Replaces the previous set.
+  setDynamic(meshes) {
+    this.dynamic = (meshes || []).filter((m) => m?.isMesh && m.geometry?.attributes?.position).map((m) => {
+      const g = m.geometry; if (!g.boundingSphere) g.computeBoundingSphere();
+      return { mesh: m, pos: g.attributes.position, index: g.index };
+    });
+  }
+
+  // Calls fn(triangle) for every dynamic-collider triangle whose mesh bound touches `box`.
+  _eachDynamicTri(box, fn) {
+    const t = this._tri;
+    for (const d of this.dynamic) {
+      const m = d.mesh;
+      if (!m.parent) continue;
+      m.updateWorldMatrix(true, false);
+      this._sphere.copy(m.geometry.boundingSphere).applyMatrix4(m.matrixWorld);
+      if (!box.intersectsSphere(this._sphere)) continue;
+      const n = d.index ? d.index.count : d.pos.count;
+      for (let i = 0; i < n; i += 3) {
+        const ia = d.index ? d.index.getX(i) : i, ib = d.index ? d.index.getX(i + 1) : i + 1, ic = d.index ? d.index.getX(i + 2) : i + 2;
+        t.a.fromBufferAttribute(d.pos, ia).applyMatrix4(m.matrixWorld);
+        t.b.fromBufferAttribute(d.pos, ib).applyMatrix4(m.matrixWorld);
+        t.c.fromBufferAttribute(d.pos, ic).applyMatrix4(m.matrixWorld);
+        fn(t);
+      }
+    }
   }
 
   // Build the static collider from a list of meshes (world transforms are baked in).
@@ -53,8 +86,10 @@ export class Physics {
 
   // Moves a capsule at feet position `pos` by `delta`, sliding along geometry, stepping up
   // small ledges and reporting ground contact. Returns {pos, onGround, blocked}.
-  moveCapsule(pos, delta, out = {}) {
+  moveCapsule(pos, delta, out = {}, opts = {}) {
     const result = out;
+    this._h = opts.height ?? this.height;
+    const snap = opts.snap ?? 0.08;
     result.pos = result.pos || new THREE.Vector3();
     if (!this.bvh) { result.pos.copy(pos).add(delta); result.onGround = false; result.blocked = false; return result; }
 
@@ -82,7 +117,7 @@ export class Physics {
       }
     }
 
-    const groundY = this.groundBelow(p, 0.08);
+    const groundY = this.groundBelow(p, snap);
     result.onGround = (pushUp > 0 && delta.y <= 0) || groundY !== null;
     // Snap down onto the floor below (keeps contact when walking down steps) - but not while a
     // walkable slope is holding us up, or a ramp's foot would be snapped back to the floor forever.
@@ -93,17 +128,25 @@ export class Physics {
 
   // Pushes the capsule (feet at p) out of all intersecting triangles. Returns the total
   // upward push, which is how we detect standing on something.
+  // True when a capsule of `height` at feet p would intersect geometry (used for crouch ceiling checks).
+  overlaps(p, height = this.height, skin = 0.01) {
+    if (!this.bvh) return false;
+    const q = this._tmp2 || (this._tmp2 = new THREE.Vector3());
+    q.copy(p); q.y += skin;
+    const h = this._h; this._h = height;
+    this._resolve(q); this._h = h;
+    return Math.abs(q.x - p.x) > 1e-3 || Math.abs(q.z - p.z) > 1e-3 || Math.abs(q.y - p.y - skin) > 1e-3;
+  }
+
   _resolve(p) {
     const r = this.radius, seg = this._seg, box = this._box;
     let pushUp = 0;
     for (let iter = 0; iter < 4; iter++) {
       seg.start.set(p.x, p.y + r, p.z);
-      seg.end.set(p.x, p.y + this.height - r, p.z);
+      seg.end.set(p.x, p.y + (this._h ?? this.height) - r, p.z);
       box.makeEmpty().expandByPoint(seg.start).expandByPoint(seg.end).expandByScalar(r + 0.01);
       let moved = false;
-      this.bvh.shapecast({
-        intersectsBounds: (b) => b.intersectsBox(box),
-        intersectsTriangle: (tri) => {
+      const hitTri = (tri) => {
           const d = tri.closestPointToSegment(seg, this._triPoint, this._capPoint);
           if (d < r) {
             const depth = r - d;
@@ -114,8 +157,9 @@ export class Physics {
             if (dir.y > 0.5) pushUp += dir.y * depth;
             moved = true;
           }
-        },
-      });
+      };
+      this.bvh.shapecast({ intersectsBounds: (b) => b.intersectsBox(box), intersectsTriangle: hitTri });
+      if (this.dynamic.length) this._eachDynamicTri(box, hitTri);
       p.set(seg.start.x, seg.start.y - r, seg.start.z);
       if (!moved) break;
     }
@@ -131,6 +175,20 @@ export class Physics {
   raycast(origin, direction, far = Infinity) {
     if (!this.bvh) return null;
     this._ray.origin.copy(origin); this._ray.direction.copy(direction).normalize();
-    return this.bvh.raycastFirst(this._ray, THREE.DoubleSide, 0, far);
+    let hit = this.bvh.raycastFirst(this._ray, THREE.DoubleSide, 0, far);
+    if (this.dynamic.length) {
+      const box = this._rbox || (this._rbox = new THREE.Box3());
+      const end = this._tmp3 || (this._tmp3 = new THREE.Vector3());
+      end.copy(this._ray.origin).addScaledVector(this._ray.direction, Math.min(far, 100));
+      box.makeEmpty().expandByPoint(this._ray.origin).expandByPoint(end);
+      const pt = new THREE.Vector3();
+      this._eachDynamicTri(box, (t) => {
+        const r = this._ray.intersectTriangle(t.a, t.b, t.c, false, pt);
+        if (!r) return;
+        const dist = r.distanceTo(this._ray.origin);
+        if (dist <= far && (!hit || dist < hit.distance)) hit = { point: r.clone(), distance: dist, dynamic: true };
+      });
+    }
+    return hit;
   }
 }

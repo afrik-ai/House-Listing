@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-27T01:11:21.101Z",
+ "updated": "2026-09-28T02:18:48.197Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -43,11 +43,11 @@
   {
    "id": "P05",
    "name": "Lighting & atmosphere",
-   "status": "review",
+   "status": "lost",
    "round": 2,
-   "verdict": "",
-   "gap": "",
-   "updated": "2026-09-24T12:22:18.579Z"
+   "verdict": "HF2 4/4 blind: night interior bloom blow-out, black unlit surfaces, weak contact AO",
+   "gap": "Night interiors blow out under heavy low-threshold bloom while unlit surfaces fall to pure black; no restrained exposure or bounce fill",
+   "updated": "2026-09-28T02:18:48.152Z"
   },
   {
    "id": "P06",
@@ -373,6 +373,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-28T02:18:48.197Z",
+   "src": "/reviews/critic/P05-r2/ext1_night.png",
+   "caption": "P05 r2 critic view"
+  },
+  {
    "t": "2026-09-27T01:11:21.059Z",
    "src": "/reviews/gallery/01_street_day.png",
    "caption": "street day"
@@ -486,11 +491,6 @@
    "t": "2026-09-23T11:12:54.385Z",
    "src": "/reviews/p01-r2/flow_glide_2000.png",
    "caption": "P01 r2 entry view (living, sun patches)"
-  },
-  {
-   "t": "2026-09-23T06:29:56.776Z",
-   "src": "/reviews/P02-r1/terrace_pillar.png",
-   "caption": "P02 r1 critic view"
   }
  ]
 }

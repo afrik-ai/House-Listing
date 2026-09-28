@@ -149,7 +149,7 @@ const RECIPES = {
   desk: { items: [['mug', 1, 'any'], ['magazine', 2, 'any'], ['booklie', 3, 'any'], ['phone', 1, 'any'], ['glass', 1, 'any'], ['spectacles', 1, 'any'], ['storebox', 1, 'back']] },
   dining: { items: [['plate', 6, 'any'], ['glass', 6, 'any'], ['bottle', 1, 'any'], ['magazine', 1, 'any']] },
   vanity: { maxLevel: 1.2, items: [['tray', 1, 'any'], ['soap', 1, 'any'], ['toiletry', 5, 'any'], ['toothcup', 1, 'any'], ['towel', 2, 'any'], ['candle', 2, 'any'], ['jar', 2, 'any'], ['herbpot', 1, 'any'], ['bowl', 1, 'any']], mat: true, floor: [['bin', 1], ['basketfloor', -1], ['rolls', -2]] },
-  tub: { items: [], mat: true, floor: [['basketfloor', 1], ['floorplant', -1], ['toiletry', -2]] },
+  tub: { items: [], mat: true, floor: [['basketfloor', 1], ['floorplant', -1]] },   // no toiletries on the floor (they belong on vanities, shelves, rims)
   wc: { items: [], floor: [['brush', 1], ['bin', -1], ['rolls', -2], ['floorplant', 2]] },
   rail: { items: [], hang: 2 },
   vestibule: { items: [], floor: [['coatstand', 1], ['shoes', -1], ['shoes', -2], ['umbrella', 2], ['basketfloor', -3]] },

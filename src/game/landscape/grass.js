@@ -168,6 +168,7 @@ export function buildGrass(ctx, { radius = 13.5 } = {}) {
           #endif
           outgoingLight += diffuseColor.rgb * uSunCol * back * sh * vLsT * 0.35;
           // night path lights (bollards): warm pools on the grass
+outgoingLight += diffuseColor.rgb * uLsFill;
 outgoingLight += diffuseColor.rgb * RECIPROCAL_PI * lsPathLight(vLsWorld + vec3(0.0, 0.05, 0.0), vec3(0.0, 1.0, 0.0)) * 1.3;
         }
         #include <opaque_fragment>`);

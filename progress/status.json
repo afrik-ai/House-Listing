@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T03:17:56.630Z",
+ "updated": "2026-09-28T03:54:24.024Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -61,11 +61,11 @@
   {
    "id": "P07",
    "name": "Furniture & props",
-   "status": "building",
+   "status": "lost",
    "round": 3,
-   "verdict": "HF2 wins 3/3 description-based pairs; every room furnished but sparse, repetitive, box-silhouetted, several placement errors",
-   "gap": "Rooms are furnished but not lived-in: handful of hero pieces with almost no small clutter (kitchen ~12 props vs HF2 100+), and pieces repeated, box-silhouetted and unseamed.",
-   "updated": "2026-09-24T07:09:38.335Z"
+   "verdict": "HF2 3/3: good bedrooms/office/island clutter but r2 placement bugs persist, baths/halls/garage bare, furniture 746k tris/511 dc over budget",
+   "gap": "Placement and polish regressions persist from r2 and clutter is concentrated in a few rooms (office 126 items vs baths/halls 4-7). Worst cases: the bath3 mirror over the window, the black slab filling the kitchen view, the WC door on the vanity and the broken garage car. On top of this, the furniture budget is blown at 746k tris and 511 draw calls.",
+   "updated": "2026-09-28T03:54:23.946Z"
   },
   {
    "id": "P08",
@@ -381,6 +381,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-28T03:54:24.024Z",
+   "src": "/reviews/critic/P07-r3/room_master.png",
+   "caption": "P07 r3 critic view"
+  },
+  {
    "t": "2026-09-28T02:18:48.197Z",
    "src": "/reviews/critic/P05-r2/ext1_night.png",
    "caption": "P05 r2 critic view"
@@ -494,11 +499,6 @@
    "t": "2026-09-23T11:13:26.355Z",
    "src": "/reviews/p01-r2/01_living.png",
    "caption": "P01 r2: sunlight now enters the living room"
-  },
-  {
-   "t": "2026-09-23T11:12:54.385Z",
-   "src": "/reviews/p01-r2/flow_glide_2000.png",
-   "caption": "P01 r2 entry view (living, sun patches)"
   }
  ]
 }

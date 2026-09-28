@@ -36,7 +36,7 @@ export function buildBollards(ctx) {
   return {
     setNight(k) {
       lensMat.emissiveIntensity = 14 * k;
-      PATH_LIGHTS.uPathCol.value.setRGB(1.0, 0.74, 0.46).multiplyScalar(0.55 * k);
+      PATH_LIGHTS.uPathCol.value.setRGB(1.0, 0.74, 0.46).multiplyScalar(1.6 * k);
     },
     points: pts,
   };

@@ -465,11 +465,11 @@ export class Furnisher {
     wrap.traverse((o) => {
       if (!o.isMesh) return;
       const conv = (m) => {
-        if (!m || !m.map || m.transparent || m.alphaTest > 0 || m.alphaMap || (m.emissive && m.emissive.getHex()) || /photo|art|screen|dial|label|squares|print/i.test(m.name)) return m;
+        if (!m || m.transparent || m.alphaTest > 0 || m.alphaMap || (m.emissive && m.emissive.getHex()) || /photo|art|screen|dial|label|squares|print/i.test(m.name)) return m;
         const key = m.uuid;
         this._plainCache ||= new Map();
         if (this._plainCache.has(key)) return this._plainCache.get(key);
-        const c = m.color.clone().multiply(meanColour(m.map));
+        const c = m.map ? m.color.clone().multiply(meanColour(m.map)) : m.color.clone();
         const n = new THREE.MeshStandardMaterial({ name: `${m.name}_flat`, color: c, roughness: m.roughness, metalness: m.metalness, side: m.side });
         this._plainCache.set(key, n);
         return n;
@@ -546,7 +546,7 @@ export class Furnisher {
   _merge() {
     const groups = new Map();
     const shared = new Map();
-    const q = (v) => Math.round((v ?? 0) * 20) / 20;
+    const q = (v) => Math.round((v ?? 0) * 4) / 4;   // coarse buckets: fewer draw calls; roughness/metal steps of 0.25
     const plain = (m) => m.isMeshStandardMaterial && !m.vertexColors && !m.map && !m.normalMap && !m.roughnessMap && !m.metalnessMap && !m.aoMap &&
       !m.emissiveMap && !m.alphaMap && !(m.transmission > 0) && !(m.clearcoat > 0) && !(m.sheen > 0) && m.emissive.getHex() === 0 && !m.userData?.night;
     this.work.updateMatrixWorld(true);

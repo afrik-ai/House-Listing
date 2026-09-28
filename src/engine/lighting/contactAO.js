@@ -63,7 +63,7 @@ export function buildContactAO(placed, { opacity = 0.55, pad = 0.12, maxLift = 0
   const im = new THREE.InstancedMesh(geo, mat, list.length);
   im.name = 'P05_contactAO';
   im.castShadow = false; im.receiveShadow = false;
-  im.renderOrder = -1;
+  im.renderOrder = 10;   // after other transparent surfaces (a transparent-sorted floor would paint over it)
   im.userData.cannotReceiveAO = true;
   const M = new THREE.Matrix4();
   list.forEach((b, i) => {

@@ -122,13 +122,13 @@ export class Furnisher {
         const n = raw.repeat?.n || 1;
         for (let k = 0; k < n; k++) {
           let it = { ...raw, room: roomId, floorY };
-          it = this._fixItem(it);
           if (k) {
             const st = raw.repeat.step || [0, 0, 0];
             it.pos = [raw.pos[0] + st[0] * k, (raw.pos[1] || 0) + st[1] * k, raw.pos[2] + st[2] * k];
             it.rotY = (raw.rotY || 0) + (raw.repeat.rotStep || 0) * k;
             if (raw.repeat.seedStep) it.params = { ...(raw.params || {}), seed: (raw.params?.seed || 1) + k };
           }
+          it = this._fixItem(it);
           out.push(it);
         }
       }
@@ -230,7 +230,7 @@ export class Furnisher {
       const tint = it.tint || ROOM_TINTS[it.model]?.[it.room];
       key = `${it.model}#${it.variant || ''}#${JSON.stringify(tint || '')}`;
       if (tint) this._tint(object, tint);
-      if (it.model === 'bathroom_vanity' && this._overWindow(it, 1.48, 0.26)) this._dropMaterial(object, /^mirror/, `${it.room}/bathroom_vanity`);
+      if (it.model === 'bathroom_vanity' && this._overWindow(it, 1.48, 0.26)) { this._dropMaterial(object, /^mirror/, `${it.room}/bathroom_vanity`); key += '#nomirror'; }
     }
     // scale
     const s = it.scale ?? defaults.scale ?? 1;

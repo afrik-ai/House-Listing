@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T02:48:38.227Z",
+ "updated": "2026-09-28T02:49:13.573Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -43,11 +43,11 @@
   {
    "id": "P05",
    "name": "Lighting & atmosphere",
-   "status": "lost",
-   "round": 2,
+   "status": "building",
+   "round": 3,
    "verdict": "HF2 4/4 blind: night interior bloom blow-out, black unlit surfaces, weak contact AO",
    "gap": "Night interiors blow out under heavy low-threshold bloom while unlit surfaces fall to pure black; no restrained exposure or bounce fill",
-   "updated": "2026-09-28T02:18:48.152Z"
+   "updated": "2026-09-28T02:49:13.573Z"
   },
   {
    "id": "P06",

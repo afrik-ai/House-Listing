@@ -259,3 +259,19 @@
   `report.view` is the current view.
 - Also: `_unpoke()` pushes floor pieces out of walls. Planters inside a room's spawn view are skipped. A vanity mirror in front
   of a window is dropped. Bedding is tinted per bedroom (`ROOM_TINTS`). Mirror and car-paint materials are corrected at load.
+
+## P08 Player controller & collision
+- **Settings setters** (for P10's menu; all emit `player-settings` with the full settings object):
+  `game.player.setSensitivity(mult)` (0.1–5, default 1), `setFov(deg)` (vertical FOV 45–100, default = camera's 62),
+  `setMouseSmoothing(v)` (0 = raw/instant, up to 0.95; fraction of look lag kept per 1/60 s), `setHeadBob(bool)`
+  (bob + strafe roll), `setInvertY(bool)`, `setJumpEnabled(bool)`; `getSettings()`; `info()` = {speed, crouched, sprinting, onGround, eyeHeight, fov}.
+- **Controls**: WASD/arrows, Shift sprint (4.2 m/s, +4 deg FOV kick; walk 2.6, crouch 1.3), C / Left Ctrl crouch (hold;
+  stands up only with head clearance), Space jump (fresh press, 0.45 s cooldown after landing, landing costs speed).
+- **Events**: `footstep {surface:'wood'|'tile'|'stone'|'grass'|'gravel'|'carpet'|'metal', type:<raw floor type>, speed, sprint, crouch}`
+  every stride (0.74 m walk / 0.98 sprint / 0.55 crouch); `player.emitsFootsteps = true`, so Game.js' fallback is off.
+  `land {surface, speed}` after >0.25 s airborne; `respawn {pos}` when the player falls below gradeY-8 (back to last safe ground).
+- **Physics** (`src/engine/Physics.js`): `setDynamic(meshes)` registers moving colliders tested with their CURRENT world
+  matrix every query (the player registers `house.doorColliders` itself, so COL_DOOR_* follow P09's door animation with
+  no extra calls). `raycast()` also hits dynamic colliders. `moveCapsule(pos, delta, out, {height, snap})`, `overlaps(pos, height)`.
+- Capsule radius 0.25 m (was 0.3; 0.76 m doors + open leaves need it), height 1.75 (1.15 crouched), step 0.25; walkable slopes resolve straight up (ramps climb, no slide-back).
+- Simulation is the fixed 120 Hz Game step, so `__game.move` is frame-rate independent. Test: `node scripts/tests/player.mjs`.

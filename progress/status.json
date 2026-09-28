@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T02:18:48.197Z",
+ "updated": "2026-09-28T02:48:38.227Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "building",
+   "status": "critic",
    "round": 1,
    "verdict": "",
    "gap": "",
-   "updated": "2026-09-24T12:44:42.632Z"
+   "updated": "2026-09-28T02:48:38.227Z"
   },
   {
    "id": "P09",
@@ -118,6 +118,14 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-28T02:48:38.180Z",
+   "m": "P08: scripts/tests/player.mjs 45/45 paths pass (rooms, stairs up/down 3.2 s, terrace/balcony/garden, 17 doors both ways), feel checks ok"
+  },
+  {
+   "t": "2026-09-28T02:21:40.875Z",
+   "m": "P08: Player/Physics rewritten (accel, sprint FOV, crouch, bob, footsteps, dynamic door colliders); running path test"
+  },
   {
    "t": "2026-09-24T12:43:56.964Z",
    "m": "TEX r4: bathroom grout light grey, bevel tilt halved, grout AO 0.2, per-tile tint 12-14%, floor grout lightened, concrete_smooth_light pores removed; lawn macro 0.38"

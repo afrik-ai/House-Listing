@@ -1,0 +1,708 @@
+{
+ "paths": [
+  {
+   "name": "hall->living->kitchen",
+   "ok": true,
+   "issues": [],
+   "time": 4.99,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     10.7,
+     0,
+     8.28
+    ],
+    "room": "kitchen"
+   }
+  },
+  {
+   "name": "kitchen->living->hall",
+   "ok": true,
+   "issues": [],
+   "time": 5.23,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4.43,
+     0,
+     3.37
+    ],
+    "room": "hall"
+   }
+  },
+  {
+   "name": "stairs up",
+   "ok": true,
+   "issues": [],
+   "time": 3.2,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4.02,
+     3.15,
+     5.16
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "stairs down",
+   "ok": true,
+   "issues": [],
+   "time": 3.2,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     9.89,
+     0,
+     3.66
+    ],
+    "room": "vestibule"
+   }
+  },
+  {
+   "name": "street->front door->vestibule",
+   "ok": true,
+   "issues": [],
+   "time": 1.91,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     10.19,
+     0,
+     3.61
+    ],
+    "room": "vestibule"
+   }
+  },
+  {
+   "name": "vestibule->front door->street",
+   "ok": true,
+   "issues": [],
+   "time": 2.1,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     15.53,
+     -0.3,
+     4.03
+    ],
+    "room": null
+   }
+  },
+  {
+   "name": "living->terrace (west slider)",
+   "ok": true,
+   "issues": [],
+   "time": 0.72,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     -1.3,
+     0,
+     6.97
+    ],
+    "room": null
+   }
+  },
+  {
+   "name": "terrace->garden (west steps)",
+   "ok": true,
+   "issues": [],
+   "time": 1.88,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     -5.01,
+     -0.3,
+     0.83
+    ],
+    "room": null
+   }
+  },
+  {
+   "name": "garden->terrace (north steps)",
+   "ok": true,
+   "issues": [],
+   "time": 1.96,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     -2.53,
+     0,
+     2.63
+    ],
+    "room": null
+   }
+  },
+  {
+   "name": "living->garden (south slider)",
+   "ok": true,
+   "issues": [],
+   "time": 1.07,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     1.45,
+     -0.14,
+     12.51
+    ],
+    "room": null
+   }
+  },
+  {
+   "name": "master->balcony (slider)",
+   "ok": true,
+   "issues": [],
+   "time": 0.72,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     -1.3,
+     3.15,
+     7.55
+    ],
+    "room": null
+   }
+  },
+  {
+   "name": "D_front fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     11.69,
+     0,
+     3.8
+    ],
+    "room": null
+   }
+  },
+  {
+   "name": "D_front back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     10.31,
+     0,
+     3.8
+    ],
+    "room": "vestibule"
+   }
+  },
+  {
+   "name": "D_garage fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.49,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     9.78,
+     0,
+     3.1
+    ],
+    "room": "vestibule"
+   }
+  },
+  {
+   "name": "D_garage back",
+   "ok": true,
+   "issues": [],
+   "time": 0.63,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     9.92,
+     0,
+     1.89
+    ],
+    "room": "garage"
+   }
+  },
+  {
+   "name": "D_office fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     2.6,
+     0,
+     3.29
+    ],
+    "room": "hall"
+   }
+  },
+  {
+   "name": "D_office back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     2.6,
+     0,
+     1.91
+    ],
+    "room": "office"
+   }
+  },
+  {
+   "name": "D_wc fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     2.2,
+     0,
+     3.3
+    ],
+    "room": "hall"
+   }
+  },
+  {
+   "name": "D_wc back",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     0.9,
+     0,
+     3.3
+    ],
+    "room": "wc"
+   }
+  },
+  {
+   "name": "D_storage_n fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4.05,
+     0,
+     3.29
+    ],
+    "room": "hall"
+   }
+  },
+  {
+   "name": "D_storage_n back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4.05,
+     0,
+     1.91
+    ],
+    "room": "storage_n"
+   }
+  },
+  {
+   "name": "D_boiler fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.41,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     7.9,
+     0,
+     1.23
+    ],
+    "room": "garage"
+   }
+  },
+  {
+   "name": "D_boiler back",
+   "ok": true,
+   "issues": [],
+   "time": 0.43,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     6.9,
+     0,
+     1.35
+    ],
+    "room": "boiler"
+   }
+  },
+  {
+   "name": "D_cloak fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     8.75,
+     0,
+     5.22
+    ],
+    "room": "cloak"
+   }
+  },
+  {
+   "name": "D_cloak back",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     8.85,
+     0,
+     3.93
+    ],
+    "room": "vestibule"
+   }
+  },
+  {
+   "name": "D_storage_e fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     10.25,
+     0,
+     5.21
+    ],
+    "room": "storage_e"
+   }
+  },
+  {
+   "name": "D_storage_e back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     10.25,
+     0,
+     3.83
+    ],
+    "room": "vestibule"
+   }
+  },
+  {
+   "name": "D_master fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4.06,
+     3.15,
+     5.75
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "D_master back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     2.68,
+     3.15,
+     5.75
+    ],
+    "room": "master"
+   }
+  },
+  {
+   "name": "D_bed2 fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4.2,
+     3.15,
+     7.15
+    ],
+    "room": "bed2"
+   }
+  },
+  {
+   "name": "D_bed2 back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4.2,
+     3.15,
+     5.77
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "D_bed3 fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     7.8,
+     3.15,
+     7.15
+    ],
+    "room": "bed3"
+   }
+  },
+  {
+   "name": "D_bed3 back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     7.8,
+     3.15,
+     5.77
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "D_wardrobe_b fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4,
+     3.15,
+     3.29
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "D_wardrobe_b back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     4,
+     3.15,
+     1.91
+    ],
+    "room": "wardrobe_b"
+   }
+  },
+  {
+   "name": "D_bath2 fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     9.7,
+     3.15,
+     3.29
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "D_bath2 back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     9.7,
+     3.15,
+     1.91
+    ],
+    "room": "bath2"
+   }
+  },
+  {
+   "name": "D_bath3 fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     10.85,
+     3.15,
+     3.4
+    ],
+    "room": "bath3"
+   }
+  },
+  {
+   "name": "D_bath3 back",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     9.61,
+     3.15,
+     3.3
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "D_laundry fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     9.89,
+     3.15,
+     5.6
+    ],
+    "room": "laundry"
+   }
+  },
+  {
+   "name": "D_laundry back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     8.51,
+     3.15,
+     5.6
+    ],
+    "room": "hall1"
+   }
+  },
+  {
+   "name": "D_wardrobe_a fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     2.3,
+     3.15,
+     3.7
+    ],
+    "room": "master"
+   }
+  },
+  {
+   "name": "D_wardrobe_a back",
+   "ok": true,
+   "issues": [],
+   "time": 0.52,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     1,
+     3.15,
+     3.7
+    ],
+    "room": "wardrobe_a"
+   }
+  },
+  {
+   "name": "D_bath_master fwd",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     2.5,
+     3.15,
+     3.29
+    ],
+    "room": "master"
+   }
+  },
+  {
+   "name": "D_bath_master back",
+   "ok": true,
+   "issues": [],
+   "time": 0.55,
+   "maxDepth": 0,
+   "end": {
+    "feet": [
+     2.5,
+     3.15,
+     1.91
+    ],
+    "room": "bath_master"
+   }
+  }
+ ],
+ "feel": {
+  "speedAfter0_1s": 1.73,
+  "walkSpeed": 2.6,
+  "speed0_1sAfterRelease": 0.71,
+  "stopped": true,
+  "sprintSpeed": 4.2,
+  "sprintFov": 66,
+  "crouchEye": 1.05,
+  "standEye": 1.65,
+  "jumpsWhileHolding2s": 1,
+  "respawnedY": -0.02,
+  "footsteps": 6,
+  "footstep": {
+   "surface": "grass",
+   "type": "grass",
+   "speed": 2.56,
+   "sprint": false,
+   "crouch": false
+  },
+  "closedDoorBlocks": true,
+  "closedDoorZ": 2.88,
+  "openDoorPasses": true,
+  "fixedGlassBlocks": true,
+  "glassX": 0.31,
+  "stairDescentMaxCamStep": 0.032,
+  "stairDescentCamUpTicks": 0,
+  "stairDescentEndY": 0,
+  "ok": true
+ }
+}

@@ -1,0 +1,990 @@
+{
+ "rooms": [
+  {
+   "id": "living",
+   "name": "Living room + Dining",
+   "level": "ground",
+   "center": [
+    4.025000095367432,
+    0,
+    7.570000171661377
+   ]
+  },
+  {
+   "id": "kitchen",
+   "name": "Kitchen",
+   "level": "ground",
+   "center": [
+    10.024999618530273,
+    0,
+    8.390000343322754
+   ]
+  },
+  {
+   "id": "cloak",
+   "name": "Cloakroom",
+   "level": "ground",
+   "center": [
+    8.774999618530273,
+    0,
+    5.489999771118164
+   ]
+  },
+  {
+   "id": "hall",
+   "name": "Hall",
+   "level": "ground",
+   "center": [
+    4.775000095367432,
+    0,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "vestibule",
+   "name": "Vestibule",
+   "level": "ground",
+   "center": [
+    9.524999618530273,
+    0,
+    3.559999942779541
+   ]
+  },
+  {
+   "id": "storage_e",
+   "name": "Storage",
+   "level": "ground",
+   "center": [
+    10.25,
+    0,
+    5.489999771118164
+   ]
+  },
+  {
+   "id": "storage_n",
+   "name": "Storage",
+   "level": "ground",
+   "center": [
+    4.25,
+    0,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "office",
+   "name": "Office",
+   "level": "ground",
+   "center": [
+    1.75,
+    0,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "wc",
+   "name": "WC",
+   "level": "ground",
+   "center": [
+    0.75,
+    0,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "boiler",
+   "name": "Boiler room",
+   "level": "ground",
+   "center": [
+    6.300000190734863,
+    0,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "garage",
+   "name": "Garage",
+   "level": "ground",
+   "center": [
+    10.5,
+    0,
+    -0.3149999976158142
+   ]
+  },
+  {
+   "id": "master",
+   "name": "Master bedroom",
+   "level": "first",
+   "center": [
+    1.684999942779541,
+    3.1500000953674316,
+    7.570000171661377
+   ]
+  },
+  {
+   "id": "wardrobe_a",
+   "name": "Wardrobe",
+   "level": "first",
+   "center": [
+    0.800000011920929,
+    3.1500000953674316,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "wardrobe_b",
+   "name": "Wardrobe",
+   "level": "first",
+   "center": [
+    4.684999942779541,
+    3.1500000953674316,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "bath_master",
+   "name": "Master bathroom",
+   "level": "first",
+   "center": [
+    1.684999942779541,
+    3.1500000953674316,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "hall1",
+   "name": "Landing",
+   "level": "first",
+   "center": [
+    6.284999847412109,
+    3.1500000953674316,
+    4.53000020980835
+   ]
+  },
+  {
+   "id": "bed2",
+   "name": "Bedroom",
+   "level": "first",
+   "center": [
+    5.190000057220459,
+    3.1500000953674316,
+    8.390000343322754
+   ]
+  },
+  {
+   "id": "bed3",
+   "name": "Bedroom",
+   "level": "first",
+   "center": [
+    9.005000114440918,
+    3.1500000953674316,
+    8.390000343322754
+   ]
+  },
+  {
+   "id": "bath2",
+   "name": "Bathroom",
+   "level": "first",
+   "center": [
+    8.5,
+    3.1500000953674316,
+    1.2999999523162842
+   ]
+  },
+  {
+   "id": "bath3",
+   "name": "Bathroom",
+   "level": "first",
+   "center": [
+    11.100000381469727,
+    3.1500000953674316,
+    3.7100000381469727
+   ]
+  },
+  {
+   "id": "laundry",
+   "name": "Laundry",
+   "level": "first",
+   "center": [
+    10.100000381469727,
+    3.1500000953674316,
+    5.639999866485596
+   ]
+  }
+ ],
+ "views": {
+  "rooms": [
+   {
+    "id": "living",
+    "name": "Living room + Dining",
+    "level": "ground",
+    "pos": [
+     7.6,
+     1.6,
+     9.87
+    ],
+    "yaw": 57.2,
+    "pitch": -8
+   },
+   {
+    "id": "kitchen",
+    "name": "Kitchen",
+    "level": "ground",
+    "pos": [
+     11.55,
+     1.6,
+     9.87
+    ],
+    "yaw": 45.9,
+    "pitch": -8
+   },
+   {
+    "id": "cloak",
+    "name": "Cloakroom",
+    "level": "ground",
+    "pos": [
+     8.775,
+     1.6,
+     4.74
+    ],
+    "yaw": -180,
+    "pitch": -16
+   },
+   {
+    "id": "hall",
+    "name": "Hall",
+    "level": "ground",
+    "pos": [
+     1.72,
+     1.6,
+     3.71
+    ],
+    "yaw": -90,
+    "pitch": -16
+   },
+   {
+    "id": "vestibule",
+    "name": "Vestibule",
+    "level": "ground",
+    "pos": [
+     10.78,
+     1.6,
+     3.56
+    ],
+    "yaw": 90,
+    "pitch": -16
+   },
+   {
+    "id": "storage_e",
+    "name": "Storage",
+    "level": "ground",
+    "pos": [
+     10.25,
+     1.6,
+     4.74
+    ],
+    "yaw": -180,
+    "pitch": -16
+   },
+   {
+    "id": "storage_n",
+    "name": "Storage",
+    "level": "ground",
+    "pos": [
+     4.25,
+     1.6,
+     2.38
+    ],
+    "yaw": 0,
+    "pitch": -16
+   },
+   {
+    "id": "office",
+    "name": "Office",
+    "level": "ground",
+    "pos": [
+     0.45,
+     1.6,
+     0.45
+    ],
+    "yaw": -123.2,
+    "pitch": -8
+   },
+   {
+    "id": "wc",
+    "name": "WC",
+    "level": "ground",
+    "pos": [
+     0.75,
+     1.6,
+     4.6
+    ],
+    "yaw": 0,
+    "pitch": -16
+   },
+   {
+    "id": "boiler",
+    "name": "Boiler room",
+    "level": "ground",
+    "pos": [
+     7.15,
+     1.6,
+     0.45
+    ],
+    "yaw": 135,
+    "pitch": -8
+   },
+   {
+    "id": "garage",
+    "name": "Garage",
+    "level": "ground",
+    "pos": [
+     12.95,
+     1.6,
+     -2.78
+    ],
+    "yaw": 135.2,
+    "pitch": -8
+   },
+   {
+    "id": "master",
+    "name": "Master bedroom",
+    "level": "first",
+    "pos": [
+     0.45,
+     4.75,
+     9.87
+    ],
+    "yaw": -28.2,
+    "pitch": -8
+   },
+   {
+    "id": "wardrobe_a",
+    "name": "Wardrobe",
+    "level": "first",
+    "pos": [
+     1.38,
+     4.75,
+     3.71
+    ],
+    "yaw": 90,
+    "pitch": -16
+   },
+   {
+    "id": "wardrobe_b",
+    "name": "Wardrobe",
+    "level": "first",
+    "pos": [
+     3.82,
+     4.75,
+     2.15
+    ],
+    "yaw": -45.5,
+    "pitch": -8
+   },
+   {
+    "id": "bath_master",
+    "name": "Master bathroom",
+    "level": "first",
+    "pos": [
+     0.45,
+     4.75,
+     0.45
+    ],
+    "yaw": -124.5,
+    "pitch": -8
+   },
+   {
+    "id": "hall1",
+    "name": "Landing",
+    "level": "first",
+    "pos": [
+     3.82,
+     4.75,
+     6.01
+    ],
+    "yaw": -59,
+    "pitch": -8
+   },
+   {
+    "id": "bed2",
+    "name": "Bedroom",
+    "level": "first",
+    "pos": [
+     6.56,
+     4.75,
+     9.87
+    ],
+    "yaw": 42.8,
+    "pitch": -8
+   },
+   {
+    "id": "bed3",
+    "name": "Bedroom",
+    "level": "first",
+    "pos": [
+     7.46,
+     4.75,
+     6.91
+    ],
+    "yaw": -133.8,
+    "pitch": -8
+   },
+   {
+    "id": "bath2",
+    "name": "Bathroom",
+    "level": "first",
+    "pos": [
+     10.55,
+     4.75,
+     2.15
+    ],
+    "yaw": 67.5,
+    "pitch": -8
+   },
+   {
+    "id": "bath3",
+    "name": "Bathroom",
+    "level": "first",
+    "pos": [
+     10.42,
+     4.75,
+     3.71
+    ],
+    "yaw": -90,
+    "pitch": -16
+   },
+   {
+    "id": "laundry",
+    "name": "Laundry",
+    "level": "first",
+    "pos": [
+     9.42,
+     4.75,
+     5.64
+    ],
+    "yaw": -90,
+    "pitch": -16
+   }
+  ],
+  "exteriors": [
+   {
+    "id": "ext_front_east",
+    "name": "Front (street, east)",
+    "level": "exterior",
+    "pos": [
+     23.25,
+     1.6,
+     9.795
+    ],
+    "yaw": 69,
+    "pitch": 2.7
+   },
+   {
+    "id": "ext_garden_sw",
+    "name": "Garden & pool (south-west)",
+    "level": "exterior",
+    "pos": [
+     -13.95,
+     1.6,
+     18.82
+    ],
+    "yaw": -51.1,
+    "pitch": 2.4
+   },
+   {
+    "id": "ext_south",
+    "name": "South facade",
+    "level": "exterior",
+    "pos": [
+     6.65,
+     1.6,
+     23.82
+    ],
+    "yaw": 2.9,
+    "pitch": 3.4
+   },
+   {
+    "id": "ext_north_west",
+    "name": "North-west corner",
+    "level": "exterior",
+    "pos": [
+     -10.95,
+     1.6,
+     -12.23
+    ],
+    "yaw": -134,
+    "pitch": 2.5
+   }
+  ]
+ },
+ "stats": {
+  "fps": 0,
+  "drawCalls": 359,
+  "triangles": 733997,
+  "textures": 238,
+  "geometries": 477,
+  "programs": 183,
+  "memoryMB": 118,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "report": {
+  "items": 285,
+  "instanced": 117,
+  "meshes": 511,
+  "warnings": [
+   "kitchen/kitchen_run fitted: span 3.55 m, length 3.65 -> 3.55, shift 0.045",
+   "dropped /^mirror/ on a model placed in front of an opening"
+  ],
+  "overlaps": [],
+  "wallPokes": [
+   "terrace/planter pokes 4.2 cm",
+   "terrace/planter pokes 4.2 cm"
+  ],
+  "doorBlocks": [],
+  "merged": {
+   "meshes": 123,
+   "drawCallsSaved": 270
+  },
+  "budget": {
+   "tris": 746086,
+   "drawCalls": 511,
+   "shadowTris": 534669,
+   "shadowDrawCalls": 280
+  },
+  "clutter": {
+   "total": 505,
+   "perRoom": {
+    "living": 37,
+    "dining": 26,
+    "kitchen": 48,
+    "hall": 4,
+    "cloak": 23,
+    "storage_e": 19,
+    "storage_n": 28,
+    "boiler": 15,
+    "wc": 6,
+    "office": 126,
+    "garage": 18,
+    "master": 19,
+    "bath_master": 7,
+    "bath2": 12,
+    "bath3": 6,
+    "laundry": 25,
+    "hall1": 7,
+    "bed2": 25,
+    "bed3": 54
+   }
+  },
+  "view": {
+   "state": "in:0",
+   "tris": 501215,
+   "drawCalls": 337,
+   "shadowTris": 275112,
+   "shadowDrawCalls": 136
+  }
+ },
+ "find": [
+  [
+   "CEIL_garage",
+   0,
+   0,
+   0
+  ],
+  [
+   "CEIL_kitchen",
+   0,
+   0,
+   0
+  ],
+  [
+   "SURF_concrete_screed_garage",
+   0,
+   0,
+   0
+  ],
+  [
+   "SURF_large_format_tile_grey_kitchen",
+   0,
+   0,
+   0
+  ],
+  [
+   "WALL_garage",
+   0,
+   0,
+   0
+  ],
+  [
+   "WALL_kitchen",
+   0,
+   0,
+   0
+  ],
+  [
+   "GARAGE_DOOR",
+   0,
+   0,
+   0
+  ],
+  [
+   "GARAGE_DOOR_1",
+   0,
+   0,
+   0
+  ],
+  [
+   "GARAGE_DOOR_2",
+   0,
+   0,
+   0
+  ],
+  [
+   "GARAGE_DOOR_3",
+   0,
+   0,
+   0
+  ],
+  [
+   "GARAGE_DOOR_4",
+   0,
+   0,
+   0
+  ],
+  [
+   "DOOR_D_garage",
+   10.37,
+   0,
+   2.58
+  ],
+  [
+   "LEAF_D_garage",
+   10.37,
+   0,
+   2.58
+  ],
+  [
+   "LEAF_D_garage_1",
+   10.37,
+   0,
+   2.58
+  ],
+  [
+   "LEAF_D_garage_2",
+   10.37,
+   0,
+   2.58
+  ],
+  [
+   "COL_DOOR_D_garage",
+   10.37,
+   0,
+   2.58
+  ],
+  [
+   "ROOM_kitchen",
+   10.02,
+   0,
+   8.39
+  ],
+  [
+   "ROOM_garage",
+   10.5,
+   0,
+   -0.31
+  ],
+  [
+   "LIGHT_kitchen_1",
+   9.09,
+   2.84,
+   7.47
+  ],
+  [
+   "LIGHT_kitchen_2",
+   9.09,
+   2.84,
+   9.31
+  ],
+  [
+   "LIGHT_kitchen_3",
+   10.96,
+   2.84,
+   7.47
+  ],
+  [
+   "LIGHT_kitchen_4",
+   10.96,
+   2.84,
+   9.31
+  ],
+  [
+   "LIGHT_garage_strip_a",
+   9.6,
+   2.83,
+   -0.3
+  ],
+  [
+   "LIGHT_garage_strip_b",
+   11.6,
+   2.83,
+   -0.3
+  ],
+  [
+   "EXTLIGHT_garage_a",
+   13.55,
+   2.15,
+   -3.05
+  ],
+  [
+   "EXTLIGHT_garage_b",
+   13.55,
+   2.15,
+   2.41
+  ],
+  [
+   "EXTLIGHT_kitchen_east",
+   12.15,
+   2.25,
+   10.2
+  ],
+  [
+   "P03_garage",
+   0,
+   0,
+   0
+  ],
+  [
+   "P03_garage_1",
+   0,
+   0,
+   0
+  ],
+  [
+   "P03_garage_2",
+   0,
+   0,
+   0
+  ],
+  [
+   "P03_LAMP_garage_a",
+   13.79,
+   2.15,
+   -3.04
+  ],
+  [
+   "P03_LAMP_garage_b",
+   13.79,
+   2.15,
+   2.42
+  ],
+  [
+   "P03_LAMP_kitchen_east",
+   12.39,
+   2.25,
+   10.2
+  ],
+  [
+   "F_sofa",
+   2.5,
+   0,
+   8.06
+  ],
+  [
+   "sofa",
+   2.5,
+   0,
+   8.06
+  ],
+  [
+   "sofa_fabric_grey",
+   2.5,
+   0,
+   8.06
+  ],
+  [
+   "sofa_fabric_rust",
+   2.5,
+   0,
+   8.06
+  ],
+  [
+   "sofa_fabric_natural",
+   2.5,
+   0,
+   8.06
+  ],
+  [
+   "sofa_fabric_ochre",
+   2.5,
+   0,
+   8.06
+  ],
+  [
+   "sofa_fabric_sage",
+   2.5,
+   0,
+   8.06
+  ],
+  [
+   "kitchen_run",
+   11.55,
+   0,
+   8.39
+  ],
+  [
+   "kitchen_run_P07_hob",
+   11.55,
+   0,
+   8.39
+  ],
+  [
+   "kitchen_run_P07_led",
+   11.55,
+   0,
+   8.39
+  ],
+  [
+   "kitchen_island",
+   9.88,
+   0,
+   8.35
+  ],
+  [
+   "kitchen_sink#sink_worktop",
+   9.89,
+   0.67,
+   8.65
+  ],
+  [
+   "sink_worktop",
+   9.89,
+   1,
+   8.65
+  ],
+  [
+   "sink_worktop_1",
+   9.89,
+   1,
+   8.65
+  ],
+  [
+   "sink_worktop_4",
+   9.89,
+   1,
+   8.65
+  ],
+  [
+   "F_shelf",
+   3.26,
+   0,
+   0.95
+  ],
+  [
+   "shelf_unit",
+   3.26,
+   0,
+   0.95
+  ],
+  [
+   "F_garage_fridge",
+   8.12,
+   0,
+   -2.15
+  ],
+  [
+   "F_bookshelf",
+   10.59,
+   3.15,
+   10
+  ],
+  [
+   "shelf_unit",
+   10.59,
+   3.15,
+   10
+  ],
+  [
+   "F_terrace_sofa",
+   -0.6,
+   0,
+   4.95
+  ],
+  [
+   "sofa",
+   -0.6,
+   0,
+   4.95
+  ],
+  [
+   "F_deck_sofa",
+   -7.5,
+   -0.14,
+   11.4
+  ],
+  [
+   "sofa",
+   -7.5,
+   -0.14,
+   11.4
+  ],
+  [
+   "sofa_fabric_rust",
+   -7.5,
+   -0.14,
+   11.4
+  ],
+  [
+   "FI_proc:counter_stool:oak|0|in_counter_stool_oak",
+   0,
+   0,
+   0
+  ],
+  [
+   "FI_proc:counter_stool:oak|0|in_counter_stool_black_metal",
+   0,
+   0,
+   0
+  ],
+  [
+   "FI_garage_shelves_steel_narrow##\"\"|0|in_garage_shelves_steel_narrow_1",
+   0,
+   0,
+   0
+  ],
+  [
+   "FI_garage_shelves_steel_narrow##\"\"|0|in_garage_shelves_steel_narrow_2",
+   0,
+   0,
+   0
+  ],
+  [
+   "FI_garage_shelves_steel_narrow##\"\"|0|in_garage_shelves_steel_narrow_3",
+   0,
+   0,
+   0
+  ],
+  [
+   "FI_garage_shelves_steel_narrow##\"\"|0|in_garage_shelves_steel_narrow_4",
+   0,
+   0,
+   0
+  ],
+  [
+   "FI_proc:cabinet:nightstand|3.15|in_cabinet_oak",
+   0,
+   0,
+   0
+  ],
+  [
+   "FI_proc:cabinet:nightstand|3.15|in_cabinet_black_metal",
+   0,
+   0,
+   0
+  ]
+ ]
+}

@@ -1,12 +1,12 @@
 import * as THREE from 'three';
-import { MeshBVH } from 'three-mesh-bvh';
+import { MeshBVH, ExtendedTriangle } from 'three-mesh-bvh';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Static world collision: one merged position-only geometry + BVH.
 // The player is a vertical capsule; `pos` everywhere below is the FEET position
 // (bottom of the capsule, i.e. the point that rests on the floor).
 export class Physics {
-  constructor({ radius = 0.3, height = 1.75, stepHeight = 0.25, gravity = -18 } = {}) {
+  constructor({ radius = 0.25, height = 1.75, stepHeight = 0.25, gravity = -18 } = {}) {
     this.radius = radius;
     this.height = height;
     this.stepHeight = stepHeight;
@@ -22,7 +22,7 @@ export class Physics {
     this._dir = new THREE.Vector3();
     this._ray = new THREE.Ray();
     this._tmp = new THREE.Vector3();
-    this._tri = new THREE.Triangle();
+    this._tri = new ExtendedTriangle();
     this._sphere = new THREE.Sphere();
     // Dynamic colliders (door leaves): tested with their CURRENT world matrix every query, so they
     // follow whatever animates them (P09). Small meshes only (a few dozen triangles each).
@@ -52,6 +52,7 @@ export class Physics {
         t.a.fromBufferAttribute(d.pos, ia).applyMatrix4(m.matrixWorld);
         t.b.fromBufferAttribute(d.pos, ib).applyMatrix4(m.matrixWorld);
         t.c.fromBufferAttribute(d.pos, ic).applyMatrix4(m.matrixWorld);
+        t.needsUpdate = true;
         fn(t);
       }
     }
@@ -121,7 +122,7 @@ export class Physics {
     result.onGround = (pushUp > 0 && delta.y <= 0) || groundY !== null;
     // Snap down onto the floor below (keeps contact when walking down steps) - but not while a
     // walkable slope is holding us up, or a ramp's foot would be snapped back to the floor forever.
-    if (pushUp <= 0 && result.onGround && groundY !== null && delta.y <= 0 && p.y > groundY) p.y = groundY;
+    if (pushUp <= 0 && result.onGround && groundY !== null && delta.y <= 0 && p.y > groundY) { p.y = groundY; this._resolve(p); }
     result.blocked = blocked;
     return result;
   }
@@ -152,9 +153,16 @@ export class Physics {
             const depth = r - d;
             const dir = this._dir.subVectors(this._capPoint, this._triPoint);
             if (dir.lengthSq() < 1e-12) dir.set(0, 1, 0); else dir.normalize();
-            seg.start.addScaledVector(dir, depth);
-            seg.end.addScaledVector(dir, depth);
-            if (dir.y > 0.5) pushUp += dir.y * depth;
+            if (dir.y > 0.6) {
+              // Walkable ground (< ~53 deg): resolve straight UP so ramps/stair proxies are climbed
+              // without the normal's horizontal part pushing us back down the slope.
+              const up = Math.min(depth / dir.y, depth * 2.5);
+              seg.start.y += up; seg.end.y += up;
+              pushUp += up;
+            } else {
+              seg.start.addScaledVector(dir, depth);
+              seg.end.addScaledVector(dir, depth);
+            }
             moved = true;
           }
       };

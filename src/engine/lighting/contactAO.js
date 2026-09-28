@@ -22,7 +22,7 @@ function blobTexture() {
   for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
     // rounded-rect distance field: 0 inside the inner rect (60%), fading to the edge
     const u = Math.abs((x + 0.5) / S * 2 - 1), v = Math.abs((y + 0.5) / S * 2 - 1);
-    const dx = Math.max(0, u - 0.55) / 0.45, dy = Math.max(0, v - 0.55) / 0.45;
+    const dx = Math.max(0, u - 0.4) / 0.6, dy = Math.max(0, v - 0.4) / 0.6;
     const d = Math.min(1, Math.hypot(dx, dy));
     const a = Math.pow(1 - d, 1.8) * (0.75 + 0.25 * (1 - Math.max(u, v)));
     const i = (y * S + x) * 4;
@@ -37,7 +37,7 @@ function blobTexture() {
 const _v = new THREE.Vector3(), _q = new THREE.Quaternion(), _s = new THREE.Vector3(), _p = new THREE.Vector3();
 const _e = new THREE.Euler();
 
-export function buildContactAO(placed, { opacity = 0.9, pad = 0.1, maxLift = 0.06, surfaceY = null } = {}) {
+export function buildContactAO(placed, { opacity = 0.8, pad = 0.22, maxLift = 0.06, surfaceY = null } = {}) {
   const list = [];
   for (const p of placed || []) {
     if (!p?.wrap || !p.box || p.small) continue;

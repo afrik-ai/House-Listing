@@ -121,7 +121,7 @@ export class Furnisher {
   // Extra pieces added in code (garage workbench + pegboard, oil stain under the car).
   _extras() {
     return {
-      vestibule: [{ proc: 'cabinet', pos: [8.65, 0, 4.3], rotY: 180, snap: 'S', id: 'shoe_bench', params: { w: 1.0, h: 0.46, d: 0.36, body: 'oak', cols: 2, rows: 1, legs: 0.1, handle: 'none' } }],
+      vestibule: [{ proc: 'cabinet', pos: [8.9, 0, 4.3], rotY: 180, snap: 'S', id: 'shoe_bench', params: { w: 0.8, h: 0.46, d: 0.36, body: 'oak', cols: 2, rows: 1, legs: 0.1, handle: 'none' } }],
       hall: [{ proc: 'cabinet', pos: [6.6, 0, 4.6], rotY: 180, snap: 'S', id: 'hall_bench', params: { w: 1.1, h: 0.46, d: 0.36, body: 'oak', cols: 2, rows: 1, legs: 0.1, handle: 'none' } }],
       garage: [
         { model: 'workbench_pegboard', pos: [12.05, 0, -2.9], snap: 'N', id: 'workbench' },
@@ -334,7 +334,8 @@ export class Furnisher {
   // Remove (hide) the sub-meshes / primitives of a model that use a material matching re (e.g. a mirror over a window).
   _dropMaterial(object, re, who = '') {
     let n = 0;
-    object.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => re.test(m?.name || ''))) { o.parent.remove(o); n++; } });
+    const kill = []; object.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => re.test(m?.name || ''))) kill.push(o); });
+    for (const o of kill) { o.removeFromParent(); n++; }
     this._warn(`${who}: removed ${n} ${re} part(s) hanging over a window`);
   }
 

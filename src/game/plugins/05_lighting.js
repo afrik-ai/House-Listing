@@ -103,6 +103,10 @@ export class Plugin {
         if (!m || seen.has(m) || !m.isMeshStandardMaterial) continue;
         seen.add(m);
         if (m.metalness >= 0.99 && m.roughness >= 0.95 && !m.metalnessMap) { m.metalness = 0; m.roughness = 0.85; m.needsUpdate = false; n++; }
+        // Dark dielectrics (anthracite / black lacquer, frames): the IBL is the outdoor sky, turned down
+        // indoors, so they miss the room's own reflections and crush to black. Boost their env term.
+        const c = m.color; const lum = c ? 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b : 1;
+        if (lum < 0.15 && m.metalness < 0.5 && !m.transparent && (m.envMapIntensity ?? 1) <= 1) m.envMapIntensity = 2.2;
       }
     });
     this.fixedMetals = n;

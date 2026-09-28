@@ -1,0 +1,338 @@
+{
+ "ext0_day": {
+  "fps": 0,
+  "drawCalls": 491,
+  "triangles": 706742,
+  "textures": 307,
+  "geometries": 524,
+  "programs": 184,
+  "memoryMB": 122,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext1_day": {
+  "fps": 0,
+  "drawCalls": 491,
+  "triangles": 669926,
+  "textures": 307,
+  "geometries": 524,
+  "programs": 184,
+  "memoryMB": 123,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext2_day": {
+  "fps": 0,
+  "drawCalls": 482,
+  "triangles": 665502,
+  "textures": 307,
+  "geometries": 524,
+  "programs": 184,
+  "memoryMB": 124,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext3_day": {
+  "fps": 0,
+  "drawCalls": 493,
+  "triangles": 707510,
+  "textures": 307,
+  "geometries": 524,
+  "programs": 184,
+  "memoryMB": 123,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "living_day": {
+  "fps": 0,
+  "drawCalls": 386,
+  "triangles": 735383,
+  "textures": 307,
+  "geometries": 524,
+  "programs": 184,
+  "memoryMB": 124,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "kitchen_day": {
+  "fps": 0,
+  "drawCalls": 508,
+  "triangles": 835066,
+  "textures": 307,
+  "geometries": 524,
+  "programs": 184,
+  "memoryMB": 124,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "master_bed_day": {
+  "fps": 0,
+  "drawCalls": 687,
+  "triangles": 1209896,
+  "textures": 327,
+  "geometries": 630,
+  "programs": 190,
+  "memoryMB": 126,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext0_golden_hour": {
+  "fps": 0,
+  "drawCalls": 489,
+  "triangles": 705640,
+  "textures": 337,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 133,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext1_golden_hour": {
+  "fps": 0,
+  "drawCalls": 489,
+  "triangles": 668824,
+  "textures": 337,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 130,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext2_golden_hour": {
+  "fps": 0,
+  "drawCalls": 480,
+  "triangles": 664400,
+  "textures": 337,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 130,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext3_golden_hour": {
+  "fps": 0,
+  "drawCalls": 490,
+  "triangles": 706284,
+  "textures": 337,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 131,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext0_night": {
+  "fps": 0,
+  "drawCalls": 492,
+  "triangles": 706774,
+  "textures": 341,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 138,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext1_night": {
+  "fps": 0,
+  "drawCalls": 492,
+  "triangles": 669958,
+  "textures": 341,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 138,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext2_night": {
+  "fps": 0,
+  "drawCalls": 483,
+  "triangles": 665534,
+  "textures": 341,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 138,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "ext3_night": {
+  "fps": 0,
+  "drawCalls": 494,
+  "triangles": 707542,
+  "textures": 341,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 139,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "living_night": {
+  "fps": 0,
+  "drawCalls": 387,
+  "triangles": 735415,
+  "textures": 341,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 139,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "kitchen_night": {
+  "fps": 0,
+  "drawCalls": 509,
+  "triangles": 835098,
+  "textures": 341,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 140,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "master_bed_night": {
+  "fps": 0,
+  "drawCalls": 688,
+  "triangles": 1209928,
+  "textures": 341,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 140,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "feet_sofa_day": {
+  "fps": 0,
+  "drawCalls": 252,
+  "triangles": 638835,
+  "textures": 345,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 140,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "feet_sofa_b_day": {
+  "fps": 0,
+  "drawCalls": 197,
+  "triangles": 627940,
+  "textures": 345,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 140,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "living_floor_day": {
+  "fps": 0,
+  "drawCalls": 256,
+  "triangles": 682179,
+  "textures": 345,
+  "geometries": 633,
+  "programs": 191,
+  "memoryMB": 140,
+  "gpuTexMB": 1020,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ }
+}

@@ -274,10 +274,11 @@
 - **Controls**: WASD/arrows, Shift sprint (4.2 m/s, +5 deg FOV kick, ~95% in 0.25 s; walk 2.6, crouch 1.3), C / Left Ctrl crouch (hold;
   stands up only with head clearance), Space jump when enabled (fresh press, 0.45 s cooldown after landing, landing costs speed).
 - **Events**: `footstep {surface:'wood'|'tile'|'stone'|'grass'|'gravel'|'carpet'|'metal', type:<raw floor type>, speed, sprint, crouch}`
-  every stride (0.74 m walk / 0.98 sprint / 0.55 crouch). Surface comes from the VISIBLE floor under the feet (downward ray: glTF `surface` extra, SURF_<type>, LS_<kind>, material name; fallback house.surfaceAt) via `floorSurfaceAt()` in src/game/player/surfaces.js; `player.surfaceInfo()` returns {type, surface}; `player.emitsFootsteps = true`, so Game.js' fallback is off.
+  every stride (0.74 m walk / 0.98 sprint / 0.55 crouch). Surface comes from the VISIBLE floor under the feet (downward ray: glTF `surface` extra, SURF_<type>, LS_<kind>, material name; fallback house.surfaceAt) via `floorSurfaceAt()` in src/game/player/surfaces.js; `player.surfaceInfo()` returns {type, surface}; From P08 r3 the Player also REPLACES `house.surfaceAt(pos)` on `ready` with this visible-floor lookup (returns the raw type; the previous rect/landscape chain stays as `house.surfaceAtRect`). `player.emitsFootsteps = true`, so Game.js' fallback is off.
   `land {surface, speed}` after >0.25 s airborne; `respawn {pos}` when the player falls below gradeY-8 (back to last safe ground).
 - **Physics** (`src/engine/Physics.js`): `setDynamic(meshes)` registers moving colliders tested with their CURRENT world
   matrix every query (the player registers `house.doorColliders` itself, so COL_DOOR_* follow P09's door animation with
   no extra calls). `raycast()` also hits dynamic colliders. `moveCapsule(pos, delta, out, {height, snap})`, `overlaps(pos, height)`.
+- Feel (r3): release-to-stop ~0.075 s, head-bob ~5 mm p-p at walk, stair step/landing snaps eased so the camera never moves > max(1.8 cm, the ramp's own move) per 120 Hz tick.
 - Capsule radius 0.25 m (was 0.3; 0.76 m doors + open leaves need it), height 1.75 (1.15 crouched), step 0.25; walkable slopes resolve straight up (ramps climb, no slide-back).
 - Simulation is the fixed 120 Hz Game step, so `__game.move` is frame-rate independent. Test: `node scripts/tests/player.mjs`.

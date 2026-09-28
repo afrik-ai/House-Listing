@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T18:01:37.700Z",
+ "updated": "2026-09-28T18:13:57.253Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "lost",
-   "round": 2,
+   "status": "critic",
+   "round": 3,
    "verdict": "Solid collision, FOV/sprint/surfaces fixed, but stair-descent 10.6cm pop, floaty stop and 2cm bob lose to HF2 (0/3 close pairs)",
    "gap": "Walking down the main stair drops the camera 10.6 cm in one tick at the last step, plus a floaty 0.35 s stop glide and ~2 cm head-bob, where HF2 is smooth, stops instantly and bobs a few mm.",
-   "updated": "2026-09-28T18:01:37.645Z"
+   "updated": "2026-09-28T18:13:57.253Z"
   },
   {
    "id": "P09",
@@ -118,6 +118,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-28T18:13:57.204Z",
+   "m": "P08 r3: stop 0.075 s, bob 4.9 mm p-p, stair cam <=1.73 cm/tick both ways, house.surfaceAt -> visible floor; 43/45 (D_garage blocked by P07 doormat collider + shoe bench on stair)"
+  },
   {
    "t": "2026-09-28T17:47:10.990Z",
    "m": "TEX r5: tile grout 6mm (5mm mosaic, 4mm floor), per-tile glaze lippage + coat/rough jitter; WC diagonal = 75deg perspective, courses verified horizontal"

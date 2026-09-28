@@ -11,8 +11,8 @@ const G = 0, F = 3.15;
 export const PATHS = [
   { name: 'hall->living->kitchen', y: G, wp: [[4.8, 3.7], [4.2, 6.0], [4.6, 9.3], [10.8, 8.3]], end: { room: 'kitchen' } },
   { name: 'kitchen->living->hall', y: G, wp: [[10.8, 8.3], [4.6, 9.3], [4.2, 6.0], [4.8, 3.7]], end: { room: 'hall' } },
-  { name: 'stairs up', y: G, wp: [[10.3, 3.16], [9.3, 3.16], [4.1, 3.16, 'direct'], [4.0, 5.2]], end: { room: 'hall1', minY: F - 0.05 }, maxTime: 7 },
-  { name: 'stairs down', y: F, wp: [[4.0, 5.2], [4.0, 3.16], [4.4, 3.16, 'direct'], [9.6, 3.16, 'direct'], [10.0, 3.6]], end: { room: 'vestibule', maxY: 0.05 }, maxTime: 8 },
+  { name: 'stairs up', y: G, wp: [[10.3, 3.4], [9.3, 3.4, 'direct'], [4.1, 3.4, 'direct'], [4.0, 5.2]], end: { room: 'hall1', minY: F - 0.05 }, maxTime: 7, maxCamDy: 0.02 },
+  { name: 'stairs down', y: F, wp: [[4.0, 5.2], [4.0, 3.4], [4.4, 3.4, 'direct'], [9.6, 3.4, 'direct'], [10.0, 3.6, 'direct']], end: { room: 'vestibule', maxY: 0.05 }, maxTime: 8, maxCamDy: 0.02 },
   { name: 'street->front door->vestibule', y: 0.2, wp: [[15.0, 4.0], [12.0, 3.9], [10.2, 3.6]], end: { room: 'vestibule' } },
   { name: 'vestibule->front door->street', y: G, wp: [[10.2, 3.6], [12.0, 3.9], [15.5, 4.0]], end: { room: null } },
   { name: 'living->terrace (west slider)', y: G, wp: [['gapW', 0, 5.2, 10.0], [-1.3, 'gap']], end: { room: null, box: [-2.6, -0.15, 0, 10.47], minY: -0.05 } },
@@ -116,7 +116,8 @@ export function runPaths({ PATHS, DOORS, only }) {
           if (dist < 0.2) break;
           P.look(Math.atan2(-dx, -dz), 0);
           P.simKeys.set('w', 1); if (opts.sprint) P.simKeys.set('shift', 1);
-          game._step(H); t += H; r.time += H;
+          const cy0 = game.camera.position.y; game._step(H); t += H; r.time += H;
+          r.maxCamDy = Math.max(r.maxCamDy || 0, Math.abs(game.camera.position.y - cy0));
           const d = depth(); if (d > r.maxDepth) r.maxDepth = d;
           if (d > 0.03) { r.ok = false; r.issues.push(`penetration ${d.toFixed(3)} at ${P.feet.toArray().map((v) => v.toFixed(2))}`); break; }
           if (r.time - lastProg > 1.5) {
@@ -158,8 +159,9 @@ export function runPaths({ PATHS, DOORS, only }) {
       if (e.box && !(r.end.feet[0] >= e.box[0] && r.end.feet[0] <= e.box[2] && r.end.feet[2] >= e.box[1] && r.end.feet[2] <= e.box[3])) { r.ok = false; r.issues.push('ended outside target area'); }
       if (e.minY !== undefined && r.end.feet[1] < e.minY) { r.ok = false; r.issues.push(`ended low y=${r.end.feet[1]}`); }
       if (e.maxY !== undefined && r.end.feet[1] > e.maxY) { r.ok = false; r.issues.push(`ended high y=${r.end.feet[1]}`); }
+      if (p.maxCamDy && r.maxCamDy > p.maxCamDy) { r.ok = false; r.issues.push(`camera jumped ${(r.maxCamDy * 100).toFixed(1)} cm in one tick`); }
       if (p.maxTime && r.time > p.maxTime) { r.ok = false; r.issues.push(`slow: ${r.time.toFixed(1)} s`); }
-      r.time = +r.time.toFixed(2); r.maxDepth = +r.maxDepth.toFixed(3);
+      r.time = +r.time.toFixed(2); r.maxDepth = +r.maxDepth.toFixed(3); r.maxCamDy = +(r.maxCamDy || 0).toFixed(4);
       out.push(r);
     }
     // doors: find the two sides via roomAt, walk across both ways
@@ -220,7 +222,13 @@ export function runPaths({ PATHS, DOORS, only }) {
       const si = P.surfaceInfo(); feel.surfaces[n] = `${si.surface} (${si.type})`;
       if (si.surface !== want) { feel.surfacesOk = false; feel.surfaces[n] += ` != ${want}`; }
     }
-    feel.ok = feel.surfacesOk && feel.sprintFov0_25s >= 4 && feel.walkSpeed > 2.3 && feel.sprintSpeed > 3.8 && feel.jumpsWhileHolding2s <= 1 && feel.closedDoorBlocks !== false && feel.fixedGlassBlocks && feel.stairDescentMaxCamStep < 0.04 && feel.stairDescentCamUpTicks === 0 && feel.footsteps > 0;
+    // stop time after release, head-bob peak-to-peak at walk
+    place(14.2, 0, -1); P.look(-Math.PI / 2, 0); P.simKeys.set('w', 1.2); steps(1.2); P.simKeys.clear();
+    let ticks = 0; while (P.speed > 0 && ticks < 240) { game._step(H); ticks++; } feel.stopTime = +(ticks * H).toFixed(3);
+    place(14.2, 0, -1); P.look(-Math.PI / 2, 0); P.simKeys.set('w', 2); steps(0.8);
+    let lo = 9, hi = -9; steps(1.0, () => { const o = game.camera.position.y - P.feet.y - P.eyeHeight - P._stepOffset; lo = Math.min(lo, o); hi = Math.max(hi, o); }); P.simKeys.clear();
+    feel.bobP2Pmm = +((hi - lo) * 1000).toFixed(1);
+    feel.ok = feel.stopTime < 0.1 && feel.bobP2Pmm < 8 && feel.bobP2Pmm > 1 && feel.surfacesOk && feel.sprintFov0_25s >= 4 && feel.walkSpeed > 2.3 && feel.sprintSpeed > 3.8 && feel.jumpsWhileHolding2s <= 1 && feel.closedDoorBlocks !== false && feel.fixedGlassBlocks && feel.stairDescentMaxCamStep < 0.04 && feel.stairDescentCamUpTicks === 0 && feel.footsteps > 0;
     return { paths: out, feel };
 }
 

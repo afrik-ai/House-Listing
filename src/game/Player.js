@@ -6,7 +6,7 @@ import { floorSurfaceAt } from './player/surfaces.js';
 // Convention: yaw 0 looks toward -Z (north), yaw 90 toward -X (west); pitch > 0 looks up.
 // Settings setters (for P10's menu) are documented in docs/CONTRACTS.md (P08 section).
 const WALK = 2.6, SPRINT = 4.2, CROUCH = 1.3;          // m/s (HF2: ~2.7 walk, sprint ~1.6x)
-const ACCEL = 11, DECEL = 13, AIR = 1.5;                // exponential rates (1/s): ~0.2 s to full speed, ~0.2 s to stop
+const ACCEL = 11, DECEL = 45, AIR = 1.5;                // exponential rates (1/s): ~0.2 s to full speed, ~0.2 s to stop
 const EYE = 1.65, EYE_CROUCH = 1.05;
 const H_STAND = 1.75, H_CROUCH = 1.15;
 const JUMP = 4.6, JUMP_COOLDOWN = 0.45;
@@ -52,6 +52,22 @@ export class Player {
     this._delta = new THREE.Vector3();
     this._out = {};
     this._bind();
+    // Every caller of house.surfaceAt gets the visible-floor answer (P04's landscape wrapper and the
+    // rect lookup become the fallback). Installed once plugins are in (ready).
+    game.on?.('ready', () => this._installSurfaceAt());
+  }
+
+  _installSurfaceAt() {
+    const house = this.game.house;
+    if (!house || house._p08Surface) return;
+    const rect = house.surfaceAt.bind(house);
+    house._p08Surface = true;
+    house.surfaceAtRect = rect;
+    const v = new THREE.Vector3();
+    house.surfaceAt = (pos) => {
+      v.set(pos.x ?? pos[0], pos.y ?? pos[1], pos.z ?? pos[2]);
+      return floorSurfaceAt(this.game, v, rect).type;
+    };
   }
 
   // ---- settings (P10 menu) ----------------------------------------------------------------------
@@ -132,8 +148,8 @@ export class Player {
   syncCamera() {
     const bobOn = this.settings.headBob;
     const a = bobOn ? this._bobAmp : 0;
-    const bobY = Math.abs(Math.sin(this._bobPhase)) * 0.022 * a - 0.011 * a;
-    const bobX = Math.cos(this._bobPhase) * 0.012 * a;
+    const bobY = Math.abs(Math.sin(this._bobPhase)) * 0.005 * a - 0.0025 * a;   // ~5 mm p-p at walk
+    const bobX = Math.cos(this._bobPhase) * 0.0025 * a;
     const r = this.right;
     this.camera.position.set(
       this.feet.x + r.x * bobX,
@@ -186,7 +202,7 @@ export class Player {
     const k = 1 - Math.exp(-rate * dt);
     this.velocity.x += (mv.x - this.velocity.x) * k;
     this.velocity.z += (mv.z - this.velocity.z) * k;
-    if (!moving && this.onGround && Math.hypot(this.velocity.x, this.velocity.z) < 0.03) { this.velocity.x = 0; this.velocity.z = 0; }
+    if (!moving && this.onGround && Math.hypot(this.velocity.x, this.velocity.z) < 0.12) { this.velocity.x = 0; this.velocity.z = 0; }
 
     // ---- jump: needs a fresh press, ground contact and a cooldown after landing (no bunny-hopping)
     this._jumpCd = Math.max(0, this._jumpCd - dt);
@@ -219,7 +235,7 @@ export class Player {
     if (this.onGround) {
       if (this.velocity.y < 0) this.velocity.y = 0;
       // Camera easing: stair steps (both ways) glide instead of popping.
-      if (wasGround && Math.abs(dy) > 0.035) this._stepOffset = clamp(this._stepOffset - dy, -0.3, 0.3);
+      if ((wasGround || dy < 0) && Math.abs(dy) > 0.03) this._stepOffset = clamp(this._stepOffset - dy, -0.3, 0.3);
       if (!wasGround && this._airTime > 0.25) {
         const impact = Math.min(0.08, -fallV * 0.012);
         this._stepOffset = clamp(this._stepOffset - impact, -0.3, 0.3);
@@ -232,7 +248,15 @@ export class Player {
       if (this.velocity.y > 0 && dy < this.velocity.y * dt * 0.5) this.velocity.y = 0;   // bonked a ceiling
       this._airTime += dt;
     }
-    this._stepOffset *= Math.exp(-12 * dt);
+    // Release the offset exponentially, but never let the camera's vertical move this tick exceed
+    // max(1.8 cm, the natural ramp move) -- no pops at stair ends, no extra speed mid-ramp.
+    {
+      const snapped = Math.abs(dy) > 0.03 && this.onGround;
+      const base = snapped ? 0 : dy;                              // camera move before releasing the offset
+      const want = this._stepOffset * (1 - Math.exp(-12 * dt));
+      const cap = Math.max(0.018 * dt * 120, Math.abs(base));
+      this._stepOffset -= clamp(want, base - cap, base + cap);    // camera move = base - release
+    }
 
     // ---- head bob / sway / FOV
     const sp = this.speed;

@@ -43,7 +43,7 @@ function skip(o) {
   return /contactAO|decal|shadow|water|grass_blades|grass_clump|hedge_cards/i.test((o.name || '') + ' ' + (m.name || ''));
 }
 
-export function floorSurfaceAt(game, feet) {
+export function floorSurfaceAt(game, feet, fallback = null) {
   const roots = (game.scene?.children || []).filter((o) => !o.isLight && !o.isCamera);
   _o.set(feet.x, feet.y + 0.3, feet.z);
   _rc.set(_o, _d); _rc.near = 0; _rc.far = 0.7;
@@ -52,6 +52,6 @@ export function floorSurfaceAt(game, feet) {
     const hits = _rc.intersectObjects(roots, true);
     for (const h of hits) { if (skip(h.object)) continue; type = typeOf(h.object); if (type) break; }
   }
-  if (!type) { try { type = game.house?.surfaceAt(feet) || 'stone'; } catch { type = 'stone'; } }
+  if (!type) { try { type = (fallback || game.house.surfaceAtRect || game.house.surfaceAt.bind(game.house))(feet) || 'stone'; } catch { type = 'stone'; } }
   return { type, surface: footstepSurface(type) };
 }

@@ -28,8 +28,8 @@ export const TONE_MAPPERS = {
 const AO_TIERS = {
   low: { aoRadius: 0.5, distanceFalloff: 0.4, intensity: 3.5, aoSamples: 8, denoiseSamples: 4, denoiseRadius: 8 },
   medium: { aoRadius: 0.55, distanceFalloff: 0.4, intensity: 4.0, aoSamples: 12, denoiseSamples: 6, denoiseRadius: 8 },
-  high: { aoRadius: 0.6, distanceFalloff: 0.35, intensity: 4.6, aoSamples: 16, denoiseSamples: 8, denoiseRadius: 8 },
-  ultra: { aoRadius: 0.6, distanceFalloff: 0.35, intensity: 4.6, aoSamples: 24, denoiseSamples: 8, denoiseRadius: 8 },
+  high: { aoRadius: 0.35, distanceFalloff: 0.2, intensity: 7, aoSamples: 16, denoiseSamples: 8, denoiseRadius: 6 },
+  ultra: { aoRadius: 0.35, distanceFalloff: 0.2, intensity: 7, aoSamples: 24, denoiseSamples: 8, denoiseRadius: 8 },
 };
 
 // Linear-light colour balance (white balance / tint), applied before tone mapping.

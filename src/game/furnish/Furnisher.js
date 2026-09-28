@@ -25,6 +25,14 @@ const LAYOUT_FIX = {
   'wc/bathroom_vanity': (it) => ({ pos: [it.pos[0], it.pos[1], 3.62] }),
   'wc/toiletries': (it) => ({ pos: [it.pos[0], it.pos[1], 3.72] }),
 };
+// kitchen: the island left a 0.57 m slot to the run (a player could get stuck in it) -> island, its stools and
+// everything standing on it move 0.35 m west (1.0 m aisle). terrace: the lounge coffee table / lantern closed the
+// gap in front of the sofa -> 0.35 m further west. wardrobe_a: the 2.1 m closet filled the room -> 1.3 m.
+const LAYOUT_RULES = [
+  { room: 'kitchen', test: (it) => it.pos[0] > 8.5 && it.pos[0] < 10.45 && it.id !== 'run', fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
+  { room: 'terrace', test: (it) => (it.id === 'terrace_coffee' || it.model === 'lantern' || it.model === 'plant_succulent_small') && it.pos[2] > 4, fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
+  { room: 'wardrobe_a', test: (it) => it.proc === 'closet', fix: (it) => ({ params: { ...it.params, sections: [{ type: 'hang', w: 0.8 }, { type: 'shelves', w: 0.5 }] } }) },
+];
 const DIRS = { N: [0, 0, -1], S: [0, 0, 1], E: [1, 0, 0], W: [-1, 0, 0] };
 
 export class Furnisher {
@@ -97,7 +105,9 @@ export class Furnisher {
   // Layout corrections applied on top of furniture.json (critic / P08 placement findings).
   _fixItem(it) {
     const f = LAYOUT_FIX[`${it.room}/${it.id || it.model || it.proc}`];
-    return f ? { ...it, ...f(it) } : it;
+    if (f) it = { ...it, ...f(it) };
+    for (const g of LAYOUT_RULES) if (g.room === it.room && g.test(it)) it = { ...it, ...g.fix(it) };
+    return it;
   }
 
   _flatten(data) {

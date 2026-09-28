@@ -247,8 +247,8 @@ export class Landscape {
     const k = NIGHT[g.lighting.mode] ?? 0, hemi = g.lighting.hemi;
     const fill = PATH_LIGHTS.uLsFill.value.setRGB(0, 0, 0);
     if (k > 0.5 && hemi) {
-      fill.copy(hemi.color).multiplyScalar(hemi.intensity * 1.2);
-      if (sun) fill.add(_c.copy(sun.color).multiplyScalar(sun.intensity * 0.18));
+      fill.copy(hemi.color).multiplyScalar(hemi.intensity * 2.6);
+      if (sun) fill.add(_c.copy(sun.color).multiplyScalar(sun.intensity * 0.22));
     }
     this.pool?.update(dt, sun);
     this.grass?.update(dt, g.camera, sun);

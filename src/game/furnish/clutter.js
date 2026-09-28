@@ -111,6 +111,9 @@ function defs() {
   D.rolls = { fp: 0.07, h: 0.3, parts: [{ geo: merge(cyl(0.055, 0.1, '#f7f6f2', { seg: 14 }), cyl(0.055, 0.1, '#f7f6f2', { y: 0.1, seg: 14 }), cyl(0.055, 0.1, '#f7f6f2', { y: 0.2, seg: 14 })), mat: 'cloth', tint: false }] };
   D.basketfloor = { fp: 0.2, h: 0.3, parts: [{ geo: merge(lathe([[0.001, 0], [0.16, 0], [0.19, 0.25], [0.18, 0.25], [0.15, 0.02], [0.001, 0.02]], '#a88457', 18),
     bx(0.3, 0.06, 0.2, '#f2efe8', { y: 0.2, r: 0.02 }), bx(0.28, 0.06, 0.18, '#8ea0ad', { y: 0.24, r: 0.02 })), mat: 'cloth', tint: false }] };
+  D.shoes = { fp: 0.17, h: 0.1, floor: true, parts: [{ geo: merge(...[-0.055, 0.055].map((x) => merge(bx(0.09, 0.03, 0.27, WHITE, { x, r: 0.012 }), bx(0.08, 0.07, 0.12, WHITE, { x, z: 0.06, y: 0.02, r: 0.03 }), bx(0.092, 0.012, 0.27, '#e8e4dc', { x })))), mat: 'cloth', tint: true }],
+    palette: ['#2a2a2c', '#6b4a32', '#e9e6df', '#35475e', '#8a3b2b'] };
+  D.keys = { fp: 0.05, h: 0.02, parts: [{ geo: merge(torus(0.012, 0.0015, '#c9a24e', { y: 0.004, rx: Math.PI / 2 }), bx(0.008, 0.003, 0.05, '#bdbdbd', { x: 0.01, z: 0.03 }), bx(0.02, 0.008, 0.03, '#222', { x: -0.02, z: 0.02 })), mat: 'metal', tint: false }] };
   D.detergent = { fp: 0.08, h: 0.28, parts: [{ geo: merge(bx(0.14, 0.24, 0.09, WHITE, { r: 0.02 }), cyl(0.025, 0.04, '#f0f0f0', { y: 0.24, x: 0.035, seg: 10 })), mat: 'std', tint: true }], palette: ['#2a6fb0', '#e36a2a', '#f0f0ee', '#6ab04a'] };
   return D;
 }
@@ -124,12 +127,14 @@ const RECIPES = {
   shelves: { fill: 'books', items: [] },
   shelves_storage: { fill: 'storage', items: [] },
   nightstand: { items: [['booklie', 3, 'any'], ['spectacles', 1, 'any'], ['phone', 1, 'any'], ['glass', 1, 'any'], ['mug', 1, 'any']] },
-  console: { items: [['booklie', 3, 'any'], ['candle', 2, 'any'], ['storebox', 1, 'any'], ['magazine', 1, 'any'], ['bowl', 1, 'any']] },
+  console: { items: [['booklie', 3, 'any'], ['candle', 2, 'any'], ['storebox', 1, 'any'], ['magazine', 1, 'any'], ['bowl', 1, 'any'], ['keys', 1, 'any'], ['herbpot', 1, 'any'], ['glass', 1, 'any']] },
+  hallconsole: { items: [['bowl', 1, 'any'], ['keys', 2, 'any'], ['booklie', 3, 'any'], ['candle', 2, 'any'], ['storebox', 1, 'any'], ['magazine', 2, 'any'], ['herbpot', 1, 'any'], ['phone', 1, 'any'], ['spectacles', 1, 'any']],
+    floor: [['shoes', 1], ['shoes', -1], ['basketfloor', 2], ['shoes', -2]] },
   coffee: { items: [['remote', 1, 'any'], ['magazine', 2, 'any'], ['mug', 2, 'any'], ['candle', 1, 'any'], ['spectacles', 1, 'any']] },
   sidetable: { items: [['booklie', 2, 'any'], ['glass', 1, 'any'], ['mug', 1, 'any']] },
   desk: { items: [['mug', 1, 'any'], ['magazine', 2, 'any'], ['booklie', 3, 'any'], ['phone', 1, 'any'], ['glass', 1, 'any'], ['spectacles', 1, 'any'], ['storebox', 1, 'back']] },
   dining: { items: [['plate', 6, 'any'], ['glass', 6, 'any'], ['bottle', 1, 'any'], ['magazine', 1, 'any']] },
-  vanity: { items: [['soap', 1, 'any'], ['toiletry', 4, 'any'], ['toothcup', 1, 'any'], ['towel', 1, 'any'], ['candle', 1, 'any'], ['jar', 1, 'any']], mat: true, floor: [['bin', 1]] },
+  vanity: { items: [['soap', 1, 'any'], ['toiletry', 5, 'any'], ['toothcup', 1, 'any'], ['towel', 2, 'any'], ['candle', 2, 'any'], ['jar', 2, 'any'], ['herbpot', 1, 'any'], ['bowl', 1, 'any']], mat: true, floor: [['bin', 1], ['basketfloor', -1], ['rolls', -2]] },
   tub: { items: [], mat: true, floor: [['basketfloor', 1], ['toiletry', -1]] },
   wc: { items: [], floor: [['brush', 1], ['bin', -1], ['rolls', -1.9]] },
   washer: { items: [['detergent', 1, 'any'], ['towel', 2, 'any']] },
@@ -144,7 +149,7 @@ function hostKind(p) {
   if (n === 'kitchen_island') return 'island';
   if (n === 'media_wall' || n === 'shelf_unit' || n === 'wall_shelves') return 'shelves';
   if (n === 'garage_shelves_steel_narrow') return 'shelves_storage';
-  if (n === 'cabinet') return BEDROOMS.has(room) ? 'nightstand' : 'console';
+  if (n === 'cabinet') return BEDROOMS.has(room) ? 'nightstand' : /^(hall|hall1|vestibule|cloak)$/.test(room) ? 'hallconsole' : 'console';
   if (n === 'coffee_table_round_marble') return 'coffee';
   if (n === 'side_table_oak' || n === 'side_table_tall') return 'sidetable';
   if (n === 'table') return room === 'dining' ? 'dining' : (room === 'office' || room === 'bed3') ? 'desk' : null;

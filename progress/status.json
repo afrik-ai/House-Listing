@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T03:54:56.798Z",
+ "updated": "2026-09-28T08:31:06.862Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -43,11 +43,11 @@
   {
    "id": "P05",
    "name": "Lighting & atmosphere",
-   "status": "review",
+   "status": "lost",
    "round": 3,
-   "verdict": "HF2 4/4 blind: night interior bloom blow-out, black unlit surfaces, weak contact AO",
-   "gap": "Night interiors blow out under heavy low-threshold bloom while unlit surfaces fall to pure black; no restrained exposure or bounce fill",
-   "updated": "2026-09-28T03:17:56.630Z"
+   "verdict": "HF2 4-0: night blow-out fixed, but black zero-ambient surfaces and missing contact AO remain",
+   "gap": "There is no indirect or ambient light floor: dark-albedo surfaces and anything out of direct light (kitchen tall unit and black cabinets, plant leaves, night soffits) render as pure 0-black, and nothing gets contact AO or coloured bounce, so objects float and rooms lack HF2's always-present GI.",
+   "updated": "2026-09-28T08:31:06.795Z"
   },
   {
    "id": "P06",
@@ -381,6 +381,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-28T08:31:06.862Z",
+   "src": "/reviews/critic/P05-r3/living_day.png",
+   "caption": "P05 r3 critic view"
+  },
+  {
    "t": "2026-09-28T03:54:24.024Z",
    "src": "/reviews/critic/P07-r3/room_master.png",
    "caption": "P07 r3 critic view"
@@ -494,11 +499,6 @@
    "t": "2026-09-23T16:17:48.536Z",
    "src": "/reviews/p06/final/floor1m.png",
    "caption": "P06 oak 190 mm boards, procedural board shuffle (no repeat), 1 m close-up"
-  },
-  {
-   "t": "2026-09-23T11:13:26.355Z",
-   "src": "/reviews/p01-r2/01_living.png",
-   "caption": "P01 r2: sunlight now enters the living room"
   }
  ]
 }

@@ -1,0 +1,75 @@
+{
+ "stats": {
+  "fps": 0,
+  "drawCalls": 249,
+  "triangles": 675602,
+  "textures": 269,
+  "geometries": 504,
+  "programs": 189,
+  "memoryMB": 124,
+  "gpuTexMB": 947,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "report": {
+  "items": 285,
+  "instanced": 68,
+  "meshes": 335,
+  "warnings": [
+   "kitchen/kitchen_run fitted: span 3.55 m, length 3.65 -> 3.55, shift 0.045",
+   "wc/bathroom_vanity: removed 1 /^mirror/ part(s) hanging over a window",
+   "bath3/bathroom_vanity: removed 1 /^mirror/ part(s) hanging over a window"
+  ],
+  "overlaps": [],
+  "wallPokes": [
+   "terrace/planter pokes 4.2 cm",
+   "terrace/planter pokes 4.2 cm"
+  ],
+  "doorBlocks": [],
+  "merged": {
+   "meshes": 83,
+   "drawCallsSaved": 497
+  },
+  "budget": {
+   "tris": 600305,
+   "drawCalls": 335,
+   "shadowTris": 424667,
+   "shadowDrawCalls": 236
+  },
+  "clutter": {
+   "total": 539,
+   "perRoom": {
+    "living": 37,
+    "dining": 29,
+    "kitchen": 46,
+    "hall": 11,
+    "cloak": 29,
+    "storage_e": 18,
+    "storage_n": 27,
+    "boiler": 17,
+    "wc": 9,
+    "office": 121,
+    "garage": 16,
+    "master": 21,
+    "bath_master": 9,
+    "bath2": 14,
+    "bath3": 8,
+    "laundry": 25,
+    "hall1": 14,
+    "bed2": 26,
+    "bed3": 62
+   }
+  },
+  "view": {
+   "state": "in:0",
+   "tris": 387913,
+   "drawCalls": 203,
+   "shadowTris": 193122,
+   "shadowDrawCalls": 102
+  }
+ }
+}

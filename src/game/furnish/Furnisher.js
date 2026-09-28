@@ -104,7 +104,7 @@ export class Furnisher {
 
   // Layout corrections applied on top of furniture.json (critic / P08 placement findings).
   _fixItem(it) {
-    const f = LAYOUT_FIX[`${it.room}/${it.id || it.model || it.proc}`];
+    const f = LAYOUT_FIX[`${it.room}/${it.id}`] || LAYOUT_FIX[`${it.room}/${it.model || it.proc}`];
     if (f) it = { ...it, ...f(it) };
     for (const g of LAYOUT_RULES) if (g.room === it.room && g.test(it)) it = { ...it, ...g.fix(it) };
     return it;
@@ -319,16 +319,14 @@ export class Furnisher {
   _overWindow(it, h, r) {
     const lvl = this.game.house.rooms().find((q) => q.id === it.room)?.level;
     const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
-    const back = [-Math.sin(yaw), -Math.cos(yaw)];
-    const s = Array.isArray(it.scale) ? it.scale : [it.scale ?? 1, 1, it.scale ?? 1];
-    const depth = 0.5 * (s[2] ?? 1);
-    const cx = it.pos[0] + back[0] * depth / 2, cz = it.pos[2] + back[1] * depth / 2;
+    const back = [-Math.sin(yaw), -Math.cos(yaw)], side = [Math.cos(yaw), -Math.sin(yaw)];
     const elev = this._levelFloor(lvl || 'ground');
     for (const o of this.game.house.spec?.openings || []) {
       if (o.type !== 'window' || (lvl && o.level !== lvl)) continue;
-      const d = Math.hypot(o.at[0] - cx, o.at[1] - cz);
+      const dx = o.at[0] - it.pos[0], dz = o.at[1] - it.pos[2];
+      const along = Math.abs(dx * side[0] + dz * side[1]), perp = dx * back[0] + dz * back[1];
       const y0 = elev + (o.sill ?? 0), y1 = y0 + (o.height ?? 1.2), y = it.floorY + h;
-      if (d < o.width / 2 + r + 0.05 && y + r > y0 && y - r < y1) return true;
+      if (perp > -0.1 && perp < 1.2 && along < o.width / 2 + r + 0.05 && y + r > y0 && y - r < y1) return true;
     }
     return false;
   }

@@ -160,6 +160,7 @@ export const kitchen_run = {
         const n = Math.max(1, Math.round((s.x1 - s.x0) / 0.6));
         const w = (s.x1 - s.x0) / n;
         B.add('anthracite_dark', box([s.x0, WALL0, zb + 0.015], [s.x1, TALL, zb + WD - 0.018]));
+        cols.push([[s.x0, WALL0, zb], [s.x1, TALL, zb + WD]]);   // wall units collide too (eye-height probes, heads)
         for (let i = 0; i < n; i++) {
           const a = s.x0 + i * w, b = a + w;
           B.add('anthracite', rbox([a + GAP / 2, WALL0 - 0.02, zb + WD - 0.018], [b - GAP / 2, TALL - GAP, zb + WD], 0.0025, 2, 'y'));

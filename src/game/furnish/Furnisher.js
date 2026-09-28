@@ -285,7 +285,9 @@ export class Furnisher {
       o.castShadow = cast && !clear && !o.userData.noShadow;
       o.receiveShadow = !clear;
     });
-    this.placed.push({ item: it, key, wrap, box, size, floorY: it.floorY, room: it.room });
+    const small = !it.proc && Math.max(size.x, size.y, size.z) < 0.75 && !/^(pendant|lantern|desk_lamp|laptop)/.test(it.model || '');
+    if (small) this._flatten_small(wrap);
+    this.placed.push({ item: it, key, wrap, box, size, floorY: it.floorY, room: it.room, small });
     this.report.items++;
   }
 
@@ -455,6 +457,27 @@ export class Furnisher {
     this.report.view = { state, ...this.stats(true) };
   }
 
+  // Small decor props: their textures are replaced by the texture's mean colour (x base colour), so they join the
+  // shared vertex-colour merge buckets (one draw call per bucket per floor instead of one per material per prop).
+  // At the size they are seen at, the texture detail is sub-pixel anyway. Printed images (photos, dials, labels,
+  // screens) and emissive / transparent materials keep their own material.
+  _flatten_small(wrap) {
+    wrap.traverse((o) => {
+      if (!o.isMesh) return;
+      const conv = (m) => {
+        if (!m || !m.map || m.transparent || m.alphaTest > 0 || m.alphaMap || (m.emissive && m.emissive.getHex()) || /photo|art|screen|dial|label|squares|print/i.test(m.name)) return m;
+        const key = m.uuid;
+        this._plainCache ||= new Map();
+        if (this._plainCache.has(key)) return this._plainCache.get(key);
+        const c = m.color.clone().multiply(meanColour(m.map));
+        const n = new THREE.MeshStandardMaterial({ name: `${m.name}_flat`, color: c, roughness: m.roughness, metalness: m.metalness, side: m.side });
+        this._plainCache.set(key, n);
+        return n;
+      };
+      o.material = Array.isArray(o.material) ? o.material.map(conv) : conv(o.material);
+    });
+  }
+
   _tint(object, tint) {
     object.traverse((o) => {
       if (!o.isMesh) return;
@@ -487,7 +510,7 @@ export class Furnisher {
   _instance() {
     const groups = new Map();
     for (const p of this.placed) {
-      if (!p.key || p.item.noInstance) continue;
+      if (!p.key || p.item.noInstance || p.small) continue;   // small props are merged instead (see _flatten small)
       const k = `${p.key}|${p.floorY}|${p.zone}`;
       if (!groups.has(k)) groups.set(k, []);
       groups.get(k).push(p);
@@ -734,6 +757,23 @@ export class Furnisher {
     }
     if (this.mats?.m?.flame) this.mats.m.flame.opacity = on ? 0.9 : 0.55;
   }
+}
+
+// Mean colour of a texture (linear), via a 1x1 canvas draw (cached per texture); white if unreadable.
+const _meanCache = new WeakMap();
+function meanColour(tex) {
+  if (_meanCache.has(tex)) return _meanCache.get(tex);
+  let c = new THREE.Color(1, 1, 1);
+  try {
+    const img = tex.image;
+    const cv = document.createElement('canvas'); cv.width = cv.height = 1;
+    const cx = cv.getContext('2d', { willReadFrequently: true });
+    cx.drawImage(img, 0, 0, 1, 1);
+    const d = cx.getImageData(0, 0, 1, 1).data;
+    c = new THREE.Color().setRGB(d[0] / 255, d[1] / 255, d[2] / 255, THREE.SRGBColorSpace);
+  } catch { /* keep white */ }
+  _meanCache.set(tex, c);
+  return c;
 }
 
 function inRects(rects, x, z) { return rects.some(([rx, rz, w, d]) => x > rx && x < rx + w && z > rz && z < rz + d); }

@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T13:33:00.197Z",
+ "updated": "2026-09-28T17:13:27.417Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -61,11 +61,11 @@
   {
    "id": "P07",
    "name": "Furniture & props",
-   "status": "building",
+   "status": "lost",
    "round": 4,
-   "verdict": "HF2 3/3: good bedrooms/office/island clutter but r2 placement bugs persist, baths/halls/garage bare, furniture 746k tris/511 dc over budget",
-   "gap": "Placement and polish regressions persist from r2 and clutter is concentrated in a few rooms (office 126 items vs baths/halls 4-7). Worst cases: the bath3 mirror over the window, the black slab filling the kitchen view, the WC door on the vanity and the broken garage car. On top of this, the furniture budget is blown at 746k tris and 511 draw calls.",
-   "updated": "2026-09-28T03:54:56.798Z"
+   "verdict": "HF2 wins 3/3: office/kitchen good, but baths/halls/garage near-empty, mirror rings still over windows",
+   "gap": "Wet rooms, halls and the garage are near-empty or placeholder-grade (baths 8-9 props, blobby SUV, no workbench/pegboard)",
+   "updated": "2026-09-28T17:13:09.341Z"
   },
   {
    "id": "P08",
@@ -118,6 +118,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-28T17:13:27.373Z",
+   "m": "TEX critic r4: HF2 - tiles in all wet rooms uniform with painted grout, WC wall tiles mapped diagonally"
+  },
   {
    "t": "2026-09-28T13:14:03.790Z",
    "m": "P08 r2: FOV 75 default, +5 sprint kick in 0.25s, roll/jump off, visible-floor footstep surfaces; player.mjs 45/45 + surface asserts"
@@ -385,6 +389,16 @@
  ],
  "shots": [
   {
+   "t": "2026-09-28T17:13:27.417Z",
+   "src": "/reviews/critic/TEX-r4/ext_front_east.png",
+   "caption": "TEX r4 critic view"
+  },
+  {
+   "t": "2026-09-28T17:13:09.383Z",
+   "src": "/reviews/critic/P07-r4/room_office.png",
+   "caption": "P07 r4 critic view"
+  },
+  {
    "t": "2026-09-28T13:02:09.679Z",
    "src": "/reviews/critic/P08-r1/f4_midstairs_up.png",
    "caption": "P08 r1 critic view"
@@ -493,16 +507,6 @@
    "t": "2026-09-23T16:22:48.701Z",
    "src": "/reviews/p02-blender/02_east_from_street.png",
    "caption": "P02 r2 street facade"
-  },
-  {
-   "t": "2026-09-23T16:18:30.441Z",
-   "src": "/reviews/p06/final/living.png",
-   "caption": "Living room with floors, furniture and garden in progress"
-  },
-  {
-   "t": "2026-09-23T16:17:48.597Z",
-   "src": "/reviews/p06/final/bath3_night.png",
-   "caption": "P06 gloss subway bath3 at night"
   }
  ]
 }

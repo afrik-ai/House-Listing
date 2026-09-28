@@ -7,14 +7,14 @@ const views=views0;
 const ext = (views.exteriors||views.exterior||[]).slice(0,4); console.log('ext',ext.length);
 const interior=[['living',[7.6,1.6,9.87],57.2,-8],['kitchen',[11.55,1.6,9.87],45.9,-8],['master_bed',[0.45,4.75,9.87],-28.2,-8]];
 const stats={};
-async function shot(name,pos,yaw,pitch,tod){
+async function shot(name,pos,yaw,pitch,tod){ if(fs.existsSync(D+'/'+name+'.png')) return;
   try{
     await page.evaluate(async v=>{const g=window.__game; g.hideUI(true); await g.setTimeOfDay(v.tod); g.teleport(...v.pos,v.yaw,v.pitch); g.render();},{pos,yaw,pitch,tod});
     await new Promise(r=>setTimeout(r,10000));
     await page.evaluate(()=>window.__game.render());
     await page.screenshot({path:`${D}/${name}.png`});
     stats[name]=await page.evaluate(()=>window.__game.stats());
-    fs.writeFileSync(D+'/stats.json',JSON.stringify(stats,null,1));
+    fs.writeFileSync(D+'/stats_b.json',JSON.stringify(stats,null,1));
     console.log('ok',name);
   }catch(e){console.log('fail',name,e.message);}
 }

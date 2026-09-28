@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T17:13:27.417Z",
+ "updated": "2026-09-28T17:13:50.351Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -61,11 +61,11 @@
   {
    "id": "P07",
    "name": "Furniture & props",
-   "status": "lost",
-   "round": 4,
+   "status": "building",
+   "round": 5,
    "verdict": "HF2 wins 3/3: office/kitchen good, but baths/halls/garage near-empty, mirror rings still over windows",
    "gap": "Wet rooms, halls and the garage are near-empty or placeholder-grade (baths 8-9 props, blobby SUV, no workbench/pegboard)",
-   "updated": "2026-09-28T17:13:09.341Z"
+   "updated": "2026-09-28T17:13:50.351Z"
   },
   {
    "id": "P08",

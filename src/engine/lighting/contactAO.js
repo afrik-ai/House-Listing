@@ -26,7 +26,7 @@ function blobTexture() {
     const d = Math.min(1, Math.hypot(dx, dy));
     const a = Math.pow(1 - d, 1.8) * (0.75 + 0.25 * (1 - Math.max(u, v)));
     const i = (y * S + x) * 4;
-    img.data[i] = img.data[i + 1] = img.data[i + 2] = 0; img.data[i + 3] = Math.round(a * 255);
+    img.data[i] = img.data[i + 1] = img.data[i + 2] = Math.round(a * 255); img.data[i + 3] = 255;   // alphaMap reads green
   }
   g.putImageData(img, 0, 0);
   _tex = new THREE.CanvasTexture(c);
@@ -56,7 +56,7 @@ export function buildContactAO(placed, { opacity = 0.9, pad = 0.1, maxLift = 0.0
   if (!list.length) return null;
   const geo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
   const mat = new THREE.MeshBasicMaterial({
-    color: 0x000000, map: blobTexture(), transparent: true, opacity, depthWrite: false,
+    color: 0x000000, alphaMap: blobTexture(), transparent: true, opacity, depthWrite: false,
     polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2, toneMapped: false, fog: false,
   });
   mat.name = 'P05_contactAO';

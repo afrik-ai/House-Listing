@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { footstepSurface } from './player/surfaces.js';
+import { floorSurfaceAt } from './player/surfaces.js';
 
 // P08 first-person controller. constructor(game) + update(dt) are the Game.js contract; update runs at
 // the fixed 120 Hz simulation step, so __game.move(dir, s) gives the same path at any frame rate.
@@ -11,7 +11,8 @@ const EYE = 1.65, EYE_CROUCH = 1.05;
 const H_STAND = 1.75, H_CROUCH = 1.15;
 const JUMP = 4.6, JUMP_COOLDOWN = 0.45;
 const SENS_BASE = 0.0021;
-const SPRINT_FOV_KICK = 4;                              // degrees (vertical FOV) at full sprint
+const FOV_DEFAULT = 75;                                 // vertical degrees (HF2 reads 75-80)
+const SPRINT_FOV_KICK = 5;                              // degrees added while sprinting, eased in ~0.25 s
 const STRIDE = 0.74, STRIDE_SPRINT = 0.98, STRIDE_CROUCH = 0.55;
 const KEYS = {
   KeyW: 'w', KeyS: 's', KeyA: 'a', KeyD: 'd', ArrowUp: 'w', ArrowDown: 's', ArrowLeft: 'a', ArrowRight: 'd',
@@ -37,7 +38,9 @@ export class Player {
     this.emitsFootsteps = true;                 // Game.js' fallback footsteps are off: we emit them
     this.keys = new Set();
     this.simKeys = new Map();                   // key -> seconds remaining (for __game.move)
-    this.settings = { sensitivity: 1, fov: this.camera.fov || 62, smoothing: 0, headBob: true, invertY: false, jump: true };
+    this.settings = { sensitivity: 1, fov: FOV_DEFAULT, smoothing: 0, headBob: true, roll: false, invertY: false, jump: false };
+    this.camera.fov = FOV_DEFAULT; this.camera.updateProjectionMatrix();
+    this._sprintK = 0;
     this._fov = this.settings.fov;
     this._bobPhase = 0; this._bobAmp = 0; this._roll = 0;
     this._stepOffset = 0;                       // camera-only easing of stair steps / landings
@@ -53,9 +56,10 @@ export class Player {
 
   // ---- settings (P10 menu) ----------------------------------------------------------------------
   setSensitivity(mult) { this.settings.sensitivity = clamp(+mult || 1, 0.1, 5); this._emitSettings(); }
-  setFov(deg) { this.settings.fov = clamp(+deg || 62, 45, 100); this._emitSettings(); }
+  setFov(deg) { this.settings.fov = clamp(+deg || FOV_DEFAULT, 45, 110); this._emitSettings(); }
   setMouseSmoothing(v) { this.settings.smoothing = clamp(+v || 0, 0, 0.95); this._emitSettings(); }
   setHeadBob(on) { this.settings.headBob = !!on; this._emitSettings(); }
+  setStrafeRoll(on) { this.settings.roll = !!on; this._emitSettings(); }
   setInvertY(on) { this.settings.invertY = !!on; this._emitSettings(); }
   setJumpEnabled(on) { this.settings.jump = !!on; this._emitSettings(); }
   getSettings() { return { ...this.settings }; }
@@ -89,7 +93,7 @@ export class Player {
   _resetMotion() {
     this.velocity.set(0, 0, 0);
     this._stepOffset = 0; this._bobAmp = 0; this._roll = 0; this._stride = 0; this._airTime = 0;
-    this._fov = this.settings.fov;
+    this._fov = this.settings.fov; this._sprintK = 0;
   }
 
   spawn(pos, yawDeg = 0) {
@@ -136,7 +140,7 @@ export class Player {
       this.feet.y + this.eyeHeight + this._stepOffset + bobY,
       this.feet.z + r.z * bobX,
     );
-    this.camera.rotation.set(this.pitch, this.yaw, bobOn ? this._roll : 0, 'YXZ');
+    this.camera.rotation.set(this.pitch, this.yaw, bobOn && this.settings.roll ? this._roll : 0, 'YXZ');
     if (Math.abs(this.camera.fov - this._fov) > 0.01) { this.camera.fov = this._fov; this.camera.updateProjectionMatrix(); }
   }
 
@@ -239,16 +243,17 @@ export class Player {
     if (this.onGround) this._bobPhase += (hdist / stride) * Math.PI;
     const strafe = this.velocity.x * this.right.x + this.velocity.z * this.right.z;
     this._roll += (-strafe * 0.004 - this._roll) * (1 - Math.exp(-6 * dt));
-    const sprintK = clamp((sp - WALK) / (SPRINT - WALK), 0, 1);
-    this._fov += (this.settings.fov + SPRINT_FOV_KICK * sprintK - this._fov) * (1 - Math.exp(-6 * dt));
+    const sprintT = moving && !back && !this.crouched && this.isDown('shift') && sp > WALK * 0.8 ? 1 : 0;
+    this._sprintK += (sprintT - this._sprintK) * (1 - Math.exp(-12 * dt));      // ~95 % in 0.25 s
+    this._fov = this.settings.fov + SPRINT_FOV_KICK * this._sprintK;
 
     // ---- footsteps
     if (this.onGround && sp > 0.4) {
       this._stride += hdist;
       if (this._stride >= stride) {
         this._stride -= stride;
-        const type = this._surfaceType();
-        this.game.emit('footstep', { surface: footstepSurface(type), type, speed: +sp.toFixed(2), sprint: sp > WALK + 0.3, crouch: this.crouched });
+        const { type, surface } = floorSurfaceAt(this.game, this.feet);
+        this.game.emit('footstep', { surface, type, speed: +sp.toFixed(2), sprint: sp > WALK + 0.3, crouch: this.crouched });
       }
     } else if (!moving) this._stride = Math.min(this._stride, stride * 0.5);
 
@@ -260,8 +265,8 @@ export class Player {
     this.syncCamera();
   }
 
-  _surfaceType() { try { return this.game.house?.surfaceAt(this.feet) || 'stone'; } catch { return 'stone'; } }
-  _surface() { return footstepSurface(this._surfaceType()); }
+  _surface() { return floorSurfaceAt(this.game, this.feet).surface; }
+  surfaceInfo() { return floorSurfaceAt(this.game, this.feet); }
 
   _respawn() {
     const s = this.game.house?.spawn;

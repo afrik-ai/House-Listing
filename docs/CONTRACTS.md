@@ -268,13 +268,13 @@
 
 ## P08 Player controller & collision
 - **Settings setters** (for P10's menu; all emit `player-settings` with the full settings object):
-  `game.player.setSensitivity(mult)` (0.1–5, default 1), `setFov(deg)` (vertical FOV 45–100, default = camera's 62),
-  `setMouseSmoothing(v)` (0 = raw/instant, up to 0.95; fraction of look lag kept per 1/60 s), `setHeadBob(bool)`
-  (bob + strafe roll), `setInvertY(bool)`, `setJumpEnabled(bool)`; `getSettings()`; `info()` = {speed, crouched, sprinting, onGround, eyeHeight, fov}.
-- **Controls**: WASD/arrows, Shift sprint (4.2 m/s, +4 deg FOV kick; walk 2.6, crouch 1.3), C / Left Ctrl crouch (hold;
-  stands up only with head clearance), Space jump (fresh press, 0.45 s cooldown after landing, landing costs speed).
+  `game.player.setSensitivity(mult)` (0.1–5, default 1), `setFov(deg)` (vertical FOV 45–110, **default 75** since P08 r2; the Player sets `camera.fov` at construction, so harness/critic shots are now 75° vertical),
+  `setMouseSmoothing(v)` (0 = raw/instant, up to 0.95; fraction of look lag kept per 1/60 s), `setHeadBob(bool)`,
+  `setStrafeRoll(bool)` (default off), `setInvertY(bool)`, `setJumpEnabled(bool)` (default off, HF2 has no jump); `getSettings()`; `info()` = {speed, crouched, sprinting, onGround, eyeHeight, fov}.
+- **Controls**: WASD/arrows, Shift sprint (4.2 m/s, +5 deg FOV kick, ~95% in 0.25 s; walk 2.6, crouch 1.3), C / Left Ctrl crouch (hold;
+  stands up only with head clearance), Space jump when enabled (fresh press, 0.45 s cooldown after landing, landing costs speed).
 - **Events**: `footstep {surface:'wood'|'tile'|'stone'|'grass'|'gravel'|'carpet'|'metal', type:<raw floor type>, speed, sprint, crouch}`
-  every stride (0.74 m walk / 0.98 sprint / 0.55 crouch); `player.emitsFootsteps = true`, so Game.js' fallback is off.
+  every stride (0.74 m walk / 0.98 sprint / 0.55 crouch). Surface comes from the VISIBLE floor under the feet (downward ray: glTF `surface` extra, SURF_<type>, LS_<kind>, material name; fallback house.surfaceAt) via `floorSurfaceAt()` in src/game/player/surfaces.js; `player.surfaceInfo()` returns {type, surface}; `player.emitsFootsteps = true`, so Game.js' fallback is off.
   `land {surface, speed}` after >0.25 s airborne; `respawn {pos}` when the player falls below gradeY-8 (back to last safe ground).
 - **Physics** (`src/engine/Physics.js`): `setDynamic(meshes)` registers moving colliders tested with their CURRENT world
   matrix every query (the player registers `house.doorColliders` itself, so COL_DOOR_* follow P09's door animation with

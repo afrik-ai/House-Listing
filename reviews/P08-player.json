@@ -4,13 +4,13 @@
    "name": "hall->living->kitchen",
    "ok": true,
    "issues": [],
-   "time": 4.99,
+   "time": 4.89,
    "maxDepth": 0,
    "end": {
     "feet": [
-     10.7,
+     10.73,
      0,
-     8.28
+     8.3
     ],
     "room": "kitchen"
    }
@@ -19,13 +19,13 @@
    "name": "kitchen->living->hall",
    "ok": true,
    "issues": [],
-   "time": 5.23,
+   "time": 5.14,
    "maxDepth": 0,
    "end": {
     "feet": [
      4.43,
      0,
-     3.37
+     3.36
     ],
     "room": "hall"
    }
@@ -681,16 +681,17 @@
   "walkSpeed": 2.6,
   "speed0_1sAfterRelease": 0.71,
   "stopped": true,
+  "sprintFov0_25s": 4.5,
   "sprintSpeed": 4.2,
-  "sprintFov": 66,
+  "sprintFov": 80,
   "crouchEye": 1.05,
   "standEye": 1.65,
   "jumpsWhileHolding2s": 1,
   "respawnedY": -0.02,
   "footsteps": 6,
   "footstep": {
-   "surface": "grass",
-   "type": "grass",
+   "surface": "stone",
+   "type": "concrete_pavers",
    "speed": 2.56,
    "sprint": false,
    "crouch": false
@@ -703,6 +704,21 @@
   "stairDescentMaxCamStep": 0.032,
   "stairDescentCamUpTicks": 0,
   "stairDescentEndY": 0,
+  "defaultFov": 75,
+  "roll": false,
+  "jumpDefault": false,
+  "surfaces": {
+   "terrace": "tile (large_format_tile_light)",
+   "balcony": "tile (large_format_tile_light)",
+   "garden lawn": "grass (grass)",
+   "garden path": "stone (stone_path)",
+   "driveway": "stone (concrete_pavers)",
+   "pool deck": "tile (limestone_tile)",
+   "living oak": "wood (oak_plank)",
+   "hall tile": "tile (large_format_tile_grey)",
+   "stair": "wood (stair_tread)"
+  },
+  "surfacesOk": true,
   "ok": true
  }
 }

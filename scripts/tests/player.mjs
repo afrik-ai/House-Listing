@@ -187,9 +187,9 @@ export function runPaths({ PATHS, DOORS, only }) {
     P.simKeys.set('w', 0.1); steps(0.1); feel.speedAfter0_1s = +P.speed.toFixed(2);
     P.simKeys.set('w', 1); steps(1); feel.walkSpeed = +P.speed.toFixed(2);
     P.simKeys.clear(); steps(0.1); feel.speed0_1sAfterRelease = +P.speed.toFixed(2); steps(0.5); feel.stopped = P.speed === 0;
-    place(14.2, 0, -1); P.look(-Math.PI / 2, 0); P.simKeys.set('w', 1); P.simKeys.set('shift', 1); steps(1); feel.sprintSpeed = +P.speed.toFixed(2); feel.sprintFov = +P._fov.toFixed(1); P.simKeys.clear(); steps(1);
+    place(14.2, 0, -1); P.look(-Math.PI / 2, 0); P.simKeys.set('w', 1.5); P.simKeys.set('shift', 1.5); steps(0.25); feel.sprintFov0_25s = +(P._fov - P.settings.fov).toFixed(2); steps(0.75); feel.sprintSpeed = +P.speed.toFixed(2); feel.sprintFov = +P._fov.toFixed(1); P.simKeys.clear(); steps(1);
     P.simKeys.set('crouch', 1); steps(1); feel.crouchEye = +P.eyeHeight.toFixed(2); P.simKeys.clear(); steps(1); feel.standEye = +P.eyeHeight.toFixed(2);
-    let jumps = 0, air = false; place(14.2, 0, -1); P.simKeys.set('jump', 2); steps(2, () => { if (P.velocity.y > 2 && !air) { jumps++; air = true; } if (P.onGround) air = false; }); feel.jumpsWhileHolding2s = jumps;
+    let jumps = 0, air = false; place(14.2, 0, -1); P.setJumpEnabled(true); P.simKeys.set('jump', 2); steps(2, () => { if (P.velocity.y > 2 && !air) { jumps++; air = true; } if (P.onGround) air = false; }); feel.jumpsWhileHolding2s = jumps; P.setJumpEnabled(false);
     P.simKeys.clear(); P.teleport(30, -40, 30, 0, 0); game.holdPhysics = false; steps(0.3); feel.respawnedY = +P.feet.y.toFixed(2);
     let steps_ = []; const off = game.on?.('footstep', (e) => steps_.push(e));
     place(14.2, 0, -1); P.look(-Math.PI / 2, 0); P.simKeys.set('w', 2); steps(2); feel.footsteps = steps_.length; feel.footstep = steps_[0];
@@ -209,7 +209,18 @@ export function runPaths({ PATHS, DOORS, only }) {
     steps(2.2, () => { const y = game.camera.position.y; if (prev !== null) { maxJump = Math.max(maxJump, Math.abs(y - prev)); if (y - prev > 0.002) ups++; } prev = y; });
     P.simKeys.clear(); P.setHeadBob(true);
     feel.stairDescentMaxCamStep = +maxJump.toFixed(4); feel.stairDescentCamUpTicks = ups; feel.stairDescentEndY = +P.feet.y.toFixed(2);
-    feel.ok = feel.walkSpeed > 2.3 && feel.sprintSpeed > 3.8 && feel.jumpsWhileHolding2s <= 1 && feel.closedDoorBlocks !== false && feel.fixedGlassBlocks && feel.stairDescentMaxCamStep < 0.04 && feel.stairDescentCamUpTicks === 0 && feel.footsteps > 0;
+    // footstep surface must match the visible floor (critic r1: terrace/balcony said 'grass')
+    feel.defaultFov = P.settings.fov; feel.roll = P.settings.roll; feel.jumpDefault = P.settings.jump;
+    const SURF = [['terrace', -1.3, 0, 5, 'tile'], ['balcony', -1.3, 3.15, 5.16, 'tile'], ['garden lawn', -6, -0.3, 6, 'grass'], ['garden path', -5, -0.3, 0.8, 'stone'],
+      ['driveway', 16, 0, -1, 'stone'], ['pool deck', 1, -0.14, 12.5, 'tile'], ['living oak', 4, 0, 7, 'wood'], ['hall tile', 4.8, 0, 3.7, 'tile'], ['stair', 7, 1.4, 3.16, 'wood']];
+    feel.surfaces = {}; feel.surfacesOk = true;
+    for (const [n, x, y, z, want] of SURF) {
+      const hit = ph.raycast(new T.Vector3(x, y + 0.4, z), new T.Vector3(0, -1, 0), 1.2);
+      P.feet.set(x, hit ? hit.point.y : y, z);
+      const si = P.surfaceInfo(); feel.surfaces[n] = `${si.surface} (${si.type})`;
+      if (si.surface !== want) { feel.surfacesOk = false; feel.surfaces[n] += ` != ${want}`; }
+    }
+    feel.ok = feel.surfacesOk && feel.sprintFov0_25s >= 4 && feel.walkSpeed > 2.3 && feel.sprintSpeed > 3.8 && feel.jumpsWhileHolding2s <= 1 && feel.closedDoorBlocks !== false && feel.fixedGlassBlocks && feel.stairDescentMaxCamStep < 0.04 && feel.stairDescentCamUpTicks === 0 && feel.footsteps > 0;
     return { paths: out, feel };
 }
 

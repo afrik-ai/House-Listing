@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T13:02:09.679Z",
+ "updated": "2026-09-28T13:14:03.851Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "lost",
-   "round": 1,
+   "status": "critic",
+   "round": 2,
    "verdict": "Solid collision and smooth stairs, but 62deg FOV reads tunnel-like and terrace/balcony footsteps say grass; 0/4 blind",
    "gap": "The camera defaults to a 62° vertical FOV (HF2 is 75-80), so every walk, stair and sprint frame looks zoomed-in and claustrophobic and the sprint FOV kick is invisible, despite solid collision underneath.",
-   "updated": "2026-09-28T13:02:09.614Z"
+   "updated": "2026-09-28T13:14:03.851Z"
   },
   {
    "id": "P09",
@@ -118,6 +118,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-28T13:14:03.790Z",
+   "m": "P08 r2: FOV 75 default, +5 sprint kick in 0.25s, roll/jump off, visible-floor footstep surfaces; player.mjs 45/45 + surface asserts"
+  },
   {
    "t": "2026-09-28T02:48:38.180Z",
    "m": "P08: scripts/tests/player.mjs 45/45 paths pass (rooms, stairs up/down 3.2 s, terrace/balcony/garden, 17 doors both ways), feel checks ok"

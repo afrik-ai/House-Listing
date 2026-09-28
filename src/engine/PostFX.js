@@ -26,10 +26,10 @@ export const TONE_MAPPERS = {
 // N8AO per tier (P05). aoRadius in metres; distanceFalloff relative to it. aoSamples/denoise are
 // also set by setQualityMode, so they are re-applied after it.
 const AO_TIERS = {
-  low: { aoRadius: 0.5, distanceFalloff: 0.4, intensity: 3.5, aoSamples: 8, denoiseSamples: 4, denoiseRadius: 8 },
-  medium: { aoRadius: 0.55, distanceFalloff: 0.4, intensity: 4.0, aoSamples: 12, denoiseSamples: 6, denoiseRadius: 8 },
-  high: { aoRadius: 0.35, distanceFalloff: 0.2, intensity: 7, aoSamples: 16, denoiseSamples: 8, denoiseRadius: 6 },
-  ultra: { aoRadius: 0.35, distanceFalloff: 0.2, intensity: 7, aoSamples: 24, denoiseSamples: 8, denoiseRadius: 8 },
+  low: { aoRadius: 0.5, distanceFalloff: 1.0, intensity: 3.5, aoSamples: 8, denoiseSamples: 4, denoiseRadius: 8 },
+  medium: { aoRadius: 0.5, distanceFalloff: 1.0, intensity: 4.0, aoSamples: 12, denoiseSamples: 6, denoiseRadius: 8 },
+  high: { aoRadius: 0.45, distanceFalloff: 1.0, intensity: 5, aoSamples: 16, denoiseSamples: 8, denoiseRadius: 6 },
+  ultra: { aoRadius: 0.45, distanceFalloff: 1.0, intensity: 5, aoSamples: 24, denoiseSamples: 8, denoiseRadius: 8 },
 };
 
 // Linear-light colour balance (white balance / tint), applied before tone mapping.

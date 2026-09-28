@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T08:31:06.862Z",
+ "updated": "2026-09-28T08:31:48.547Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -43,11 +43,11 @@
   {
    "id": "P05",
    "name": "Lighting & atmosphere",
-   "status": "lost",
-   "round": 3,
+   "status": "building",
+   "round": 4,
    "verdict": "HF2 4-0: night blow-out fixed, but black zero-ambient surfaces and missing contact AO remain",
    "gap": "There is no indirect or ambient light floor: dark-albedo surfaces and anything out of direct light (kitchen tall unit and black cabinets, plant leaves, night soffits) render as pure 0-black, and nothing gets contact AO or coloured bounce, so objects float and rooms lack HF2's always-present GI.",
-   "updated": "2026-09-28T08:31:06.795Z"
+   "updated": "2026-09-28T08:31:48.547Z"
   },
   {
    "id": "P06",

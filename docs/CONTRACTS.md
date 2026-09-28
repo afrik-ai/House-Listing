@@ -87,6 +87,12 @@
   IBL 0.55; HDRI suns measured (az/el, texture frame): day immenstadter_horn 126/35, golden spruit_sunrise
   126/8 (pylons painted out via `skyGrade.mask`), night moonless_golf has no moon (brightest = streetlight);
   moon painted at az 35 el 30. PostFX: N8AO transparencyAware off (no extra scene renders).
+- P05 r4: contact-AO decals = `buildContactAO(placed, {surfaceY})` in src/engine/lighting/contactAO.js
+  (one InstancedMesh of soft blobs under floor-standing Furnisher.placed items; built by the 05_lighting
+  plugin on 'ready' -> `plugins.get('05_lighting').buildContactAO()` rebuilds it after furniture moves).
+  05_lighting also treats glTF-default materials (metalness>=0.99, roughness>=0.95, no metalnessMap) as
+  dielectric. furnish/materials.js: anthracite tints lifted (#60666c / #44484c) since they multiply a
+  light albedo map (was ~3% albedo -> black). N8AO distanceFalloff 1.0 (was 0.2-0.4, which nulled AO).
 
 ### window.__game (SPEC + extras)
 - SPEC: `ready, teleport(x,y,z,yawDeg,pitchDeg)` (EYE position; player floats until movement input), `setTimeOfDay`

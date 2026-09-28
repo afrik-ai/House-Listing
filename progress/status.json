@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T17:13:50.351Z",
+ "updated": "2026-09-28T17:47:10.990Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -118,6 +118,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-28T17:47:10.990Z",
+   "m": "TEX r5: tile grout 6mm (5mm mosaic, 4mm floor), per-tile glaze lippage + coat/rough jitter; WC diagonal = 75deg perspective, courses verified horizontal"
+  },
   {
    "t": "2026-09-28T17:13:27.373Z",
    "m": "TEX critic r4: HF2 - tiles in all wet rooms uniform with painted grout, WC wall tiles mapped diagonally"

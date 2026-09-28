@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T08:31:48.547Z",
+ "updated": "2026-09-28T13:02:09.679Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "critic",
+   "status": "lost",
    "round": 1,
-   "verdict": "",
-   "gap": "",
-   "updated": "2026-09-28T02:48:38.227Z"
+   "verdict": "Solid collision and smooth stairs, but 62deg FOV reads tunnel-like and terrace/balcony footsteps say grass; 0/4 blind",
+   "gap": "The camera defaults to a 62° vertical FOV (HF2 is 75-80), so every walk, stair and sprint frame looks zoomed-in and claustrophobic and the sprint FOV kick is invisible, despite solid collision underneath.",
+   "updated": "2026-09-28T13:02:09.614Z"
   },
   {
    "id": "P09",
@@ -381,6 +381,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-28T13:02:09.679Z",
+   "src": "/reviews/critic/P08-r1/f4_midstairs_up.png",
+   "caption": "P08 r1 critic view"
+  },
+  {
    "t": "2026-09-28T08:31:06.862Z",
    "src": "/reviews/critic/P05-r3/living_day.png",
    "caption": "P05 r3 critic view"
@@ -494,11 +499,6 @@
    "t": "2026-09-23T16:17:48.597Z",
    "src": "/reviews/p06/final/bath3_night.png",
    "caption": "P06 gloss subway bath3 at night"
-  },
-  {
-   "t": "2026-09-23T16:17:48.536Z",
-   "src": "/reviews/p06/final/floor1m.png",
-   "caption": "P06 oak 190 mm boards, procedural board shuffle (no repeat), 1 m close-up"
   }
  ]
 }

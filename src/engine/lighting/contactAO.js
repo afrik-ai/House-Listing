@@ -37,7 +37,7 @@ function blobTexture() {
 const _v = new THREE.Vector3(), _q = new THREE.Quaternion(), _s = new THREE.Vector3(), _p = new THREE.Vector3();
 const _e = new THREE.Euler();
 
-export function buildContactAO(placed, { opacity = 0.55, pad = 0.12, maxLift = 0.06, surfaceY = null } = {}) {
+export function buildContactAO(placed, { opacity = 0.9, pad = 0.1, maxLift = 0.06, surfaceY = null } = {}) {
   const list = [];
   for (const p of placed || []) {
     if (!p?.wrap || !p.box || p.small) continue;

@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T18:13:57.253Z",
+ "updated": "2026-09-28T22:13:16.256Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -43,11 +43,11 @@
   {
    "id": "P05",
    "name": "Lighting & atmosphere",
-   "status": "review",
+   "status": "lost",
    "round": 4,
-   "verdict": "HF2 4-0: night blow-out fixed, but black zero-ambient surfaces and missing contact AO remain",
-   "gap": "There is no indirect or ambient light floor: dark-albedo surfaces and anything out of direct light (kitchen tall unit and black cabinets, plant leaves, night soffits) render as pure 0-black, and nothing gets contact AO or coloured bounce, so objects float and rooms lack HF2's always-present GI.",
-   "updated": "2026-09-28T13:33:00.197Z"
+   "verdict": "HF2 wins 4/4 description-based pairs; strong sun patches and night mood but black surfaces, no contact AO, no bounce",
+   "gap": "Dark-albedo and out-of-sun surfaces still crush to pure black and nothing gets a contact-AO foot or warm bounce, so the scene lacks HF2's always-present GI.",
+   "updated": "2026-09-28T22:13:16.203Z"
   },
   {
    "id": "P06",
@@ -397,6 +397,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-28T22:13:16.256Z",
+   "src": "/reviews/critic/P05-r4/living_day.png",
+   "caption": "P05 r4 critic view"
+  },
+  {
    "t": "2026-09-28T18:01:37.700Z",
    "src": "/reviews/critic/P08-r2/f4_midstairs_up.png",
    "caption": "P08 r2 critic view"
@@ -510,11 +515,6 @@
    "t": "2026-09-23T16:26:13.926Z",
    "src": "/reviews/P01-r2/critic/ours_ext_front_east_night.png",
    "caption": "P01 r2 critic view"
-  },
-  {
-   "t": "2026-09-23T16:23:20.757Z",
-   "src": "/reviews/p02-blender/02_east_from_street.png",
-   "caption": "P02 r2 street facade"
   }
  ]
 }

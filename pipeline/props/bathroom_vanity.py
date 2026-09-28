@@ -17,7 +17,7 @@ qc = H.colmix(np.clip(0.5 + q3 * 0.15, 0, 1), '#dddbd7', '#e5e3df') * (1 - spk[.
 quartz = H.pbr('quartz_light', '#ffffff', 0.3, base_tex=H.save_img(qc, 'vanity_quartz_c'))
 ceramic = H.pbr('ceramic_white', '#f5f5f3', 0.08, spec=0.6)
 black = H.pbr('matte_black', '#1a1a1a', 0.42, 0.75)
-mframe = H.pbr('mirror_frame_black', '#1a1a1a', 0.42, 0.75)   # own material so the mirror can be removed as a unit
+mframe = H.pbr('mirror_frame_black', '#1b1b1b', 0.44, 0.7)   # own material so the mirror can be removed as a unit
 mirror = H.pbr('mirror', '#f2f4f5', 0.02, 1.0)
 chrome = H.pbr('chrome', '#dddddd', 0.08, 1.0)
 

@@ -34,9 +34,9 @@ const bx = (w, h, d, hex, { x = 0, y = 0, z = 0, r = 0 } = {}) => {
 };
 const lathe = (prof, hex, seg = 12) => paint(new THREE.LatheGeometry(prof.map(([r, y]) => new THREE.Vector2(r, y)), seg), hex);
 const torus = (R, r, hex, { x = 0, y = 0, z = 0, arc = Math.PI * 2, rx = 0, ry = 0 } = {}) => {
-  const g = new THREE.TorusGeometry(R, r, 5, 12, arc); g.rotateX(rx); g.rotateY(ry); g.translate(x, y, z); return paint(g, hex);
+  const g = new THREE.TorusGeometry(R, r, 4, 8, arc); g.rotateX(rx); g.rotateY(ry); g.translate(x, y, z); return paint(g, hex);
 };
-const sphere = (r, hex, { x = 0, y = 0, z = 0, sy = 1 } = {}) => { const g = new THREE.IcosahedronGeometry(r, 1); g.scale(1, sy, 1); g.translate(x, y, z); return paint(g, hex); };
+const sphere = (r, hex, { x = 0, y = 0, z = 0, sy = 1 } = {}) => { const g = new THREE.IcosahedronGeometry(r, 0); g.scale(1, sy, 1); g.translate(x, y, z); return paint(g, hex); };
 
 // Prop kinds: parts [{ geo, mat, tint }], fp = footprint radius (m), h = height, palette = instance tint colours.
 const WHITE = '#ffffff';

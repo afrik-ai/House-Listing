@@ -33,9 +33,10 @@ const LAYOUT_RULES = [
   { room: 'storage_n', test: (it) => it.model === 'crate_plastic', fix: (it) => ({ rotY: it.pos[0] > 4.6 ? -90 : 0 }) },
   { room: 'garage', test: (it) => it.model === 'crate_plastic', fix: () => ({ rotY: 0 }) },
   // garage: red tool chest stands on the floor, toolbox on the cart, bike along the south wall (out of the view pose)
-  { room: 'garage', test: (it) => it.model === 'tool_chest', fix: () => ({ pos: [10.55, 0, -2.85], drop: undefined, snap: 'N' }) },
+  { room: 'garage', test: (it) => it.model === 'tool_chest', fix: () => ({ pos: [10.8, 0, -2.85], drop: undefined, snap: 'N' }) },
   { room: 'garage', test: (it) => it.model === 'toolbox', fix: () => ({ pos: [9.8, 0, -2.7], drop: 1.5 }) },
-  { room: 'garage', test: (it) => it.model === 'bicycle', fix: () => ({ pos: [9.2, 0, 2.2], rotY: 0, snap: 'S' }) },
+  { room: 'garage', test: (it) => it.model === 'bicycle', fix: () => ({ pos: [12.35, 0, 2.2], rotY: 0, snap: 'S' }) },
+  { room: 'garage', test: (it) => it.model === 'tire_pump', fix: () => ({ pos: [8.4, 0, 1.9], snap: undefined }) },
   { room: 'kitchen', test: (it) => it.pos[0] > 8.5 && it.pos[0] < 10.45 && it.id !== 'run', fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
   { room: 'terrace', test: (it) => (it.id === 'terrace_coffee' || it.model === 'lantern' || it.model === 'plant_succulent_small') && it.pos[2] > 4, fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
   { room: 'wardrobe_a', test: (it) => it.proc === 'closet', fix: (it) => ({ params: { ...it.params, sections: [{ type: 'hang', w: 0.8 }, { type: 'shelves', w: 0.5 }] } }) },
@@ -120,8 +121,10 @@ export class Furnisher {
   // Extra pieces added in code (garage workbench + pegboard, oil stain under the car).
   _extras() {
     return {
+      vestibule: [{ proc: 'cabinet', pos: [9.0, 0, 2.8], snap: 'N', id: 'shoe_bench', params: { w: 1.0, h: 0.46, d: 0.36, body: 'oak', cols: 2, rows: 1, legs: 0.1, handle: 'none' } }],
+      hall: [{ proc: 'cabinet', pos: [6.6, 0, 4.6], rotY: 180, snap: 'S', id: 'hall_bench', params: { w: 1.1, h: 0.46, d: 0.36, body: 'oak', cols: 2, rows: 1, legs: 0.1, handle: 'none' } }],
       garage: [
-        { model: 'workbench_pegboard', pos: [11.75, 0, -2.9], snap: 'N', id: 'workbench' },
+        { model: 'workbench_pegboard', pos: [12.05, 0, -2.9], snap: 'N', id: 'workbench' },
         { proc: 'stain', pos: [10.9, 0, 0.5], params: { w: 1.4, d: 1.0, seed: 3 }, collide: false, shadow: false, id: 'oil_stain' },
       ],
     };

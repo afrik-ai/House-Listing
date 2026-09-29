@@ -284,5 +284,6 @@
   matrix every query (the player registers `house.doorColliders` itself, so COL_DOOR_* follow P09's door animation with
   no extra calls). `raycast()` also hits dynamic colliders. `moveCapsule(pos, delta, out, {height, snap})`, `overlaps(pos, height)`.
 - Feel (r3): release-to-stop ~0.075 s, head-bob ~5 mm p-p at walk, stair step/landing snaps eased so the camera never moves > max(1.8 cm, the ramp's own move) per 120 Hz tick.
+- r4: any contact below step height (0.25 m) under the capsule's round bottom lifts it exactly clear (kerbs, slab edges, ramps, stairs: auto step-up); up-facing faces above step height push sideways (never climb furniture tops). Stuck-while-pushing for 0.35 s -> `unstick` event + hop to nearest free walkable spot. Footstep `type` is always a floor finish name (merged material keys fall back to the house floor type).
 - Capsule radius 0.25 m (was 0.3; 0.76 m doors + open leaves need it), height 1.75 (1.15 crouched), step 0.25; walkable slopes resolve straight up (ramps climb, no slide-back).
 - Simulation is the fixed 120 Hz Game step, so `__game.move` is frame-rate independent. Test: `node scripts/tests/player.mjs`.

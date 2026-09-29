@@ -45,7 +45,7 @@ export class Player {
     this._bobPhase = 0; this._bobAmp = 0; this._roll = 0;
     this._stepOffset = 0;                       // camera-only easing of stair steps / landings
     this._stride = 0;
-    this._jumpCd = 0; this._jumpLatch = false; this._airTime = 0;
+    this._jumpCd = 0; this._jumpLatch = false; this._airTime = 0; this._stuckT = 0;
     this._safe = new THREE.Vector3(); this._safeT = 0; this._hasSafe = false;
     this._dynReady = false;
     this._move = new THREE.Vector3();
@@ -231,6 +231,12 @@ export class Player {
       if (Math.abs(ax) < Math.abs(this.velocity.x) - 0.05) this.velocity.x = ax;
       if (Math.abs(az) < Math.abs(this.velocity.z) - 0.05) this.velocity.z = az;
     }
+    // Unstick: pushing a direction but not moving (and not just against a wall we can slide on)
+    // for 0.35 s -> hop to the nearest free, walkable spot. Never happens in normal walking; covers
+    // teleports / spawns / photo-mode exits inside furniture.
+    const want = Math.hypot(this._delta.x, this._delta.z), got = Math.hypot(this.feet.x - px, this.feet.z - pz);
+    if (moving && want > 1e-4 && got < want * 0.1) this._stuckT += dt; else this._stuckT = 0;
+    if (this._stuckT > 0.35) { this._stuckT = 0; this._unstick(mv); }
     const dy = this.feet.y - y0;
     if (this.onGround) {
       if (this.velocity.y < 0) this.velocity.y = 0;
@@ -291,6 +297,37 @@ export class Player {
 
   _surface() { return floorSurfaceAt(this.game, this.feet).surface; }
   surfaceInfo() { return floorSurfaceAt(this.game, this.feet); }
+
+  // True if from feet position q a short step succeeds in at least 3 of 8 directions.
+  _canMoveFrom(q) {
+    const ph = this.physics, d = new THREE.Vector3(), out = {};
+    let ok = 0;
+    for (let a = 0; a < 8; a++) {
+      d.set(Math.cos(a * Math.PI / 4) * 0.06, -0.001, Math.sin(a * Math.PI / 4) * 0.06);
+      const r = ph.moveCapsule(q, d, out, { height: this.height, snap: 0.3 });
+      if (Math.hypot(r.pos.x - q.x, r.pos.z - q.z) > 0.03) ok++;
+    }
+    return ok >= 3;
+  }
+
+  _unstick(dir) {
+    const ph = this.physics, q = new THREE.Vector3(), o = new THREE.Vector3(), down = new THREE.Vector3(0, -1, 0);
+    const pref = Math.atan2(dir?.z || 0, dir?.x || 0);
+    for (let rr = 0.1; rr <= 1.6; rr += 0.1) {
+      for (let k = 0; k < 16; k++) {
+        const a = pref + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * (Math.PI / 8);
+        o.set(this.feet.x + Math.cos(a) * rr, this.feet.y + 0.5, this.feet.z + Math.sin(a) * rr);
+        const hit = ph.raycast(o, down, 1.0);
+        if (!hit || Math.abs(hit.point.y - this.feet.y) > 0.3) continue;
+        q.set(o.x, hit.point.y, o.z);
+        if (ph.overlaps(q, this.height, 0.02) || !this._canMoveFrom(q)) continue;
+        this.feet.copy(q); this.velocity.set(0, 0, 0);
+        this.game.emit('unstick', { pos: q.toArray() });
+        return true;
+      }
+    }
+    return false;
+  }
 
   _respawn() {
     const s = this.game.house?.spawn;

@@ -153,12 +153,23 @@ export class Physics {
             const depth = r - d;
             const dir = this._dir.subVectors(this._capPoint, this._triPoint);
             if (dir.lengthSq() < 1e-12) dir.set(0, 1, 0); else dir.normalize();
-            if (dir.y > 0.6) {
-              // Walkable ground (< ~53 deg): resolve straight UP so ramps/stair proxies are climbed
-              // without the normal's horizontal part pushing us back down the slope.
-              const up = Math.min(depth / dir.y, depth * 2.5);
-              seg.start.y += up; seg.end.y += up;
-              pushUp += up;
+            const feetY = seg.start.y - r;
+            const low = this._triPoint.y <= feetY + this.stepHeight + 0.02;
+            if (low && dir.y > 0.15) {
+              // Contact below step height under the capsule's round bottom (ramp, stair, kerb, slab
+              // edge): rise exactly until the sphere clears it -- auto step-up, no push-back.
+              const h = Math.hypot(this._capPoint.x - this._triPoint.x, this._capPoint.z - this._triPoint.z);
+              const v = this._capPoint.y - this._triPoint.y;
+              const up = Math.min(Math.sqrt(Math.max(0, r * r - h * h)) - v + 1e-4, this.stepHeight);
+              if (up > 0) { seg.start.y += up; seg.end.y += up; pushUp += up; }
+            } else if (dir.y > 0.6) {
+              // Upward-facing surface cutting the capsule ABOVE step height (inside a table/cabinet
+              // volume): never climb it -- push out sideways instead.
+              dir.y = 0;
+              if (dir.lengthSq() < 1e-8) return;
+              dir.normalize();
+              seg.start.addScaledVector(dir, depth);
+              seg.end.addScaledVector(dir, depth);
             } else {
               seg.start.addScaledVector(dir, depth);
               seg.end.addScaledVector(dir, depth);

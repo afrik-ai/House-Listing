@@ -195,6 +195,40 @@ export function runPaths({ PATHS, DOORS, only }) {
     P.simKeys.clear(); P.teleport(30, -40, 30, 0, 0); game.holdPhysics = false; steps(0.3); feel.respawnedY = +P.feet.y.toFixed(2);
     let steps_ = []; const off = game.on?.('footstep', (e) => steps_.push(e));
     place(14.2, 0, -1); P.look(-Math.PI / 2, 0); P.simKeys.set('w', 2); steps(2); feel.footsteps = steps_.length; feel.footstep = steps_[0];
+    // Site-wide lip sweep: every seam between walkable outdoor cells whose heights differ by
+    // 3-24 cm (kerbs, slab edges, steps, paving joints) must be walkable UP and DOWN.
+    const LIP_AREAS = [[13.4, -3.6, 21.2, 3.2], [10.9, 2.3, 14.6, 6.8], [-7.5, -3.5, 0.3, 12.8], [-3, 10.2, 13, 13], [12.5, 3, 21, 12]];
+    const lips = { tested: 0, failed: [] };
+    const gy = (x, z) => { const h = ph.raycast(new T.Vector3(x, 0.6, z), new T.Vector3(0, -1, 0), 1.3); return h && h.point.y < 0.45 ? h.point.y : null; };
+    const seen = new Set();
+    for (const [x0, z0, x1, z1] of LIP_AREAS) for (let x = x0; x <= x1; x += 0.5) for (let z = z0; z <= z1; z += 0.5) {
+      const ya = gy(x, z); if (ya === null) continue;
+      for (const [dx, dz] of [[0.5, 0], [0, 0.5]]) {
+        const yb = gy(x + dx, z + dz); if (yb === null) continue;
+        const diff = Math.abs(yb - ya); if (diff < 0.03 || diff > 0.24) continue;
+        const key = `${x.toFixed(1)},${z.toFixed(1)},${dx}`; if (seen.has(key)) continue; seen.add(key);
+        for (const [sx, sz, sy, ex, ez] of [[x, z, ya, x + dx, z + dz], [x + dx, z + dz, yb, x, z]]) {
+          const q = new T.Vector3(sx, sy, sz);
+          if (ph.overlaps(q, 1.75, 0.03) || ph.overlaps(new T.Vector3(ex, sy === ya ? yb : ya, ez), 1.75, 0.03)) continue;
+          P.teleport(sx, sy + P.eyeHeight + 0.02, sz, 0, 0); game.holdPhysics = false; steps(0.15);
+          const d0 = Math.hypot(ex - P.feet.x, ez - P.feet.z);
+          let d1 = d0;
+          for (let i = 0; i < 120 && d1 > 0.12; i++) { P.look(Math.atan2(-(ex - P.feet.x), -(ez - P.feet.z)), 0); P.simKeys.set('w', 1); game._step(H); d1 = Math.hypot(ex - P.feet.x, ez - P.feet.z); }
+          P.simKeys.clear(); steps(0.1);
+          lips.tested++;
+          if (d1 > 0.12) lips.failed.push(`${sx.toFixed(1)},${sy.toFixed(2)},${sz.toFixed(1)} -> ${ex.toFixed(1)},${ez.toFixed(1)} (lip ${(diff * 100).toFixed(0)} cm) stopped at ${P.feet.toArray().map((v) => v.toFixed(2))}`);
+        }
+      }
+    }
+    feel.lips = { tested: lips.tested, failed: lips.failed.length, examples: lips.failed.slice(0, 8) };
+    // critic r3 repros: driveway lip, office / master centre freeze (unstick)
+    P.teleport(17.5, -0.3 + P.eyeHeight, 3.2, 0, 0); game.holdPhysics = false; steps(0.2); P.look(0, 0); P.simKeys.set('w', 1); steps(1); P.simKeys.clear();
+    feel.drivewayLipZ = +P.feet.z.toFixed(2);
+    feel.unstick = [];
+    for (const [x, y, z] of [[1.75, 0, 1.3], [1.7, 3.15, 7.5]]) for (const yaw of [0, 90, 180, 270]) {
+      P.teleport(x, y + P.eyeHeight, z, yaw, 0); game.holdPhysics = false; steps(0.2); const a = P.feet.clone();
+      P.simKeys.set('w', 1.5); steps(1.5); P.simKeys.clear(); feel.unstick.push(+Math.hypot(P.feet.x - a.x, P.feet.z - a.z).toFixed(2));
+    }
     // closed door blocks (dynamic collider follows the leaf), fixed glass blocks, stair descent is smooth
     const dOff = house.doors.find((d) => /office/.test(d.id));
     if (dOff) {
@@ -214,7 +248,7 @@ export function runPaths({ PATHS, DOORS, only }) {
     // footstep surface must match the visible floor (critic r1: terrace/balcony said 'grass')
     feel.defaultFov = P.settings.fov; feel.roll = P.settings.roll; feel.jumpDefault = P.settings.jump;
     const SURF = [['terrace', -1.3, 0, 5, 'tile'], ['balcony', -1.3, 3.15, 5.16, 'tile'], ['garden lawn', -6, -0.3, 6, 'grass'], ['garden path', -5, -0.3, 0.8, 'stone'],
-      ['driveway', 16, 0, -1, 'stone'], ['pool deck', 1, -0.14, 12.5, 'tile'], ['living oak', 4, 0, 7, 'wood'], ['hall tile', 4.8, 0, 3.7, 'tile'], ['stair', 7, 1.4, 3.16, 'wood']];
+      ['driveway', 16, 0, -1, 'stone'], ['pool deck', 1, -0.14, 12.5, 'tile'], ['living oak', 4, 0, 7, 'wood'], ['hall tile', 4.8, 0, 3.7, 'tile'], ['stair', 7, 1.4, 3.16, 'wood'], ['garage', 9.5, 0, -1.5, 'stone']];
     feel.surfaces = {}; feel.surfacesOk = true;
     for (const [n, x, y, z, want] of SURF) {
       const hit = ph.raycast(new T.Vector3(x, y + 0.4, z), new T.Vector3(0, -1, 0), 1.2);
@@ -228,7 +262,7 @@ export function runPaths({ PATHS, DOORS, only }) {
     place(14.2, 0, -1); P.look(-Math.PI / 2, 0); P.simKeys.set('w', 2); steps(0.8);
     let lo = 9, hi = -9; steps(1.0, () => { const o = game.camera.position.y - P.feet.y - P.eyeHeight - P._stepOffset; lo = Math.min(lo, o); hi = Math.max(hi, o); }); P.simKeys.clear();
     feel.bobP2Pmm = +((hi - lo) * 1000).toFixed(1);
-    feel.ok = feel.stopTime < 0.1 && feel.bobP2Pmm < 8 && feel.bobP2Pmm > 1 && feel.surfacesOk && feel.sprintFov0_25s >= 4 && feel.walkSpeed > 2.3 && feel.sprintSpeed > 3.8 && feel.jumpsWhileHolding2s <= 1 && feel.closedDoorBlocks !== false && feel.fixedGlassBlocks && feel.stairDescentMaxCamStep < 0.04 && feel.stairDescentCamUpTicks === 0 && feel.footsteps > 0;
+    feel.ok = feel.lips.failed === 0 && feel.drivewayLipZ < 2.4 && feel.unstick.every((d) => d > 0.3) && !/\|/.test(Object.values(feel.surfaces).join()) && feel.stopTime < 0.1 && feel.bobP2Pmm < 8 && feel.bobP2Pmm > 1 && feel.surfacesOk && feel.sprintFov0_25s >= 4 && feel.walkSpeed > 2.3 && feel.sprintSpeed > 3.8 && feel.jumpsWhileHolding2s <= 1 && feel.closedDoorBlocks !== false && feel.fixedGlassBlocks && feel.stairDescentMaxCamStep < 0.04 && feel.stairDescentCamUpTicks === 0 && feel.footsteps > 0;
     return { paths: out, feel };
 }
 

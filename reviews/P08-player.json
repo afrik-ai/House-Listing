@@ -38,7 +38,7 @@
    "issues": [],
    "time": 3.18,
    "maxDepth": 0,
-   "maxCamDy": 0.0153,
+   "maxCamDy": 0.0154,
    "end": {
     "feet": [
      4.09,
@@ -52,9 +52,9 @@
    "name": "stairs down",
    "ok": true,
    "issues": [],
-   "time": 3.05,
+   "time": 3.06,
    "maxDepth": 0,
-   "maxCamDy": 0.0172,
+   "maxCamDy": 0.0154,
    "end": {
     "feet": [
      9.86,
@@ -102,7 +102,7 @@
    "issues": [],
    "time": 0.72,
    "maxDepth": 0,
-   "maxCamDy": 0.006,
+   "maxCamDy": 0.0061,
    "end": {
     "feet": [
      -1.15,
@@ -150,7 +150,7 @@
    "issues": [],
    "time": 1.07,
    "maxDepth": 0,
-   "maxCamDy": 0.0126,
+   "maxCamDy": 0.0125,
    "end": {
     "feet": [
      1.45,
@@ -166,7 +166,7 @@
    "issues": [],
    "time": 0.72,
    "maxDepth": 0,
-   "maxCamDy": 0.0054,
+   "maxCamDy": 0.0055,
    "end": {
     "feet": [
      -1.15,
@@ -182,7 +182,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004406561295116074,
+   "maxCamDy": 0.0004395344247505317,
    "end": {
     "feet": [
      11.55,
@@ -198,7 +198,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00037787608804618067,
+   "maxCamDy": 0.0003731569360221343,
    "end": {
     "feet": [
      10.45,
@@ -210,36 +210,34 @@
   },
   {
    "name": "D_garage fwd",
-   "ok": false,
-   "issues": [
-    "no grid route to 9.95,3.3"
-   ],
-   "time": 0,
+   "ok": true,
+   "issues": [],
+   "time": 0.49,
    "maxDepth": 0,
+   "maxCamDy": 0.00040397655942725486,
    "end": {
     "feet": [
-     9.95,
+     9.83,
      0,
-     1.9
+     2.97
     ],
-    "room": "garage"
+    "room": "vestibule"
    }
   },
   {
    "name": "D_garage back",
-   "ok": false,
-   "issues": [
-    "no grid route to 9.95,1.9000000000000001"
-   ],
-   "time": 0,
+   "ok": true,
+   "issues": [],
+   "time": 0.63,
    "maxDepth": 0,
+   "maxCamDy": 0.00044027263427914853,
    "end": {
     "feet": [
-     9.75,
+     9.89,
      0,
-     3.45
+     2.03
     ],
-    "room": "vestibule"
+    "room": "garage"
    }
   },
   {
@@ -248,7 +246,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00041845421309005815,
+   "maxCamDy": 0.0004148014423825952,
    "end": {
     "feet": [
      2.6,
@@ -264,7 +262,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.000439817917418317,
+   "maxCamDy": 0.0005022224313542267,
    "end": {
     "feet": [
      2.6,
@@ -278,12 +276,12 @@
    "name": "D_wc fwd",
    "ok": true,
    "issues": [],
-   "time": 0.55,
+   "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.00037087478961495,
+   "maxCamDy": 0.0004317193997398494,
    "end": {
     "feet": [
-     2.05,
+     2.06,
      0,
      3.3
     ],
@@ -294,12 +292,12 @@
    "name": "D_wc back",
    "ok": true,
    "issues": [],
-   "time": 0.55,
+   "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.00041519007126811225,
+   "maxCamDy": 0.0003640307957251121,
    "end": {
     "feet": [
-     0.95,
+     1.04,
      0,
      3.3
     ],
@@ -312,7 +310,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004318404091587791,
+   "maxCamDy": 0.00042157696257283384,
    "end": {
     "feet": [
      4.05,
@@ -328,7 +326,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004118179467469396,
+   "maxCamDy": 0.00044148000753407857,
    "end": {
     "feet": [
      4.05,
@@ -344,7 +342,7 @@
    "issues": [],
    "time": 0.41,
    "maxDepth": 0,
-   "maxCamDy": 0.0004058105870994311,
+   "maxCamDy": 0.00037411151467670045,
    "end": {
     "feet": [
      7.77,
@@ -360,7 +358,7 @@
    "issues": [],
    "time": 0.43,
    "maxDepth": 0,
-   "maxCamDy": 0.00037731114603167804,
+   "maxCamDy": 0.00032806354974712626,
    "end": {
     "feet": [
      7.03,
@@ -376,7 +374,7 @@
    "issues": [],
    "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.00041951246455695923,
+   "maxCamDy": 0.0004319747932597373,
    "end": {
     "feet": [
      8.77,
@@ -392,7 +390,7 @@
    "issues": [],
    "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.00039570377416686675,
+   "maxCamDy": 0.0003720712182087027,
    "end": {
     "feet": [
      8.82,
@@ -408,7 +406,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004348756071064219,
+   "maxCamDy": 0.0004251164463640045,
    "end": {
     "feet": [
      10.25,
@@ -424,7 +422,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0003987985801638949,
+   "maxCamDy": 0.0004375881870462006,
    "end": {
     "feet": [
      10.25,
@@ -440,7 +438,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004064309295470636,
+   "maxCamDy": 0.0004308705573379257,
    "end": {
     "feet": [
      3.92,
@@ -456,7 +454,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00043360426072780456,
+   "maxCamDy": 0.00041358791845524934,
    "end": {
     "feet": [
      2.82,
@@ -472,7 +470,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004322437029324888,
+   "maxCamDy": 0.00043694446881126225,
    "end": {
     "feet": [
      4.2,
@@ -488,7 +486,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00040206295432465566,
+   "maxCamDy": 0.0003847339939389016,
    "end": {
     "feet": [
      4.2,
@@ -504,7 +502,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00043170380831369926,
+   "maxCamDy": 0.0004103104274015834,
    "end": {
     "feet": [
      7.8,
@@ -520,7 +518,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00044184821021087117,
+   "maxCamDy": 0.00043571301285094677,
    "end": {
     "feet": [
      7.8,
@@ -536,7 +534,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00039308616302502486,
+   "maxCamDy": 0.00042170609612757204,
    "end": {
     "feet": [
      4,
@@ -552,7 +550,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00042200905880385164,
+   "maxCamDy": 0.0005002189370273413,
    "end": {
     "feet": [
      4,
@@ -568,7 +566,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004414047853407155,
+   "maxCamDy": 0.00042668851477323244,
    "end": {
     "feet": [
      9.7,
@@ -584,7 +582,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0003791884060921902,
+   "maxCamDy": 0.0004434514797599931,
    "end": {
     "feet": [
      9.7,
@@ -600,7 +598,7 @@
    "issues": [],
    "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.00041939480917907446,
+   "maxCamDy": 0.0004004882431773993,
    "end": {
     "feet": [
      10.71,
@@ -616,7 +614,7 @@
    "issues": [],
    "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.00041078504739466837,
+   "maxCamDy": 0.0004286063303959864,
    "end": {
     "feet": [
      9.74,
@@ -632,7 +630,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00040428432118222446,
+   "maxCamDy": 0.00043711518347056,
    "end": {
     "feet": [
      9.75,
@@ -648,7 +646,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004326841618960131,
+   "maxCamDy": 0.00046512328828374194,
    "end": {
     "feet": [
      8.65,
@@ -664,7 +662,7 @@
    "issues": [],
    "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.00038355319628813334,
+   "maxCamDy": 0.000479783886477847,
    "end": {
     "feet": [
      2.16,
@@ -680,7 +678,7 @@
    "issues": [],
    "time": 0.52,
    "maxDepth": 0,
-   "maxCamDy": 0.0004124218324594864,
+   "maxCamDy": 0.0004395429871442147,
    "end": {
     "feet": [
      1.14,
@@ -696,7 +694,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.0004360456358867282,
+   "maxCamDy": 0.00042788094759682593,
    "end": {
     "feet": [
      2.5,
@@ -712,7 +710,7 @@
    "issues": [],
    "time": 0.55,
    "maxDepth": 0,
-   "maxCamDy": 0.00037824097855843064,
+   "maxCamDy": 0.0004445986687322545,
    "end": {
     "feet": [
      2.5,
@@ -743,14 +741,30 @@
    "sprint": false,
    "crouch": false
   },
+  "lips": {
+   "tested": 300,
+   "failed": 0,
+   "examples": []
+  },
+  "drivewayLipZ": 0.83,
+  "unstick": [
+   0.86,
+   0.64,
+   0.98,
+   1.03,
+   0.35,
+   0.33,
+   0.91,
+   1.34
+  ],
   "closedDoorBlocks": true,
   "closedDoorZ": 2.88,
   "openDoorPasses": true,
   "fixedGlassBlocks": true,
   "glassX": 0.31,
-  "stairDescentMaxCamStep": 0.018,
+  "stairDescentMaxCamStep": 0.0149,
   "stairDescentCamUpTicks": 0,
-  "stairDescentEndY": 0.37,
+  "stairDescentEndY": 0,
   "defaultFov": 75,
   "roll": false,
   "jumpDefault": false,
@@ -763,11 +777,12 @@
    "pool deck": "tile (limestone_tile)",
    "living oak": "wood (oak_plank)",
    "hall tile": "tile (large_format_tile_grey)",
-   "stair": "wood (stair_tread)"
+   "stair": "wood (stair_tread)",
+   "garage": "stone (concrete_screed)"
   },
   "surfacesOk": true,
   "stopTime": 0.075,
-  "bobP2Pmm": 4.9,
+  "bobP2Pmm": 5,
   "ok": true
  }
 }

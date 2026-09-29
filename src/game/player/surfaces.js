@@ -33,7 +33,10 @@ function typeOf(o) {
   if (n.startsWith('SURF_')) return n.slice(5);
   const ls = /^LS_([a-z]+)/i.exec(n);
   if (ls && LS_MAP[ls[1].toLowerCase()]) return LS_MAP[ls[1].toLowerCase()];
-  return m?.name || n || null;
+  // Material/object names only count when they name a floor finish (not merged keys like
+  // 'P07_plain_0.25|1|0|false'); otherwise the caller falls back to the house floor type.
+  const cand = m?.name || n || '';
+  return RULES.some(([re]) => re.test(cand)) && !/\|/.test(cand) ? cand : null;
 }
 
 function skip(o) {
@@ -50,7 +53,7 @@ export function floorSurfaceAt(game, feet, fallback = null) {
   let type = null;
   if (roots.length) {
     const hits = _rc.intersectObjects(roots, true);
-    for (const h of hits) { if (skip(h.object)) continue; type = typeOf(h.object); if (type) break; }
+    for (const h of hits) { if (skip(h.object)) continue; type = typeOf(h.object); break; }   // first real floor only
   }
   if (!type) { try { type = (fallback || game.house.surfaceAtRect || game.house.surfaceAt.bind(game.house))(feet) || 'stone'; } catch { type = 'stone'; } }
   return { type, surface: footstepSurface(type) };

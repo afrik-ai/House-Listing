@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-29T05:34:53.365Z",
+ "updated": "2026-09-29T10:38:42.768Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "building",
+   "status": "critic",
    "round": 4,
    "verdict": "HF2 wins 0/3: r2 fixes landed (no stair pop, instant stop, 5mm bob) but invisible 15cm driveway lip and door-leaf fencing",
    "gap": "Outdoors the controller hits invisible walls on seams that look walkable: the driveway at x=17.5 dead-stops at z=2.78 on a 15 cm slab edge the 0.25 m step-up should climb, and the open front-door leaf fences the stair foot",
-   "updated": "2026-09-29T05:34:53.365Z"
+   "updated": "2026-09-29T10:38:42.768Z"
   },
   {
    "id": "P09",
@@ -118,6 +118,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-29T10:38:42.693Z",
+   "m": "P08 r4: auto step-up over lips <=0.25 m (driveway repro climbs), unstick pass, clean footstep types; player.mjs 45/45 + 300 lip crossings 0 fail"
+  },
   {
    "t": "2026-09-29T04:45:48.247Z",
    "m": "TEX r6: near-white 3-3.5mm grout, AO 0.06, tile tone +-8% + warm/cool shift; before/after crops in reviews/textures/r6"

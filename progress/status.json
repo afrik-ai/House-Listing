@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-29T04:45:48.247Z",
+ "updated": "2026-09-29T05:34:17.353Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "critic",
+   "status": "lost",
    "round": 3,
-   "verdict": "Solid collision, FOV/sprint/surfaces fixed, but stair-descent 10.6cm pop, floaty stop and 2cm bob lose to HF2 (0/3 close pairs)",
-   "gap": "Walking down the main stair drops the camera 10.6 cm in one tick at the last step, plus a floaty 0.35 s stop glide and ~2 cm head-bob, where HF2 is smooth, stops instantly and bobs a few mm.",
-   "updated": "2026-09-28T18:13:57.253Z"
+   "verdict": "HF2 wins 0/3: r2 fixes landed (no stair pop, instant stop, 5mm bob) but invisible 15cm driveway lip and door-leaf fencing",
+   "gap": "Outdoors the controller hits invisible walls on seams that look walkable: the driveway at x=17.5 dead-stops at z=2.78 on a 15 cm slab edge the 0.25 m step-up should climb, and the open front-door leaf fences the stair foot",
+   "updated": "2026-09-29T05:34:17.303Z"
   },
   {
    "id": "P09",
@@ -405,6 +405,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-29T05:34:17.353Z",
+   "src": "/reviews/critic/P08-r3/h3_sprint_open.png",
+   "caption": "P08 r3 critic view"
+  },
+  {
    "t": "2026-09-29T04:19:01.586Z",
    "src": "/reviews/critic/TEX-r5/ext_front_east.png",
    "caption": "TEX r5 critic view"
@@ -518,11 +523,6 @@
    "t": "2026-09-23T21:14:41.099Z",
    "src": "/reviews/p03/r2/sw34.png",
    "caption": "P03 south-west 3/4: pergola beams, reflective glass, larch surrounds"
-  },
-  {
-   "t": "2026-09-23T21:14:41.024Z",
-   "src": "/reviews/p03/r3/night_entrance.png",
-   "caption": "P03 entrance at night: larch soffit, horizontal slats, up/down wall wash"
   }
  ]
 }

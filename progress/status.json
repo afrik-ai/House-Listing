@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-29T05:34:17.353Z",
+ "updated": "2026-09-29T05:34:53.365Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -70,11 +70,11 @@
   {
    "id": "P08",
    "name": "Player & collision",
-   "status": "lost",
-   "round": 3,
+   "status": "building",
+   "round": 4,
    "verdict": "HF2 wins 0/3: r2 fixes landed (no stair pop, instant stop, 5mm bob) but invisible 15cm driveway lip and door-leaf fencing",
    "gap": "Outdoors the controller hits invisible walls on seams that look walkable: the driveway at x=17.5 dead-stops at z=2.78 on a 15 cm slab edge the 0.25 m step-up should climb, and the open front-door leaf fences the stair foot",
-   "updated": "2026-09-29T05:34:17.303Z"
+   "updated": "2026-09-29T05:34:53.365Z"
   },
   {
    "id": "P09",

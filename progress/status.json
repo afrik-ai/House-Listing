@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-29T03:13:09.953Z",
+ "updated": "2026-09-29T04:19:01.586Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -118,6 +118,10 @@
   }
  ],
  "log": [
+  {
+   "t": "2026-09-29T04:18:58.049Z",
+   "m": "TEX critic r5: HF2 - tiles flat/identical with thick painted grout; gabion cube cards"
+  },
   {
    "t": "2026-09-28T18:13:57.204Z",
    "m": "P08 r3: stop 0.075 s, bob 4.9 mm p-p, stair cam <=1.73 cm/tick both ways, house.surfaceAt -> visible floor; 43/45 (D_garage blocked by P07 doormat collider + shoe bench on stair)"
@@ -397,6 +401,11 @@
  ],
  "shots": [
   {
+   "t": "2026-09-29T04:19:01.586Z",
+   "src": "/reviews/critic/TEX-r5/ext_front_east.png",
+   "caption": "TEX r5 critic view"
+  },
+  {
    "t": "2026-09-28T22:13:16.256Z",
    "src": "/reviews/critic/P05-r4/living_day.png",
    "caption": "P05 r4 critic view"
@@ -510,11 +519,6 @@
    "t": "2026-09-23T21:14:41.024Z",
    "src": "/reviews/p03/r3/night_entrance.png",
    "caption": "P03 entrance at night: larch soffit, horizontal slats, up/down wall wash"
-  },
-  {
-   "t": "2026-09-23T16:26:13.926Z",
-   "src": "/reviews/P01-r2/critic/ours_ext_front_east_night.png",
-   "caption": "P01 r2 critic view"
   }
  ]
 }

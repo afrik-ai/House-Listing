@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { MeshBVH } from 'three-mesh-bvh';
 import { EventEmitter } from '../engine/EventEmitter.js';
 import { Renderer, QUALITY_TIERS } from '../engine/Renderer.js';
 import { Loader } from '../engine/Loader.js';
@@ -22,6 +23,7 @@ const OPTIONAL_SLOTS = [
   { path: '../ui/Menus.js', exportName: 'Menus', prop: 'menus' },
 ];
 
+const VIEW_BVH = new WeakMap();   // geometry -> MeshBVH for views() clearance tests
 const STEP = 1 / 120;           // fixed simulation step (s)
 const MAX_STEPS = 12;           // spiral-of-death guard (0.1 s of simulation per frame max)
 const STRIDE = 0.72, STRIDE_SPRINT = 0.95;
@@ -201,7 +203,7 @@ export class Game extends EventEmitter {
   enterAttract() {
     this.state = 'attract';
     this._attractT = 0;
-    const ext = this.views().exteriors;
+    const ext = this._exteriorViews();
     this._attract = ext.find((v) => v.id === 'ext_garden_sw') || ext[0];
     this.lighting.setInterior(false, true);
   }
@@ -509,7 +511,12 @@ export class Game extends EventEmitter {
 
   // Standard viewpoints: one "real-estate corner shot" per room + exterior views.
   views() {
-    const rooms = this.house.rooms().filter((r) => r.main || r.rect).map((r) => this._roomView(r));
+    const meshes = this._viewMeshes();
+    const rooms = this.house.rooms().filter((r) => r.main || r.rect).map((r) => this._roomView(r, meshes));
+    return { rooms, exteriors: this._exteriorViews() };
+  }
+
+  _exteriorViews() {
     const b = this.house.bounds;
     const c = b.getCenter(new THREE.Vector3());
     const eyeY = 1.6;
@@ -523,44 +530,108 @@ export class Game extends EventEmitter {
       look('ext_south', 'South facade', c.x + 1, b.max.z + 13, c.x, 2.8, c.z),
       look('ext_north_west', 'North-west corner', b.min.x - 8, b.min.z - 9, c.x, 2.6, c.z),
     ];
-    return { rooms, exteriors };
+    return exteriors;
   }
 
-  _roomView(r) {
+  // Visible scene meshes for clearance tests (views): everything rendered except the player/camera rig.
+  _viewMeshes() {
+    const list = [];
+    this.scene.traverseVisible((o) => {
+      if (!o.isMesh || o.isSkinnedMesh || !o.geometry) return;
+      const m = Array.isArray(o.material) ? o.material[0] : o.material;
+      if (!m || m.visible === false || (m.transparent && m.opacity < 0.05)) return;
+      let p = o; while (p) { if (p === this.camera) return; p = p.parent; }
+      if (!o.geometry.boundingSphere) o.geometry.computeBoundingSphere();
+      const sph = o.geometry.boundingSphere.clone().applyMatrix4(o.matrixWorld);
+      if (o.isInstancedMesh) {   // instances: use the union of instance bounds
+        if (!o.boundingSphere) o.computeBoundingSphere?.();
+        if (o.boundingSphere) sph.copy(o.boundingSphere).applyMatrix4(o.matrixWorld);
+      }
+      list.push({ o, sph });
+    });
+    return list;
+  }
+
+  // Smallest distance from `origin` to visible geometry along 16 rays (8 horizontal, 4 diagonal
+  // down, 4 diagonal up), capped at `cap`. BVH per geometry (built lazily, cached on the geometry;
+  // plain three raycasts over the merged house meshes took ~2 min for all rooms under SwiftShader).
+  _clearance(origin, meshes, cap = 0.5) {
+    let min = cap;
+    const dirs = this._clDirs || (this._clDirs = (() => {
+      const d = [];
+      for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; d.push(new THREE.Vector3(Math.cos(a), 0, Math.sin(a))); }
+      for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2 + Math.PI / 4; d.push(new THREE.Vector3(Math.cos(a), -0.8, Math.sin(a)).normalize(), new THREE.Vector3(Math.cos(a), 0.8, Math.sin(a)).normalize()); }
+      return d;
+    })());
+    const ray = new THREE.Ray(), inv = new THREE.Matrix4(), mw = new THREE.Matrix4(), im = new THREE.Matrix4(), hitW = new THREE.Vector3();
+    const test = (geo, matrixWorld) => {
+      if (!geo.index && !geo.attributes.position) return;
+      let bvh = VIEW_BVH.get(geo);
+      if (bvh === undefined) {
+        try { bvh = geo.attributes.position.count >= 3 ? new MeshBVH(geo, { indirect: true }) : null; } catch { bvh = null; }
+        VIEW_BVH.set(geo, bvh);
+      }
+      if (!bvh) return;
+      inv.copy(matrixWorld).invert();
+      for (const d of dirs) {
+        ray.origin.copy(origin).applyMatrix4(inv);
+        ray.direction.copy(d).transformDirection(inv);
+        const h = bvh.raycastFirst(ray, THREE.DoubleSide);
+        if (!h) continue;
+        const dist = hitW.copy(h.point).applyMatrix4(matrixWorld).distanceTo(origin);
+        if (dist < min) min = dist;
+      }
+    };
+    for (const { o, sph } of meshes) {
+      if (sph.center.distanceTo(origin) >= sph.radius + cap) continue;
+      if (o.isInstancedMesh) {
+        const gs = o.geometry.boundingSphere;
+        for (let i = 0; i < o.count; i++) {
+          o.getMatrixAt(i, im); mw.multiplyMatrices(o.matrixWorld, im);
+          const c = hitW.copy(gs.center).applyMatrix4(mw);
+          if (c.distanceTo(origin) >= gs.radius * mw.getMaxScaleOnAxis() + cap) continue;
+          test(o.geometry, mw.clone());
+        }
+      } else test(o.geometry, o.matrixWorld);
+    }
+    return min;
+  }
+
+  _roomView(r, meshes = this._viewMeshes()) {
     const [x, z, w, d] = r.main || r.rect;
     const floorY = r.center[1];
     const eyeY = floorY + 1.6;
     const cx = x + w / 2, cz = z + d / 2;
     // Normal rooms: the 4 corners (classic two-wall listing shot). Narrow rooms (WC, storage):
-    // the middle of each edge looking across the long axis � a corner is too close to the walls.
+    // the middle of each edge looking across the long axis; a corner is too close to the walls.
+    // Each position is tried at growing insets until the eye is >= 0.5 m from every visible mesh
+    // (scene raycast, not just physics: lamps, plants, shelves have no colliders).
     const narrow = Math.min(w, d) < 2.4;
-    const inset = narrow ? 0.22 : Math.min(0.45, w / 4, d / 4);
-    const corners = narrow
-      ? [[cx, z + inset], [cx, z + d - inset], [x + inset, cz], [x + w - inset, cz]]
-      : [[x + inset, z + inset], [x + w - inset, z + inset], [x + inset, z + d - inset], [x + w - inset, z + d - inset]];
+    const insets = narrow ? [0.5, 0.7, 0.9] : [0.5, 0.75, 1.05, 1.4].filter((v) => v < Math.min(w, d) / 2.2);
+    if (!insets.length) insets.push(Math.min(w, d) / 2.2);
     const dirV = new THREE.Vector3(), origin = new THREE.Vector3();
     let best = null;
-    for (const [px, pz] of corners) {
-      // Aim a bit past the centre toward the far corner so two walls + floor read.
-      const tx = narrow ? cx + (cx - px) * 0.9 : cx + (cx - px) * 0.35, tz = narrow ? cz + (cz - pz) * 0.9 : cz + (cz - pz) * 0.35;
-      origin.set(px, eyeY, pz);
-      dirV.set(tx - px, 0, tz - pz);
-      const want = dirV.length();
-      const hit = this.physics.raycast(origin, dirV, 50);
-      const clear = hit ? hit.distance : 50;
-      // Reject corners buried in geometry (e.g. stair, cabinets): short clearance around the eye.
-      let tight = 0;
-      for (const a of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
-        const h2 = this.physics.raycast(origin, new THREE.Vector3(Math.cos(a), 0, Math.sin(a)), 0.25);
-        if (h2) tight++;
-      }
-      const score = Math.min(clear, want * 2.5) + (narrow ? want : 0) - tight * 3 + (pz > cz ? 0.05 : 0);
-      if (!best || score > best.score) {
-        const yaw = THREE.MathUtils.radToDeg(Math.atan2(-(tx - px), -(tz - pz)));
-        best = { score, pos: [px, eyeY, pz], yaw: +yaw.toFixed(1) };
+    for (const inset of insets) {
+      const corners = narrow
+        ? [[cx, z + inset], [cx, z + d - inset], [x + inset, cz], [x + w - inset, cz]]
+        : [[x + inset, z + inset], [x + w - inset, z + inset], [x + inset, z + d - inset], [x + w - inset, z + d - inset]];
+      for (const [px, pz] of corners) {
+        // Aim a bit past the centre toward the far corner so two walls + floor read.
+        const tx = narrow ? cx + (cx - px) * 0.9 : cx + (cx - px) * 0.35, tz = narrow ? cz + (cz - pz) * 0.9 : cz + (cz - pz) * 0.35;
+        origin.set(px, eyeY, pz);
+        dirV.set(tx - px, 0, tz - pz);
+        const want = dirV.length();
+        const hit = this.physics.raycast(origin, dirV, 50);
+        const clear = hit ? hit.distance : 50;
+        const near = this._clearance(origin, meshes, 0.5);
+        const score = Math.min(clear, want * 2.5) + (narrow ? want : 0) - (near < 0.5 ? 20 + (0.5 - near) * 40 : 0) - inset * 0.8 + (pz > cz ? 0.05 : 0);
+        if (!best || score > best.score) {
+          const yaw = THREE.MathUtils.radToDeg(Math.atan2(-(tx - px), -(tz - pz)));
+          best = { score, near, pos: [px, eyeY, pz], yaw: +yaw.toFixed(1) };
+        }
       }
     }
-    return { id: r.id, name: r.name, level: r.level, pos: best.pos.map((v) => +v.toFixed(3)), yaw: best.yaw, pitch: narrow ? -16 : -8 };
+    return { id: r.id, name: r.name, level: r.level, pos: best.pos.map((v) => +v.toFixed(3)), yaw: best.yaw, pitch: narrow ? -16 : -8, clearance: +best.near.toFixed(2) };
   }
 }
 
@@ -583,6 +654,30 @@ function estimateTextureBytes(root) {
     }
   });
   return bytes;
+}
+
+function alphaProbe(game, { postfx = true, blending = THREE.NormalBlending } = {}) {
+  const gl = game.renderer.gl, ctx = gl.getContext();
+  const geo = new THREE.PlaneGeometry(0.3, 0.3);
+  const read = () => {
+    const was = game.postfx.enabled; game.postfx.enabled = postfx;
+    game.camera.updateMatrixWorld(); game.renderFrame(0);
+    game.postfx.enabled = was;
+    const px = new Uint8Array(4);
+    ctx.readPixels(ctx.drawingBufferWidth >> 1, ctx.drawingBufferHeight >> 1, 1, 1, ctx.RGBA, ctx.UNSIGNED_BYTE, px);
+    return [px[0], px[1], px[2]];
+  };
+  const out = { none: read() };
+  for (const [k, color] of [['black', 0x000000], ['red', 0xff0000]]) {
+    const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.5, depthWrite: false, blending }));
+    m.position.set(0, 0, -0.6); game.camera.add(m);
+    if (!m.parent || m.parent !== game.camera) game.scene.add(m);
+    if (!game.camera.parent) game.scene.add(game.camera);
+    out[k] = read();
+    m.removeFromParent(); m.material.dispose();
+  }
+  geo.dispose();
+  return out;
 }
 
 // window.__game: the stable debug/harness API (SPEC.md). Everything returns plain data.
@@ -608,5 +703,8 @@ export function createDebugApi(game) {
     get scene() { return game.scene; },
     get camera() { return game.camera; },
     get THREE() { return THREE; },
+    // Blend probe (P01): renders a 50%-opacity plane (black / red / none) 0.6 m in front of the camera and
+    // reads back the centre pixel of the final canvas. `black` must be ~half of `none`.
+    alphaProbe: (opts = {}) => alphaProbe(game, opts),
   };
 }

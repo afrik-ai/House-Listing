@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-28T22:13:58.210Z",
+ "updated": "2026-09-29T03:12:15.602Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -43,11 +43,11 @@
   {
    "id": "P05",
    "name": "Lighting & atmosphere",
-   "status": "building",
+   "status": "review",
    "round": 5,
    "verdict": "HF2 wins 4/4 description-based pairs; strong sun patches and night mood but black surfaces, no contact AO, no bounce",
    "gap": "Dark-albedo and out-of-sun surfaces still crush to pure black and nothing gets a contact-AO foot or warm bounce, so the scene lacks HF2's always-present GI.",
-   "updated": "2026-09-28T22:13:58.210Z"
+   "updated": "2026-09-29T03:12:15.602Z"
   },
   {
    "id": "P06",

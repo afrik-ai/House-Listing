@@ -74,7 +74,7 @@ const PRESETS = {
     sky: { turbidity: 2, rayleigh: 0.4, mie: 0.002, mieG: 0.7 },
     skyGrade: {
       tint: { horizon: [0.72, 0.88, 1.3], zenith: [0.66, 0.78, 1.2] },
-      clampLow: { el1: 9, k: 2.5 },
+      clampLow: { el1: 12, k: 1.4 },
       add: { horizon: [0.03, 0.05, 0.11], zenith: [0.002, 0.003, 0.008] },
       disc: { radiusDeg: 1.1, radiance: [60, 64, 72], glow: [0.25, 0.3, 0.42], glowDeg: 3, glow2: [0.02, 0.03, 0.055], glow2Deg: 14 },
     },

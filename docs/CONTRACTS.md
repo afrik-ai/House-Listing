@@ -93,6 +93,10 @@
   05_lighting also treats glTF-default materials (metalness>=0.99, roughness>=0.95, no metalnessMap) as
   dielectric. furnish/materials.js: anthracite tints lifted (#60666c / #44484c) since they multiply a
   light albedo map (was ~3% albedo -> black). N8AO distanceFalloff 1.0 (was 0.2-0.4, which nulled AO).
+- P05 r5: contact-AO decals shade in metres (ShaderMaterial, per-instance aSize): full under the
+  footprint, fading over 0.18 m beyond it. 05_lighting boosts envMapIntensity to 2.2 on dark dielectrics
+  (colour luminance < 0.15). landscape/plants.js impostor map sampled with mip bias -1.5 (P05 edit).
+  anthracite_dark tint #52575c.
 
 ### window.__game (SPEC + extras)
 - SPEC: `ready, teleport(x,y,z,yawDeg,pitchDeg)` (EYE position; player floats until movement input), `setTimeOfDay`

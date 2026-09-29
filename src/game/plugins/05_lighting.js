@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { buildContactAO } from '../../engine/lighting/contactAO.js';
+import { buildContactAO, bakeContactAO, setContactAO, patchContactAO, CAO_UNIFORMS } from '../../engine/lighting/contactAO.js';
 
 // P05 Lighting & atmosphere plugin. The lighting itself lives in src/engine/Lighting.js +
 // src/engine/lighting/** (owned by P05); this plugin handles the parts that depend on other pieces'
@@ -28,11 +28,12 @@ export class Plugin {
     this.game.lighting?.invalidateShadows();
   }
 
-  // Contact-AO blobs under floor-standing furniture (lighting/contactAO.js). Re-callable.
+  // Contact AO under floor-standing furniture (lighting/contactAO.js): footprints baked top-down per
+  // level, multiplied into upward-facing floor / rug shading. Re-callable after furniture moves.
   buildContactAO() {
     const g = this.game;
     const fur = g.plugins?.get('30_furnish')?.furnisher || window.__furnish?.furnisher;
-    if (this.contactAO) { this.contactAO.removeFromParent(); this.contactAO.geometry.dispose(); this.contactAO.material.dispose(); this.contactAO = null; }
+    for (const b of this.caoBakes || []) b.rt.dispose();
     try {
       const roots = [g.house?.root, fur?.root].filter(Boolean);
       const rc = new THREE.Raycaster(); rc.far = 0.6;
@@ -43,7 +44,21 @@ export class Plugin {
         return h ? h.point.y : null;
       };
       const im = buildContactAO(fur?.placed, { surfaceY });
-      if (im) { g.scene.add(im); this.contactAO = im; }
+      if (!im) return;
+      this.caoBakes = bakeContactAO(g.renderer.gl, im);
+      im.geometry.dispose(); im.material.dispose();
+      setContactAO(this.caoBakes);
+      // patch every lit material of meshes that reach down to a baked level (floor slabs, rugs)
+      const ys = this.caoBakes.map((b) => b.y);
+      const box = new THREE.Box3(); let n = 0;
+      for (const root of roots) root.traverse((o) => {
+        if (!o.isMesh || !o.visible || /^COL/.test(o.name)) return;
+        box.setFromObject(o);
+        if (!ys.some((y) => box.min.y < y + 0.1 && box.max.y > y - 0.1)) return;
+        for (const m of [].concat(o.material)) if (patchContactAO(m)) n++;
+      });
+      this.caoInfo = { items: im.userData.count, levels: ys, patched: n };
+      this.caoUniforms = CAO_UNIFORMS;   // debug: caoUniforms.p05CAOK.value = 0 turns it off
     } catch (e) { console.warn('[lighting] contact AO failed', e); }
   }
 

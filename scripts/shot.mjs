@@ -114,7 +114,16 @@ export async function openGame({ base = 'http://127.0.0.1:5173', id = 'villa-nov
         if (ok !== true) throw new Error(ok);
         await page.waitForTimeout(500);
         if (nav.count !== nav0) throw new Error('page reloaded right after ready');
-        await hard(page.evaluate(() => window.__game.ready.then(() => true)), 5000 * SLOW, `${label} recheck`);   // throws if the context died
+        // Recheck the context is alive. A busy main thread right after ready (first frames compiling
+        // shaders under SwiftShader + load) is NOT a failure: keep waiting as long as no navigation happened.
+        const tR = Date.now();
+        for (;;) {
+          try { await hard(page.evaluate(() => window.__game.ready.then(() => true)), 15000 * SLOW, `${label} recheck`); break; }
+          catch (e) {
+            if (nav.count !== nav0 || !/Timeout/.test(e.message) || Date.now() - tR > Math.max(60000 * SLOW, left())) throw e;
+            if (!quiet) console.error(`[harness] ${label}: page busy after ready (${((Date.now() - tR) / 1000).toFixed(0)} s), still waiting`);
+          }
+        }
         if (attempt > 1) console.error(`[harness] ${label}: ready on attempt ${attempt}/${attempts}`);
         return attempt;
       } catch (err) {

@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-29T10:52:42.833Z",
+ "updated": "2026-09-29T10:53:36.497Z",
  "phase": "Wave 2: dressing the house",
  "wave": 2,
  "headline": "Textures, furniture, landscape and lighting rebuilt procedurally; critic rounds in progress (P04/P05/P07/TEX), P08 player next",
@@ -61,11 +61,11 @@
   {
    "id": "P07",
    "name": "Furniture & props",
-   "status": "lost",
-   "round": 5,
+   "status": "building",
+   "round": 6,
    "verdict": "HF2 wins 3/3 description-based pairs; public rooms good but soft goods and bathrooms placeholder-grade",
    "gap": "Soft goods are placeholder-grade: flat slab garments in the wardrobes and cloak, flat towel slabs, and a leg-less, seamless sofa, together with thin bathrooms whose basins are filled with bottles, make the house read as blocked-in rather than lived-in.",
-   "updated": "2026-09-29T10:52:42.759Z"
+   "updated": "2026-09-29T10:53:36.497Z"
   },
   {
    "id": "P08",

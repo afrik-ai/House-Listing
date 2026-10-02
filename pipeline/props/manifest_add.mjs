@@ -62,6 +62,7 @@ const PROPS = {
   rubber_duck: ['bath', 'yellow rubber duck (built 0.22 m, use scale ~0.4)'],
   laundry_basket_wicker: ['bath', 'round wicker laundry hamper, lid ajar, towel over the front rim'],
   stool_wood: ['bath', 'ash three-legged stool 0.46 m'],
+  workbench_pegboard: ['garage', 'beech workbench 1.5 m with vice, bins, paint can + pegboard with hung tools; back (wall) -Z'],
   cleaner_bottle: ['bath', 'blue spray cleaner bottle with trigger'],
   lantern: ['lighting', 'black steel candle lantern with glass panes, emissive flame'],
   sofa_fabric_3seat: ['living', 'slate woven 3-seat sofa 2.2 m, piped cushions, scatter cushions, walnut legs; front +Z'],

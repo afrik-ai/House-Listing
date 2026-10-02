@@ -59,10 +59,13 @@ export async function groundMaterial(textures, def, extra = {}) {
 export const PATH_LIGHTS = {
   uPath: { value: Array.from({ length: 16 }, () => new THREE.Vector3(0, -100, 0)) },
   uPathCol: { value: new THREE.Color(0, 0, 0) },
+  // night/moon fill for dark landscape albedos (lawn, grass): extra diffuse irradiance, set by Landscape.update()
+  uLsFill: { value: new THREE.Color(0, 0, 0) },
 };
 export const GLSL_PATH_LIGHTS = /* glsl */`
 uniform vec3 uPath[16];
 uniform vec3 uPathCol;
+uniform vec3 uLsFill;
 vec3 lsPathLight(vec3 p, vec3 n) {
   vec3 e = vec3(0.0);
   for (int i = 0; i < 16; i++) {
@@ -127,7 +130,8 @@ export function patchGround(m, o) {
         roughnessFactor = mix(roughnessFactor, 0.12, lsWet);
         diffuseColor.rgb *= mix(1.0, 0.62, lsWet);`);
     }
-    frag = frag.replace('#include <opaque_fragment>', `outgoingLight += diffuseColor.rgb * RECIPROCAL_PI * lsPathLight(vLsWorld, normalize((vec4(normal, 0.0) * viewMatrix).xyz));
+    frag = frag.replace('#include <opaque_fragment>', `outgoingLight += diffuseColor.rgb * uLsFill * max(normal.y * 0.5 + 0.5, 0.3);
+      outgoingLight += diffuseColor.rgb * RECIPROCAL_PI * lsPathLight(vLsWorld, normalize((vec4(normal, 0.0) * viewMatrix).xyz));
       #include <opaque_fragment>`);
     sh.fragmentShader = frag;
   };

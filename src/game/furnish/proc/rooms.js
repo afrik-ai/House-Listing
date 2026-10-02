@@ -237,7 +237,7 @@ export const towel_rail = {
     for (const x of [-W / 2, W / 2]) B.add('black_metal', cyl(0.013, H, [x, y0, 0.06], 12));
     for (let y = y0 + 0.08; y < y0 + H; y += 0.12) B.add('black_metal', cyl(0.009, W, [0, y, 0.06], 10, null, 'x'));
     for (const y of [y0 + 0.1, y0 + H - 0.1]) for (const x of [-W / 2, W / 2]) B.add('black_metal', cyl(0.008, 0.05, [x, y, 0.03], 8, null, 'z'));
-    if (p.towel !== false) {
+    if (p.towel === true) {   // towels are hung by the clutter pass now (hungtowel)
       const col = p.towelColor || '#f2efe9';
       const ty = y0 + H - 0.28;
       const m = clothMat(ctx);
@@ -298,10 +298,15 @@ export const boiler = {
     B.add('plastic_white', lathe([[0.3, 0], [0.29, 0.06], [0.2, 0.11], [0.001, 0.13]], [0.75, 1.75, -0.02], 40));
     B.add('terracotta', cyl(0.13, 0.36, [-0.62, 1.3, -0.12], 24));
     // expansion-vessel wall bracket: back plate on the wall, arm, and a steel strap round the vessel
-    B.add('steel', box([-0.68, 1.38, -0.33], [-0.56, 1.56, -0.315]));
-    B.add('steel', box([-0.64, 1.45, -0.315], [-0.6, 1.49, -0.24]));
-    B.add('steel', cyl(0.134, 0.035, [-0.62, 1.45, -0.12], 24));
-    B.add('steel', cyl(0.012, 0.25, [-0.62, 1.66, -0.12], 8));
+    // wall bracket: back plate on the wall, two arms and two straps round the vessel, plus its copper pipe run
+    B.add('steel', box([-0.7, 1.28, -0.33], [-0.54, 1.62, -0.316]));
+    for (const y of [1.36, 1.56]) {
+      B.add('steel', box([-0.66, y - 0.015, -0.316], [-0.58, y + 0.015, -0.24]));
+      B.add('steel', cyl(0.134, 0.03, [-0.62, y - 0.015, -0.12], 24));
+    }
+    if (!ctx.mats.m.copper) ctx.mats.plain('copper', '#b87333', 0.3, 1);
+    B.add('copper', cyl(0.011, 0.1, [-0.62, 1.2, -0.12], 10));
+    B.add('copper', tube([[-0.62, 1.21, -0.12], [-0.62, 1.1, -0.2], [-0.45, 1.05, -0.27], [-0.22, 1.05, -0.27], [-0.2, 1.2, -0.27]], 0.011, 8, 24));
     for (const y of [0.35, 1.45]) B.add('steel', cyl(0.011, 0.9, [0.3, y, -0.22], 10, null, 'x'));
     const root = B.build('boiler');
     root.userData.colliders = [[[-0.25, 0, -0.33], [1.06, 1.9, 0.33]]];
@@ -316,5 +321,26 @@ export const wall_shelves = {
     const W = p.w ?? 0.9, D = p.d ?? 0.22, t = p.t ?? 0.03;
     for (const y of p.levels || [1.2]) B.add(p.mat || 'oak', rbox([-W / 2, y - t, -D / 2], [W / 2, y, D / 2], 0.003, 2, 'x'));
     return B.build('wall_shelves');
+  },
+};
+
+// Oil stain decal on a garage floor: flat quad with a soft radial alpha (canvas texture), no shadows/collision.
+export const stain = {
+  build(p, ctx) {
+    const cv = document.createElement('canvas'); cv.width = cv.height = 128;
+    const g = cv.getContext('2d'); const R = ctx.rng;
+    for (let i = 0; i < 7; i++) {
+      const x = 64 + (R() - 0.5) * 50, y = 64 + (R() - 0.5) * 40, r = 18 + R() * 30;
+      const gr = g.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, 'rgba(20,18,14,0.55)'); gr.addColorStop(1, 'rgba(20,18,14,0)');
+      g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+    }
+    const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+    const m = new THREE.MeshStandardMaterial({ map: tex, transparent: true, depthWrite: false, roughness: 0.25, polygonOffset: true, polygonOffsetFactor: -2 });
+    const w = p.w ?? 1.2, d = p.d ?? 0.9;
+    const geo = new THREE.PlaneGeometry(w, d); geo.rotateX(-Math.PI / 2); geo.translate(0, 0.003, 0);
+    const mesh = new THREE.Mesh(geo, m); mesh.name = 'oil_stain'; mesh.userData.noShadow = true;
+    const root = new THREE.Group(); root.add(mesh); root.userData.colliders = [];
+    return root;
   },
 };

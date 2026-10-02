@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import { buildContactAO, bakeContactAO, setContactAO, patchContactAO, CAO_UNIFORMS } from '../../engine/lighting/contactAO.js';
+
 // P05 Lighting & atmosphere plugin. The lighting itself lives in src/engine/Lighting.js +
 // src/engine/lighting/** (owned by P05); this plugin handles the parts that depend on other pieces'
 // content, which is only complete after every plugin's init():
@@ -20,7 +23,43 @@ export class Plugin {
     this._settled = true;
     this.onQuality(this.game.renderer.tier);
     this._glass();
+    this._fixDefaultMetal();
+    this.buildContactAO();
     this.game.lighting?.invalidateShadows();
+  }
+
+  // Contact AO under floor-standing furniture (lighting/contactAO.js): footprints baked top-down per
+  // level, multiplied into upward-facing floor / rug shading. Re-callable after furniture moves.
+  buildContactAO() {
+    const g = this.game;
+    const fur = g.plugins?.get('30_furnish')?.furnisher || window.__furnish?.furnisher;
+    for (const b of this.caoBakes || []) b.rt.dispose();
+    try {
+      const roots = [g.house?.root, fur?.root].filter(Boolean);
+      const rc = new THREE.Raycaster(); rc.far = 0.6;
+      const down = new THREE.Vector3(0, -1, 0);
+      const surfaceY = (x, y, z) => {
+        rc.set(new THREE.Vector3(x, y, z), down);
+        const h = rc.intersectObjects(roots, true).find((q) => q.object.isMesh && q.object.visible && !/^COL|GLASS/i.test(q.object.name) && (q.face?.normal ? q.face.normal.clone().transformDirection(q.object.matrixWorld).y > 0.7 : true));
+        return h ? h.point.y : null;
+      };
+      const im = buildContactAO(fur?.placed, { surfaceY });
+      if (!im) return;
+      this.caoBakes = bakeContactAO(g.renderer.gl, im);
+      im.geometry.dispose(); im.material.dispose();
+      setContactAO(this.caoBakes);
+      // patch every lit material of meshes that reach down to a baked level (floor slabs, rugs)
+      const ys = this.caoBakes.map((b) => b.y);
+      const box = new THREE.Box3(); let n = 0;
+      for (const root of roots) root.traverse((o) => {
+        if (!o.isMesh || !o.visible || /^COL/.test(o.name)) return;
+        box.setFromObject(o);
+        if (!ys.some((y) => box.min.y < y + 0.1 && box.max.y > y - 0.1)) return;
+        for (const m of [].concat(o.material)) if (patchContactAO(m)) n++;
+      });
+      this.caoInfo = { items: im.userData.count, levels: ys, patched: n };
+      this.caoUniforms = CAO_UNIFORMS;   // debug: caoUniforms.p05CAOK.value = 0 turns it off
+    } catch (e) { console.warn('[lighting] contact AO failed', e); }
   }
 
   update() { if (!this._settled && this.game.state !== 'loading') this._settle(); }
@@ -65,6 +104,27 @@ export class Plugin {
         }
       }
     });
+  }
+
+  // glTF defaults metallicFactor to 1: a material exported without PBR values arrives as metalness 1 /
+  // roughness 1. A fully rough pure metal has only a dim diffuse-looking env term, so with the interior
+  // IBL turned down it renders near-black (olive_wood, walnut_shell, oak_legs, stone, pendant brass ...).
+  // Anything metalness >= 0.99 with roughness >= 0.95 and no metalnessMap is treated as dielectric.
+  _fixDefaultMetal() {
+    const seen = new Set(); let n = 0;
+    this.game.scene.traverse((o) => {
+      if (!o.isMesh) return;
+      for (const m of [].concat(o.material)) {
+        if (!m || seen.has(m) || !m.isMeshStandardMaterial) continue;
+        seen.add(m);
+        if (m.metalness >= 0.99 && m.roughness >= 0.95 && !m.metalnessMap) { m.metalness = 0; m.roughness = 0.85; m.needsUpdate = false; n++; }
+        // Dark dielectrics (anthracite / black lacquer, frames): the IBL is the outdoor sky, turned down
+        // indoors, so they miss the room's own reflections and crush to black. Boost their env term.
+        const c = m.color; const lum = c ? 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b : 1;
+        if (lum < 0.15 && m.metalness < 0.5 && !m.transparent && (m.envMapIntensity ?? 1) <= 1) m.envMapIntensity = 2.2;
+      }
+    });
+    this.fixedMetals = n;
   }
 
   dispose() { this.game.off?.('interact', this._onInteract); }

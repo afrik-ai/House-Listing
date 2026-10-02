@@ -365,7 +365,7 @@ export class Trees {
         .replace('#include <worldpos_vertex>', 'vec4 worldPosition = vec4(lsW, 1.0);');
       // un-premultiply the mip-filtered colour (transparent texels are black)
       sh.fragmentShader = sh.fragmentShader.replace('#include <map_fragment>', `
-        vec4 lsTex = texture2D(map, vMapUv);
+        vec4 lsTex = texture2D(map, vMapUv, -1.5);   // P05: mip bias, far impostors read as smeared blobs
         diffuseColor.rgb *= lsTex.rgb / max(lsTex.a, 0.05);
         diffuseColor.a *= smoothstep(0.0, 1.0, lsTex.a * 1.25);`);
     };

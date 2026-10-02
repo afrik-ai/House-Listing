@@ -32,19 +32,19 @@ const bx = (w, h, d, hex, { x = 0, y = 0, z = 0, r = 0 } = {}) => {
   const g = r ? new RoundedBoxGeometry(w, h, d, 1, Math.min(r, w / 2 - 1e-4, h / 2 - 1e-4, d / 2 - 1e-4)) : new THREE.BoxGeometry(w, h, d);
   g.translate(x, y + h / 2, z); return paint(g, hex);
 };
-const lathe = (prof, hex, seg = 16) => paint(new THREE.LatheGeometry(prof.map(([r, y]) => new THREE.Vector2(r, y)), seg), hex);
+const lathe = (prof, hex, seg = 12) => paint(new THREE.LatheGeometry(prof.map(([r, y]) => new THREE.Vector2(r, y)), seg), hex);
 const torus = (R, r, hex, { x = 0, y = 0, z = 0, arc = Math.PI * 2, rx = 0, ry = 0 } = {}) => {
-  const g = new THREE.TorusGeometry(R, r, 5, 12, arc); g.rotateX(rx); g.rotateY(ry); g.translate(x, y, z); return paint(g, hex);
+  const g = new THREE.TorusGeometry(R, r, 4, 8, arc); g.rotateX(rx); g.rotateY(ry); g.translate(x, y, z); return paint(g, hex);
 };
-const sphere = (r, hex, { x = 0, y = 0, z = 0, sy = 1 } = {}) => { const g = new THREE.IcosahedronGeometry(r, 1); g.scale(1, sy, 1); g.translate(x, y, z); return paint(g, hex); };
+const sphere = (r, hex, { x = 0, y = 0, z = 0, sy = 1 } = {}) => { const g = new THREE.IcosahedronGeometry(r, 0); g.scale(1, sy, 1); g.translate(x, y, z); return paint(g, hex); };
 
 // Prop kinds: parts [{ geo, mat, tint }], fp = footprint radius (m), h = height, palette = instance tint colours.
 const WHITE = '#ffffff';
 function defs() {
   const D = {};
-  D.book = { fp: 0.1, h: 1, parts: [{ geo: bx(1, 1, 1, WHITE, { r: 0.002 }), mat: 'cloth', tint: true }],
+  D.book = { fp: 0.1, h: 1, parts: [{ geo: bx(1, 1, 1, WHITE), mat: 'cloth', tint: true }],
     palette: ['#7a2e26', '#2d4a6b', '#d8cfb8', '#3f5a3c', '#b8892f', '#1f1f22', '#8c6d5a', '#5a6b7a', '#a8543a', '#e3ddd0', '#40324a', '#6f7b5a', '#c9b48a', '#23403a'] };
-  D.mug = { fp: 0.055, h: 0.095, parts: [{ geo: merge(lathe([[0.001, 0], [0.036, 0], [0.04, 0.01], [0.04, 0.095], [0.036, 0.095], [0.035, 0.012], [0.001, 0.012]], WHITE, 18),
+  D.mug = { fp: 0.055, h: 0.095, parts: [{ geo: merge(lathe([[0.001, 0], [0.036, 0], [0.04, 0.01], [0.04, 0.095], [0.036, 0.095], [0.035, 0.012], [0.001, 0.012]], WHITE, 14),
     torus(0.026, 0.006, WHITE, { arc: Math.PI }).rotateZ(-Math.PI / 2).translate(0.04, 0.05, 0)), mat: 'glaze', tint: true }],
     palette: ['#f1eee8', '#2f4f5f', '#c46f4d', '#e0d4b8', '#3a3a3a', '#8aa08a', '#d9b44a'] };
   D.jar = { fp: 0.05, h: 0.17, parts: [
@@ -68,9 +68,9 @@ function defs() {
   D.dishrack = { fp: 0.2, h: 0.2, parts: [{ geo: merge(bx(0.4, 0.02, 0.3, '#d4d6d8'),
     ...[-0.12, -0.08, -0.04, 0, 0.04].map((x) => { const g = cyl(0.12, 0.012, '#f1efe9', { seg: 20 }); g.rotateZ(Math.PI / 2 - 0.12); g.translate(x, 0.13, -0.03); return g; }),
     ...[0.1, 0.15].map((x) => cyl(0.035, 0.1, '#e9e6de', { x, y: 0.02, z: 0.07, seg: 12 }))), mat: 'glaze', tint: false }] };
-  D.platestack = { fp: 0.13, h: 0.06, parts: [{ geo: merge(...[0, 1, 2, 3, 4, 5].map((i) => lathe([[0.001, i * 0.009], [0.08, i * 0.009], [0.125, i * 0.009 + 0.018], [0.12, i * 0.009 + 0.02], [0.075, i * 0.009 + 0.006], [0.001, i * 0.009 + 0.006]], WHITE, 22))), mat: 'glaze', tint: true }],
+  D.platestack = { fp: 0.13, h: 0.06, parts: [{ geo: merge(...[0, 1, 2, 3, 4, 5].map((i) => lathe([[0.001, i * 0.009], [0.08, i * 0.009], [0.125, i * 0.009 + 0.018], [0.12, i * 0.009 + 0.02], [0.075, i * 0.009 + 0.006], [0.001, i * 0.009 + 0.006]], WHITE, 14))), mat: 'glaze', tint: true }],
     palette: ['#f3f1ec', '#dfe6e8', '#e8dccb'] };
-  D.plate = { fp: 0.14, h: 0.025, parts: [{ geo: lathe([[0.001, 0], [0.085, 0], [0.135, 0.018], [0.13, 0.02], [0.08, 0.006], [0.001, 0.006]], WHITE, 24), mat: 'glaze', tint: true }], palette: ['#f3f1ec', '#e8dccb'] };
+  D.plate = { fp: 0.14, h: 0.025, parts: [{ geo: lathe([[0.001, 0], [0.085, 0], [0.135, 0.018], [0.13, 0.02], [0.08, 0.006], [0.001, 0.006]], WHITE, 14), mat: 'glaze', tint: true }], palette: ['#f3f1ec', '#e8dccb'] };
   D.glass = { fp: 0.04, h: 0.11, parts: [{ geo: lathe([[0.001, 0], [0.032, 0], [0.036, 0.11], [0.033, 0.11], [0.029, 0.01], [0.001, 0.01]], '#dfe8ec', 14), mat: 'glass', tint: false }] };
   D.spicerack = { fp: 0.2, h: 0.2, parts: [{ geo: merge(bx(0.36, 0.015, 0.09, '#9a7248'), bx(0.36, 0.015, 0.09, '#9a7248', { y: 0.1 }), bx(0.36, 0.2, 0.012, '#9a7248', { z: -0.04 }),
     ...[0, 1].flatMap((row) => [0, 1, 2, 3, 4].map((i) => merge(cyl(0.02, 0.07, '#e8e2d2', { x: -0.14 + i * 0.07, y: 0.015 + row * 0.1, seg: 10 }),
@@ -105,12 +105,29 @@ function defs() {
     (() => { const g = bx(0.36, 0.03, 0.26, WHITE, { r: 0.013 }); g.rotateY(-0.2); g.translate(-0.02, 0.058, -0.01); return g; })()), mat: 'cloth', tint: true }],
     palette: ['#2f3e56', '#c8c0b0', '#6b2f2a', '#3d3d40', '#8a9a7a', '#d7c29a'] };
   D.magazine = { fp: 0.13, h: 0.008, parts: [{ geo: bx(0.21, 0.006, 0.28, WHITE), mat: 'gloss', tint: true }], palette: ['#d9d2c0', '#b83a2e', '#2f4a6a', '#e8c85a', '#f2f0ea'] };
-  D.bowl = { fp: 0.09, h: 0.07, parts: [{ geo: lathe([[0.001, 0], [0.04, 0], [0.085, 0.06], [0.08, 0.065], [0.035, 0.008], [0.001, 0.008]], WHITE, 18), mat: 'glaze', tint: true }], palette: ['#e8e0d0', '#3c5a6a', '#b86a4a'] };
+  D.bowl = { fp: 0.09, h: 0.07, parts: [{ geo: lathe([[0.001, 0], [0.04, 0], [0.085, 0.06], [0.08, 0.065], [0.035, 0.008], [0.001, 0.008]], WHITE, 14), mat: 'glaze', tint: true }], palette: ['#e8e0d0', '#3c5a6a', '#b86a4a'] };
   D.brush = { fp: 0.06, h: 0.4, parts: [{ geo: merge(cyl(0.05, 0.12, '#f0f0ee', { seg: 14 }), cyl(0.008, 0.3, '#2a2a2a', { y: 0.1, seg: 6 }), cyl(0.012, 0.03, '#2a2a2a', { y: 0.38, seg: 8 })), mat: 'std', tint: false }] };
   D.bin = { fp: 0.12, h: 0.3, parts: [{ geo: merge(cyl(0.11, 0.27, WHITE, { seg: 18 }), cyl(0.112, 0.03, WHITE, { y: 0.27, seg: 18 }), bx(0.06, 0.015, 0.04, '#333', { z: 0.11 })), mat: 'metal', tint: true }], palette: ['#d9d9d6', '#2b2b2b', '#e8e2d6'] };
   D.rolls = { fp: 0.07, h: 0.3, parts: [{ geo: merge(cyl(0.055, 0.1, '#f7f6f2', { seg: 14 }), cyl(0.055, 0.1, '#f7f6f2', { y: 0.1, seg: 14 }), cyl(0.055, 0.1, '#f7f6f2', { y: 0.2, seg: 14 })), mat: 'cloth', tint: false }] };
-  D.basketfloor = { fp: 0.2, h: 0.3, parts: [{ geo: merge(lathe([[0.001, 0], [0.16, 0], [0.19, 0.25], [0.18, 0.25], [0.15, 0.02], [0.001, 0.02]], '#a88457', 18),
+  D.basketfloor = { fp: 0.2, h: 0.3, parts: [{ geo: merge(lathe([[0.001, 0], [0.16, 0], [0.19, 0.25], [0.18, 0.25], [0.15, 0.02], [0.001, 0.02]], '#a88457', 14),
     bx(0.3, 0.06, 0.2, '#f2efe8', { y: 0.2, r: 0.02 }), bx(0.28, 0.06, 0.18, '#8ea0ad', { y: 0.24, r: 0.02 })), mat: 'cloth', tint: false }] };
+  D.shoes = { fp: 0.17, h: 0.1, floor: true, parts: [{ geo: merge(...[-0.055, 0.055].map((x) => merge(bx(0.09, 0.03, 0.27, WHITE, { x, r: 0.012 }), bx(0.08, 0.07, 0.12, WHITE, { x, z: 0.06, y: 0.02, r: 0.03 }), bx(0.092, 0.012, 0.27, '#e8e4dc', { x })))), mat: 'cloth', tint: true }],
+    palette: ['#2a2a2c', '#6b4a32', '#e9e6df', '#35475e', '#8a3b2b'] };
+  D.keys = { fp: 0.05, h: 0.02, parts: [{ geo: merge(torus(0.012, 0.0015, '#c9a24e', { y: 0.004, rx: Math.PI / 2 }), bx(0.008, 0.003, 0.05, '#bdbdbd', { x: 0.01, z: 0.03 }), bx(0.02, 0.008, 0.03, '#222', { x: -0.02, z: 0.02 })), mat: 'metal', tint: false }] };
+  D.hungtowel = { fp: 0.2, h: 0.1, parts: [{ geo: merge(bx(0.42, 0.5, 0.012, WHITE, { y: -0.5, z: -0.03, r: 0.005 }), bx(0.42, 0.34, 0.012, WHITE, { y: -0.34, z: 0.03, r: 0.005 }),
+    (() => { const g = new THREE.CylinderGeometry(0.035, 0.035, 0.42, 10, 1, false, 0, Math.PI); g.rotateZ(Math.PI / 2); g.rotateX(Math.PI / 2); return paint(g, WHITE); })()), mat: 'cloth', tint: true }],
+    palette: ['#f2efe8', '#8ea0ad', '#c9b8a0', '#55585c', '#e7dccb'] };
+  D.floorplant = { fp: 0.16, h: 0.7, floor: true, parts: [{ geo: merge(lathe([[0.001, 0], [0.12, 0], [0.15, 0.3], [0.155, 0.31], [0.001, 0.31]], '#d9d4ca', 14),
+    ...[[0, 0.55, 0, 0.14], [0.08, 0.45, 0.05, 0.1], [-0.07, 0.48, -0.04, 0.11], [0.02, 0.66, -0.05, 0.09], [-0.05, 0.4, 0.07, 0.08]].map(([x, y, z, r]) => sphere(r, '#3f6b36', { x, y, z, sy: 1.1 }))), mat: 'std', tint: false }] };
+  D.tray = { fp: 0.14, h: 0.2, parts: [{ geo: merge(bx(0.28, 0.012, 0.16, '#d8d2c6', { r: 0.004 }),
+    lathe([[0.001, 0], [0.03, 0], [0.032, 0.14], [0.012, 0.16], [0.001, 0.16]], '#6b3a17', 12).translate(-0.08, 0.012, 0),
+    lathe([[0.001, 0], [0.026, 0], [0.028, 0.12], [0.01, 0.13], [0.001, 0.13]], '#f0ece4', 12).translate(0, 0.012, 0.02),
+    bx(0.05, 0.03, 0.07, '#e9e1d2', { x: 0.08, y: 0.012, r: 0.01 })), mat: 'glaze', tint: false }] };
+  D.coatstand = { fp: 0.25, h: 1.8, floor: true, parts: [{ geo: merge(cyl(0.2, 0.02, '#1c1c1c', { seg: 16 }), cyl(0.014, 1.75, '#1c1c1c', { seg: 8 }),
+    ...[0, 1, 2, 3].map((i) => { const g = cyl(0.008, 0.14, '#1c1c1c', { seg: 6 }); g.rotateZ(0.9); g.rotateY(i * Math.PI / 2); g.translate(0, 1.62, 0); return g; }),
+    (() => { const g = merge(bx(0.46, 0.85, 0.12, '#56684f', { r: 0.04 }), bx(0.12, 0.6, 0.1, '#56684f', { x: -0.24, y: 0.2, r: 0.04 }), bx(0.12, 0.6, 0.1, '#56684f', { x: 0.24, y: 0.2, r: 0.04 })); g.translate(0.12, 0.8, 0.1); return g; })(),
+    (() => { const g = bx(0.08, 0.7, 0.03, '#a8563c', { r: 0.01 }); g.translate(-0.12, 0.95, -0.08); return g; })()), mat: 'cloth', tint: false }] };
+  D.umbrella = { fp: 0.12, h: 0.9, floor: true, parts: [{ geo: merge(cyl(0.11, 0.5, '#3a3a3a', { seg: 14 }), cyl(0.012, 0.85, '#1d2b3a', { x: 0.03, seg: 6 }), cyl(0.012, 0.8, '#6b1f26', { x: -0.03, z: 0.02, seg: 6 })), mat: 'std', tint: false }] };
   D.detergent = { fp: 0.08, h: 0.28, parts: [{ geo: merge(bx(0.14, 0.24, 0.09, WHITE, { r: 0.02 }), cyl(0.025, 0.04, '#f0f0f0', { y: 0.24, x: 0.035, seg: 10 })), mat: 'std', tint: true }], palette: ['#2a6fb0', '#e36a2a', '#f0f0ee', '#6ab04a'] };
   return D;
 }
@@ -124,14 +141,18 @@ const RECIPES = {
   shelves: { fill: 'books', items: [] },
   shelves_storage: { fill: 'storage', items: [] },
   nightstand: { items: [['booklie', 3, 'any'], ['spectacles', 1, 'any'], ['phone', 1, 'any'], ['glass', 1, 'any'], ['mug', 1, 'any']] },
-  console: { items: [['booklie', 3, 'any'], ['candle', 2, 'any'], ['storebox', 1, 'any'], ['magazine', 1, 'any'], ['bowl', 1, 'any']] },
+  console: { items: [['booklie', 3, 'any'], ['candle', 2, 'any'], ['storebox', 1, 'any'], ['magazine', 1, 'any'], ['bowl', 1, 'any'], ['keys', 1, 'any'], ['herbpot', 1, 'any'], ['glass', 1, 'any']] },
+  hallconsole: { items: [['bowl', 1, 'any'], ['keys', 2, 'any'], ['booklie', 3, 'any'], ['candle', 2, 'any'], ['storebox', 1, 'any'], ['magazine', 2, 'any'], ['herbpot', 1, 'any'], ['phone', 1, 'any'], ['spectacles', 1, 'any']],
+    floor: [['shoes', 1], ['shoes', -1], ['basketfloor', 2], ['shoes', -2]] },
   coffee: { items: [['remote', 1, 'any'], ['magazine', 2, 'any'], ['mug', 2, 'any'], ['candle', 1, 'any'], ['spectacles', 1, 'any']] },
   sidetable: { items: [['booklie', 2, 'any'], ['glass', 1, 'any'], ['mug', 1, 'any']] },
   desk: { items: [['mug', 1, 'any'], ['magazine', 2, 'any'], ['booklie', 3, 'any'], ['phone', 1, 'any'], ['glass', 1, 'any'], ['spectacles', 1, 'any'], ['storebox', 1, 'back']] },
   dining: { items: [['plate', 6, 'any'], ['glass', 6, 'any'], ['bottle', 1, 'any'], ['magazine', 1, 'any']] },
-  vanity: { items: [['soap', 1, 'any'], ['toiletry', 4, 'any'], ['toothcup', 1, 'any'], ['towel', 1, 'any'], ['candle', 1, 'any'], ['jar', 1, 'any']], mat: true, floor: [['bin', 1]] },
-  tub: { items: [], mat: true, floor: [['basketfloor', 1], ['toiletry', -1]] },
-  wc: { items: [], floor: [['brush', 1], ['bin', -1], ['rolls', -1.9]] },
+  vanity: { maxLevel: 1.2, items: [['tray', 1, 'any'], ['soap', 1, 'any'], ['toiletry', 5, 'any'], ['toothcup', 1, 'any'], ['towel', 2, 'any'], ['candle', 2, 'any'], ['jar', 2, 'any'], ['herbpot', 1, 'any'], ['bowl', 1, 'any']], mat: true, floor: [['bin', 1], ['basketfloor', -1], ['rolls', -2]] },
+  tub: { items: [], mat: true, floor: [['basketfloor', 1], ['floorplant', -1]] },   // no toiletries on the floor (they belong on vanities, shelves, rims)
+  wc: { items: [], floor: [['brush', 1], ['bin', -1], ['rolls', -2], ['floorplant', 2]] },
+  rail: { items: [], hang: 2 },
+  vestibule: { items: [], floor: [['coatstand', 1], ['shoes', -1], ['shoes', -2], ['umbrella', 2], ['basketfloor', -3]] },
   washer: { items: [['detergent', 1, 'any'], ['towel', 2, 'any']] },
   bed: { items: [['clothes', 1, 'any'], ['booklie', 1, 'any'], ['magazine', 1, 'any']] },
   chair: { items: [['clothes', 1, 'any']] },
@@ -144,7 +165,7 @@ function hostKind(p) {
   if (n === 'kitchen_island') return 'island';
   if (n === 'media_wall' || n === 'shelf_unit' || n === 'wall_shelves') return 'shelves';
   if (n === 'garage_shelves_steel_narrow') return 'shelves_storage';
-  if (n === 'cabinet') return BEDROOMS.has(room) ? 'nightstand' : 'console';
+  if (n === 'cabinet') return BEDROOMS.has(room) ? 'nightstand' : /^(hall|hall1|vestibule|cloak)$/.test(room) ? 'hallconsole' : 'console';
   if (n === 'coffee_table_round_marble') return 'coffee';
   if (n === 'side_table_oak' || n === 'side_table_tall') return 'sidetable';
   if (n === 'table') return room === 'dining' ? 'dining' : (room === 'office' || room === 'bed3') ? 'desk' : null;
@@ -155,6 +176,8 @@ function hostKind(p) {
   if (n === 'armchair_modern' && BEDROOMS.has(room)) return 'chair';
   if (n === 'stool_wood') return 'stool';
   if (n === 'toilet_wall_hung') return 'wc';
+  if (n === 'towel_rail') return 'rail';
+  if (n === 'slab' && room === 'vestibule') return 'vestibule';
   return null;
 }
 
@@ -246,8 +269,10 @@ export class Clutter {
 
   _host(p, kind, R) {
     const rec = RECIPES[kind];
+    if (rec.hang) return this._hang(p, rec.hang);
     this._tight = kind === 'vanity' || kind === 'nightstand' || kind === 'sidetable';
     const S = probe(this.F, p);
+    if (rec.maxLevel) S.levels = S.levels.filter((L) => L.y - p.floorY < rec.maxLevel);
     const toWorld = (u, w, y) => V(S.o.x + S.ax.x * u + S.az.x * w, y, S.o.z + S.ax.z * u + S.az.z * w);
     const hostYaw = Math.atan2(S.ax.z, S.ax.x) * -1;   // rotation of host about Y
     const taken = [];   // {L, u, w, r}
@@ -368,22 +393,52 @@ export class Clutter {
     }
   }
 
-  // Build the InstancedMeshes (one per kind part per floor level). No shadows cast.
+  // Towels hung over the top bars of a towel rail (host local: bars along X at z = 0.06).
+  _hang(p, n) {
+    const w = p.wrap, b = p.box, R = mulberry(p.item.pos[0] * 100 + p.item.pos[2]);
+    const q = w.getWorldQuaternion(new THREE.Quaternion()), o = w.getWorldPosition(V());
+    const yaw = new THREE.Euler().setFromQuaternion(q, 'YXZ').y;
+    const P = this.D.hungtowel.palette;
+    for (let i = 0; i < n; i++) {
+      const y = b.max.y - 0.12 - i * 0.26;
+      const loc = V((b.min.x + b.max.x) / 2 + (i ? 0.03 : 0), y, 0.06).applyQuaternion(q).add(o);
+      this.add('hungtowel', p.room, p.floorY, loc, yaw, V(Math.min(1, (b.max.x - b.min.x - 0.06) / 0.42), 1, 1), new THREE.Color(P[Math.floor(R() * P.length)]));
+    }
+  }
+
+  // Bake everything into ONE static mesh per (material, floor): clutter never moves, so merging beats instancing
+  // on draw calls (7 materials x floors instead of ~100 instanced parts). Tints are baked into vertex colours.
   build(root, mats) {
-    const out = [];
+    const groups = new Map();   // `${mat}|${fy}` -> [geo]
+    const c = new THREE.Color();
     for (const [key, list] of this.inst) {
       const [kind, fy] = key.split('|');
       const d = this.D[kind];
-      d.parts.forEach((part, pi) => {
-        const im = new THREE.InstancedMesh(part.geo, mats[part.mat] || mats.std, list.length);
-        im.name = `FC_${kind}_${pi}_${fy}`;
-        list.forEach((e, i) => { im.setMatrixAt(i, e.m); if (part.tint) im.setColorAt(i, e.c || new THREE.Color(1, 1, 1)); });
-        im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
-        im.castShadow = false; im.receiveShadow = true;
-        im.computeBoundingSphere(); im.computeBoundingBox?.();
-        im.userData.p07 = { floorY: +fy, clutter: true };
-        root.add(im); out.push(im);
-      });
+      for (const part of d.parts) {
+        const gk = `${part.mat}|${fy}`;
+        if (!groups.has(gk)) groups.set(gk, []);
+        for (const e of list) {
+          const g = part.geo.clone(); g.applyMatrix4(e.m);
+          if (part.tint && e.c) {
+            const col = g.attributes.color;
+            for (let i = 0; i < col.count; i++) { c.fromBufferAttribute(col, i).multiply(e.c); col.setXYZ(i, c.r, c.g, c.b); }
+          }
+          groups.get(gk).push(g);
+        }
+      }
+    }
+    const out = [];
+    for (const [gk, geos] of groups) {
+      const [mat, fy] = gk.split('|');
+      const geo = mergeGeometries(geos.map(idx), false);
+      for (const g of geos) g.dispose();
+      if (!geo) continue;
+      geo.computeBoundingSphere(); geo.computeBoundingBox();
+      const m = new THREE.Mesh(geo, mats[mat] || mats.std);
+      m.name = `FC_${mat}_${fy}`;
+      m.castShadow = false; m.receiveShadow = true;
+      m.userData.p07 = { floorY: +fy, clutter: true };
+      root.add(m); out.push(m);
     }
     return out;
   }

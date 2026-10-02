@@ -1,0 +1,4 @@
+pair1: ours=B (coin false)
+pair2: ours=A (coin true)
+pair3: ours=A (coin true)
+HF2 sides are description-based (HF2_REFERENCE.md sec 5)

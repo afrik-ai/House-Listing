@@ -1,9 +1,9 @@
 {
  "id": "villa-nova",
- "stamp": "2026-09-27T13-39-15",
+ "stamp": "2026-10-02T05-56-25",
  "verdict": "PASS",
- "pass": 44,
- "warn": 13,
+ "pass": 42,
+ "warn": 7,
  "fail": 0,
  "budget": {
   "trianglesMax": 1500000,
@@ -41,7 +41,7 @@
    "gate": "boot",
    "name": "load time",
    "status": "PASS",
-   "detail": "184.1 s to ready"
+   "detail": "213.2 s to ready"
   },
   {
    "gate": "walk",
@@ -306,55 +306,7 @@
    "name": "stair main down",
    "status": "PASS",
    "detail": ""
-  },
-  {
-   "gate": "perf",
-   "name": "living",
-   "status": "WARN",
-   "detail": "3.35M tris, 660 calls, 17.9 ms/frame | over: triangles 3.35M > 1.50M; frame 17.9 ms > 16.7 ms"
-  },
-  {
-   "gate": "perf",
-   "name": "kitchen",
-   "status": "WARN",
-   "detail": "3.91M tris, 878 calls, 21.4 ms/frame | over: triangles 3.91M > 1.50M; frame 21.4 ms > 16.7 ms"
-  },
-  {
-   "gate": "perf",
-   "name": "master",
-   "status": "WARN",
-   "detail": "2.31M tris, 677 calls, 17.4 ms/frame | over: triangles 2.31M > 1.50M; frame 17.4 ms > 16.7 ms"
-  },
-  {
-   "gate": "perf",
-   "name": "bath_master",
-   "status": "WARN",
-   "detail": "2.72M tris, 712 calls, 17.0 ms/frame | over: triangles 2.72M > 1.50M; frame 17.0 ms > 16.7 ms"
-  },
-  {
-   "gate": "perf",
-   "name": "ext_front_east",
-   "status": "WARN",
-   "detail": "2.58M tris, 708 calls, 13.3 ms/frame | over: triangles 2.58M > 1.50M"
-  },
-  {
-   "gate": "perf",
-   "name": "ext_garden_sw",
-   "status": "WARN",
-   "detail": "2.32M tris, 709 calls, 12.9 ms/frame | over: triangles 2.32M > 1.50M"
-  },
-  {
-   "gate": "views",
-   "name": "10 standard views captured",
-   "status": "PASS",
-   "detail": "reviews\\check\\villa-nova\\2026-09-27T13-39-15\\index.html"
-  },
-  {
-   "gate": "views",
-   "name": "changed since last check",
-   "status": "PASS",
-   "detail": "no big changes"
   }
  ],
- "dir": "reviews\\check\\villa-nova\\2026-09-27T13-39-15"
+ "dir": "reviews\\check\\villa-nova\\2026-10-02T05-56-25"
 }

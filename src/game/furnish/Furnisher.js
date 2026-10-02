@@ -20,6 +20,27 @@ const ROOM_TINTS = {
     bed3: { throw_knit_charcoal: '#5d6f55', cushion_anthracite: '#d8c7a8', cushion_sage: '#b5773f', upholstery_greige: '#8a7a68', duvet_cotton_white: '#dfe6ea', pillow_cotton_white: '#eef1f2' },
   },
 };
+// wc: the vanity sat in the door swing (leaf rests on it) -> slide it along the west wall away from the hinge.
+const LAYOUT_FIX = {
+  'wc/bathroom_vanity': (it) => ({ pos: [it.pos[0], it.pos[1], 3.62] }),
+  'wc/toiletries': (it) => ({ pos: [it.pos[0], it.pos[1], 3.72] }),
+};
+// kitchen: the island left a 0.57 m slot to the run (a player could get stuck in it) -> island, its stools and
+// everything standing on it move 0.35 m west (1.0 m aisle). terrace: the lounge coffee table / lantern closed the
+// gap in front of the sofa -> 0.35 m further west. wardrobe_a: the 2.1 m closet filled the room -> 1.3 m.
+const LAYOUT_RULES = [
+  // storage / garage: crates dropped on the steel shelves follow the shelf orientation (they clipped the uprights)
+  { room: 'storage_n', test: (it) => it.model === 'crate_plastic', fix: (it) => ({ rotY: it.pos[0] > 4.6 ? -90 : 0 }) },
+  { room: 'garage', test: (it) => it.model === 'crate_plastic', fix: () => ({ rotY: 0 }) },
+  // garage: red tool chest stands on the floor, toolbox on the cart, bike along the south wall (out of the view pose)
+  { room: 'garage', test: (it) => it.model === 'tool_chest', fix: () => ({ pos: [10.8, 0, -2.85], drop: undefined, snap: 'N' }) },
+  { room: 'garage', test: (it) => it.model === 'toolbox', fix: () => ({ pos: [9.8, 0, -2.7], drop: 1.5 }) },
+  { room: 'garage', test: (it) => it.model === 'bicycle', fix: () => ({ pos: [12.35, 0, 2.2], rotY: 0, snap: 'S' }) },
+  { room: 'garage', test: (it) => it.model === 'tire_pump', fix: () => ({ pos: [8.4, 0, 1.9], snap: undefined }) },
+  { room: 'kitchen', test: (it) => it.pos[0] > 8.5 && it.pos[0] < 10.45 && it.id !== 'run', fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
+  { room: 'terrace', test: (it) => (it.id === 'terrace_coffee' || it.model === 'lantern' || it.model === 'plant_succulent_small') && it.pos[2] > 4, fix: (it) => ({ pos: [it.pos[0] - 0.35, it.pos[1], it.pos[2]] }) },
+  { room: 'wardrobe_a', test: (it) => it.proc === 'closet', fix: (it) => ({ params: { ...it.params, sections: [{ type: 'hang', w: 0.8 }, { type: 'shelves', w: 0.5 }] } }) },
+];
 const DIRS = { N: [0, 0, -1], S: [0, 0, 1], E: [1, 0, 0], W: [-1, 0, 0] };
 
 export class Furnisher {
@@ -89,10 +110,32 @@ export class Furnisher {
     return s ? s.elevation : 0;
   }
 
+  // Layout corrections applied on top of furniture.json (critic / P08 placement findings).
+  _fixItem(it) {
+    const f = LAYOUT_FIX[`${it.room}/${it.id}`] || LAYOUT_FIX[`${it.room}/${it.model || it.proc}`];
+    if (f) it = { ...it, ...f(it) };
+    for (const g of LAYOUT_RULES) if (g.room === it.room && g.test(it)) it = { ...it, ...g.fix(it) };
+    return it;
+  }
+
+  // Extra pieces added in code (garage workbench + pegboard, oil stain under the car).
+  _extras() {
+    return {
+      vestibule: [{ proc: 'cabinet', pos: [8.9, 0, 4.3], rotY: 180, snap: 'S', id: 'shoe_bench', params: { w: 0.8, h: 0.46, d: 0.36, body: 'oak', cols: 2, rows: 1, legs: 0.1, handle: 'none' } }],
+      hall: [{ proc: 'cabinet', pos: [6.6, 0, 4.6], rotY: 180, snap: 'S', id: 'hall_bench', params: { w: 1.1, h: 0.46, d: 0.36, body: 'oak', cols: 2, rows: 1, legs: 0.1, handle: 'none' } }],
+      garage: [
+        { model: 'workbench_pegboard', pos: [12.05, 0, -2.9], snap: 'N', id: 'workbench' },
+        { proc: 'stain', pos: [10.9, 0, 0.5], params: { w: 1.4, d: 1.0, seed: 3 }, collide: false, shadow: false, id: 'oil_stain' },
+      ],
+    };
+  }
+
   _flatten(data) {
     const out = [];
     const rooms = this.game.house.rooms();
-    for (const [roomId, room] of Object.entries(data.rooms || {})) {
+    const extras = this._extras();
+    for (const [roomId, room0] of Object.entries(data.rooms || {})) {
+      const room = extras[roomId] ? { ...room0, items: [...(room0.items || []), ...extras[roomId]] } : room0;
       const r = rooms.find((q) => q.id === roomId);
       const level = room.level || r?.level || 'ground';
       const floorY = room.floorY ?? this._levelFloor(level);
@@ -100,13 +143,14 @@ export class Furnisher {
         if (raw.skip) continue;
         const n = raw.repeat?.n || 1;
         for (let k = 0; k < n; k++) {
-          const it = { ...raw, room: roomId, floorY };
+          let it = { ...raw, room: roomId, floorY };
           if (k) {
             const st = raw.repeat.step || [0, 0, 0];
             it.pos = [raw.pos[0] + st[0] * k, (raw.pos[1] || 0) + st[1] * k, raw.pos[2] + st[2] * k];
             it.rotY = (raw.rotY || 0) + (raw.repeat.rotStep || 0) * k;
             if (raw.repeat.seedStep) it.params = { ...(raw.params || {}), seed: (raw.params?.seed || 1) + k };
           }
+          it = this._fixItem(it);
           out.push(it);
         }
       }
@@ -118,7 +162,8 @@ export class Furnisher {
   _fixMaterial(m) {
     if (/^mirror/i.test(m.name)) { m.color.set('#aab6bc'); m.metalness = 0.35; m.roughness = 0.1; m.envMapIntensity = 1.6; m.emissive?.set('#3c4549'); }
     if (/^grille$|^drl_led$/i.test(m.name) && m.color.getHex() === 0xffffff) m.color.set(/grille/i.test(m.name) ? '#1d1f21' : '#dfe6ee');
-    if (/paint_graphite/i.test(m.name)) { m.color.set('#2d3237'); m.metalness = 0.3; m.roughness = 0.5; m.envMapIntensity = 0.35; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
+    if (/^glass_tinted$/i.test(m.name)) { m.color.set('#0a0e11'); m.metalness = 0; m.roughness = 0.12; m.transparent = true; m.opacity = 0.9; m.envMapIntensity = 0.25; }
+    if (/paint_graphite/i.test(m.name)) { m.color.set('#56606a'); m.metalness = 0.45; m.roughness = 0.38; m.envMapIntensity = 1.0; if (m.clearcoat !== undefined) m.clearcoat = 0.2; }
   }
 
   async _loadModel(name) {
@@ -207,7 +252,7 @@ export class Furnisher {
       const tint = it.tint || ROOM_TINTS[it.model]?.[it.room];
       key = `${it.model}#${it.variant || ''}#${JSON.stringify(tint || '')}`;
       if (tint) this._tint(object, tint);
-      if (it.model === 'bathroom_vanity' && !this._wallBehind(it, 1.48)) this._dropMaterial(object, /^mirror/);
+      if (it.model === 'bathroom_vanity' && this._overWindow(it, 1.48, 0.26)) { this._dropMaterial(object, /^mirror/, `${it.room}/bathroom_vanity`); key += '#nomirror'; }
     }
     // scale
     const s = it.scale ?? defaults.scale ?? 1;
@@ -262,7 +307,9 @@ export class Furnisher {
       o.castShadow = cast && !clear && !o.userData.noShadow;
       o.receiveShadow = !clear;
     });
-    this.placed.push({ item: it, key, wrap, box, size, floorY: it.floorY, room: it.room });
+    const small = !it.proc && Math.max(size.x, size.y, size.z) < 0.75 && !/^(pendant|lantern|desk_lamp|laptop)/.test(it.model || '');
+    if (small) this._flatten_small(wrap);
+    this.placed.push({ item: it, key, wrap, box, size, floorY: it.floorY, room: it.room, small });
     this.report.items++;
   }
 
@@ -285,9 +332,28 @@ export class Furnisher {
   }
 
   // Remove (hide) the sub-meshes / primitives of a model that use a material matching re (e.g. a mirror over a window).
-  _dropMaterial(object, re) {
-    object.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => re.test(m?.name || ''))) { o.visible = false; o.userData.noMerge = true; } });
-    this._warn(`dropped ${re} on a model placed in front of an opening`);
+  _dropMaterial(object, re, who = '') {
+    let n = 0;
+    const kill = []; object.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => re.test(m?.name || ''))) kill.push(o); });
+    for (const o of kill) { o.removeFromParent(); n++; }
+    this._warn(`${who}: removed ${n} ${re} part(s) hanging over a window`);
+  }
+
+  // Would a wall-mounted element at height h (radius r, on the item's back wall) overlap a window opening?
+  // Uses the house spec openings (window centre `at`, width along the wall, sill + height).
+  _overWindow(it, h, r) {
+    const lvl = this.game.house.rooms().find((q) => q.id === it.room)?.level;
+    const yaw = THREE.MathUtils.degToRad(it.rotY || 0);
+    const back = [-Math.sin(yaw), -Math.cos(yaw)], side = [Math.cos(yaw), -Math.sin(yaw)];
+    const elev = this._levelFloor(lvl || 'ground');
+    for (const o of this.game.house.spec?.openings || []) {
+      if (o.type !== 'window' || (lvl && o.level !== lvl)) continue;
+      const dx = o.at[0] - it.pos[0], dz = o.at[1] - it.pos[2];
+      const along = Math.abs(dx * side[0] + dz * side[1]), perp = dx * back[0] + dz * back[1];
+      const y0 = elev + (o.sill ?? 0), y1 = y0 + (o.height ?? 1.2), y = it.floorY + h;
+      if (perp > -0.1 && perp < 1.2 && along < o.width / 2 + r + 0.05 && y + r > y0 && y - r < y1) return true;
+    }
+    return false;
   }
 
   // Pieces that poke through a wall get pushed back out (floor-standing items, before instancing).
@@ -414,6 +480,27 @@ export class Furnisher {
     this.report.view = { state, ...this.stats(true) };
   }
 
+  // Small decor props: their textures are replaced by the texture's mean colour (x base colour), so they join the
+  // shared vertex-colour merge buckets (one draw call per bucket per floor instead of one per material per prop).
+  // At the size they are seen at, the texture detail is sub-pixel anyway. Printed images (photos, dials, labels,
+  // screens) and emissive / transparent materials keep their own material.
+  _flatten_small(wrap) {
+    wrap.traverse((o) => {
+      if (!o.isMesh) return;
+      const conv = (m) => {
+        if (!m || m.transparent || m.alphaTest > 0 || m.alphaMap || (m.emissive && m.emissive.getHex()) || /photo|art|screen|dial|label|squares|print/i.test(m.name)) return m;
+        const key = m.uuid;
+        this._plainCache ||= new Map();
+        if (this._plainCache.has(key)) return this._plainCache.get(key);
+        const c = m.map ? m.color.clone().multiply(meanColour(m.map)) : m.color.clone();
+        const n = new THREE.MeshStandardMaterial({ name: `${m.name}_flat`, color: c, roughness: m.roughness, metalness: m.metalness, side: m.side });
+        this._plainCache.set(key, n);
+        return n;
+      };
+      o.material = Array.isArray(o.material) ? o.material.map(conv) : conv(o.material);
+    });
+  }
+
   _tint(object, tint) {
     object.traverse((o) => {
       if (!o.isMesh) return;
@@ -446,7 +533,7 @@ export class Furnisher {
   _instance() {
     const groups = new Map();
     for (const p of this.placed) {
-      if (!p.key || p.item.noInstance) continue;
+      if (!p.key || p.item.noInstance || p.small) continue;   // small props are merged instead (see _flatten small)
       const k = `${p.key}|${p.floorY}|${p.zone}`;
       if (!groups.has(k)) groups.set(k, []);
       groups.get(k).push(p);
@@ -482,7 +569,7 @@ export class Furnisher {
   _merge() {
     const groups = new Map();
     const shared = new Map();
-    const q = (v) => Math.round((v ?? 0) * 20) / 20;
+    const q = (v) => Math.round((v ?? 0) * 4) / 4;   // coarse buckets: fewer draw calls; roughness/metal steps of 0.25
     const plain = (m) => m.isMeshStandardMaterial && !m.vertexColors && !m.map && !m.normalMap && !m.roughnessMap && !m.metalnessMap && !m.aoMap &&
       !m.emissiveMap && !m.alphaMap && !(m.transmission > 0) && !(m.clearcoat > 0) && !(m.sheen > 0) && m.emissive.getHex() === 0 && !m.userData?.night;
     this.work.updateMatrixWorld(true);
@@ -566,6 +653,7 @@ export class Furnisher {
       const custom = it.collider || defaults.collider;
       const genCols = p.wrap.children[0]?.userData?.colliders;
       if (it.collide === false || defaults.collide === false) continue;
+      if (p.size.y < 0.05 || /^rug_/.test(it.model || '')) continue;   // mats, runners, rugs never block the player
       if (custom) boxes.push(custom);
       else if (genCols) boxes.push(...genCols);
       else {
@@ -679,6 +767,14 @@ export class Furnisher {
         if (hit) doors.push(`${op.id} slider walkway blocked by ${o.name}`);
       }
     }
+    // mirrors over windows: any remaining mirror/mirror-frame part on a vanity whose back wall has a window behind it
+    const mirrorsOverWindows = [];
+    for (const p of this.placed) {
+      if (p.item.model !== 'bathroom_vanity' || !this._overWindow(p.item, 1.48, 0.26)) continue;
+      let left = 0; p.wrap.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => /^mirror/i.test(m?.name || ''))) left++; });
+      if (left) mirrorsOverWindows.push(`${p.room}/bathroom_vanity: ${left} mirror part(s) over a window`);
+    }
+    this.report.mirrorsOverWindows = mirrorsOverWindows;
     this.report.overlaps = overlaps; this.report.wallPokes = walls; this.report.doorBlocks = doors;
     const n = overlaps.length + walls.length + doors.length + this.report.warnings.length;
     if (n) console.warn(`[furnish] QA: ${overlaps.length} overlaps, ${walls.length} wall pokes, ${doors.length} blocked doors, ${this.report.warnings.length} warnings — see __furnish.report`);
@@ -693,6 +789,23 @@ export class Furnisher {
     }
     if (this.mats?.m?.flame) this.mats.m.flame.opacity = on ? 0.9 : 0.55;
   }
+}
+
+// Mean colour of a texture (linear), via a 1x1 canvas draw (cached per texture); white if unreadable.
+const _meanCache = new WeakMap();
+function meanColour(tex) {
+  if (_meanCache.has(tex)) return _meanCache.get(tex);
+  let c = new THREE.Color(1, 1, 1);
+  try {
+    const img = tex.image;
+    const cv = document.createElement('canvas'); cv.width = cv.height = 1;
+    const cx = cv.getContext('2d', { willReadFrequently: true });
+    cx.drawImage(img, 0, 0, 1, 1);
+    const d = cx.getImageData(0, 0, 1, 1).data;
+    c = new THREE.Color().setRGB(d[0] / 255, d[1] / 255, d[2] / 255, THREE.SRGBColorSpace);
+  } catch { /* keep white */ }
+  _meanCache.set(tex, c);
+  return c;
 }
 
 function inRects(rects, x, z) { return rects.some(([rx, rz, w, d]) => x > rx && x < rx + w && z > rz && z < rz + d); }

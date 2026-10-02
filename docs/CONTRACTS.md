@@ -37,8 +37,8 @@
   `src/ui/HUD.js` (`HUD` -> `game.hud`), `src/ui/Menus.js` (`Menus` -> `game.menus`). Shape:
   `class X { constructor(game); async init?(); update?(dt); dispose?() }` (or default export).
 
-### Plugins (src/game/plugins/*.js) � the extension point for wave-2 pieces
-- Every `src/game/plugins/*.js` is auto-loaded (import.meta.glob), **sorted by filename** (prefix `10_`, `20_` � to order).
+### Plugins (src/game/plugins/*.js) � the extension point for wave-2 pieces
+- Every `src/game/plugins/*.js` is auto-loaded (import.meta.glob), **sorted by filename** (prefix `10_`, `20_` � to order).
 - Shape: `export class Plugin { constructor(game); async init?(); update?(dt); onTimeOfDay?(mode); onQuality?(tier); dispose?() }`
   (or `export default` of that shape). Instances: `game.plugins.get('<filename without .js>')`.
 - Order of boot: house loaded + current-TOD lighting ready + `lighting.buildFixtures` + physics colliders set + player
@@ -87,6 +87,16 @@
   IBL 0.55; HDRI suns measured (az/el, texture frame): day immenstadter_horn 126/35, golden spruit_sunrise
   126/8 (pylons painted out via `skyGrade.mask`), night moonless_golf has no moon (brightest = streetlight);
   moon painted at az 35 el 30. PostFX: N8AO transparencyAware off (no extra scene renders).
+- P05 r4: contact-AO decals = `buildContactAO(placed, {surfaceY})` in src/engine/lighting/contactAO.js
+  (one InstancedMesh of soft blobs under floor-standing Furnisher.placed items; built by the 05_lighting
+  plugin on 'ready' -> `plugins.get('05_lighting').buildContactAO()` rebuilds it after furniture moves).
+  05_lighting also treats glTF-default materials (metalness>=0.99, roughness>=0.95, no metalnessMap) as
+  dielectric. furnish/materials.js: anthracite tints lifted (#60666c / #44484c) since they multiply a
+  light albedo map (was ~3% albedo -> black). N8AO distanceFalloff 1.0 (was 0.2-0.4, which nulled AO).
+- P05 r5: contact-AO decals shade in metres (ShaderMaterial, per-instance aSize): full under the
+  footprint, fading over 0.18 m beyond it. 05_lighting boosts envMapIntensity to 2.2 on dark dielectrics
+  (colour luminance < 0.15). landscape/plants.js impostor map sampled with mip bias -1.5 (P05 edit).
+  anthracite_dark tint #52575c.
 
 ### window.__game (SPEC + extras)
 - SPEC: `ready, teleport(x,y,z,yawDeg,pitchDeg)` (EYE position; player floats until movement input), `setTimeOfDay`
@@ -260,10 +270,24 @@
 - Also: `_unpoke()` pushes floor pieces out of walls. Planters inside a room's spawn view are skipped. A vanity mirror in front
   of a window is dropped. Bedding is tinted per bedroom (`ROOM_TINTS`). Mirror and car-paint materials are corrected at load.
 
-## Physics update (2026-09-26): player width and slopes
-- Player capsule radius is now 0.25 m (was 0.3), so the 0.78 m corridor beside the stair is comfortable to walk.
-- `moveCapsule` follows walkable ground (`groundNormal(p, maxDrop)`, normal Y ≥ `maxSlopeNormalY` = 0.55): the horizontal
-  move is tilted onto the slope before collision. Ramps such as COL_stair are climbed and descended without stalling
-  or floating (constant ~5 cm clearance on the 34° stair ramp).
+## Layout rule (2026-09-26): circulation lanes
 - Furniture must keep the hall-to-vestibule lane clear (x 8–10, z 3.7–4.4): the stair foot and the front-door swing
-  leave no room for floor items there.
+  leave no room for floor items there. `npm run check -- --only walk` fails if any door, sliding door or stair is blocked.
+
+## P08 Player controller & collision
+- **Settings setters** (for P10's menu; all emit `player-settings` with the full settings object):
+  `game.player.setSensitivity(mult)` (0.1–5, default 1), `setFov(deg)` (vertical FOV 45–110, **default 75** since P08 r2; the Player sets `camera.fov` at construction, so harness/critic shots are now 75° vertical),
+  `setMouseSmoothing(v)` (0 = raw/instant, up to 0.95; fraction of look lag kept per 1/60 s), `setHeadBob(bool)`,
+  `setStrafeRoll(bool)` (default off), `setInvertY(bool)`, `setJumpEnabled(bool)` (default off, HF2 has no jump); `getSettings()`; `info()` = {speed, crouched, sprinting, onGround, eyeHeight, fov}.
+- **Controls**: WASD/arrows, Shift sprint (4.2 m/s, +5 deg FOV kick, ~95% in 0.25 s; walk 2.6, crouch 1.3), C / Left Ctrl crouch (hold;
+  stands up only with head clearance), Space jump when enabled (fresh press, 0.45 s cooldown after landing, landing costs speed).
+- **Events**: `footstep {surface:'wood'|'tile'|'stone'|'grass'|'gravel'|'carpet'|'metal', type:<raw floor type>, speed, sprint, crouch}`
+  every stride (0.74 m walk / 0.98 sprint / 0.55 crouch). Surface comes from the VISIBLE floor under the feet (downward ray: glTF `surface` extra, SURF_<type>, LS_<kind>, material name; fallback house.surfaceAt) via `floorSurfaceAt()` in src/game/player/surfaces.js; `player.surfaceInfo()` returns {type, surface}; From P08 r3 the Player also REPLACES `house.surfaceAt(pos)` on `ready` with this visible-floor lookup (returns the raw type; the previous rect/landscape chain stays as `house.surfaceAtRect`). `player.emitsFootsteps = true`, so Game.js' fallback is off.
+  `land {surface, speed}` after >0.25 s airborne; `respawn {pos}` when the player falls below gradeY-8 (back to last safe ground).
+- **Physics** (`src/engine/Physics.js`): `setDynamic(meshes)` registers moving colliders tested with their CURRENT world
+  matrix every query (the player registers `house.doorColliders` itself, so COL_DOOR_* follow P09's door animation with
+  no extra calls). `raycast()` also hits dynamic colliders. `moveCapsule(pos, delta, out, {height, snap})`, `overlaps(pos, height)`.
+- Feel (r3): release-to-stop ~0.075 s, head-bob ~5 mm p-p at walk, stair step/landing snaps eased so the camera never moves > max(1.8 cm, the ramp's own move) per 120 Hz tick.
+- r4: any contact below step height (0.25 m) under the capsule's round bottom lifts it exactly clear (kerbs, slab edges, ramps, stairs: auto step-up); up-facing faces above step height push sideways (never climb furniture tops). Stuck-while-pushing for 0.35 s -> `unstick` event + hop to nearest free walkable spot. Footstep `type` is always a floor finish name (merged material keys fall back to the house floor type).
+- Capsule radius 0.25 m (was 0.3; 0.76 m doors + open leaves need it), height 1.75 (1.15 crouched), step 0.25; walkable slopes resolve straight up (ramps climb, no slide-back).
+- Simulation is the fixed 120 Hz Game step, so `__game.move` is frame-rate independent. Test: `node scripts/tests/player.mjs`.

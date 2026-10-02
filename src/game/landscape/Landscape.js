@@ -7,6 +7,8 @@ import { InstancedModels, buildOrnamentals, Trees, scatterRing, scatterFar } fro
 import { buildHedges, buildFences, buildGabions } from './boundaries.js';
 import { buildBollards } from './lights.js';
 import { rng, colliderMesh, rectContains } from './util.js';
+import { PATH_LIGHTS } from './materials.js';
+const _c = new THREE.Color();
 
 const NIGHT = { day: 0, golden_hour: 0.3, night: 1 };
 
@@ -240,6 +242,14 @@ export class Landscape {
 
   update(dt) {
     const g = this.game, sun = g.lighting.sun;
+    // Night: the lawn/grass albedo (~0.1) under the 0.3 hemisphere fill reads black; add a cool moonlit
+    // fill (hemi sky colour x intensity + a share of the moon) only to landscape ground + grass shaders.
+    const k = NIGHT[g.lighting.mode] ?? 0, hemi = g.lighting.hemi;
+    const fill = PATH_LIGHTS.uLsFill.value.setRGB(0, 0, 0);
+    if (k > 0.5 && hemi) {
+      fill.copy(hemi.color).multiplyScalar(hemi.intensity * 2.6);
+      if (sun) fill.add(_c.copy(sun.color).multiplyScalar(sun.intensity * 0.22));
+    }
     this.pool?.update(dt, sun);
     this.grass?.update(dt, g.camera, sun);
     this.trees?.update(g.camera, false, sun);

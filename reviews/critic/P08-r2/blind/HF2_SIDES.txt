@@ -1,0 +1,3 @@
+pair1_A = HF2 description (sec.5 First-person feel, sprint)
+pair2_B = HF2 description (sec.5, stairs/walk)
+pair3_B = HF2 description (sec.5 + rubric 8, footsteps change on tile)

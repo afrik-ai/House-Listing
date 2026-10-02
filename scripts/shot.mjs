@@ -132,7 +132,16 @@ export async function openGame({ base, id = 'villa-nova', w = 1920, h = 1080, qu
         if (ok !== true) throw new Error(ok);
         await page.waitForTimeout(500);
         if (nav.count !== nav0) throw new Error('page reloaded right after ready');
-        await hard(page.evaluate(() => window.__game.ready.then(() => true)), 5000 * SLOW, `${label} recheck`);   // throws if the context died
+        // Recheck the context is alive. A busy main thread right after ready (first frames compiling
+        // shaders under SwiftShader + load) is NOT a failure: keep waiting as long as no navigation happened.
+        const tR = Date.now();
+        for (;;) {
+          try { await hard(page.evaluate(() => window.__game.ready.then(() => true)), 15000 * SLOW, `${label} recheck`); break; }
+          catch (e) {
+            if (nav.count !== nav0 || !/Timeout/.test(e.message) || Date.now() - tR > Math.max(60000 * SLOW, left())) throw e;
+            if (!quiet) console.error(`[harness] ${label}: page busy after ready (${((Date.now() - tR) / 1000).toFixed(0)} s), still waiting`);
+          }
+        }
         if (attempt > 1) console.error(`[harness] ${label}: ready on attempt ${attempt}/${attempts}`);
         return attempt;
       } catch (err) {
@@ -201,20 +210,64 @@ export async function capture(page, { view, tod, out, ui = false, quality }) {
   return stable(page, () => captureOnce(page, { view, tod, out, ui, quality }), `capture ${path.basename(out)}`);
 }
 
+// A frame is "blank" when a 16x9 grid of samples is (near) one flat colour: white page before the
+// canvas composited, the clear colour, or a lost frame under load.
+function blankStats(samples) {
+  let mn = 255, mx = 0, sum = 0;
+  for (const v of samples) { mn = Math.min(mn, v); mx = Math.max(mx, v); sum += v; }
+  return { blank: mx - mn < 6, mean: sum / Math.max(1, samples.length), range: mx - mn };
+}
+
+async function pngBlank(buf) {
+  try {
+    const sharp = (await import('sharp')).default;
+    const { data, info } = await sharp(buf).removeAlpha().resize(16, 9, { fit: 'fill' }).greyscale().raw().toBuffer({ resolveWithObject: true });
+    return blankStats(data.subarray(0, info.width * info.height));
+  } catch { return { blank: false, unchecked: true }; }
+}
+
 async function captureOnce(page, { view, tod, out, ui, quality }) {
   if (quality) await page.evaluate((q) => { if (window.__game.state().quality !== q) window.__game.setQuality(q); }, quality);
-  await page.evaluate(async ({ view, tod, ui }) => {
-    const g = window.__game;
-    g.hideUI(!ui);
-    if (tod) await g.setTimeOfDay(tod);
-    g.teleport(view.pos[0], view.pos[1], view.pos[2], view.yaw ?? 0, view.pitch ?? 0);
-    // Let shadows/AO/bloom settle for a few real frames, then force one final render.
-    for (let i = 0; i < 4; i++) await new Promise((r) => requestAnimationFrame(r));
-    g.render();
-  }, { view, tod, ui });
   fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
-  await page.screenshot({ path: out, type: 'png' });
-  return page.evaluate(() => ({ stats: window.__game.stats(), state: window.__game.state() }));
+  const tries = 4;
+  for (let t = 1; t <= tries; t++) {
+    // Place the camera, let shadows/AO/bloom/eye adaptation settle for several real frames, then force
+    // renders until the canvas itself (read back in the same task as the render) is not flat.
+    const pageCheck = await page.evaluate(async ({ view, tod, ui, frames }) => {
+      const g = window.__game;
+      g.hideUI(!ui);
+      if (tod && g.state().tod !== tod) await g.setTimeOfDay(tod);
+      g.teleport(view.pos[0], view.pos[1], view.pos[2], view.yaw ?? 0, view.pitch ?? 0);
+      for (let i = 0; i < frames; i++) await new Promise((r) => requestAnimationFrame(r));
+      const gl = g.game.renderer.gl.getContext();
+      let last = null;
+      for (let k = 0; k < 3; k++) {
+        g.render();
+        const W = gl.drawingBufferWidth, H = gl.drawingBufferHeight, px = new Uint8Array(4), s = [];
+        for (let y = 0; y < 9; y++) for (let x = 0; x < 16; x++) {
+          gl.readPixels(Math.floor((x + 0.5) * W / 16), Math.floor((y + 0.5) * H / 9), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+          s.push((px[0] + px[1] + px[2]) / 3);
+        }
+        let mn = 255, mx = 0; for (const v of s) { mn = Math.min(mn, v); mx = Math.max(mx, v); }
+        last = { range: mx - mn };
+        if (mx - mn >= 6) break;
+        await new Promise((r) => requestAnimationFrame(r));
+      }
+      // Two more composited frames so the screenshot sees a presented frame, not a pending one.
+      for (let i = 0; i < 2; i++) await new Promise((r) => requestAnimationFrame(r));
+      return last;
+    }, { view, tod, ui, frames: 4 + 2 * t });
+    const buf = await page.screenshot({ type: 'png' });
+    const chk = await pngBlank(buf);
+    if (!chk.blank || t === tries) {
+      fs.writeFileSync(out, buf);
+      if (chk.blank) console.error(`[harness] capture ${path.basename(out)}: frame still flat after ${tries} tries (mean ${chk.mean?.toFixed(0)})`);
+      const r = await page.evaluate(() => ({ stats: window.__game.stats(), state: window.__game.state() }));
+      return { ...r, captureTries: t, canvasRange: pageCheck?.range, blank: !!chk.blank };
+    }
+    console.error(`[harness] capture ${path.basename(out)}: blank frame (mean ${chk.mean.toFixed(0)}), retry ${t}/${tries - 1}`);
+    await page.waitForTimeout(500 * SLOW * t);
+  }
 }
 
 async function main() {

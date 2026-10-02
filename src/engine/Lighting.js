@@ -37,9 +37,9 @@ const PRESETS = {
     hdri: 'day_partly_cloudy', azimuth: 168, el: 36,
     sunColor: 0xfff2e0, sunScale: 0, sunIntensity: 7.5, sunMax: 7.5,
     hemiSky: 0xc4d4ec, hemiGround: 0x8f8574, hemiIntensity: 0.04,
-    inSky: 0xf2ece4, inGround: 0xeadcc8, hemiInterior: 0.2,
+    inSky: 0xf2ece4, inGround: 0xe8d0ae, hemiInterior: 0.55,
     envIntensity: 0.55, bgIntensity: 0.8, exposure: 0.9, iblSaturation: 0.6,
-    interiorEnv: 0.3, interiorExposure: 1.9, wbOut: [1.0, 1.0, 1.0], wbIn: [1.03, 1.0, 0.95],
+    interiorEnv: 0.6, interiorExposure: 1.9, wbOut: [1.0, 1.0, 1.0], wbIn: [1.03, 1.0, 0.95],
     bounce: 1.25, fixtures: 0, bulbs: 0, groundAlbedo: [0.17, 0.16, 0.13], grass: [0.06, 0.1, 0.03],
     grade: { saturation: 0.12, contrast: 0.14, bloom: 0.45, bloomThreshold: 2.6, vignette: 0.3 },
     sky: { turbidity: 3, rayleigh: 1.2, mie: 0.004, mieG: 0.8 },
@@ -48,12 +48,12 @@ const PRESETS = {
   golden_hour: {
     hdri: 'golden_hour', azimuth: 262, el: 13,
     sunColor: 0xffa45a, sunScale: 1.25, sunIntensity: 3.8, sunMax: 4.6,
-    hemiSky: 0xd9b08a, hemiGround: 0x7a5e46, hemiIntensity: 0.05,
+    hemiSky: 0xd9b08a, hemiGround: 0x7a5e46, hemiIntensity: 0.18,
     inSky: 0xf0d6b8, inGround: 0xe0b890, hemiInterior: 0.14,
-    envIntensity: 0.7, bgIntensity: 0.72, exposure: 1.05, iblSaturation: 0.8,
+    envIntensity: 0.95, bgIntensity: 0.72, exposure: 1.05, iblSaturation: 0.8,
     interiorEnv: 0.42, interiorExposure: 1.75, wbOut: [1.0, 0.99, 0.97], wbIn: [1.03, 0.99, 0.93],
     bounce: 1.3, fixtures: 0.3, bulbs: 0.4, groundAlbedo: [0.17, 0.15, 0.11], grass: [0.06, 0.08, 0.025],
-    grade: { saturation: 0.16, contrast: 0.12, bloom: 0.85, bloomThreshold: 0.95, vignette: 0.4 },
+    grade: { saturation: 0.16, contrast: 0.12, bloom: 0.5, bloomThreshold: 1.8, vignette: 0.36 },
     sky: { turbidity: 6, rayleigh: 2.4, mie: 0.012, mieG: 0.9 },
     skyGrade: {
       tint: { horizon: [1.3, 1.0, 0.72], zenith: [1.02, 0.95, 0.95] }, sunSide: 1.6,
@@ -64,17 +64,17 @@ const PRESETS = {
   },
   night: {
     hdri: 'night_clear', azimuth: 35, el: 30,
-    sunColor: 0x9fb8ff, sunScale: 0, sunIntensity: 0.6, sunMax: 0.6,
-    hemiSky: 0x2a3c66, hemiGround: 0x0e1016, hemiIntensity: 0.12,
-    inSky: 0x3c3a44, inGround: 0x6a5240, hemiInterior: 0.06,
+    sunColor: 0x9fb8ff, sunScale: 0, sunIntensity: 1.0, sunMax: 1.0,
+    hemiSky: 0x33487a, hemiGround: 0x1a1c24, hemiIntensity: 0.3,
+    inSky: 0x5a5048, inGround: 0x8a6a4c, hemiInterior: 0.22,
     envIntensity: 0.14, bgIntensity: 0.3, exposure: 1.0, iblSaturation: 0.7,
-    interiorEnv: 0.5, interiorExposure: 1.1, wbOut: [0.98, 1.0, 1.04], wbIn: [1.0, 1.0, 1.0],
-    bounce: 0, fixtures: 1.0, bulbs: 1.0, groundAlbedo: [0.1, 0.1, 0.08], grass: [0.05, 0.07, 0.03],
-    grade: { saturation: 0.1, contrast: 0.1, bloom: 0.95, bloomThreshold: 0.8, vignette: 0.45 },
+    interiorEnv: 0.8, interiorExposure: 0.8, wbOut: [0.98, 1.0, 1.04], wbIn: [1.0, 1.0, 1.0],
+    bounce: 0, fixtures: 0.75, bulbs: 0.5, groundAlbedo: [0.1, 0.1, 0.08], grass: [0.05, 0.07, 0.03],
+    grade: { saturation: 0.1, contrast: 0.08, bloom: 0.45, bloomThreshold: 1.6, vignette: 0.4 },
     sky: { turbidity: 2, rayleigh: 0.4, mie: 0.002, mieG: 0.7 },
     skyGrade: {
       tint: { horizon: [0.72, 0.88, 1.3], zenith: [0.66, 0.78, 1.2] },
-      clampLow: { el1: 9, k: 2.5 },
+      clampLow: { el1: 12, k: 1.4 },
       add: { horizon: [0.03, 0.05, 0.11], zenith: [0.002, 0.003, 0.008] },
       disc: { radiusDeg: 1.1, radiance: [60, 64, 72], glow: [0.25, 0.3, 0.42], glowDeg: 3, glow2: [0.02, 0.03, 0.055], glow2Deg: 14 },
     },
@@ -82,7 +82,7 @@ const PRESETS = {
 };
 export const TIMES_OF_DAY = Object.keys(PRESETS);
 
-const BULB_EMISSIVE = 60;        // emissive intensity of a bulb at night (blooms)
+const BULB_EMISSIVE = 30;        // emissive intensity of a bulb at night (blooms)
 const FLOOR_ALBEDO = {
   oak_plank: [0.42, 0.28, 0.16], large_format_tile_grey: [0.36, 0.35, 0.33], large_format_tile_light: [0.6, 0.57, 0.5],
   small_tile_white: [0.72, 0.72, 0.7], concrete_screed: [0.34, 0.33, 0.31], stair_tread: [0.42, 0.28, 0.16],

@@ -1,0 +1,146 @@
+{
+ "kitchen_b_day": {
+  "fps": 0,
+  "drawCalls": 435,
+  "triangles": 735710,
+  "textures": 281,
+  "geometries": 487,
+  "programs": 179,
+  "memoryMB": 120,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "kitchen_c_day": {
+  "fps": 0,
+  "drawCalls": 314,
+  "triangles": 600787,
+  "textures": 281,
+  "geometries": 487,
+  "programs": 179,
+  "memoryMB": 121,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "kitchen_d_day": {
+  "fps": 0,
+  "drawCalls": 147,
+  "triangles": 516434,
+  "textures": 281,
+  "geometries": 487,
+  "programs": 179,
+  "memoryMB": 122,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "feet_dining_day": {
+  "fps": 0,
+  "drawCalls": 177,
+  "triangles": 574957,
+  "textures": 281,
+  "geometries": 487,
+  "programs": 179,
+  "memoryMB": 121,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "feet_lamp_day": {
+  "fps": 0,
+  "drawCalls": 283,
+  "triangles": 656344,
+  "textures": 281,
+  "geometries": 487,
+  "programs": 179,
+  "memoryMB": 122,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "feet_dresser_day": {
+  "fps": 0,
+  "drawCalls": 710,
+  "triangles": 1306738,
+  "textures": 296,
+  "geometries": 591,
+  "programs": 188,
+  "memoryMB": 123,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "kitchen_b_night": {
+  "fps": 0,
+  "drawCalls": 436,
+  "triangles": 735742,
+  "textures": 306,
+  "geometries": 595,
+  "programs": 189,
+  "memoryMB": 135,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "kitchen_c_night": {
+  "fps": 0,
+  "drawCalls": 315,
+  "triangles": 600819,
+  "textures": 306,
+  "geometries": 595,
+  "programs": 189,
+  "memoryMB": 135,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ },
+ "kitchen_d_night": {
+  "fps": 0,
+  "drawCalls": 148,
+  "triangles": 516466,
+  "textures": 306,
+  "geometries": 595,
+  "programs": 189,
+  "memoryMB": 136,
+  "gpuTexMB": 981,
+  "quality": "high",
+  "pixelRatio": 1,
+  "resolution": [
+   1280,
+   720
+  ]
+ }
+}

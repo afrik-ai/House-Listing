@@ -17,6 +17,7 @@ qc = H.colmix(np.clip(0.5 + q3 * 0.15, 0, 1), '#dddbd7', '#e5e3df') * (1 - spk[.
 quartz = H.pbr('quartz_light', '#ffffff', 0.3, base_tex=H.save_img(qc, 'vanity_quartz_c'))
 ceramic = H.pbr('ceramic_white', '#f5f5f3', 0.08, spec=0.6)
 black = H.pbr('matte_black', '#1a1a1a', 0.42, 0.75)
+mframe = H.pbr('mirror_frame_black', '#1b1b1b', 0.44, 0.7)   # own material so the mirror can be removed as a unit
 mirror = H.pbr('mirror', '#f2f4f5', 0.02, 1.0)
 chrome = H.pbr('chrome', '#dddddd', 0.08, 1.0)
 
@@ -62,7 +63,7 @@ H.tube('tap_lever', [V((tx, ty, ZC + 0.318)), V((tx, ty + 0.03, ZC + 0.33)), V((
 # round mirror, 0.70 m, thin black frame, 2 cm off the wall
 mz, mr = 1.48, 0.35
 ym = YW - 0.02
-frame = H.lathe('mirror_frame', [(mr - 0.004, 0.0), (mr + 0.012, 0.0), (mr + 0.012, 0.025), (mr - 0.004, 0.025)], 96, black,
+frame = H.lathe('mirror_frame', [(mr - 0.004, 0.0), (mr + 0.012, 0.0), (mr + 0.012, 0.025), (mr - 0.004, 0.025)], 96, mframe,
                 loc=(0, YW, mz), rot=(PI / 2, 0, 0))
 H.sharpen(frame, 40); H.bevel(frame, 0.0015, 2)
 H.cyl('mirror_glass', mr, 0.004, loc=(0, ym + 0.001, mz), rot=(-PI / 2, 0, 0), seg=96, mat=mirror)

@@ -74,9 +74,9 @@ export class Materials {
 
   async init() {
     const P = [];
-    // --- matte anthracite lacquer (RAL 7016): soft plaster normal breaks up the CG flatness
-    P.push(this.textured('anthracite', 'concrete_smooth_light', { tint: '#3a3f44', scale: 1.6, rough: 0.62, normalScale: 0.18 }).then((m) => { m.roughnessMap = null; m.roughness = 0.58; }));
-    P.push(this.textured('anthracite_dark', 'concrete_smooth_light', { tint: '#26292c', scale: 1.6, rough: 0.6, normalScale: 0.15 }).then((m) => { m.roughnessMap = null; m.roughness = 0.55; }));
+    // --- matte anthracite lacquer (RAL 7016): soft plaster normal breaks up the CG flatness. Tint is lifted (P05) because it multiplies the light concrete albedo map: #3a3f44 x map gave ~3% albedo (renders black); RAL 7016 LRV is ~7%.
+    P.push(this.textured('anthracite', 'concrete_smooth_light', { tint: '#60666c', scale: 1.6, rough: 0.62, normalScale: 0.18 }).then((m) => { m.roughnessMap = null; m.roughness = 0.58; }));
+    P.push(this.textured('anthracite_dark', 'concrete_smooth_light', { tint: '#52575c', scale: 1.6, rough: 0.6, normalScale: 0.15 }).then((m) => { m.roughnessMap = null; m.roughness = 0.55; }));
     // --- oak veneer: generated rift-sawn grain (straight, fine), tiles every 1.2 m along the grain
     const oak = makeGrainTexture({ seed: 7, base: [196, 150, 104], dark: [150, 104, 64], light: [214, 172, 126] });
     this.m.oak = new THREE.MeshStandardMaterial({ name: 'P07_oak', map: oak.map, roughnessMap: oak.rough, roughness: 1 });
